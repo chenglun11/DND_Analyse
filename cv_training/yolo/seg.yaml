@@ -1,0 +1,5 @@
+path: C:/Users/lchna/Desktop/traningdata
+train: images/Train
+val:   images/Train
+nc: 1
+names: ['room']
