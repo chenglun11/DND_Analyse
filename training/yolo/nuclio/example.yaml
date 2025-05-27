@@ -1,0 +1,102 @@
+metadata:
+  name: pth-yolov8n_dnd
+  namespace: cvat
+  annotations:
+    name: YOLO-v8n_seg
+    type: detector
+    framework: pytorch
+    spec: |
+    [
+       {
+        "name": "room",
+        "id": 1,
+        "color": "#a42864",
+        "type": "any",
+        "attributes": []
+      },
+      {
+        "name": "Object",
+        "id": 2,
+        "color": "#40e020",
+        "type": "any",
+        "attributes": []
+      },
+      {
+        "name": "entrance",
+        "id": 3,
+        "color": "#81256c",
+        "type": "any",
+        "attributes": []
+      },
+      {
+        "name": "door_Open",
+        "id": 4,
+        "color": "#c0e0c0",
+        "type": "any",
+        "attributes": []
+      },
+      {
+        "name": "door_Locked",
+        "id": 5,
+        "color": "#cfa6e3",
+        "type": "any",
+        "attributes": []
+      },
+      {
+        "name": "door_Portcullis",
+        "id": 6,
+        "color": "#3e9a4b",
+        "type": "any",
+        "attributes": []
+      },
+      {
+        "name": "door_Trapped",
+        "id": 7,
+        "color": "#fc35de",
+        "type": "any",
+        "attributes": []
+      },
+      {
+        "name": "door_Secret",
+        "id": 8,
+        "color": "#097cd4",
+        "type": "any",
+        "attributes": []
+      },
+      {
+        "name": "upstair",
+        "id": 9,
+        "color": "#a76350",
+        "type": "any",
+        "attributes": []
+      },
+      {
+        "name": "downstair",
+        "id": 10,
+        "color": "#98cd0d",
+        "type": "any",
+        "attributes": []
+      },
+      {
+        "name": "door_Archway",
+        "id": 11,
+        "color": "#e1a999",
+        "type": "any",
+        "attributes": []
+      }
+    ]
+
+spec:
+  build:
+    image: cvat.pth.yolo11npose.sport
+    baseImage: python:3.8
+    directives:
+      preCopy:
+        - kind: RUN
+          value: apt update && apt install -y git libgl1
+        - kind: RUN
+          value: pip install torch==2.0.0+cpu torchvision==0.15.1+cpu
+        - kind: RUN
+          value: pip install ultralytics numpy opencv-python-headless pillow pyyaml
+        - kind: ADD
+          value: https://github.com/.../best.pt /best.pt
