@@ -1,0 +1,78 @@
+{
+  "scores": {
+    "accessibility": {
+      "score": 0.0,
+      "detail": {
+        "reason": "no room or connection information"
+      }
+    },
+    "degree_variance": {
+      "score": 0.0,
+      "detail": {
+        "reason": "No room or connection information"
+      }
+    },
+    "door_distribution": {
+      "score": 0.0,
+      "detail": {
+        "reason": "No room or connection information"
+      }
+    },
+    "dead_end_ratio": {
+      "score": 0.0,
+      "detail": {
+        "reason": "No connection information"
+      }
+    },
+    "key_path_length": {
+      "score": 0.0,
+      "detail": {
+        "reason": "无房间或连接信息"
+      }
+    },
+    "loop_ratio": {
+      "score": 0.0,
+      "detail": {
+        "reason": "No connection information"
+      }
+    },
+    "path_diversity": {
+      "score": 0.0,
+      "detail": {
+        "reason": "No room or connection information"
+      }
+    }
+  },
+  "overall_score": 0.0,
+  "grade": "F",
+  "details": {
+    "accessibility": {
+      "reason": "no room or connection information"
+    },
+    "degree_variance": {
+      "reason": "No room or connection information"
+    },
+    "door_distribution": {
+      "reason": "No room or connection information"
+    },
+    "dead_end_ratio": {
+      "reason": "No connection information"
+    },
+    "key_path_length": {
+      "reason": "无房间或连接信息"
+    },
+    "loop_ratio": {
+      "reason": "No connection information"
+    },
+    "path_diversity": {
+      "reason": "No room or connection information"
+    }
+  },
+  "recommendations": [
+    "Add more connections between rooms to improve accessibility",
+    "Balance the number of connections between rooms to avoid rooms with too many or too few connections",
+    "Add more path choices to provide more ways to reach the target",
+    "Add more loop structures to improve the exploration of the map"
+  ],
+  "spatial_inference_used": false
+}

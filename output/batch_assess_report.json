@@ -1,0 +1,1302 @@
+{
+  "grimscar_hold.json": {
+    "overall_score": 0.7460209372417679,
+    "grade": "B",
+    "detailed_metrics": {
+      "accessibility": {
+        "score": 0.7347394988281954,
+        "detail": {
+          "avg_accessibility": 0.37263385613845323,
+          "complexity_factor": 1.0,
+          "detail": [
+            0.5813953488372093,
+            0.5813953488372093,
+            0.13953488372093023,
+            0.06976744186046512,
+            0.5813953488372093,
+            0.5813953488372093,
+            0.5813953488372093,
+            0.5813953488372093,
+            0.5813953488372093,
+            0.5813953488372093,
+            0.5813953488372093,
+            0.5813953488372093,
+            0.5813953488372093,
+            0.023255813953488372,
+            0.023255813953488372,
+            0.046511627906976744,
+            0.06976744186046512,
+            0.046511627906976744,
+            0.13953488372093023,
+            0.06976744186046512,
+            0.13953488372093023,
+            0.5813953488372093,
+            0.5813953488372093,
+            0.5813953488372093,
+            0.5813953488372093,
+            0.5813953488372093,
+            0.5813953488372093,
+            0.5813953488372093,
+            0.5813953488372093,
+            0.5813953488372093,
+            0.5813953488372093,
+            0.5813953488372093,
+            0.5813953488372093,
+            0.5813953488372093,
+            0.5813953488372093,
+            0.06976744186046512,
+            0.046511627906976744,
+            0.13953488372093023,
+            0.046511627906976744,
+            0.13953488372093023,
+            0.06976744186046512,
+            0.13953488372093023,
+            0.06976744186046512
+          ]
+        }
+      },
+      "degree_variance": {
+        "score": 0.6608871008364867,
+        "detail": {
+          "degree_variance": 2.1979448350459707,
+          "mean_degree": 2.186046511627907,
+          "complexity_factor": 0.6666666666666666,
+          "degrees": [
+            4,
+            2,
+            4,
+            2,
+            6,
+            6,
+            6,
+            4,
+            3,
+            2,
+            2,
+            2,
+            3,
+            0,
+            0,
+            1,
+            2,
+            1,
+            2,
+            2,
+            2,
+            1,
+            3,
+            5,
+            2,
+            3,
+            2,
+            1,
+            2,
+            1,
+            1,
+            3,
+            1,
+            2,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            2,
+            2,
+            1
+          ]
+        }
+      },
+      "door_distribution": {
+        "score": 0.4010162601626015,
+        "detail": {
+          "door_variance": 2.0606781677572874,
+          "mean_doors": 2.292682926829268,
+          "door_counts": [
+            4,
+            3,
+            5,
+            6,
+            6,
+            2,
+            6,
+            3,
+            2,
+            1,
+            2,
+            2,
+            1,
+            4,
+            1,
+            3,
+            3,
+            2,
+            2,
+            1,
+            2,
+            3,
+            1,
+            1,
+            2,
+            1,
+            1,
+            2,
+            1,
+            1,
+            1,
+            4,
+            1,
+            2,
+            2,
+            2,
+            2,
+            1,
+            1,
+            2,
+            2
+          ],
+          "room_count": 4,
+          "door_ratio": 0.573170731707317,
+          "complexity_factor": 0.6666666666666666
+        }
+      },
+      "dead_end_ratio": {
+        "score": 0.7268292682926829,
+        "detail": {
+          "dead_end_count": 14,
+          "dead_end_ratio": 0.34146341463414637,
+          "dead_end_rooms": [
+            "rect_27",
+            "rect_38",
+            "rect_36",
+            "rect_37",
+            "rect_30",
+            "rect_13",
+            "rect_21",
+            "rect_15",
+            "rect_32",
+            "rect_34",
+            "rect_35",
+            "rect_42",
+            "rect_29",
+            "rect_39"
+          ],
+          "total_rooms": 41,
+          "all_rooms": [
+            "rect_19",
+            "rect_0",
+            "rect_17",
+            "rect_16",
+            "rect_3",
+            "rect_27",
+            "rect_8",
+            "rect_10",
+            "rect_31",
+            "rect_20",
+            "rect_25",
+            "rect_23",
+            "rect_38",
+            "rect_36",
+            "rect_37",
+            "rect_30",
+            "rect_2",
+            "rect_22",
+            "rect_14",
+            "rect_13",
+            "rect_21",
+            "rect_15",
+            "rect_4",
+            "rect_32",
+            "rect_34",
+            "rect_33",
+            "rect_6",
+            "rect_40",
+            "rect_35",
+            "rect_24",
+            "rect_5",
+            "rect_7",
+            "rect_18",
+            "rect_9",
+            "rect_42",
+            "rect_29",
+            "rect_26",
+            "rect_41",
+            "rect_1",
+            "rect_28",
+            "rect_39"
+          ]
+        }
+      },
+      "key_path_length": {
+        "score": 0.0,
+        "detail": {
+          "key_path_length": null,
+          "entrance": "rect_0",
+          "exit": "rect_19"
+        }
+      },
+      "loop_ratio": {
+        "score": 0.9997026022326756,
+        "detail": {
+          "loop_ratio": 0.2926829268292683,
+          "loop_count": 12,
+          "total_nodes": 41,
+          "loops": [
+            [
+              "rect_19",
+              "rect_17",
+              "rect_40",
+              "rect_19"
+            ],
+            [
+              "rect_22",
+              "rect_23",
+              "rect_1",
+              "rect_22"
+            ],
+            [
+              "rect_0",
+              "rect_22",
+              "rect_23",
+              "rect_1",
+              "rect_0"
+            ],
+            [
+              "rect_23",
+              "rect_1",
+              "rect_2",
+              "rect_23"
+            ],
+            [
+              "rect_23",
+              "rect_1",
+              "rect_2",
+              "rect_25",
+              "rect_23"
+            ],
+            [
+              "rect_2",
+              "rect_25",
+              "rect_4",
+              "rect_2"
+            ],
+            [
+              "rect_31",
+              "rect_33",
+              "rect_10",
+              "rect_31"
+            ],
+            [
+              "rect_2",
+              "rect_26",
+              "rect_5",
+              "rect_2"
+            ],
+            [
+              "rect_1",
+              "rect_3",
+              "rect_24",
+              "rect_1"
+            ],
+            [
+              "rect_3",
+              "rect_7",
+              "rect_28",
+              "rect_3"
+            ],
+            [
+              "rect_0",
+              "rect_22",
+              "rect_23",
+              "rect_0"
+            ],
+            [
+              "rect_18",
+              "rect_20",
+              "rect_41",
+              "rect_18"
+            ]
+          ],
+          "all_rooms": [
+            "rect_19",
+            "rect_0",
+            "rect_17",
+            "rect_16",
+            "rect_3",
+            "rect_27",
+            "rect_8",
+            "rect_10",
+            "rect_31",
+            "rect_20",
+            "rect_25",
+            "rect_23",
+            "rect_38",
+            "rect_36",
+            "rect_37",
+            "rect_30",
+            "rect_2",
+            "rect_22",
+            "rect_14",
+            "rect_13",
+            "rect_21",
+            "rect_15",
+            "rect_4",
+            "rect_32",
+            "rect_34",
+            "rect_33",
+            "rect_6",
+            "rect_40",
+            "rect_35",
+            "rect_24",
+            "rect_5",
+            "rect_7",
+            "rect_18",
+            "rect_9",
+            "rect_42",
+            "rect_29",
+            "rect_26",
+            "rect_41",
+            "rect_1",
+            "rect_28",
+            "rect_39"
+          ]
+        }
+      },
+      "path_diversity": {
+        "score": 1.0,
+        "detail": {
+          "avg_path_diversity": 2.0,
+          "path_counts": [
+            2
+          ]
+        }
+      }
+    },
+    "recommendations": []
+  },
+  "Caves Of Chaos v1.11-2.json": {
+    "overall_score": 0.0,
+    "grade": "F",
+    "detailed_metrics": {
+      "accessibility": {
+        "score": 0.0,
+        "detail": {
+          "reason": "no room or connection information"
+        }
+      },
+      "degree_variance": {
+        "score": 0.0,
+        "detail": {
+          "reason": "No room or connection information"
+        }
+      },
+      "door_distribution": {
+        "score": 0.0,
+        "detail": {
+          "reason": "No room or connection information"
+        }
+      },
+      "dead_end_ratio": {
+        "score": 0.0,
+        "detail": {
+          "reason": "No connection information"
+        }
+      },
+      "key_path_length": {
+        "score": 0.0,
+        "detail": {
+          "reason": "无房间或连接信息"
+        }
+      },
+      "loop_ratio": {
+        "score": 0.0,
+        "detail": {
+          "reason": "No connection information"
+        }
+      },
+      "path_diversity": {
+        "score": 0.0,
+        "detail": {
+          "reason": "No room or connection information"
+        }
+      }
+    },
+    "recommendations": [
+      "Add more connections between rooms to improve accessibility",
+      "Balance the number of connections between rooms to avoid rooms with too many or too few connections",
+      "Add more path choices to provide more ways to reach the target",
+      "Add more loop structures to improve the exploration of the map"
+    ]
+  },
+  "thunderscar_shrine.json": {
+    "overall_score": 0.78463577547647,
+    "grade": "B",
+    "detailed_metrics": {
+      "accessibility": {
+        "score": 1.0,
+        "detail": {
+          "avg_accessibility": 0.724609375,
+          "complexity_factor": 1.0,
+          "detail": [
+            0.84375,
+            0.84375,
+            0.84375,
+            0.84375,
+            0.84375,
+            0.84375,
+            0.84375,
+            0.84375,
+            0.09375,
+            0.84375,
+            0.84375,
+            0.0625,
+            0.84375,
+            0.84375,
+            0.84375,
+            0.84375,
+            0.09375,
+            0.84375,
+            0.84375,
+            0.09375,
+            0.84375,
+            0.84375,
+            0.84375,
+            0.0625,
+            0.84375,
+            0.84375,
+            0.84375,
+            0.84375,
+            0.84375,
+            0.84375,
+            0.84375,
+            0.84375
+          ]
+        }
+      },
+      "degree_variance": {
+        "score": 0.640012168199732,
+        "detail": {
+          "degree_variance": 3.08984375,
+          "mean_degree": 2.8125,
+          "complexity_factor": 0.8333333333333334,
+          "degrees": [
+            7,
+            6,
+            4,
+            4,
+            4,
+            5,
+            7,
+            5,
+            2,
+            3,
+            3,
+            1,
+            2,
+            1,
+            1,
+            4,
+            1,
+            3,
+            2,
+            1,
+            1,
+            2,
+            2,
+            1,
+            2,
+            2,
+            4,
+            4,
+            2,
+            1,
+            2,
+            1
+          ]
+        }
+      },
+      "door_distribution": {
+        "score": 0.4934895833333333,
+        "detail": {
+          "door_variance": 3.08984375,
+          "mean_doors": 2.8125,
+          "door_counts": [
+            1,
+            5,
+            7,
+            1,
+            4,
+            1,
+            2,
+            3,
+            5,
+            2,
+            1,
+            3,
+            1,
+            2,
+            4,
+            6,
+            2,
+            1,
+            1,
+            2,
+            2,
+            2,
+            4,
+            4,
+            2,
+            1,
+            3,
+            2,
+            7,
+            1,
+            4,
+            4
+          ],
+          "room_count": 5,
+          "door_ratio": 0.5625,
+          "complexity_factor": 0.8333333333333334
+        }
+      },
+      "dead_end_ratio": {
+        "score": 0.775,
+        "detail": {
+          "dead_end_count": 9,
+          "dead_end_ratio": 0.28125,
+          "dead_end_rooms": [
+            "rect_19",
+            "rect_16",
+            "rect_10",
+            "rect_20",
+            "rect_31",
+            "rect_23",
+            "rect_14",
+            "rect_13",
+            "rect_29"
+          ],
+          "total_rooms": 32,
+          "all_rooms": [
+            "rect_19",
+            "rect_0",
+            "rect_17",
+            "rect_16",
+            "rect_3",
+            "rect_8",
+            "rect_27",
+            "rect_10",
+            "rect_20",
+            "rect_31",
+            "rect_25",
+            "rect_23",
+            "rect_11",
+            "rect_2",
+            "rect_30",
+            "rect_22",
+            "rect_14",
+            "rect_13",
+            "rect_21",
+            "rect_15",
+            "rect_4",
+            "rect_6",
+            "rect_24",
+            "rect_5",
+            "rect_7",
+            "rect_18",
+            "rect_9",
+            "rect_12",
+            "rect_29",
+            "rect_26",
+            "rect_1",
+            "rect_28"
+          ]
+        }
+      },
+      "key_path_length": {
+        "score": 0.6,
+        "detail": {
+          "key_path_length": 2,
+          "entrance": "rect_8",
+          "exit": "rect_9"
+        }
+      },
+      "loop_ratio": {
+        "score": 0.9392092192506838,
+        "detail": {
+          "loop_ratio": 0.40625,
+          "loop_count": 13,
+          "total_nodes": 32,
+          "loops": [
+            [
+              "rect_4",
+              "rect_30",
+              "rect_9",
+              "rect_4"
+            ],
+            [
+              "rect_9",
+              "rect_5",
+              "rect_22",
+              "rect_9"
+            ],
+            [
+              "rect_5",
+              "rect_8",
+              "rect_21",
+              "rect_5"
+            ],
+            [
+              "rect_8",
+              "rect_12",
+              "rect_25",
+              "rect_8"
+            ],
+            [
+              "rect_1",
+              "rect_27",
+              "rect_26",
+              "rect_1"
+            ],
+            [
+              "rect_0",
+              "rect_28",
+              "rect_4",
+              "rect_30",
+              "rect_9",
+              "rect_5",
+              "rect_2",
+              "rect_15",
+              "rect_1",
+              "rect_0"
+            ],
+            [
+              "rect_2",
+              "rect_15",
+              "rect_17",
+              "rect_2"
+            ],
+            [
+              "rect_4",
+              "rect_30",
+              "rect_9",
+              "rect_5",
+              "rect_2",
+              "rect_15",
+              "rect_17",
+              "rect_4"
+            ],
+            [
+              "rect_4",
+              "rect_30",
+              "rect_9",
+              "rect_5",
+              "rect_2",
+              "rect_15",
+              "rect_4"
+            ],
+            [
+              "rect_5",
+              "rect_2",
+              "rect_18",
+              "rect_5"
+            ],
+            [
+              "rect_4",
+              "rect_30",
+              "rect_9",
+              "rect_5",
+              "rect_2",
+              "rect_4"
+            ],
+            [
+              "rect_0",
+              "rect_28",
+              "rect_4",
+              "rect_0"
+            ],
+            [
+              "rect_11",
+              "rect_7",
+              "rect_24",
+              "rect_11"
+            ]
+          ],
+          "all_rooms": [
+            "rect_19",
+            "rect_0",
+            "rect_17",
+            "rect_16",
+            "rect_3",
+            "rect_8",
+            "rect_27",
+            "rect_10",
+            "rect_20",
+            "rect_31",
+            "rect_25",
+            "rect_23",
+            "rect_11",
+            "rect_2",
+            "rect_30",
+            "rect_22",
+            "rect_14",
+            "rect_13",
+            "rect_21",
+            "rect_15",
+            "rect_4",
+            "rect_6",
+            "rect_24",
+            "rect_5",
+            "rect_7",
+            "rect_18",
+            "rect_9",
+            "rect_12",
+            "rect_29",
+            "rect_26",
+            "rect_1",
+            "rect_28"
+          ]
+        }
+      },
+      "path_diversity": {
+        "score": 0.835270211411272,
+        "detail": {
+          "avg_path_diversity": 1.4,
+          "path_counts": [
+            2,
+            2,
+            1,
+            1,
+            1,
+            1,
+            2,
+            1,
+            2,
+            1
+          ]
+        }
+      }
+    },
+    "recommendations": []
+  },
+  "blackspear_maze.json": {
+    "overall_score": 0.6538695793634889,
+    "grade": "B",
+    "detailed_metrics": {
+      "accessibility": {
+        "score": 0.5300925925925926,
+        "detail": {
+          "avg_accessibility": 0.19722222222222222,
+          "complexity_factor": 1.0,
+          "detail": [
+            0.2833333333333333,
+            0.2833333333333333,
+            0.06666666666666667,
+            0.25,
+            0.11666666666666667,
+            0.2833333333333333,
+            0.2833333333333333,
+            0.2833333333333333,
+            0.2833333333333333,
+            0.06666666666666667,
+            0.25,
+            0.25,
+            0.25,
+            0.18333333333333332,
+            0.18333333333333332,
+            0.18333333333333332,
+            0.18333333333333332,
+            0.016666666666666666,
+            0.03333333333333333,
+            0.18333333333333332,
+            0.25,
+            0.11666666666666667,
+            0.03333333333333333,
+            0.11666666666666667,
+            0.016666666666666666,
+            0.25,
+            0.11666666666666667,
+            0.2833333333333333,
+            0.2833333333333333,
+            0.2833333333333333,
+            0.2833333333333333,
+            0.2833333333333333,
+            0.2833333333333333,
+            0.06666666666666667,
+            0.2833333333333333,
+            0.2833333333333333,
+            0.06666666666666667,
+            0.25,
+            0.25,
+            0.18333333333333332,
+            0.18333333333333332,
+            0.18333333333333332,
+            0.18333333333333332,
+            0.03333333333333333,
+            0.18333333333333332,
+            0.25,
+            0.18333333333333332,
+            0.25,
+            0.25,
+            0.11666666666666667,
+            0.03333333333333333,
+            0.25,
+            0.11666666666666667,
+            0.11666666666666667,
+            0.25,
+            0.2833333333333333,
+            0.25,
+            0.2833333333333333,
+            0.2833333333333333,
+            0.25
+          ]
+        }
+      },
+      "degree_variance": {
+        "score": 0.8180208038243204,
+        "detail": {
+          "degree_variance": 2.288888888888889,
+          "mean_degree": 2.3333333333333335,
+          "complexity_factor": 0.8333333333333334,
+          "degrees": [
+            4,
+            4,
+            2,
+            8,
+            4,
+            5,
+            6,
+            4,
+            4,
+            2,
+            2,
+            1,
+            4,
+            1,
+            2,
+            2,
+            3,
+            0,
+            1,
+            2,
+            3,
+            1,
+            1,
+            3,
+            0,
+            2,
+            3,
+            1,
+            2,
+            1,
+            2,
+            3,
+            4,
+            1,
+            1,
+            2,
+            1,
+            3,
+            2,
+            3,
+            4,
+            4,
+            2,
+            1,
+            3,
+            1,
+            2,
+            1,
+            1,
+            3,
+            1,
+            1,
+            5,
+            3,
+            2,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        }
+      },
+      "door_distribution": {
+        "score": 0.4353448275862068,
+        "detail": {
+          "door_variance": 2.173602853745541,
+          "mean_doors": 2.413793103448276,
+          "door_counts": [
+            5,
+            2,
+            4,
+            1,
+            2,
+            6,
+            3,
+            4,
+            4,
+            1,
+            2,
+            1,
+            4,
+            2,
+            2,
+            1,
+            3,
+            1,
+            2,
+            4,
+            3,
+            1,
+            2,
+            4,
+            2,
+            4,
+            2,
+            3,
+            1,
+            1,
+            3,
+            1,
+            3,
+            2,
+            2,
+            1,
+            8,
+            1,
+            3,
+            1,
+            1,
+            1,
+            1,
+            5,
+            3,
+            3,
+            3,
+            2,
+            2,
+            1,
+            1,
+            2,
+            1,
+            1,
+            4,
+            2,
+            4,
+            1
+          ],
+          "room_count": 5,
+          "door_ratio": 0.48275862068965514,
+          "complexity_factor": 0.8333333333333334
+        }
+      },
+      "dead_end_ratio": {
+        "score": 0.7241379310344827,
+        "detail": {
+          "dead_end_count": 20,
+          "dead_end_ratio": 0.3448275862068966,
+          "dead_end_rooms": [
+            "rect_19",
+            "rect_56",
+            "rect_43",
+            "rect_16",
+            "rect_8",
+            "rect_27",
+            "rect_57",
+            "rect_20",
+            "rect_11",
+            "rect_36",
+            "rect_48",
+            "rect_45",
+            "rect_58",
+            "rect_33",
+            "rect_55",
+            "rect_47",
+            "rect_29",
+            "rect_51",
+            "rect_50",
+            "rect_34"
+          ],
+          "total_rooms": 58,
+          "all_rooms": [
+            "rect_19",
+            "rect_56",
+            "rect_43",
+            "rect_0",
+            "rect_17",
+            "rect_16",
+            "rect_8",
+            "rect_3",
+            "rect_27",
+            "rect_57",
+            "rect_10",
+            "rect_31",
+            "rect_20",
+            "rect_25",
+            "rect_28",
+            "rect_49",
+            "rect_11",
+            "rect_38",
+            "rect_36",
+            "rect_44",
+            "rect_37",
+            "rect_2",
+            "rect_30",
+            "rect_22",
+            "rect_48",
+            "rect_14",
+            "rect_13",
+            "rect_21",
+            "rect_4",
+            "rect_45",
+            "rect_32",
+            "rect_58",
+            "rect_52",
+            "rect_33",
+            "rect_53",
+            "rect_6",
+            "rect_40",
+            "rect_55",
+            "rect_35",
+            "rect_24",
+            "rect_5",
+            "rect_7",
+            "rect_18",
+            "rect_9",
+            "rect_46",
+            "rect_12",
+            "rect_42",
+            "rect_47",
+            "rect_29",
+            "rect_51",
+            "rect_54",
+            "rect_50",
+            "rect_41",
+            "rect_26",
+            "rect_1",
+            "rect_34",
+            "rect_59",
+            "rect_39"
+          ]
+        }
+      },
+      "key_path_length": {
+        "score": 0.0,
+        "detail": {
+          "key_path_length": null,
+          "entrance": "rect_9",
+          "exit": "rect_26"
+        }
+      },
+      "loop_ratio": {
+        "score": 0.9957811532713912,
+        "detail": {
+          "loop_ratio": 0.3275862068965517,
+          "loop_count": 19,
+          "total_nodes": 58,
+          "loops": [
+            [
+              "rect_49",
+              "rect_52",
+              "rect_22",
+              "rect_49"
+            ],
+            [
+              "rect_52",
+              "rect_22",
+              "rect_26",
+              "rect_25",
+              "rect_52"
+            ],
+            [
+              "rect_52",
+              "rect_22",
+              "rect_26",
+              "rect_25",
+              "rect_53",
+              "rect_52"
+            ],
+            [
+              "rect_26",
+              "rect_25",
+              "rect_53",
+              "rect_26"
+            ],
+            [
+              "rect_52",
+              "rect_22",
+              "rect_26",
+              "rect_52"
+            ],
+            [
+              "rect_21",
+              "rect_7",
+              "rect_54",
+              "rect_21"
+            ],
+            [
+              "rect_10",
+              "rect_38",
+              "rect_37",
+              "rect_10"
+            ],
+            [
+              "rect_21",
+              "rect_10",
+              "rect_59",
+              "rect_21"
+            ],
+            [
+              "rect_0",
+              "rect_28",
+              "rect_1",
+              "rect_0"
+            ],
+            [
+              "rect_2",
+              "rect_30",
+              "rect_3",
+              "rect_2"
+            ],
+            [
+              "rect_2",
+              "rect_30",
+              "rect_3",
+              "rect_5",
+              "rect_32",
+              "rect_31",
+              "rect_2"
+            ],
+            [
+              "rect_32",
+              "rect_31",
+              "rect_4",
+              "rect_32"
+            ],
+            [
+              "rect_2",
+              "rect_30",
+              "rect_3",
+              "rect_5",
+              "rect_32",
+              "rect_31",
+              "rect_4",
+              "rect_2"
+            ],
+            [
+              "rect_5",
+              "rect_32",
+              "rect_35",
+              "rect_5"
+            ],
+            [
+              "rect_0",
+              "rect_28",
+              "rect_1",
+              "rect_2",
+              "rect_0"
+            ],
+            [
+              "rect_40",
+              "rect_12",
+              "rect_39",
+              "rect_40"
+            ],
+            [
+              "rect_41",
+              "rect_13",
+              "rect_40",
+              "rect_41"
+            ],
+            [
+              "rect_14",
+              "rect_41",
+              "rect_42",
+              "rect_14"
+            ],
+            [
+              "rect_17",
+              "rect_44",
+              "rect_46",
+              "rect_17"
+            ]
+          ],
+          "all_rooms": [
+            "rect_19",
+            "rect_56",
+            "rect_43",
+            "rect_0",
+            "rect_17",
+            "rect_16",
+            "rect_8",
+            "rect_3",
+            "rect_27",
+            "rect_57",
+            "rect_10",
+            "rect_31",
+            "rect_20",
+            "rect_25",
+            "rect_28",
+            "rect_49",
+            "rect_11",
+            "rect_38",
+            "rect_36",
+            "rect_44",
+            "rect_37",
+            "rect_2",
+            "rect_30",
+            "rect_22",
+            "rect_48",
+            "rect_14",
+            "rect_13",
+            "rect_21",
+            "rect_4",
+            "rect_45",
+            "rect_32",
+            "rect_58",
+            "rect_52",
+            "rect_33",
+            "rect_53",
+            "rect_6",
+            "rect_40",
+            "rect_55",
+            "rect_35",
+            "rect_24",
+            "rect_5",
+            "rect_7",
+            "rect_18",
+            "rect_9",
+            "rect_46",
+            "rect_12",
+            "rect_42",
+            "rect_47",
+            "rect_29",
+            "rect_51",
+            "rect_54",
+            "rect_50",
+            "rect_41",
+            "rect_26",
+            "rect_1",
+            "rect_34",
+            "rect_59",
+            "rect_39"
+          ]
+        }
+      },
+      "path_diversity": {
+        "score": 0.6065306597126334,
+        "detail": {
+          "avg_path_diversity": 1.0,
+          "path_counts": [
+            1
+          ]
+        }
+      }
+    },
+    "recommendations": [
+      "Add more connections between rooms to improve accessibility"
+    ]
+  }
+}

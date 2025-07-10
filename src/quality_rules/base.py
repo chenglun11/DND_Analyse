@@ -1,9 +1,19 @@
-class BaseQualityRule:
-    name = "base"
-    description = "基础质量评估规则"
+import abc
 
+class BaseQualityRule(abc.ABC):
+    @abc.abstractmethod
     def evaluate(self, dungeon_data):
         """
         输入统一格式地图数据，返回分数（0-1）和详细分析
         """
-        raise NotImplementedError 
+        pass
+
+    @property
+    @abc.abstractmethod
+    def name(self):
+        pass
+
+    @property
+    @abc.abstractmethod
+    def description(self):
+        pass 

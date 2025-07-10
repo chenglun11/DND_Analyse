@@ -37,15 +37,30 @@ class DungeonQualityAssessor:
 
     def _load_rules(self) -> List:
         rules = []
-        pkg_prefix = 'quality_rules'
-        for _, modname, _ in pkgutil.iter_modules([str(RULES_PATH)]):
-            if modname == 'base':
-                continue
-            module = importlib.import_module(f'{pkg_prefix}.{modname}')
-            for attr in dir(module):
-                obj = getattr(module, attr)
-                if isinstance(obj, type) and hasattr(obj, 'evaluate') and hasattr(obj, 'name') and obj.name != 'base':
-                    rules.append(obj())
+        from .quality_rules.base import BaseQualityRule
+        from .quality_rules.accessibility import AccessibilityRule
+        from .quality_rules.degree_variance import DegreeVarianceRule
+        from .quality_rules.door_distribution import DoorDistributionRule
+        from .quality_rules.dead_end_ratio import DeadEndRatioRule
+        from .quality_rules.key_path_length import KeyPathLengthRule
+        from .quality_rules.loop_ratio import LoopRatioRule
+        from .quality_rules.path_diversity import PathDiversityRule
+        
+        # 直接实例化所有具体规则类
+        rule_classes = [
+            AccessibilityRule,
+            DegreeVarianceRule,
+            DoorDistributionRule,
+            DeadEndRatioRule,
+            KeyPathLengthRule,
+            LoopRatioRule,
+            PathDiversityRule
+        ]
+        
+        for rule_class in rule_classes:
+            if issubclass(rule_class, BaseQualityRule) and rule_class is not BaseQualityRule:
+                rules.append(rule_class())
+        
         logger.info(f"Loaded quality assessment rules: {[r.name for r in rules]}")
         return rules
 
@@ -63,8 +78,12 @@ class DungeonQualityAssessor:
         total_weight = 0.0
         details = {}
         for rule in self.rules:
-            score, detail = rule.evaluate(dungeon_data)
-            results[rule.name] = score
+            try:
+                score, detail = rule.evaluate(dungeon_data)
+            except Exception as e:
+                score = 0.0
+                detail = {'reason': 'rule exception', 'exception': str(e)}
+            results[rule.name] = {'score': score, 'detail': detail}
             details[rule.name] = detail
             weight = self.rule_weights.get(rule.name, 0.0)
             weighted_sum += score * weight
@@ -92,18 +111,20 @@ class DungeonQualityAssessor:
         else:
             return "F"
 
-    def _get_recommendations(self, scores: Dict[str, float]) -> List[str]:
+    def _get_recommendations(self, scores: Dict[str, Any]) -> List[str]:
         recs = []
-        if scores.get('accessibility', 1) < 0.6:
+        # 从新的 scores 结构中提取分数
+        accessibility_score = scores.get('accessibility', {}).get('score', 1.0)
+        degree_variance_score = scores.get('degree_variance', {}).get('score', 1.0)
+        path_diversity_score = scores.get('path_diversity', {}).get('score', 1.0)
+        loop_ratio_score = scores.get('loop_ratio', {}).get('score', 1.0)
+        
+        if accessibility_score < 0.6:
             recs.append("Add more connections between rooms to improve accessibility")
-        if scores.get('degree_variance', 1) < 0.6:
+        if degree_variance_score < 0.6:
             recs.append("Balance the number of connections between rooms to avoid rooms with too many or too few connections")
-        if scores.get('path_diversity', 1) < 0.6:
+        if path_diversity_score < 0.6:
             recs.append("Add more path choices to provide more ways to reach the target")
-        if scores.get('loop_ratio', 1) < 0.6:
+        if loop_ratio_score < 0.6:
             recs.append("Add more loop structures to improve the exploration of the map")
-        if scores.get('door_distribution', 1) < 0.6:
-            recs.append("Optimize the distribution of doors to ensure the rationality of room entrances")
-        if not recs:
-            recs.append("The map design is good, no major improvements are needed")
         return recs 

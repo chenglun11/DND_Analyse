@@ -10,14 +10,13 @@ from pathlib import Path
 from typing import List, Optional, Dict, Any
 import json
 import logging
-import click
 
 # Add project root to path to allow running as a script
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from adapter_manager import AdapterManager
-from visualizer import visualize_dungeon, visualize_dungeon_outline
-from quality_assessor import DungeonQualityAssessor
+from src.adapter_manager import AdapterManager
+from src.visualizer import visualize_dungeon, visualize_dungeon_outline
+from src.quality_assessor import DungeonQualityAssessor
 
 # 设置日志
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -205,70 +204,14 @@ def assess_quality(input_file: str, enable_spatial_inference: bool = True, adjac
 def batch_assess(input_dir: str, output_file: str, enable_spatial_inference: bool = True, adjacency_threshold: float = 1.0):
     """批量评估地图质量"""
     try:
-        from batch_assess import batch_assess_quality
+        from src.batch_assess import batch_assess_quality
         batch_assess_quality(input_dir, output_file, enable_spatial_inference, adjacency_threshold)
         logger.info(f"Batch assessment completed: {output_file}")
     except Exception as e:
         logger.error(f"Batch assessment failed: {e}")
         sys.exit(1)
 
-@click.command(help="Assess the quality of a unified dungeon JSON file")
-@click.argument('input_file', type=click.Path(exists=True))
-@click.option('--report-file', '-r', type=click.Path(), help="Save the detailed assessment report path")
-@click.option('--infer-connections', '-i', is_flag=True, default=False, help="Enable spatial inference to complete connections before assessment")
-def assess(input_file: str, report_file: Optional[str], infer_connections: bool):
-    """Assess the quality of a unified dungeon JSON file."""
-    try:
-        with open(input_file, 'r', encoding='utf-8') as f:
-            dungeon_data = json.load(f)
-
-        if infer_connections:
-            logger.info("Enable spatial inference to complete connections...")
-            # 动态导入以避免循环依赖
-            from src.spatial_inference import infer_connections_from_geometry
-            
-            if dungeon_data.get('levels'):
-                level = dungeon_data['levels'][0]
-                all_nodes = level.get('rooms', []) + level.get('corridors', [])
-                
-                if not all_nodes:
-                    logger.warning("No rooms or corridors found, cannot perform spatial inference.")
-                    return
-
-                inferred_connections = infer_connections_from_geometry(all_nodes, connection_threshold=2.0)
-                
-                existing_connections_count = len(level.get('connections', []))
-                level['connections'] = inferred_connections
-                logger.info(f"Spatial inference completed. Replaced {existing_connections_count} existing connections with {len(inferred_connections)} new connections.")
-
-        assessor = DungeonQualityAssessor()
-        report = assessor.assess_quality(dungeon_data)
-        
-        # 打印报告到控制台
-        print("\n" + "="*50)
-        print("Dungeon Map Quality Assessment Report")
-        print("="*50 + "\n")
-        print(f"Overall Score: {report['overall_score']:.3f}")
-        print(f"Grade: {report['grade']}")
-        print("\nDetailed Metrics:")
-        for rule, score in report['scores'].items():
-            print(f"  {rule}: {score:.3f}")
-        
-        print("\nImprovements:")
-        for suggestion in report['suggestions']:
-            print(f"  - {suggestion}")
-        print("\n" + "="*50 + "\n")
-
-        if report_file:
-            with open(report_file, 'w', encoding='utf-8') as f:
-                json.dump(report, f, indent=2, ensure_ascii=False)
-            logger.info(f"Detailed report saved to: {report_file}")
-
-    except json.JSONDecodeError:
-        logger.error(f"Error: cannot parse JSON file {input_file}")
-    except Exception as e:
-        logger.error(f"Unknown error during assessment: {e}", exc_info=True)
-
+# ======= 移除 click assess 命令，全部用 argparse 实现 =======
 def main():
     parser = argparse.ArgumentParser(
         description="DnD Dungeon JSON Adapter - Convert various dungeon formats to unified format",
@@ -398,26 +341,41 @@ def main():
         )
 
     elif args.command == 'assess':
-        # 使用现有的assess_quality函数，但添加infer_connections支持
         try:
             with open(args.input, 'r', encoding='utf-8') as f:
                 dungeon_data = json.load(f)
 
             if args.infer_connections:
                 logger.info("Enable spatial inference to complete connections...")
-                from spatial_inference import infer_connections_from_geometry
-                
+                from src.spatial_inference import infer_connections_from_geometry
                 if dungeon_data.get('levels'):
                     level = dungeon_data['levels'][0]
                     all_nodes = level.get('rooms', []) + level.get('corridors', [])
-                    
                     if all_nodes:
                         inferred_connections = infer_connections_from_geometry(all_nodes, connection_threshold=2.0)
                         existing_connections_count = len(level.get('connections', []))
                         level['connections'] = inferred_connections
                         logger.info(f"Spatial inference completed. Replaced {existing_connections_count} existing connections with {len(inferred_connections)} new connections.")
 
-            assess_quality(args.input, not args.no_spatial_inference, args.adjacency_threshold)
+            assessor = DungeonQualityAssessor()
+            report = assessor.assess_quality(dungeon_data)
+            print("\n" + "="*50)
+            print("Dungeon Map Quality Assessment Report")
+            print("="*50 + "\n")
+            print(f"Overall Score: {report['overall_score']:.3f}")
+            print(f"Grade: {report['grade']}")
+            print("\nDetailed Metrics:")
+            for rule_name, rule_result in report['scores'].items():
+                score = rule_result.get('score', 0.0)
+                print(f"  {rule_name}: {score:.3f}")
+            print("\nImprovements:")
+            for rec in report.get('recommendations', []):
+                print(f"  - {rec}")
+            print("\n" + "="*50 + "\n")
+            if args.report_file:
+                with open(args.report_file, 'w', encoding='utf-8') as f:
+                    json.dump(report, f, indent=2, ensure_ascii=False)
+                logger.info(f"Detailed report saved to: {args.report_file}")
         except Exception as e:
             logger.error(f"Error during assessment: {e}")
             sys.exit(1)

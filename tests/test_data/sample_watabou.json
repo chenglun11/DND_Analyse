@@ -1,0 +1,45 @@
+{
+  "title": "Test Watabou Dungeon",
+  "rects": [
+    {
+      "x": 10,
+      "y": 10,
+      "w": 8,
+      "h": 6,
+      "name": "Entrance Hall"
+    },
+    {
+      "x": 25,
+      "y": 15,
+      "w": 6,
+      "h": 8,
+      "name": "Main Chamber"
+    },
+    {
+      "x": 40,
+      "y": 20,
+      "w": 5,
+      "h": 5,
+      "name": "Treasure Room"
+    }
+  ],
+  "doors": [
+    {
+      "x": 18,
+      "y": 13,
+      "connects": ["Entrance Hall", "Main Chamber"]
+    },
+    {
+      "x": 31,
+      "y": 19,
+      "connects": ["Main Chamber", "Treasure Room"]
+    }
+  ],
+  "notes": [
+    {
+      "x": 12,
+      "y": 12,
+      "text": "Ancient runes"
+    }
+  ]
+} 

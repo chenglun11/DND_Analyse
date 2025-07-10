@@ -10,7 +10,7 @@ import logging
 from pathlib import Path
 from typing import Dict, List, Any
 
-from quality_assessor import DungeonQualityAssessor
+from .quality_assessor import DungeonQualityAssessor
 
 # 设置日志
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -116,7 +116,14 @@ def generate_summary_report(results: Dict[str, Any]) -> Dict[str, Any]:
                'loop_ratio', 'door_distribution']
     
     for metric in metrics:
-        values = [r['detailed_metrics'].get(metric, 0.0) for r in valid_results.values()]
+        values = []
+        for r in valid_results.values():
+            metric_result = r['detailed_metrics'].get(metric, {})
+            if isinstance(metric_result, dict):
+                score = metric_result.get('score', 0.0)
+            else:
+                score = metric_result
+            values.append(score)
         metric_stats[metric] = {
             'average': sum(values) / len(values),
             'max': max(values),
@@ -187,6 +194,22 @@ def print_summary_report(report: Dict[str, Any]) -> None:
         print(f"  {metric_name}: 平均 {stats['average']:.3f}, 最高 {stats['max']:.3f}, 最低 {stats['min']:.3f}")
     
     print("="*60)
+
+def batch_assess_quality(input_dir: str, output_file: str, enable_spatial_inference: bool = True, adjacency_threshold: float = 1.0):
+    """批量评估地图质量 - CLI 调用的接口函数"""
+    try:
+        results = assess_all_maps(input_dir, os.path.dirname(output_file))
+        
+        # 保存到指定的输出文件
+        with open(output_file, 'w', encoding='utf-8') as f:
+            json.dump(results, f, ensure_ascii=False, indent=2)
+        
+        logger.info(f"批量评估报告已保存到: {output_file}")
+        return results
+        
+    except Exception as e:
+        logger.error(f"批量评估失败: {e}")
+        raise
 
 def main():
     """主函数"""
