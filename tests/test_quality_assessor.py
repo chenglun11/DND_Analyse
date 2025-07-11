@@ -186,10 +186,16 @@ class TestDungeonQualityAssessor:
             'degree_variance': {'score': 0.4},
             'path_diversity': {'score': 0.2},
             'loop_ratio': {'score': 0.5},
-            'door_distribution': {'score': 0.3}
+            'door_distribution': {'score': 0.3},
+            'treasure_monster_distribution': {'score': 0.4},
+            'dead_end_ratio': {'score': 0.3},
+            'aesthetic_balance': {'score': 0.5}
         }
         
-        recommendations = assessor._get_recommendations(low_scores)
+        # 计算分类分数
+        category_scores = assessor._calculate_category_scores(low_scores)
+        
+        recommendations = assessor._get_recommendations(low_scores, category_scores)
         assert len(recommendations) > 0
         assert all(isinstance(rec, str) for rec in recommendations)
 

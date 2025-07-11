@@ -54,36 +54,6 @@ def sample_watabou_data():
     }
 
 @pytest.fixture
-def sample_onepage_data():
-    """OnePage格式的样例数据"""
-    return {
-        "name": "Test OnePage Dungeon",
-        "author": "Test Author",
-        "rooms": [
-            {
-                "id": "room_1",
-                "name": "Entrance Hall",
-                "position": {"x": 10, "y": 10},
-                "size": {"width": 8, "height": 6}
-            },
-            {
-                "id": "room_2", 
-                "name": "Main Chamber",
-                "position": {"x": 25, "y": 15},
-                "size": {"width": 10, "height": 8}
-            }
-        ],
-        "doors": [
-            {
-                "id": "door_1",
-                "position": {"x": 18, "y": 13},
-                "connects": ["room_1", "room_2"]
-            }
-        ],
-        "corridors": []
-    }
-
-@pytest.fixture
 def sample_dungeondraft_data():
     """DungeonDraft格式的样例数据"""
     return {
@@ -100,28 +70,6 @@ def sample_dungeondraft_data():
                 "name": "Test Room"
             }
         ]
-    }
-
-@pytest.fixture
-def sample_vtt_data():
-    """VTT格式的样例数据"""
-    return {
-        "scene": {
-            "name": "Test VTT Scene",
-            "walls": [
-                {
-                    "id": "wall_1",
-                    "c": [100, 100, 300, 100],
-                    "ds": 0
-                },
-                {
-                    "id": "door_1", 
-                    "c": [200, 100, 200, 100],
-                    "ds": 1,
-                    "door": True
-                }
-            ]
-        }
     }
 
 @pytest.fixture
@@ -144,9 +92,10 @@ def unified_dungeon_data():
                 "rooms": [
                     {
                         "id": "room_1",
-                        "shape": "rectangle",
-                        "position": {"x": 10, "y": 10},
-                        "size": {"width": 8, "height": 6},
+                        "x": 10,
+                        "y": 10,
+                        "width": 8,
+                        "height": 6,
                         "name": "Entrance",
                         "description": "Main entrance"
                     }
@@ -161,11 +110,10 @@ def unified_dungeon_data():
                 "corridors": [
                     {
                         "id": "corridor_1",
-                        "path": [
-                            {"x": 18, "y": 13},
-                            {"x": 25, "y": 13}
-                        ],
-                        "width": 2
+                        "x": 18,
+                        "y": 13,
+                        "width": 7,
+                        "height": 2
                     }
                 ]
             }

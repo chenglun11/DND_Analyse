@@ -7,7 +7,7 @@ import json
 import tempfile
 import os
 from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch, MagicMock, Mock
 from src.cli import (
     load_json_file, 
     save_json_file, 
@@ -114,12 +114,31 @@ class TestCLICommands:
         mock_manager = MagicMock()
         mock_manager.convert.return_value = {
             "header": {"schemaName": "dnd-dungeon-unified"},
-            "levels": []
+            "levels": [
+                {
+                    "id": "level_1",
+                    "name": "Main Level",
+                    "map": {"width": 50, "height": 50},
+                    "rooms": [
+                        {
+                            "id": "room_1",
+                            "x": 10,
+                            "y": 10,
+                            "width": 8,
+                            "height": 6,
+                            "name": "Test Room"
+                        }
+                    ],
+                    "corridors": [],
+                    "doors": [],
+                    "connections": []
+                }
+            ]
         }
         mock_adapter_manager_class.return_value = mock_manager
         
         # 模拟可视化函数
-        with patch('src.cli.visualize_dungeon_outline') as mock_visualize:
+        with patch('src.visualizer.visualize_dungeon') as mock_visualize:
             mock_visualize.return_value = True
             
             # 创建输入文件
@@ -247,7 +266,7 @@ class TestCLICommands:
         output_file = os.path.join(temp_dir, "test.png")
         
         # 模拟可视化函数
-        with patch('src.cli.visualize_dungeon_outline') as mock_visualize:
+        with patch('src.visualizer.visualize_dungeon') as mock_visualize:
             mock_visualize.return_value = True
             
             # 测试可视化
@@ -378,15 +397,34 @@ class TestCLIArgumentParsing:
     @patch('sys.argv', ['cli.py', 'assess', 'test.json'])
     def test_assess_command_parsing(self, mock_adapter_manager_class):
         """测试assess命令参数解析"""
-        with patch('src.cli.assess_quality') as mock_assess:
-            mock_assess.return_value = True
-            
-            # 模拟main函数
-            from src.cli import main
-            main()
-            
-            # 验证评估函数被调用
-            mock_assess.assert_called_once()
+        # 创建临时测试文件
+        import tempfile
+        import json
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+            json.dump({"header": {"name": "Test"}, "levels": []}, f)
+            test_file = f.name
+        
+        try:
+            with patch('sys.argv', ['cli.py', 'assess', test_file]):
+                with patch('src.cli.DungeonQualityAssessor') as mock_assessor_class:
+                    mock_assessor = Mock()
+                    mock_assessor.assess_quality.return_value = {
+                        "scores": {"test": {"score": 0.8}},
+                        "overall_score": 0.8,
+                        "grade": "A",
+                        "recommendations": []
+                    }
+                    mock_assessor_class.return_value = mock_assessor
+                    
+                    # 模拟main函数
+                    from src.cli import main
+                    main()
+                    
+                    # 验证评估器被调用
+                    mock_assessor.assess_quality.assert_called_once()
+        finally:
+            # 清理临时文件
+            os.unlink(test_file)
 
 
 class TestCLIErrorHandling:
@@ -403,10 +441,10 @@ class TestCLIErrorHandling:
     def test_main_invalid_command(self):
         """测试无效命令的处理"""
         with patch('sys.argv', ['cli.py', 'invalid_command']):
-            with patch('argparse.ArgumentParser.print_help') as mock_help:
-                from src.cli import main
+            from src.cli import main
+            with pytest.raises(SystemExit) as excinfo:
                 main()
-                mock_help.assert_called_once()
+            assert excinfo.value.code == 2
 
     @patch('src.cli.AdapterManager')
     def test_convert_with_file_not_found(self, mock_adapter_manager_class):

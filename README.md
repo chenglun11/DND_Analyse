@@ -17,7 +17,6 @@ src/
 └── adapters/           # 适配器插件目录
     ├── __init__.py
     ├── base.py         # 适配器基类（接口定义）
-    ├── onepage_adapter.py
     ├── watabou_adapter.py
     ├── dungeondraft_adapter.py
     └── vtt_adapter.py
@@ -52,7 +51,7 @@ python src/cli.py visualize output/test_watabou_example.json
 
 ## 功能特性
 
-- 🔄 **多格式支持**: 支持 One Page Dungeon、Watabou、DungeonDraft、Foundry VTT、Roll20 等多种格式
+- 🔄 **多格式支持**: 支持 Watabou、DungeonDraft、Foundry VTT、Roll20 等多种格式
 - 🤖 **自动格式检测**: 智能识别输入文件的格式类型
 - 📊 **统一输出格式**: 所有转换结果都采用标准化的 JSON 格式
 - 🛠️ **命令行工具**: 提供便捷的命令行界面
@@ -72,7 +71,6 @@ python src/cli.py visualize output/test_watabou_example.json
 
 | 格式名称 | 描述 | 检测特征 |
 |---------|------|----------|
-| `onepage_dungeon` | One Page Dungeon 生成器 | 包含 `rooms`, `doors`, `corridors` 字段 |
 | `watabou_dungeon` | Watabou 地牢生成器 | 包含 `rects`, `doors`, `title` 字段 |
 | `dungeondraft` | DungeonDraft 地图 | 包含 `version` 和 `elements` 字段 |
 | `vtt` | 通用VTT格式（Foundry VTT、Roll20等） | 包含 `scene.walls` 或 `map.tokens` 结构 |
@@ -217,7 +215,6 @@ dungeon-adapter/
 │   └── adapters/         # 适配器插件目录
 │       ├── __init__.py
 │       ├── base.py       # 适配器基类
-│       ├── onepage_adapter.py
 │       ├── watabou_adapter.py
 │       ├── dungeondraft_adapter.py
 │       └── vtt_adapter.py

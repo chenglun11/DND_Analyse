@@ -144,52 +144,6 @@ class TestWatabouAdapter:
         assert result is not None
 
 
-# ======= 注释掉已废弃适配器相关测试 =======
-# @pytest.mark.unit
-# class TestOnePageAdapter:
-#     """测试OnePage适配器"""
-
-#     def test_format_name(self):
-#         """测试格式名称"""
-#         from src.adapters.onepage_adapter import OnePageAdapter
-#         adapter = OnePageAdapter()
-#         assert adapter.format_name == "onepage_dungeon"
-
-#     def test_detect_success(self, sample_onepage_data):
-#         """测试成功检测OnePage格式"""
-#         from src.adapters.onepage_adapter import OnePageAdapter
-#         adapter = OnePageAdapter()
-#         assert adapter.detect(sample_onepage_data) is True
-
-#     def test_detect_failure(self):
-#         """测试检测OnePage格式失败"""
-#         from src.adapters.onepage_adapter import OnePageAdapter
-#         adapter = OnePageAdapter()
-#         test_data = {"not_onepage": True}
-#         assert adapter.detect(test_data) is False
-
-#     def test_convert_success(self, sample_onepage_data):
-#         """测试成功转换OnePage格式"""
-#         from src.adapters.onepage_adapter import OnePageAdapter
-#         adapter = OnePageAdapter()
-#         result = adapter.convert(sample_onepage_data)
-        
-#         assert result is not None
-#         assert isinstance(result, UnifiedDungeonFormat)
-#         assert result.name == "Test OnePage Dungeon"
-#         assert result.author == "Test Author"
-
-#     def test_convert_with_empty_data(self):
-#         """测试转换空数据"""
-#         from src.adapters.onepage_adapter import OnePageAdapter
-#         adapter = OnePageAdapter()
-#         empty_data = {"name": "Empty", "rooms": [], "doors": [], "corridors": []}
-#         result = adapter.convert(empty_data)
-        
-#         assert result is not None
-#         assert isinstance(result, UnifiedDungeonFormat)
-
-
 @pytest.mark.unit
 class TestDungeonDraftAdapter:
     """测试DungeonDraft适配器"""
@@ -222,40 +176,6 @@ class TestDungeonDraftAdapter:
         assert result is not None
         assert isinstance(result, UnifiedDungeonFormat)
         assert result.name == "Test DungeonDraft Map"
-
-
-# @pytest.mark.unit
-# class TestVTTAdapter:
-#     """测试VTT适配器"""
-
-#     def test_format_name(self):
-#         """测试格式名称"""
-#         from src.adapters.vtt_adapter import VTTAdapter
-#         adapter = VTTAdapter()
-#         assert adapter.format_name == "vtt"
-
-#     def test_detect_success(self, sample_vtt_data):
-#         """测试成功检测VTT格式"""
-#         from src.adapters.vtt_adapter import VTTAdapter
-#         adapter = VTTAdapter()
-#         assert adapter.detect(sample_vtt_data) is True
-
-#     def test_detect_failure(self):
-#         """测试检测VTT格式失败"""
-#         from src.adapters.vtt_adapter import VTTAdapter
-#         adapter = VTTAdapter()
-#         test_data = {"not_vtt": True}
-#         assert adapter.detect(test_data) is False
-
-#     def test_convert_success(self, sample_vtt_data):
-#         """测试成功转换VTT格式"""
-#         from src.adapters.vtt_adapter import VTTAdapter
-#         adapter = VTTAdapter()
-#         result = adapter.convert(sample_vtt_data)
-        
-#         assert result is not None
-#         assert isinstance(result, UnifiedDungeonFormat)
-#         assert result.name == "Test VTT Scene"
 
 
 @pytest.mark.unit

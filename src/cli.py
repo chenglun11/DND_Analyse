@@ -385,7 +385,10 @@ def main():
                         level['connections'] = inferred_connections
                         logger.info(f"Spatial inference completed. Replaced {existing_connections_count} existing connections with {len(inferred_connections)} new connections.")
 
-            assessor = DungeonQualityAssessor()
+            assessor = DungeonQualityAssessor(
+                enable_spatial_inference=not args.no_spatial_inference,
+                adjacency_threshold=args.adjacency_threshold
+            )
             report = assessor.assess_quality(dungeon_data)
             print("\n" + "="*50)
             print("Dungeon Map Quality Assessment Report")

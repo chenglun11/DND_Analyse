@@ -136,6 +136,7 @@ class DungeonVisualizer:
                 return None
         else:
             for level in levels:
+                # 处理rooms
                 rooms = level.get('rooms', [])
                 for room in rooms:
                     if 'position' in room and 'size' in room:
@@ -150,6 +151,8 @@ class DungeonVisualizer:
                         height = room.get('height', 1)
                     x_coords.extend([x, x + width])
                     y_coords.extend([y, y + height])
+                
+                # 处理corridors
                 corridors = level.get('corridors', [])
                 for corridor in corridors:
                     if 'position' in corridor and 'size' in corridor:
@@ -164,6 +167,7 @@ class DungeonVisualizer:
                         height = corridor.get('height', 1)
                     x_coords.extend([x, x + width])
                     y_coords.extend([y, y + height])
+        
         if not x_coords or not y_coords:
             return None
         return {'x_min': min(x_coords), 'x_max': max(x_coords), 'y_min': min(y_coords), 'y_max': max(y_coords)}
