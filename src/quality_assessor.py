@@ -1,6 +1,6 @@
 """
-地牢地图质量评估框架
-使用多种算法评估地牢地图的设计质量
+Dungeon map quality assessment framework
+Uses multiple algorithms to evaluate dungeon map design quality
 """
 
 import logging
@@ -21,18 +21,34 @@ sys.path.append(os.path.dirname(__file__))
 RULES_PATH = Path(__file__).parent / "quality_rules"
 
 class DungeonQualityAssessor:
-    """地牢地图质量评估器（插件式规则加载 + 空间推断）"""
+    """Dungeon map quality assessor (plugin rule loading + spatial inference)"""
     def __init__(self, rule_weights: Optional[Dict[str, float]] = None, enable_spatial_inference: bool = True, adjacency_threshold: float = 1.0):
         self.rules = self._load_rules()
         self.enable_spatial_inference = enable_spatial_inference
         self.adjacency_threshold = adjacency_threshold
-        # 默认权重
+        
+        # Categorized rule weights with balanced distribution
         self.rule_weights = rule_weights or {
-            'accessibility': 0.25,
-            'degree_variance': 0.20,
-            'path_diversity': 0.20,
-            'loop_ratio': 0.15,
-            'door_distribution': 0.20
+            # Structural rules (40% total)
+            'accessibility': 0.15,
+            'degree_variance': 0.10,
+            'door_distribution': 0.10,
+            'loop_ratio': 0.05,
+            
+            # Gameplay rules (40% total)
+            'path_diversity': 0.15,
+            'treasure_monster_distribution': 0.20,
+            'dead_end_ratio': 0.05,
+            
+            # Aesthetic rules (20% total)
+            'aesthetic_balance': 0.20
+        }
+        
+        # Rule categories for better organization
+        self.rule_categories = {
+            'structural': ['accessibility', 'degree_variance', 'door_distribution', 'loop_ratio'],
+            'gameplay': ['path_diversity', 'treasure_monster_distribution', 'dead_end_ratio'],
+            'aesthetic': ['aesthetic_balance']
         }
 
     def _load_rules(self) -> List:
@@ -45,8 +61,10 @@ class DungeonQualityAssessor:
         from .quality_rules.key_path_length import KeyPathLengthRule
         from .quality_rules.loop_ratio import LoopRatioRule
         from .quality_rules.path_diversity import PathDiversityRule
+        from .quality_rules.treasure_monster_distribution import TreasureMonsterDistributionRule
+        from .quality_rules.aesthetic_balance import AestheticBalanceRule
         
-        # 直接实例化所有具体规则类
+        # Direct instantiation of all specific rule classes
         rule_classes = [
             AccessibilityRule,
             DegreeVarianceRule,
@@ -54,7 +72,9 @@ class DungeonQualityAssessor:
             DeadEndRatioRule,
             KeyPathLengthRule,
             LoopRatioRule,
-            PathDiversityRule
+            PathDiversityRule,
+            TreasureMonsterDistributionRule,
+            AestheticBalanceRule
         ]
         
         for rule_class in rule_classes:
@@ -65,8 +85,8 @@ class DungeonQualityAssessor:
         return rules
 
     def assess_quality(self, dungeon_data: Dict[str, Any]) -> Dict[str, Any]:
-        """评估地牢地图质量，返回各项分数和聚合结果"""
-        # 预处理：如果启用空间推断且没有连接信息，则自动补全
+        """Assess dungeon map quality, return scores and aggregated results"""
+        # Preprocessing: if spatial inference is enabled and no connection info, auto-complete
         if self.enable_spatial_inference:
             enhanced_data = auto_infer_connections(dungeon_data, self.adjacency_threshold)
             if enhanced_data != dungeon_data:
@@ -77,6 +97,8 @@ class DungeonQualityAssessor:
         weighted_sum = 0.0
         total_weight = 0.0
         details = {}
+        
+        # Calculate scores for each rule
         for rule in self.rules:
             try:
                 score, detail = rule.evaluate(dungeon_data)
@@ -88,16 +110,40 @@ class DungeonQualityAssessor:
             weight = self.rule_weights.get(rule.name, 0.0)
             weighted_sum += score * weight
             total_weight += weight
+        
         overall_score = weighted_sum / total_weight if total_weight > 0 else 0.0
         grade = self._get_grade(overall_score)
+        
+        # Calculate category scores
+        category_scores = self._calculate_category_scores(results)
+        
         return {
             'scores': results,
+            'category_scores': category_scores,
             'overall_score': overall_score,
             'grade': grade,
             'details': details,
-            'recommendations': self._get_recommendations(results),
+            'recommendations': self._get_recommendations(results, category_scores),
             'spatial_inference_used': self.enable_spatial_inference and any(level.get('connections_inferred', False) for level in dungeon_data.get('levels', []))
         }
+
+    def _calculate_category_scores(self, results: Dict[str, Any]) -> Dict[str, float]:
+        """Calculate scores for each category"""
+        category_scores = {}
+        
+        for category, rule_names in self.rule_categories.items():
+            category_weight_sum = 0.0
+            category_score_sum = 0.0
+            
+            for rule_name in rule_names:
+                weight = self.rule_weights.get(rule_name, 0.0)
+                score = results.get(rule_name, {}).get('score', 0.0)
+                category_weight_sum += weight
+                category_score_sum += score * weight
+            
+            category_scores[category] = category_score_sum / category_weight_sum if category_weight_sum > 0 else 0.0
+        
+        return category_scores
 
     def _get_grade(self, score: float) -> str:
         if score >= 0.8:
@@ -111,20 +157,48 @@ class DungeonQualityAssessor:
         else:
             return "F"
 
-    def _get_recommendations(self, scores: Dict[str, Any]) -> List[str]:
+    def _get_recommendations(self, scores: Dict[str, Any], category_scores: Dict[str, float]) -> List[str]:
         recs = []
-        # 从新的 scores 结构中提取分数
+        
+        # Extract scores from new structure
         accessibility_score = scores.get('accessibility', {}).get('score', 1.0)
         degree_variance_score = scores.get('degree_variance', {}).get('score', 1.0)
         path_diversity_score = scores.get('path_diversity', {}).get('score', 1.0)
         loop_ratio_score = scores.get('loop_ratio', {}).get('score', 1.0)
+        treasure_monster_score = scores.get('treasure_monster_distribution', {}).get('score', 1.0)
+        door_distribution_score = scores.get('door_distribution', {}).get('score', 1.0)
+        dead_end_score = scores.get('dead_end_ratio', {}).get('score', 1.0)
+        aesthetic_score = scores.get('aesthetic_balance', {}).get('score', 1.0)
         
+        # Category-based recommendations
+        structural_score = category_scores.get('structural', 1.0)
+        gameplay_score = category_scores.get('gameplay', 1.0)
+        aesthetic_score_category = category_scores.get('aesthetic', 1.0)
+        
+        # Structural recommendations
+        if structural_score < 0.6:
+            recs.append("Structural issues detected: improve room connectivity and door placement")
         if accessibility_score < 0.6:
             recs.append("Add more connections between rooms to improve accessibility")
         if degree_variance_score < 0.6:
-            recs.append("Balance the number of connections between rooms to avoid rooms with too many or too few connections")
+            recs.append("Balance room connections to avoid rooms with too many or too few connections")
+        if door_distribution_score < 0.6:
+            recs.append("Improve door distribution for better flow")
+        
+        # Gameplay recommendations
+        if gameplay_score < 0.6:
+            recs.append("Gameplay issues detected: enhance path diversity and element distribution")
         if path_diversity_score < 0.6:
             recs.append("Add more path choices to provide more ways to reach the target")
-        if loop_ratio_score < 0.6:
-            recs.append("Add more loop structures to improve the exploration of the map")
+        if treasure_monster_score < 0.6:
+            recs.append("Improve treasure and monster distribution: ensure balanced density, add bosses, and spread elements spatially")
+        if dead_end_score < 0.6:
+            recs.append("Reduce dead ends for better exploration flow")
+        
+        # Aesthetic recommendations
+        if aesthetic_score_category < 0.6:
+            recs.append("Aesthetic issues detected: consider visual balance and thematic elements")
+        if aesthetic_score < 0.6:
+            recs.append("Improve visual balance: vary room sizes moderately, ensure good spatial distribution, and maintain thematic consistency")
+        
         return recs 

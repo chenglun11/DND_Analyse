@@ -2,19 +2,21 @@
 """
 地牢地图可视化器
 支持将统一格式的地牢数据转换为可视化图像
+支持polygon格式输出和游戏元素可视化
 """
 
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-import matplotlib.patches as patches
-from matplotlib.patches import FancyBboxPatch
 import numpy as np
 from typing import Dict, List, Any, Optional, Tuple
 import json
 import os
 from pathlib import Path
 import logging
+from matplotlib.patches import Polygon, FancyBboxPatch
+import matplotlib.patheffects as PathEffects
+import xml.etree.ElementTree as ET
 
 # 设置中文字体
 plt.rcParams['font.sans-serif'] = ['SimHei', 'Arial Unicode MS', 'DejaVu Sans']
@@ -28,20 +30,34 @@ class DungeonVisualizer:
         self.figsize = figsize
         self.dpi = dpi
         self.colors = {
-            'room': '#E8F4FD',      # 浅蓝色房间
-            'room_border': '#2E86AB', # 深蓝色边框
-            'corridor': '#F0F8FF',   # 浅蓝色走廊
-            'corridor_border': '#4682B4', # 钢蓝色边框
-            'connection': '#FF6B6B', # 红色连接线
-            'entrance': '#90EE90',   # 浅绿色入口
-            'entrance_border': '#228B22', # 森林绿边框
-            'wall': '#8B4513',       # 棕色墙体
-            'background': '#F5F5F5'  # 浅灰色背景
+            'room': '#E3F2FD',      # Softer light blue rooms
+            'room_border': '#1976D2', # Modern blue borders
+            'corridor': '#F3E5F5',   # Light purple corridors
+            'corridor_border': '#7B1FA2', # Dark purple borders
+            'connection': '#FF5722', # Orange-red connection lines
+            'entrance': '#C8E6C9',   # Light green entrance
+            'entrance_border': '#388E3C', # Dark green borders
+            'wall': '#5D4037',       # Dark brown walls
+            'background': '#FAFAFA', # Brighter background
+            # Game element colors - new color scheme
+            'treasure': '#FFC107',   # Amber treasure
+            'boss': '#D32F2F',       # Bright red boss
+            'monster': '#FF9800',    # Orange monster
+            'door': '#795548'        # Brown door
+        }
+        
+        # Game element symbols - optimized display
+        self.game_symbols = {
+            'treasure': 'T',      # Treasure
+            'boss': 'B',          # Boss
+            'monster': 'M',       # Monster
+            'special': 'S',       # Special
+            'door': '●'           # Door as dot
         }
 
     def visualize_dungeon(self, dungeon_data: Dict[str, Any], output_path: str, 
                          show_connections: bool = True, show_room_ids: bool = True,
-                         show_grid: bool = True) -> bool:
+                         show_grid: bool = True, show_game_elements: bool = True) -> bool:
         """
         可视化地牢数据
         """
@@ -81,13 +97,15 @@ class DungeonVisualizer:
             self._draw_corridors(ax, dungeon_data, scale)
             self._draw_walls(ax, dungeon_data, scale)
             self._draw_doors(ax, dungeon_data, scale)
+            if show_game_elements:
+                self._draw_game_elements(ax, dungeon_data, scale)
             if show_connections:
                 self._draw_connections(ax, dungeon_data, scale)
             dungeon_name = dungeon_data.get('name', dungeon_data.get('header', {}).get('name', 'Unnamed Dungeon'))
             ax.set_title(f'Dungeon Map: {dungeon_name}', fontsize=16, fontweight='bold', pad=20)
             ax.set_xlabel('X (ft)', fontsize=12)
             ax.set_ylabel('Y (ft)', fontsize=12)
-            self._add_legend(ax)
+            self._add_legend(ax, show_game_elements)
             os.makedirs(os.path.dirname(output_path), exist_ok=True)
             plt.savefig(output_path, dpi=self.dpi, bbox_inches='tight', facecolor='white', edgecolor='none')
             plt.close()
@@ -97,6 +115,12 @@ class DungeonVisualizer:
             logger.error(f"Error visualizing dungeon: {e}")
             import traceback; traceback.print_exc()
             return False
+
+    def export_polygon_format(self, dungeon_data: Dict[str, Any], output_path: str) -> bool:
+        """
+        导出为polygon格式（PNG）
+        """
+        return self.visualize_dungeon(dungeon_data, output_path)
 
     def _calculate_bounds(self, dungeon_data: Dict[str, Any]) -> Optional[Dict[str, float]]:
         """计算地牢的边界"""
@@ -157,42 +181,124 @@ class DungeonVisualizer:
         for level in levels:
             rooms = level.get('rooms', [])
             for room in rooms:
-                if 'position' in room and 'size' in room:
-                    x = room['position'].get('x', 0) * scale
-                    y = room['position'].get('y', 0) * scale
-                    w = room['size'].get('width', 1) * scale
-                    h = room['size'].get('height', 1) * scale
+                if 'polygon' in room:
+                    poly = np.array([[p['x']*scale, p['y']*scale] for p in room['polygon']]) if room['polygon'] else np.zeros((0,2))
+                    if len(poly) >= 3:
+                        # 优化：更美观的多边形显示
+                        patch = Polygon(
+                            poly, closed=True,
+                            facecolor=self.colors['room'],
+                            edgecolor=self.colors['room_border'],
+                            alpha=0.85,
+                            linewidth=2.5,
+                            zorder=10,
+                            joinstyle='round',
+                        )
+                        patch.set_path_effects([
+                            PathEffects.withStroke(linewidth=4, foreground='#1B263B', alpha=0.18),
+                            PathEffects.SimpleLineShadow(offset=(2,-2), alpha=0.12),
+                            PathEffects.Normal()
+                        ])
+                        ax.add_patch(patch)
+                        if show_room_ids:
+                            centroid = poly.mean(axis=0)
+                            label = room.get('name', room.get('id', ''))
+                            txt = ax.text(
+                                centroid[0], centroid[1], label, ha='center', va='center', fontsize=10, color='#222',
+                                bbox=dict(boxstyle="round,pad=0.25", facecolor='white', alpha=0.7, edgecolor='#888', linewidth=0.5),
+                                zorder=20
+                            )
+                            txt.set_path_effects([PathEffects.withStroke(linewidth=2, foreground='white', alpha=0.7)])
+                    elif show_room_ids and len(poly) > 0:
+                        centroid = poly.mean(axis=0)
+                        label = room.get('name', room.get('id', ''))
+                        txt = ax.text(
+                            centroid[0], centroid[1], label, ha='center', va='center', fontsize=10, color='#222',
+                            bbox=dict(boxstyle="round,pad=0.25", facecolor='white', alpha=0.7, edgecolor='#888', linewidth=0.5),
+                            zorder=20
+                        )
+                        txt.set_path_effects([PathEffects.withStroke(linewidth=2, foreground='white', alpha=0.7)])
                 else:
-                    x = room.get('x', 0) * scale
-                    y = room.get('y', 0) * scale
-                    w = room.get('width', 1) * scale
-                    h = room.get('height', 1) * scale
-                rect = FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.1",
-                                     facecolor=self.colors['room'], edgecolor=self.colors['room_border'], linewidth=2, alpha=0.7)
-                ax.add_patch(rect)
-                if show_room_ids:
-                    label = room.get('name', room.get('id', ''))
-                    ax.text(x + w/2, y + h/2, label, ha='center', va='center', fontsize=8, color='black',
-                            bbox=dict(boxstyle="round,pad=0.2", facecolor='white', alpha=0.5))
+                    # 没有polygon字段才用矩形
+                    if 'position' in room and 'size' in room:
+                        x = room['position'].get('x', 0) * scale
+                        y = room['position'].get('y', 0) * scale
+                        w = room['size'].get('width', 1) * scale
+                        h = room['size'].get('height', 1) * scale
+                    else:
+                        x = room.get('x', 0) * scale
+                        y = room.get('y', 0) * scale
+                        w = room.get('width', 1) * scale
+                        h = room.get('height', 1) * scale
+                    poly_points = np.array([
+                        [x, y],
+                        [x + w, y],
+                        [x + w, y + h],
+                        [x, y + h]
+                    ])
+                    patch = Polygon(poly_points, closed=True, facecolor=self.colors['room'], 
+                                  edgecolor=self.colors['room_border'], alpha=0.85, linewidth=2.5, zorder=10)
+                    patch.set_path_effects([
+                        PathEffects.withStroke(linewidth=4, foreground='#1B263B', alpha=0.18),
+                        PathEffects.SimpleLineShadow(offset=(2,-2), alpha=0.12),
+                        PathEffects.Normal()
+                    ])
+                    ax.add_patch(patch)
+                    if show_room_ids:
+                        label = room.get('name', room.get('id', ''))
+                        txt = ax.text(x + w/2, y + h/2, label, ha='center', va='center', fontsize=10, color='#222',
+                                bbox=dict(boxstyle="round,pad=0.25", facecolor='white', alpha=0.7, edgecolor='#888', linewidth=0.5),
+                                zorder=20)
+                        txt.set_path_effects([PathEffects.withStroke(linewidth=2, foreground='white', alpha=0.7)])
 
     def _draw_corridors(self, ax, dungeon_data: Dict[str, Any], scale: float = 1.0):
         levels = dungeon_data.get('levels', [])
         for level in levels:
             corridors = level.get('corridors', [])
             for corridor in corridors:
-                if 'position' in corridor and 'size' in corridor:
-                    x = corridor['position'].get('x', 0) * scale
-                    y = corridor['position'].get('y', 0) * scale
-                    w = corridor['size'].get('width', 1) * scale
-                    h = corridor['size'].get('height', 1) * scale
+                if 'polygon' in corridor:
+                    poly = np.array([[p['x']*scale, p['y']*scale] for p in corridor['polygon']]) if corridor['polygon'] else np.zeros((0,2))
+                    if len(poly) >= 3:
+                        patch = Polygon(
+                            poly, closed=True,
+                            facecolor=self.colors['corridor'],
+                            edgecolor=self.colors['corridor_border'],
+                            alpha=0.55,
+                            linewidth=2,
+                            zorder=8,
+                            joinstyle='round',
+                        )
+                        patch.set_path_effects([
+                            PathEffects.withStroke(linewidth=3, foreground='#1B263B', alpha=0.10),
+                            PathEffects.SimpleLineShadow(offset=(1,-1), alpha=0.10),
+                            PathEffects.Normal()
+                        ])
+                        ax.add_patch(patch)
                 else:
-                    x = corridor.get('x', 0) * scale
-                    y = corridor.get('y', 0) * scale
-                    w = corridor.get('width', 1) * scale
-                    h = corridor.get('height', 1) * scale
-                rect = FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.05",
-                                     facecolor='#CCCCCC', edgecolor='#888888', linewidth=1, alpha=0.5)
-                ax.add_patch(rect)
+                    if 'position' in corridor and 'size' in corridor:
+                        x = corridor['position'].get('x', 0) * scale
+                        y = corridor['position'].get('y', 0) * scale
+                        w = corridor['size'].get('width', 1) * scale
+                        h = corridor['size'].get('height', 1) * scale
+                    else:
+                        x = corridor.get('x', 0) * scale
+                        y = corridor.get('y', 0) * scale
+                        w = corridor.get('width', 1) * scale
+                        h = corridor.get('height', 1) * scale
+                    poly_points = np.array([
+                        [x, y],
+                        [x + w, y],
+                        [x + w, y + h],
+                        [x, y + h]
+                    ])
+                    patch = Polygon(poly_points, closed=True, facecolor=self.colors['corridor'], 
+                                  edgecolor=self.colors['corridor_border'], alpha=0.55, linewidth=2, zorder=8)
+                    patch.set_path_effects([
+                        PathEffects.withStroke(linewidth=3, foreground='#1B263B', alpha=0.10),
+                        PathEffects.SimpleLineShadow(offset=(1,-1), alpha=0.10),
+                        PathEffects.Normal()
+                    ])
+                    ax.add_patch(patch)
 
     def _draw_walls(self, ax, dungeon_data: Dict[str, Any], scale: float = 1.0):
         pass  # 可根据需要实现墙体绘制
@@ -207,26 +313,114 @@ class DungeonVisualizer:
             for door in doors:
                 pos = door.get('position', {})
                 x, y = pos.get('x', 0) * scale, pos.get('y', 0) * scale
-                ax.scatter(x, y, c='red', s=50, linewidths=1.5, label='door' if 'door' not in ax.get_legend_handles_labels()[1] else "")
+                # Draw door symbol - optimized display effect
+                txt = ax.text(x, y, self.game_symbols['door'], fontsize=14, ha='center', va='center', 
+                       color=self.colors['door'], weight='bold', zorder=25)
+                # Add white stroke effect
+                txt.set_path_effects([PathEffects.withStroke(linewidth=3, foreground='white', alpha=0.8)])
 
-    def _add_legend(self, ax):
+    def _draw_game_elements(self, ax, dungeon_data: Dict[str, Any], scale: float = 1.0):
+        """Draw game elements (treasure, boss, monster, traps, etc.)"""
+        levels = dungeon_data.get('levels', [])
+        for level in levels:
+            game_elements = level.get('game_elements', [])
+            for element in game_elements:
+                pos = element.get('position', {})
+                x, y = pos.get('x', 0) * scale, pos.get('y', 0) * scale
+                elem_type = element.get('type', 'unknown')
+                elem_name = element.get('name', '')
+                
+                # Select color and symbol based on type
+                if elem_type == 'treasure':
+                    color = self.colors['treasure']
+                    symbol = self.game_symbols['treasure']
+                    fontsize = 16
+                elif elem_type == 'boss':
+                    color = self.colors['boss']
+                    symbol = self.game_symbols['boss']
+                    fontsize = 18
+                elif elem_type == 'monster':
+                    color = self.colors['monster']
+                    symbol = self.game_symbols['monster']
+                    fontsize = 16
+                elif elem_type == 'special':
+                    color = '#FFD700' # Gold for special elements
+                    symbol = self.game_symbols['special']
+                    fontsize = 16
+                else:
+                    color = '#9E9E9E'  # Gray
+                    symbol = '?'
+                    fontsize = 14
+                
+                # Draw symbol - optimized display effect
+                txt = ax.text(x, y, symbol, fontsize=fontsize, ha='center', va='center', 
+                       color=color, weight='bold', zorder=25,
+                       bbox=dict(boxstyle="circle,pad=0.2", facecolor='white', alpha=0.9, 
+                               edgecolor=color, linewidth=2))
+                # Add white stroke and shadow effects
+                txt.set_path_effects([
+                    PathEffects.withStroke(linewidth=3, foreground='white', alpha=0.9),
+                    PathEffects.SimpleLineShadow(offset=(1,-1), alpha=0.3),
+                    PathEffects.Normal()
+                ])
+                
+                # Add label - optimized display
+                if elem_name:
+                    label_txt = ax.text(x, y + 1.2 * scale, elem_name, fontsize=8, ha='center', va='bottom',
+                           color='#333', weight='bold',
+                           bbox=dict(boxstyle="round,pad=0.2", facecolor='white', alpha=0.9, 
+                                   edgecolor=color, linewidth=1),
+                           zorder=30)
+                    label_txt.set_path_effects([PathEffects.withStroke(linewidth=2, foreground='white', alpha=0.7)])
+
+    def _add_legend(self, ax, show_game_elements: bool = True):
+        """添加图例"""
         legend_elements = [
-            patches.Patch(color=self.colors['room'], label='Room'),
-            patches.Patch(color=self.colors['entrance'], label='Entrance'),
-            patches.Patch(color=self.colors['corridor'], label='Corridor'),
-            patches.Patch(color=self.colors['wall'], label='Wall'),
+            Polygon([[0,0]], color=self.colors['room'], label='Room'),
+            Polygon([[0,0]], color=self.colors['corridor'], label='Corridor'),
+            Polygon([[0,0]], color=self.colors['wall'], label='Wall'),
         ]
+        
+        if show_game_elements:
+            # 添加游戏元素图例
+            game_legend = [
+                plt.Line2D([0], [0], marker='o', color='w', markerfacecolor=self.colors['treasure'], 
+                          markersize=10, label='Treasure'),
+                plt.Line2D([0], [0], marker='o', color='w', markerfacecolor=self.colors['boss'], 
+                          markersize=10, label='Boss'),
+                plt.Line2D([0], [0], marker='o', color='w', markerfacecolor=self.colors['monster'], 
+                          markersize=10, label='Monster'),
+                plt.Line2D([0], [0], marker='o', color='w', markerfacecolor=self.colors['door'], 
+                          markersize=10, label='Door'),
+            ]
+            legend_elements.extend(game_legend)
+        
         ax.legend(handles=legend_elements, loc='upper right', bbox_to_anchor=(1, 1), fontsize=10)
 
 # ====== 便捷入口函数 ======
 def visualize_dungeon(dungeon_data: Dict[str, Any], output_path: str, 
                      figsize: Tuple[int, int] = (12, 8), dpi: int = 100,
                      show_connections: bool = True, show_room_ids: bool = True,
-                     show_grid: bool = True) -> bool:
+                     show_grid: bool = True, show_game_elements: bool = True) -> bool:
     visualizer = DungeonVisualizer(figsize=figsize, dpi=dpi)
     return visualizer.visualize_dungeon(
-        dungeon_data, output_path, show_connections, show_room_ids, show_grid
+        dungeon_data, output_path, show_connections, show_room_ids, show_grid, show_game_elements
     )
+
+def export_polygon_format(dungeon_data: Dict[str, Any], output_path: str) -> bool:
+    """导出为polygon格式（PNG）"""
+    visualizer = DungeonVisualizer()
+    return visualizer.export_polygon_format(dungeon_data, output_path)
+
+def export_polygon_from_file(input_path: str, output_path: str) -> bool:
+    """从文件导出为polygon格式（PNG）"""
+    try:
+        with open(input_path, 'r', encoding='utf-8') as f:
+            dungeon_data = json.load(f)
+        return export_polygon_format(dungeon_data, output_path)
+    except Exception as e:
+        logger.error(f"Error exporting polygon from file: {e}")
+        return False
 
 def visualize_from_file(input_path: str, output_path: str, **kwargs) -> bool:
     try:

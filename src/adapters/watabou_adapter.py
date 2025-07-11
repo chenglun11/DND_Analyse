@@ -123,6 +123,147 @@ class WatabouAdapter(BaseAdapter):
                                 "door_id": door['id']
                             })
             
+            # 提取游戏元素
+            game_elements = []
+            
+            # 从dungeon描述中提取游戏元素
+            dungeon_description = data.get('story', '').lower()
+            if dungeon_description:
+                # 在dungeon中心放置游戏元素
+                dungeon_center_x = (min_x + max_x) / 2
+                dungeon_center_y = (min_y + max_y) / 2
+                
+                if "gold" in dungeon_description or "treasure" in dungeon_description or "chest" in dungeon_description:
+                    game_elements.append({
+                        "id": f"treasure_{len(game_elements)}",
+                        "name": "Treasure",
+                        "type": "treasure",
+                        "position": {"x": dungeon_center_x, "y": dungeon_center_y},
+                        "description": "Contains treasure"
+                    })
+                elif "undead" in dungeon_description:
+                    game_elements.append({
+                        "id": f"monster_{len(game_elements)}",
+                        "name": "Monster",
+                        "type": "monster",
+                        "position": {"x": dungeon_center_x, "y": dungeon_center_y},
+                        "description": "Dangerous creature"
+                    })
+                elif "boss" in dungeon_description or "dragon" in dungeon_description:
+                    game_elements.append({
+                        "id": f"boss_{len(game_elements)}",
+                        "name": "Boss",
+                        "type": "boss",
+                        "position": {"x": dungeon_center_x, "y": dungeon_center_y},
+                        "description": "Powerful enemy"
+                    })
+                elif "monster" in dungeon_description or "creature" in dungeon_description or "wyrm" in dungeon_description:
+                    game_elements.append({
+                        "id": f"monster_{len(game_elements)}",
+                        "name": "Monster",
+                        "type": "monster",
+                        "position": {"x": dungeon_center_x, "y": dungeon_center_y},
+                        "description": "Dangerous creature"
+                    })
+            
+            # 从notes中提取游戏元素 - 每个note都作为独立的game_element
+            for i, note in enumerate(notes):
+                note_text = note.get('text', '')
+                note_pos = note.get('pos', {})
+                note_ref = note.get('ref', '')
+                if not note_pos:
+                    continue
+                
+                # 更鲁棒的类型推断：基于note的语义和上下文
+                note_lower = note_text.lower()
+                
+                # 1. 检查是否包含物品/宝藏相关词汇
+                treasure_keywords = ['gold', 'treasure', 'chest', 'key', 'coin', 'gem', 'jewel', 'loot', 'wealth', 'valuable']
+                is_treasure = any(keyword in note_lower for keyword in treasure_keywords)
+                
+                # 2. 检查是否包含生物/敌人相关词汇
+                monster_keywords = ['undead', 'monster', 'creature', 'wyrm', 'dragon', 'beast', 'fiend', 'demon', 'ghost', 'zombie']
+                is_monster = any(keyword in note_lower for keyword in monster_keywords)
+                
+                # 3. 检查是否包含boss相关词汇
+                boss_keywords = ['boss', 'lord', 'king', 'queen', 'master', 'commander', 'chieftain', 'leader']
+                is_boss = any(keyword in note_lower for keyword in boss_keywords)
+                
+                # 4. 检查是否包含陷阱/机关相关词汇
+                trap_keywords = ['alarm', 'trap', 'trigger', 'pressure', 'switch', 'mechanism', 'device', 'sounds']
+                is_trap = any(keyword in note_lower for keyword in trap_keywords)
+                
+                # 5. 检查是否包含尸体/死亡相关词汇
+                corpse_keywords = ['corpse', 'body', 'dead', 'skeleton', 'remains', 'cadaver', 'corpse of']
+                is_corpse = any(keyword in note_lower for keyword in corpse_keywords)
+                
+                # 6. 检查是否包含门/入口相关词汇
+                gate_keywords = ['gate', 'door', 'entrance', 'portal', 'exit', 'passage', 'keyhole']
+                is_gate = any(keyword in note_lower for keyword in gate_keywords)
+                
+                # 7. 检查是否包含书籍/知识相关词汇
+                book_keywords = ['book', 'scroll', 'tome', 'grimoire', 'spellbook', 'lectern', 'legendary']
+                is_book = any(keyword in note_lower for keyword in book_keywords)
+                
+                # 8. 动作词分析 - 更智能的推断
+                action_words = {
+                    'treasure': ['contains', 'holds', 'with', 'inside', 'basket'],
+                    'trap': ['sounds', 'when opened', 'triggered', 'activated'],
+                    'monster': ['made its home', 'lives', 'dwells', 'inhabits'],
+                    'gate': ['on the wall', 'northern wall', 'southern wall', 'eastern wall', 'western wall']
+                }
+                
+                # 检查动作词
+                for action_type, action_list in action_words.items():
+                    if any(action in note_lower for action in action_list):
+                        if action_type == 'treasure':
+                            is_treasure = True
+                        elif action_type == 'trap':
+                            is_trap = True
+                        elif action_type == 'monster':
+                            is_monster = True
+                        elif action_type == 'gate':
+                            is_gate = True
+                
+                # 优先级判断：Boss > Monster > Trap > Treasure > Special
+                if is_boss:
+                    elem_type = 'boss'
+                    elem_name = 'Boss'
+                elif is_monster:
+                    elem_type = 'monster'
+                    elem_name = 'Monster'
+                elif is_trap:
+                    elem_type = 'special'
+                    elem_name = 'Trap'
+                elif is_treasure:
+                    elem_type = 'treasure'
+                    elem_name = 'Treasure'
+                elif is_corpse:
+                    elem_type = 'special'
+                    elem_name = 'Corpse'
+                elif is_gate:
+                    elem_type = 'special'
+                    elem_name = 'Gate'
+                elif is_book:
+                    elem_type = 'special'
+                    elem_name = 'Book'
+                else:
+                    # 默认作为特殊物品处理
+                    elem_type = 'special'
+                    elem_name = 'Special'
+                
+                # 使用原始note文本作为描述，保持完整性
+                elem_desc = note_text
+                
+                game_elements.append({
+                    "id": f"{elem_type}_{len(game_elements)}",
+                    "name": elem_name,
+                    "type": elem_type,
+                    "position": {"x": note_pos.get('x', 0), "y": note_pos.get('y', 0)},
+                    "description": elem_desc,
+                    "ref": note_ref  # 保留原始引用信息
+                })
+            
             # FINAL STRUCTURE
             final_rooms = [node for node in all_nodes if node.get("is_room")]
             final_corridors = [node for node in all_nodes if node.get("is_corridor")]
@@ -138,7 +279,8 @@ class WatabouAdapter(BaseAdapter):
                 "rooms": final_rooms, 
                 "doors": doors, 
                 "corridors": final_corridors,
-                "connections": connections
+                "connections": connections,
+                "game_elements": game_elements
             })
             
             return unified

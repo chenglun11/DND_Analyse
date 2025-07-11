@@ -691,8 +691,8 @@
           "door_id": "door_2"
         },
         {
-          "from_room": "rect_16",
-          "to_room": "rect_3",
+          "from_room": "rect_3",
+          "to_room": "rect_16",
           "door_id": "door_3"
         },
         {
@@ -716,13 +716,13 @@
           "door_id": "door_5"
         },
         {
-          "from_room": "rect_3",
-          "to_room": "rect_19",
+          "from_room": "rect_19",
+          "to_room": "rect_3",
           "door_id": "door_6"
         },
         {
-          "from_room": "rect_7",
-          "to_room": "rect_20",
+          "from_room": "rect_20",
+          "to_room": "rect_7",
           "door_id": "door_7"
         },
         {
@@ -731,18 +731,18 @@
           "door_id": "door_8"
         },
         {
-          "from_room": "rect_5",
-          "to_room": "rect_22",
+          "from_room": "rect_22",
+          "to_room": "rect_5",
           "door_id": "door_9"
         },
         {
-          "from_room": "rect_23",
-          "to_room": "rect_10",
+          "from_room": "rect_10",
+          "to_room": "rect_23",
           "door_id": "door_10"
         },
         {
-          "from_room": "rect_24",
-          "to_room": "rect_7",
+          "from_room": "rect_7",
+          "to_room": "rect_24",
           "door_id": "door_11"
         },
         {
@@ -751,13 +751,8 @@
           "door_id": "door_12"
         },
         {
-          "from_room": "rect_26",
-          "to_room": "rect_27",
-          "door_id": "door_13"
-        },
-        {
-          "from_room": "rect_26",
-          "to_room": "rect_1",
+          "from_room": "rect_27",
+          "to_room": "rect_26",
           "door_id": "door_13"
         },
         {
@@ -767,16 +762,21 @@
         },
         {
           "from_room": "rect_26",
-          "to_room": "rect_27",
-          "door_id": "door_14"
+          "to_room": "rect_1",
+          "door_id": "door_13"
         },
         {
-          "from_room": "rect_26",
-          "to_room": "rect_1",
+          "from_room": "rect_27",
+          "to_room": "rect_26",
           "door_id": "door_14"
         },
         {
           "from_room": "rect_27",
+          "to_room": "rect_1",
+          "door_id": "door_14"
+        },
+        {
+          "from_room": "rect_26",
           "to_room": "rect_1",
           "door_id": "door_14"
         },
@@ -791,8 +791,8 @@
           "door_id": "door_16"
         },
         {
-          "from_room": "rect_30",
-          "to_room": "rect_4",
+          "from_room": "rect_4",
+          "to_room": "rect_30",
           "door_id": "door_17"
         },
         {
@@ -873,69 +873,14 @@
       ],
       "game_elements": [
         {
-          "id": "monster_0",
-          "name": "Monster",
-          "type": "monster",
-          "position": {
-            "x": -5.5,
-            "y": 0.5
-          },
-          "description": "Dangerous creature"
-        },
-        {
-          "id": "treasure_1",
-          "name": "Treasure",
+          "id": "treasure_0",
+          "name": "宝箱",
           "type": "treasure",
           "position": {
-            "x": -1.5,
-            "y": 4.5
-          },
-          "description": "A basket with an eye-shaped key in it.",
-          "ref": "1"
-        },
-        {
-          "id": "special_2",
-          "name": "Trap",
-          "type": "special",
-          "position": {
-            "x": -5.5,
-            "y": 9.5
-          },
-          "description": "A book on a lectern, sounds the alarm when opened.",
-          "ref": "3"
-        },
-        {
-          "id": "treasure_3",
-          "name": "Treasure",
-          "type": "treasure",
-          "position": {
-            "x": -10,
+            "x": -1.0,
             "y": 8.5
           },
-          "description": "A huge gate with two keyholes on the northern wall.",
-          "ref": "4"
-        },
-        {
-          "id": "treasure_4",
-          "name": "Treasure",
-          "type": "treasure",
-          "position": {
-            "x": -1,
-            "y": 8.5
-          },
-          "description": "A corpse of a bard, some gold close to it.",
-          "ref": "2"
-        },
-        {
-          "id": "treasure_5",
-          "name": "Treasure",
-          "type": "treasure",
-          "position": {
-            "x": -1,
-            "y": -7.5
-          },
-          "description": "An eye-shaped key on a pedestal table.",
-          "ref": "5"
+          "description": "包含宝藏"
         }
       ],
       "connections_inferred": true

@@ -61,8 +61,8 @@ def convert_single_file(adapter_manager: AdapterManager, input_path: str, output
 
     if visualize:
         vis_output_path = Path(output_path).with_suffix('.png')
-        from src.visualizer import visualize_dungeon_outline
-        visualize_dungeon_outline(unified_data, str(vis_output_path), show_room_ids=True, show_corridor_ids=False, show_grid=True)
+        from src.visualizer import visualize_dungeon
+        visualize_dungeon(unified_data, str(vis_output_path), show_room_ids=True, show_grid=True)
     
     return True
 
@@ -101,7 +101,8 @@ def convert_directory(adapter_manager: AdapterManager, input_dir: str, output_di
             print(f"✓ Successfully converted: {json_file.name}")
             if visualize:
                 vis_output_path = output_path / json_file.with_suffix('.png').name
-                visualize_dungeon(unified_data, str(vis_output_path))
+                from src.visualizer import visualize_dungeon
+                visualize_dungeon(unified_data, str(vis_output_path), show_room_ids=True, show_grid=True)
         else:
             print(f"✗ Failed to convert: {json_file.name}")
     
@@ -114,7 +115,7 @@ def detect_format(adapter_manager: AdapterManager, file_path: str) -> str:
     detected_format = adapter_manager.detect_format(source_data)
     return detected_format if detected_format else "Unknown"
 
-def visualize_file(input_path: str, output_path: Optional[str] = None, outline: bool = False, show_room_ids: bool = True, show_corridor_ids: bool = True, show_grid: bool = True):
+def visualize_file(input_path: str, output_path: Optional[str] = None, outline: bool = False, show_room_ids: bool = True, show_corridor_ids: bool = True, show_grid: bool = True, show_game_elements: bool = True):
     """为指定的统一格式JSON文件生成可视化图像（默认显示所有细节）"""
     print(f"Generating visualization for {input_path}...")
     unified_data = load_json_file(input_path)
@@ -131,8 +132,25 @@ def visualize_file(input_path: str, output_path: Optional[str] = None, outline: 
         visualize_dungeon_outline(unified_data, output_path, show_room_ids=False, show_corridor_ids=True, show_grid=True)
     else:
         # 默认画所有细节
-        from src.visualizer import visualize_dungeon_outline
-        visualize_dungeon_outline(unified_data, output_path, show_room_ids=show_room_ids, show_corridor_ids=show_corridor_ids, show_grid=show_grid)
+        from src.visualizer import visualize_dungeon
+        visualize_dungeon(unified_data, output_path, show_room_ids=show_room_ids, show_grid=show_grid, show_game_elements=show_game_elements)
+
+def export_polygon_file(input_path: str, output_path: Optional[str] = None):
+    """为指定的统一格式JSON文件导出polygon格式（PNG）"""
+    print(f"Exporting polygon format for {input_path}...")
+    unified_data = load_json_file(input_path)
+    if not unified_data:
+        print(f"✗ Failed to load file: {input_path}")
+        return
+
+    if not output_path:
+        output_path = str(Path(input_path).with_suffix('.png'))
+    
+    from src.visualizer import export_polygon_format
+    if export_polygon_format(unified_data, output_path):
+        print(f"✓ Polygon format exported to: {output_path}")
+    else:
+        print(f"✗ Failed to export polygon format")
 
 def convert_file(input_file: str, output_file: str, format_type: Optional[str] = None) -> bool:
     """转换文件"""
@@ -272,6 +290,12 @@ def main():
     visualize_parser.add_argument('--no-room-ids', action='store_true', default=False, help='不显示房间ID / do not show room ids')
     visualize_parser.add_argument('--no-corridor-ids', action='store_true', default=False, help='不显示走廊ID / do not show corridor ids')
     visualize_parser.add_argument('--no-grid', action='store_true', default=False, help='不显示grid / do not show grid')
+    visualize_parser.add_argument('--no-game-elements', action='store_true', default=False, help='不显示游戏元素 / do not show game elements')
+    
+    # New 'export-polygon' command
+    export_polygon_parser = subparsers.add_parser('export-polygon', help='导出为polygon格式（PNG） / export to polygon format (PNG)')
+    export_polygon_parser.add_argument('input', help='输入的统一格式JSON文件路径 / input unified JSON file path')
+    export_polygon_parser.add_argument('output', nargs='?', default=None, help='输出的PNG文件路径 (可选) / output PNG file path (optional)')
 
     # New 'assess' command
     assess_parser = subparsers.add_parser('assess', help='评估地图质量 / assess dungeon quality')
@@ -337,8 +361,12 @@ def main():
             outline=args.outline, 
             show_room_ids=not args.no_room_ids, 
             show_corridor_ids=not args.no_corridor_ids,
-            show_grid=not args.no_grid
+            show_grid=not args.no_grid,
+            show_game_elements=not args.no_game_elements
         )
+
+    elif args.command == 'export-polygon':
+        export_polygon_file(args.input, args.output)
 
     elif args.command == 'assess':
         try:
