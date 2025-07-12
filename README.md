@@ -12,13 +12,13 @@
 ## 📚 核心文档
 
 ### 方法论文档
-- **[完整方法论](dungeon_adapter_methodology.md)**: 详细的技术架构、评估理论和算法实现
-- **[实用指南](dungeon_design_practical_guide.md)**: 具体的设计原则、操作指导和最佳实践
-- **[视觉平衡理论](aesthetic_balance_theory.md)**: 基于格式塔心理学的美学评估理论
+- **[完整方法论](docs/dungeon_adapter_methodology.md)**: 详细的技术架构、评估理论和算法实现
+- **[实用指南](docs/dungeon_design_practical_guide.md)**: 具体的设计原则、操作指导和最佳实践
+- **[视觉平衡理论](docs/aesthetic_balance_theory.md)**: 基于格式塔心理学的美学评估理论
 
 ### 评估指标
-- **[质量指标总结](quality_metrics_summary.md)**: 7个核心评估指标的详细说明
-- **[基准测试标准](benchmark_standards.py)**: 标准测试集和基准定义
+- **[质量指标总结](docs/quality_metrics_summary.md)**: 7个核心评估指标的详细说明
+- **[基准测试标准](docs/benchmark_standards.py)**: 标准测试集和基准定义
 
 ## 🚀 快速开始
 
