@@ -15,6 +15,7 @@ class KeyPathLengthRule(BaseQualityRule):
         connections = level.get('connections', [])
         if not rooms or not connections:
             return 0.0, {"reason": "无房间或连接信息"}
+        
         # 节点集为rooms+corridors
         all_nodes = rooms + corridors
         graph = {node['id']: [] for node in all_nodes}
@@ -22,15 +23,32 @@ class KeyPathLengthRule(BaseQualityRule):
             if conn['from_room'] in graph and conn['to_room'] in graph:
                 graph[conn['from_room']].append(conn['to_room'])
                 graph[conn['to_room']].append(conn['from_room'])
-        # 只选有连接的主房间作为入口/出口候选
-        def get_pos(room):
-            pos = room.get('position', {})
-            return pos.get('x', 0), pos.get('y', 0)
-        connected_rooms = [room for room in rooms if len(graph[room['id']]) > 0]
-        if not connected_rooms:
-            return 0.0, {"reason": "无连通房间"}
-        entrance = min(connected_rooms, key=get_pos)
-        exit_room = max(connected_rooms, key=get_pos)
+        
+        # 查找入口和出口房间
+        entrance_room = None
+        exit_room = None
+        
+        for room in rooms:
+            if room.get('is_entrance', False):
+                entrance_room = room['id']
+            elif room.get('is_exit', False):
+                exit_room = room['id']
+        
+        # 如果没有明确标记的入口出口，使用启发式方法
+        if not entrance_room or not exit_room:
+            # 只选有连接的主房间作为入口/出口候选
+            def get_pos(room):
+                pos = room.get('position', {})
+                return pos.get('x', 0), pos.get('y', 0)
+            
+            connected_rooms = [room for room in rooms if len(graph[room['id']]) > 0]
+            if not connected_rooms:
+                return 0.0, {"reason": "无连通房间"}
+            
+            # 使用坐标推断作为备选方案
+            entrance_room = min(connected_rooms, key=get_pos)['id']
+            exit_room = max(connected_rooms, key=get_pos)['id']
+        
         # BFS允许经过corridor节点
         def bfs(start, end):
             queue = deque([(start, 0)])
@@ -44,7 +62,8 @@ class KeyPathLengthRule(BaseQualityRule):
                         visited.add(nb)
                         queue.append((nb, dist+1))
             return None
-        path_len = bfs(entrance['id'], exit_room['id'])
+        
+        path_len = bfs(entrance_room, exit_room)
         if path_len is None:
             score = 0.0
         elif 5 <= path_len <= 15:
@@ -55,4 +74,11 @@ class KeyPathLengthRule(BaseQualityRule):
             score = 0.6
         else:
             score = 0.3
-        return score, {"key_path_length": path_len, "entrance": entrance['id'], "exit": exit_room['id']} 
+        
+        return score, {
+            "key_path_length": path_len, 
+            "entrance": entrance_room, 
+            "exit": exit_room,
+            "entrance_marked": entrance_room in [r['id'] for r in rooms if r.get('is_entrance', False)],
+            "exit_marked": exit_room in [r['id'] for r in rooms if r.get('is_exit', False)]
+        } 

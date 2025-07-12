@@ -1526,8 +1526,8 @@
           "door_id": "door_1"
         },
         {
-          "from_room": "rect_2",
-          "to_room": "rect_37",
+          "from_room": "rect_37",
+          "to_room": "rect_2",
           "door_id": "door_2"
         },
         {
@@ -1566,13 +1566,13 @@
           "door_id": "door_9"
         },
         {
-          "from_room": "rect_45",
-          "to_room": "rect_10",
+          "from_room": "rect_10",
+          "to_room": "rect_45",
           "door_id": "door_10"
         },
         {
-          "from_room": "rect_46",
-          "to_room": "rect_5",
+          "from_room": "rect_5",
+          "to_room": "rect_46",
           "door_id": "door_11"
         },
         {
@@ -1582,17 +1582,17 @@
         },
         {
           "from_room": "rect_48",
-          "to_room": "rect_42",
+          "to_room": "rect_7",
           "door_id": "door_13"
         },
         {
           "from_room": "rect_48",
-          "to_room": "rect_7",
+          "to_room": "rect_42",
           "door_id": "door_13"
         },
         {
-          "from_room": "rect_42",
-          "to_room": "rect_7",
+          "from_room": "rect_7",
+          "to_room": "rect_42",
           "door_id": "door_13"
         },
         {
@@ -1616,8 +1616,8 @@
           "door_id": "door_17"
         },
         {
-          "from_room": "rect_53",
-          "to_room": "rect_10",
+          "from_room": "rect_10",
+          "to_room": "rect_53",
           "door_id": "door_18"
         },
         {
@@ -1641,18 +1641,18 @@
           "door_id": "door_20"
         },
         {
-          "from_room": "rect_12",
-          "to_room": "rect_56",
+          "from_room": "rect_56",
+          "to_room": "rect_12",
           "door_id": "door_21"
         },
         {
-          "from_room": "rect_13",
-          "to_room": "rect_57",
+          "from_room": "rect_57",
+          "to_room": "rect_13",
           "door_id": "door_22"
         },
         {
-          "from_room": "rect_13",
-          "to_room": "rect_58",
+          "from_room": "rect_58",
+          "to_room": "rect_13",
           "door_id": "door_23"
         },
         {
@@ -1661,9 +1661,14 @@
           "door_id": "door_24"
         },
         {
-          "from_room": "rect_19",
-          "to_room": "rect_60",
+          "from_room": "rect_60",
+          "to_room": "rect_19",
           "door_id": "door_25"
+        },
+        {
+          "from_room": "rect_55",
+          "to_room": "rect_61",
+          "door_id": "door_26"
         },
         {
           "from_room": "rect_55",
@@ -1671,13 +1676,8 @@
           "door_id": "door_26"
         },
         {
-          "from_room": "rect_55",
-          "to_room": "rect_61",
-          "door_id": "door_26"
-        },
-        {
-          "from_room": "rect_20",
-          "to_room": "rect_61",
+          "from_room": "rect_61",
+          "to_room": "rect_20",
           "door_id": "door_26"
         },
         {
@@ -1686,34 +1686,24 @@
           "door_id": "door_27"
         },
         {
-          "from_room": "rect_28",
-          "to_room": "rect_63",
+          "from_room": "rect_63",
+          "to_room": "rect_28",
           "door_id": "door_28"
         },
         {
-          "from_room": "rect_64",
+          "from_room": "rect_29",
           "to_room": "rect_74",
           "door_id": "door_29"
         },
         {
-          "from_room": "rect_64",
-          "to_room": "rect_29",
+          "from_room": "rect_29",
+          "to_room": "rect_64",
           "door_id": "door_29"
         },
         {
           "from_room": "rect_74",
-          "to_room": "rect_29",
+          "to_room": "rect_64",
           "door_id": "door_29"
-        },
-        {
-          "from_room": "rect_25",
-          "to_room": "rect_65",
-          "door_id": "door_30"
-        },
-        {
-          "from_room": "rect_25",
-          "to_room": "rect_60",
-          "door_id": "door_30"
         },
         {
           "from_room": "rect_65",
@@ -1721,14 +1711,14 @@
           "door_id": "door_30"
         },
         {
-          "from_room": "rect_66",
-          "to_room": "rect_26",
-          "door_id": "door_31"
+          "from_room": "rect_65",
+          "to_room": "rect_25",
+          "door_id": "door_30"
         },
         {
-          "from_room": "rect_66",
-          "to_room": "rect_61",
-          "door_id": "door_31"
+          "from_room": "rect_60",
+          "to_room": "rect_25",
+          "door_id": "door_30"
         },
         {
           "from_room": "rect_26",
@@ -1736,8 +1726,18 @@
           "door_id": "door_31"
         },
         {
-          "from_room": "rect_67",
-          "to_room": "rect_27",
+          "from_room": "rect_26",
+          "to_room": "rect_66",
+          "door_id": "door_31"
+        },
+        {
+          "from_room": "rect_61",
+          "to_room": "rect_66",
+          "door_id": "door_31"
+        },
+        {
+          "from_room": "rect_27",
+          "to_room": "rect_67",
           "door_id": "door_32"
         },
         {
@@ -1746,8 +1746,8 @@
           "door_id": "door_33"
         },
         {
-          "from_room": "rect_69",
-          "to_room": "rect_29",
+          "from_room": "rect_29",
+          "to_room": "rect_69",
           "door_id": "door_34"
         },
         {
@@ -1856,6 +1856,545 @@
         {
           "from_room": "rect_3",
           "to_room": "rect_48",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_9",
+          "to_room": "rect_16",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_9",
+          "to_room": "rect_17",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_9",
+          "to_room": "rect_4",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_9",
+          "to_room": "rect_52",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_16",
+          "to_room": "rect_12",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_16",
+          "to_room": "rect_51",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_21",
+          "to_room": "rect_12",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_21",
+          "to_room": "rect_56",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_22",
+          "to_room": "rect_7",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_22",
+          "to_room": "rect_13",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_22",
+          "to_room": "rect_14",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_22",
+          "to_room": "rect_23",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_22",
+          "to_room": "rect_49",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_22",
+          "to_room": "rect_57",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_32",
+          "to_room": "rect_27",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_32",
+          "to_room": "rect_67",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_34",
+          "to_room": "rect_29",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_34",
+          "to_room": "rect_64",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_34",
+          "to_room": "rect_69",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_0",
+          "to_room": "rect_36",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_2",
+          "to_room": "rect_4",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_2",
+          "to_room": "rect_5",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_2",
+          "to_room": "rect_10",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_2",
+          "to_room": "rect_39",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_2",
+          "to_room": "rect_45",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_4",
+          "to_room": "rect_8",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_4",
+          "to_room": "rect_44",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_5",
+          "to_room": "rect_10",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_5",
+          "to_room": "rect_11",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_5",
+          "to_room": "rect_18",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_5",
+          "to_room": "rect_40",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_5",
+          "to_room": "rect_45",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_5",
+          "to_room": "rect_53",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_6",
+          "to_room": "rect_12",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_6",
+          "to_room": "rect_15",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_6",
+          "to_room": "rect_47",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_6",
+          "to_room": "rect_73",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_7",
+          "to_room": "rect_13",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_7",
+          "to_room": "rect_14",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_8",
+          "to_room": "rect_15",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_8",
+          "to_room": "rect_43",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_10",
+          "to_room": "rect_18",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_10",
+          "to_room": "rect_19",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_10",
+          "to_room": "rect_54",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_11",
+          "to_room": "rect_20",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_11",
+          "to_room": "rect_59",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_13",
+          "to_room": "rect_23",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_13",
+          "to_room": "rect_48",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_14",
+          "to_room": "rect_31",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_14",
+          "to_room": "rect_49",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_15",
+          "to_room": "rect_50",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_18",
+          "to_room": "rect_24",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_18",
+          "to_room": "rect_30",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_18",
+          "to_room": "rect_46",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_18",
+          "to_room": "rect_53",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_19",
+          "to_room": "rect_25",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_20",
+          "to_room": "rect_26",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_23",
+          "to_room": "rect_27",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_23",
+          "to_room": "rect_28",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_23",
+          "to_room": "rect_33",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_23",
+          "to_room": "rect_58",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_23",
+          "to_room": "rect_63",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_23",
+          "to_room": "rect_75",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_24",
+          "to_room": "rect_29",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_24",
+          "to_room": "rect_59",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_24",
+          "to_room": "rect_64",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_25",
+          "to_room": "rect_30",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_26",
+          "to_room": "rect_31",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_27",
+          "to_room": "rect_62",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_28",
+          "to_room": "rect_33",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_29",
+          "to_room": "rect_30",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_31",
+          "to_room": "rect_66",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_31",
+          "to_room": "rect_72",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_33",
+          "to_room": "rect_68",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_49",
+          "to_room": "rect_72",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_59",
+          "to_room": "rect_74",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_69",
+          "to_room": "rect_74",
           "inferred": true,
           "connection_type": "spatial_adjacency",
           "confidence": 0.5

@@ -1,498 +1,207 @@
-# DnD 地牢地图格式适配器
+# Dungeon Adapter
 
-本项目旨在提供一个工具，用于将各种来源的 DnD (Dungeons & Dragons) 地牢地图 JSON 文件转换为统一的、可分析的格式。
+一个基于科学理论的地牢设计质量评估和格式适配系统，将地牢设计从艺术创作转化为可量化、可评估、可改进的工程过程。
 
-## 🏗️ 插件式架构
+## 🎯 项目特色
 
-本项目采用模块化的插件式架构，使得添加新的地图格式支持变得非常简单。每个适配器都是独立的模块，可以轻松地添加、移除或修改，而不会影响其他功能。
+- **科学化评估**: 基于学术理论的多维度质量评估体系
+- **标准化格式**: 统一的地牢数据格式，支持多种格式转换
+- **实用化工具**: 提供快速评估脚本和设计指导
+- **可视化分析**: 支持地牢结构的可视化展示
 
-### 架构概览
+## 📚 核心文档
 
-```
-src/
-├── adapter_manager.py    # 适配器管理器（核心）
-├── schema.py            # 统一数据格式定义
-├── visualizer.py        # 可视化工具
-├── cli.py              # 命令行界面
-└── adapters/           # 适配器插件目录
-    ├── __init__.py
-    ├── base.py         # 适配器基类（接口定义）
-    ├── watabou_adapter.py
-    ├── dungeondraft_adapter.py
-    └── vtt_adapter.py
-```
+### 方法论文档
+- **[完整方法论](dungeon_adapter_methodology.md)**: 详细的技术架构、评估理论和算法实现
+- **[实用指南](dungeon_design_practical_guide.md)**: 具体的设计原则、操作指导和最佳实践
+- **[视觉平衡理论](aesthetic_balance_theory.md)**: 基于格式塔心理学的美学评估理论
 
-## 可视化功能
+### 评估指标
+- **[质量指标总结](quality_metrics_summary.md)**: 7个核心评估指标的详细说明
+- **[基准测试标准](benchmark_standards.py)**: 标准测试集和基准定义
 
-新增了可视化功能，可以将统一格式的 JSON 文件渲染成一张包含房间、走廊和门的俯瞰图，方便快速预览转换结果。
+## 🚀 快速开始
 
 ### 安装依赖
-
 ```bash
 pip install -r requirements.txt
 ```
 
-### 使用方法
-
-在转换时自动生成预览图：
+### 快速评估
 ```bash
-# 转换单个文件并生成预览图
-python src/cli.py convert samples/source_format_1/watabou_example.json output/ --visualize
+# 基本评估
+python quick_assess.py dungeon.json
 
-# 转换整个目录并为每个文件生成预览图
-python src/cli.py convert-dir samples/source_format_1/ output/ --visualize
+# 详细评估
+python quick_assess.py dungeon.json --detailed
+
+# 生成可视化
+python quick_assess.py dungeon.json --visualize
 ```
-预览图将与转换后的 JSON 文件保存在同一目录，后缀为 `.png`。
 
-直接对已有的统一格式 JSON 文件生成预览图：
+### 批量评估
 ```bash
-python src/cli.py visualize output/test_watabou_example.json
+python src/batch_assess.py --input input_dir/ --output results/
 ```
 
-## 功能特性
+## 📊 评估体系
 
-- 🔄 **多格式支持**: 支持 Watabou、DungeonDraft、Foundry VTT、Roll20 等多种格式
-- 🤖 **自动格式检测**: 智能识别输入文件的格式类型
-- 📊 **统一输出格式**: 所有转换结果都采用标准化的 JSON 格式
-- 🛠️ **命令行工具**: 提供便捷的命令行界面
-- 🧪 **完整测试**: 包含全面的测试套件
-- 📝 **详细日志**: 提供转换过程的详细日志信息
-- 🔌 **插件式架构**: 模块化设计，易于扩展新格式支持
+### 三维评估框架
+- **结构类 (40%)**: 可达性、门分布、度方差、环路比例
+- **游戏性类 (40%)**: 路径多样性、宝藏怪物分布、死胡同比例
+- **美术类 (20%)**: 视觉平衡
 
-### 📊 质量评估
-- **可达性分析**: 评估房间间的连通性
-- **度差分析**: 分析房间连接数的分布
-- **路径多样性**: 计算可选路径的数量
-- **回环率分析**: 评估地图的探索深度
-- **门分布一致性**: 分析入口分布的合理性
-- **综合评分**: 基于规则的质量评分系统
+### 理论基础
+- **游戏设计理论**: Schell (2008), Fullerton (2014)
+- **空间认知理论**: Lynch (1960), Kaplan & Kaplan (1982)
+- **格式塔心理学**: Wertheimer (1923), Arnheim (1954)
+- **网络科学**: Newman (2010), Barabási (2016)
 
-## 支持的格式
+## 🛠️ 主要功能
 
-| 格式名称 | 描述 | 检测特征 |
-|---------|------|----------|
-| `watabou_dungeon` | Watabou 地牢生成器 | 包含 `rects`, `doors`, `title` 字段 |
-| `dungeondraft` | DungeonDraft 地图 | 包含 `version` 和 `elements` 字段 |
-| `vtt` | 通用VTT格式（Foundry VTT、Roll20等） | 包含 `scene.walls` 或 `map.tokens` 结构 |
-| `generic_grid` | 通用网格格式 | 包含 `grid` 和 `cells` 字段 |
+### 格式适配
+- **Watabou**: 程序生成地牢格式
+- **DungeonDraft**: 手动设计工具格式
+- **One Page Dungeon**: 创意地牢格式
+- **FiMapElites**: 进化算法生成格式
 
-## 统一数据格式 (v1.0.0)
+### 质量评估
+- **可达性分析**: 基于图论的连通性评估
+- **门分布评估**: 基于空间拓扑学的合理性分析
+- **路径多样性**: 基于选择理论的探索性评估
+- **视觉平衡**: 基于格式塔原则的美学评估
 
-这是我们定义的地牢地图标准格式。
+### 空间推断
+- **自动连接推断**: 基于空间邻接关系的连接补全
+- **门位置推断**: 基于建筑空间设计原则的位置确定
 
-```json
-{
-  "header": {
-    "schemaName": "dnd-dungeon-unified",
-    "schemaVersion": "1.0.0",
-    "name": "我的地牢",
-    "author": "AI 助手",
-    "description": "一个用于分析的地牢地图。",
-    "grid": {
-      "type": "square",
-      "size": 5,
-      "unit": "ft"
-    }
-  },
-  "levels": [
-    {
-      "id": "level_1",
-      "name": "第一层",
-      "map": {
-        "width": 50,
-        "height": 50
-      },
-      "rooms": [
-        {
-          "id": "room_1",
-          "shape": "rectangle",
-          "position": { "x": 10, "y": 10 },
-          "size": { "width": 10, "height": 8 },
-          "name": "入口大厅",
-          "description": "一个满是灰尘雕像的大厅。"
-        }
-      ],
-      "doors": [
-        {
-          "id": "door_1",
-          "position": { "x": 20, "y": 14 },
-          "connects": ["room_1", "corridor_1"]
-        }
-      ],
-      "corridors": [
-        {
-          "id": "corridor_1",
-          "path": [
-            { "x": 20, "y": 14 },
-            { "x": 25, "y": 14 }
-          ],
-          "width": 2
-        },
-        {
-          "id": "corridor_2",
-          "shape": "rectangle",
-          "position": { "x": 30, "y": 20 },
-          "size": { "width": 5, "height": 10 }
-        }
-      ]
-    }
-  ]
-}
+## 📈 使用示例
+
+### 评估结果示例
+```
+📊 地牢质量评估报告
+文件: dungeon.json
+总体评分: 0.750 (B)
+
+📈 分类评分:
+  结构类: 0.840
+  游戏性类: 0.720
+  美术类: 0.650
+
+💡 改进建议:
+  1. 增加路径多样性，提供更多探索选择
+  2. 优化宝藏和怪物分布，确保平衡密度
+  3. 减少死胡同，改善探索流程
 ```
 
-## 安装和使用
-
-### 环境要求
-
-- Python 3.7+
-- 依赖包：matplotlib（用于可视化）
-
-### 快速开始
-
-1. **克隆项目**
-   ```bash
-   git clone <repository-url>
-   cd dungeon-adapter
-   ```
-
-2. **安装依赖**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **运行测试**
-   ```bash
-   python test_adapter.py
-   ```
-
-4. **使用命令行工具**
-   ```bash
-   # 转换单个文件
-   python src/cli.py convert samples/source_format_1/onepage_example.json output/
-   
-   # 转换整个目录
-   python src/cli.py convert-dir samples/source_format_1/ output/
-   
-   # 检测文件格式
-   python src/cli.py detect samples/source_format_1/onepage_example.json
-   
-   # 列出支持的格式
-   python src/cli.py list-formats
-   ```
-
-### 编程接口
-
+### 设计指导
 ```python
-from src.adapter_manager import AdapterManager
+# 检查可达性
+def check_accessibility(dungeon):
+    reachable = bfs_from_entrance(dungeon)
+    accessibility = len(reachable) / total_rooms
+    
+    if accessibility < 0.6:
+        add_missing_connections(dungeon)
+    elif accessibility > 0.95:
+        add_exploration_branches(dungeon)
 
-# 创建适配器管理器
-manager = AdapterManager()
-
-# 加载源数据
-with open('your_dungeon.json', 'r') as f:
-    source_data = json.load(f)
-
-# 自动检测格式并转换
-unified_data = manager.convert(source_data)
-
-# 或者指定格式
-unified_data = manager.convert(source_data, 'onepage_dungeon')
-
-# 保存结果
-with open('output.json', 'w') as f:
-    json.dump(unified_data, f, indent=2)
+# 优化门分布
+def optimize_door_distribution(dungeon):
+    door_counts = count_doors_per_room(dungeon)
+    mean_doors = np.mean(door_counts)
+    
+    if mean_doors < 1.5:
+        add_connections(dungeon)
+    elif mean_doors > 3.0:
+        simplify_connections(dungeon)
 ```
 
-## 目录结构
+## 🎮 设计原则
+
+### 平衡性原则
+- **探索与挑战**: 在自由探索和适度挑战间找到平衡
+- **复杂度与可理解性**: 保持足够的复杂度但确保玩家能够理解
+- **奖励与风险**: 高风险区域提供高回报，低风险区域提供基础资源
+
+### 连通性原则
+- **避免孤立**: 确保所有房间都可以到达
+- **适度连接**: 每个房间1.5-3个门
+- **层次结构**: 主要路径清晰，次要路径提供探索选择
+
+### 美学原则
+- **视觉平衡**: 房间大小和位置分布均匀
+- **主题一致**: 保持设计风格的一致性
+- **焦点突出**: 重要区域（如Boss房间）位置突出
+
+## 📋 项目结构
 
 ```
 dungeon-adapter/
-├── src/                    # 源代码
-│   ├── adapter_manager.py  # 适配器管理器
-│   ├── schema.py          # 数据格式定义
-│   ├── visualizer.py      # 可视化工具
-│   ├── cli.py            # 命令行工具
-│   └── adapters/         # 适配器插件目录
-│       ├── __init__.py
-│       ├── base.py       # 适配器基类
-│       ├── watabou_adapter.py
-│       ├── dungeondraft_adapter.py
-│       └── vtt_adapter.py
-├── samples/               # 示例文件
-│   └── source_format_1/   # 各种格式的示例
-│       ├── onepage_example.json
-│       ├── watabou_example.json
-│       ├── dungeondraft_example.json
-│       └── vtt_example.json
-├── output/                # 转换后的文件
-├── test_adapter.py        # 测试脚本
-└── README.md             # 项目说明
+├── src/                          # 核心源代码
+│   ├── adapters/                 # 格式适配器
+│   ├── quality_rules/            # 质量评估规则
+│   ├── quality_assessor.py       # 质量评估器
+│   ├── spatial_inference.py      # 空间推断引擎
+│   └── visualizer.py             # 可视化引擎
+├── tests/                        # 测试文件
+├── output/                       # 输出结果
+├── samples/                      # 样例数据
+├── docs/                         # 文档
+└── scripts/                      # 实用脚本
 ```
 
-## 使用示例
+## 🔬 基准测试
 
-### 示例 1: One Page Dungeon 格式
+### 标准测试集
+- **程序生成地牢**: Watabou (100个), DungeonDraft (50个)
+- **手动设计地牢**: One Page Dungeon (30个), 经典模块 (20个)
+- **社区创作**: 高质量社区作品 (50个)
 
-**输入文件** (`onepage_example.json`):
-```json
-{
-  "name": "古老的地下墓穴",
-  "author": "DM助手",
-  "rooms": [
-    {
-      "id": "entrance",
-      "name": "入口大厅",
-      "position": {"x": 10, "y": 15},
-      "size": {"width": 15, "height": 10}
-    }
-  ]
-}
-```
+### 质量基准
+- **A级 (0.8-1.0)**: 优秀设计
+- **B级 (0.6-0.8)**: 良好设计
+- **C级 (0.4-0.6)**: 一般设计
+- **D级 (0.2-0.4)**: 较差设计
+- **F级 (0.0-0.2)**: 需要改进
 
-**转换命令**:
-```bash
-python src/cli.py convert samples/source_format_1/onepage_example.json output/
-```
+## 🤝 贡献指南
 
-### 示例 2: Watabou 格式
-
-**输入文件** (`watabou_example.json`):
-```json
-{
-  "title": "随机生成的地牢",
-  "rects": [
-    {
-      "x": 5,
-      "y": 5,
-      "w": 8,
-      "h": 6
-    }
-  ],
-  "doors": [],
-  "notes": []
-}
-```
-
-**转换命令**:
-```bash
-python src/cli.py convert samples/source_format_1/watabou_example.json output/
-```
-
-### 示例 3: VTT 格式
-
-**输入文件** (`vtt_example.json`):
-```json
-{
-  "scene": {
-    "name": "Ancient Crypt",
-    "walls": [
-      {
-        "id": "wall_1",
-        "c": [100, 100, 300, 100],
-        "ds": 0
-      },
-      {
-        "id": "door_1",
-        "c": [200, 100, 200, 100],
-        "ds": 1,
-        "door": true
-      }
-    ]
-  }
-}
-```
-
-**转换命令**:
-```bash
-python src/cli.py convert samples/source_format_1/vtt_example.json output/
-```
-
-## 🔧 开发新适配器
-
-要添加对新地图格式的支持，请按照以下步骤操作：
-
-### 1. 创建适配器文件
-
-在 `src/adapters/` 目录下创建新的适配器文件，例如 `my_format_adapter.py`：
-
-```python
-import logging
-from typing import Dict, Any, Optional
-
-from src.adapters.base import BaseAdapter
-from src.schema import UnifiedDungeonFormat
-
-logger = logging.getLogger(__name__)
-
-class MyFormatAdapter(BaseAdapter):
-    """适配 MyFormat 地图格式。"""
-    
-    @property
-    def format_name(self) -> str:
-        return "my_format"
-
-    def detect(self, data: Dict[str, Any]) -> bool:
-        """检测是否为 MyFormat 格式。"""
-        # 根据你的格式特征进行检测
-        # 例如：检查特定的字段或结构
-        return 'my_format_signature' in data
-
-    def convert(self, data: Dict[str, Any]) -> Optional[UnifiedDungeonFormat]:
-        """将 MyFormat 格式数据转换为统一格式。"""
-        try:
-            # 创建统一格式对象
-            unified = UnifiedDungeonFormat(
-                name=data.get('name', 'My Format Dungeon'),
-                author=data.get('author', 'Unknown'),
-                description=data.get('description', ''),
-                grid={"type": "square", "size": 5, "unit": "ft"}
-            )
-
-            # 转换房间
-            rooms = []
-            for room_data in data.get('my_rooms', []):
-                rooms.append({
-                    "id": f"room_{room_data.get('id', len(rooms)+1)}",
-                    "shape": "rectangle",
-                    "position": {"x": room_data['x'], "y": room_data['y']},
-                    "size": {"width": room_data['width'], "height": room_data['height']},
-                    "name": room_data.get('name', f"房间 {len(rooms)+1}"),
-                    "description": room_data.get('description', '')
-                })
-
-            # 转换门
-            doors = []
-            for door_data in data.get('my_doors', []):
-                doors.append({
-                    "id": f"door_{len(doors)+1}",
-                    "position": {"x": door_data['x'], "y": door_data['y']},
-                    "connects": door_data.get('connects', [])
-                })
-
-            # 转换走廊
-            corridors = []
-            for corridor_data in data.get('my_corridors', []):
-                corridors.append({
-                    "id": f"corridor_{len(corridors)+1}",
-                    "shape": "rectangle",
-                    "position": {"x": corridor_data['x'], "y": corridor_data['y']},
-                    "size": {"width": corridor_data['width'], "height": corridor_data['height']}
-                })
-
-            # 添加层级
-            unified.levels.append({
-                "id": "level_1",
-                "name": "主层",
-                "map": {"width": data.get('width', 100), "height": data.get('height', 100)},
-                "rooms": rooms,
-                "doors": doors,
-                "corridors": corridors
-            })
-            
-            return unified
-        except Exception as e:
-            logger.error(f"转换 MyFormat 格式时出错: {e}")
-            return None
-```
-
-### 2. 注册适配器
-
-适配器会自动被 `AdapterManager` 发现和加载，无需手动注册。只要你的适配器类继承自 `BaseAdapter` 并放在 `src/adapters/` 目录下，就会被自动识别。
-
-### 3. 测试适配器
-
-创建测试用例来验证你的适配器：
-
-```python
-# 在 test_adapter.py 中添加测试
-def test_my_format_adapter():
-    adapter = MyFormatAdapter()
-    
-    # 测试检测功能
-    test_data = {
-        'my_format_signature': True,
-        'name': '测试地牢',
-        'my_rooms': [
-            {'id': 1, 'x': 10, 'y': 10, 'width': 5, 'height': 5, 'name': '测试房间'}
-        ]
-    }
-    
-    assert adapter.detect(test_data) == True
-    
-    # 测试转换功能
-    result = adapter.convert(test_data)
-    assert result is not None
-    assert result.name == '测试地牢'
-    assert len(result.levels[0]['rooms']) == 1
-```
-
-### 4. 更新文档
-
-在 `README.md` 的"支持的格式"表格中添加你的新格式：
-
-```markdown
-| `my_format` | My Format 地图 | 包含 `my_format_signature` 字段 |
-```
-
-### 适配器开发最佳实践
-
-1. **继承基类**: 确保你的适配器继承自 `BaseAdapter`
-2. **实现必需方法**: 必须实现 `format_name`、`detect` 和 `convert` 方法
-3. **错误处理**: 在 `convert` 方法中使用 try-catch 处理异常
-4. **日志记录**: 使用 logger 记录重要的转换步骤和错误
-5. **数据验证**: 验证输入数据的完整性和有效性
-6. **测试覆盖**: 为你的适配器编写完整的测试用例
-
-## 测试
-
-运行完整的测试套件：
-
-```bash
-python test_adapter.py
-```
-
-测试包括：
-- 格式检测功能
-- 数据转换功能
-- 示例文件处理
-- 统一格式完整性验证
-- 适配器插件加载测试
-
-## 贡献
-
-欢迎提交 Issue 和 Pull Request！
-
-### 开发指南
-
+### 代码贡献
 1. Fork 项目
-2. 创建功能分支 (`git checkout -b feature/amazing-feature`)
-3. 提交更改 (`git commit -m 'Add amazing feature'`)
-4. 推送到分支 (`git push origin feature/amazing-feature`)
+2. 创建功能分支
+3. 提交更改
+4. 推送到分支
 5. 创建 Pull Request
 
-### 贡献新适配器
+### 文档贡献
+- 改进现有文档
+- 添加新的使用示例
+- 翻译文档内容
 
-1. 在 `src/adapters/` 目录下创建新的适配器文件
-2. 继承 `BaseAdapter` 并实现必需的方法
-3. 添加相应的测试用例
-4. 更新文档
-5. 提交 Pull Request
+### 测试贡献
+- 提供测试用例
+- 报告问题和Bug
+- 提供反馈和建议
 
-## 许可证
+## 📄 许可证
 
 本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
 
-## 更新日志
+## 🙏 致谢
 
-### v2.0.0
-- 🏗️ **重构为插件式架构**: 采用模块化设计，支持动态加载适配器
-- 🔌 **新增适配器基类**: 统一的适配器接口，便于扩展
-- 📦 **适配器管理器**: 自动发现和加载所有适配器插件
-- 🧹 **代码清理**: 移除调试代码，优化代码结构
-- 📚 **完善文档**: 添加详细的适配器开发指南
+感谢以下理论基础的贡献者：
+- **游戏设计理论**: Jesse Schell, Tracy Fullerton
+- **空间认知理论**: Kevin Lynch, Stephen Kaplan
+- **格式塔心理学**: Max Wertheimer, Rudolf Arnheim
+- **网络科学**: Mark Newman, Albert-László Barabási
 
-### v1.0.0
-- 初始版本发布
-- 支持 6 种主要格式
-- 提供命令行工具
-- 完整的测试套件 
+## 📞 联系方式
+
+- **GitHub Issues**: 报告问题和请求功能
+- **Discord社区**: 实时讨论和帮助
+- **邮件支持**: 技术问题咨询
+
+---
+
+*Dungeon Adapter - 让地牢设计更科学、更高效、更有趣* 

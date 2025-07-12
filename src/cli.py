@@ -49,13 +49,18 @@ def save_json_file(data: Dict[str, Any], file_path: str) -> bool:
         logger.error(f"Error saving file: {str(e)}")
         return False
 
-def convert_single_file(adapter_manager: AdapterManager, input_path: str, output_path: str, format_name: Optional[str] = None, visualize: bool = False, enable_spatial_inference: bool = True, adjacency_threshold: float = 1.0) -> bool:
+def convert_single_file(adapter_manager: AdapterManager, input_path: str, output_path: str, format_name: Optional[str] = None, visualize: bool = False, enable_spatial_inference: bool = True, adjacency_threshold: float = 1.0, enable_entrance_exit_identification: bool = True) -> bool:
     """转换单个文件"""
     source_data = load_json_file(input_path)
     if not source_data: return False
     
     unified_data = adapter_manager.convert(source_data, format_name, enable_spatial_inference, adjacency_threshold)
     if not unified_data: return False
+    
+    # 入口出口识别（如果启用）
+    if enable_entrance_exit_identification:
+        from src.schema import identify_entrance_exit
+        unified_data = identify_entrance_exit(unified_data)
     
     if not save_json_file(unified_data, output_path): return False
 
@@ -66,7 +71,7 @@ def convert_single_file(adapter_manager: AdapterManager, input_path: str, output
     
     return True
 
-def convert_directory(adapter_manager: AdapterManager, input_dir: str, output_dir: str, format_name: Optional[str] = None, visualize: bool = False, enable_spatial_inference: bool = True, adjacency_threshold: float = 1.0) -> int:
+def convert_directory(adapter_manager: AdapterManager, input_dir: str, output_dir: str, format_name: Optional[str] = None, visualize: bool = False, enable_spatial_inference: bool = True, adjacency_threshold: float = 1.0, enable_entrance_exit_identification: bool = True) -> int:
     """转换目录中的所有JSON文件"""
     input_path = Path(input_dir)
     output_path = Path(output_dir)
@@ -93,6 +98,11 @@ def convert_directory(adapter_manager: AdapterManager, input_dir: str, output_di
         unified_data = adapter_manager.convert(source_data, format_name, enable_spatial_inference, adjacency_threshold)
         if not unified_data:
             continue
+        
+        # 入口出口识别（如果启用）
+        if enable_entrance_exit_identification:
+            from src.schema import identify_entrance_exit
+            unified_data = identify_entrance_exit(unified_data)
         
         # 保存转换后的文件
         output_file = output_path / json_file.name
@@ -265,6 +275,7 @@ def main():
     convert_parser.add_argument('--visualize', action='store_true', help='为转换成功的文件生成可视化PNG图像 / generate visualization PNG image for successfully converted file')
     convert_parser.add_argument('--no-spatial-inference', action='store_true', help='禁用空间推断功能 / disable spatial inference')
     convert_parser.add_argument('--adjacency-threshold', type=float, default=1.0, help='邻接判定阈值 (默认: 1.0) / adjacency threshold (default: 1.0)')
+    convert_parser.add_argument('--no-entrance-exit-identification', action='store_true', help='禁用入口出口识别功能 / disable entrance/exit identification')
     
     # convert-dir 命令
     convert_dir_parser = subparsers.add_parser('convert-dir', help='转换目录中的所有JSON文件 / convert all JSON files in the directory')
@@ -274,6 +285,7 @@ def main():
     convert_dir_parser.add_argument('--visualize', action='store_true', help='为每个转换成功的文件生成可视化PNG图像 / generate visualization PNG image for each successfully converted file')
     convert_dir_parser.add_argument('--no-spatial-inference', action='store_true', help='禁用空间推断功能 / disable spatial inference')
     convert_dir_parser.add_argument('--adjacency-threshold', type=float, default=1.0, help='邻接判定阈值 (默认: 1.0) / adjacency threshold (default: 1.0)')
+    convert_dir_parser.add_argument('--no-entrance-exit-identification', action='store_true', help='禁用入口出口识别功能 / disable entrance/exit identification')
     
     # detect 命令
     detect_parser = subparsers.add_parser('detect', help='检测文件格式 / detect file format')
@@ -335,14 +347,14 @@ def main():
                 os.makedirs(output_path, exist_ok=True)
             output_path = os.path.join(output_path, os.path.basename(input_path))
         
-        if convert_single_file(adapter_manager, input_path, output_path, args.format, args.visualize, not args.no_spatial_inference, args.adjacency_threshold):
+        if convert_single_file(adapter_manager, input_path, output_path, args.format, args.visualize, not args.no_spatial_inference, args.adjacency_threshold, not args.no_entrance_exit_identification):
             print(f"✓ Successfully converted: {output_path}")
         else:
             print(f"✗ Failed to convert")
             sys.exit(1)
     
     elif args.command == 'convert-dir':
-        success_count = convert_directory(adapter_manager, args.input, args.output, args.format, args.visualize, not args.no_spatial_inference, args.adjacency_threshold)
+        success_count = convert_directory(adapter_manager, args.input, args.output, args.format, args.visualize, not args.no_spatial_inference, args.adjacency_threshold, not args.no_entrance_exit_identification)
         print(f"\nConversion completed: {success_count} files successfully converted")
     
     elif args.command == 'detect':

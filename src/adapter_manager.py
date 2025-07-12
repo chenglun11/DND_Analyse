@@ -1,123 +1,124 @@
 import logging
+import json
 import os
 import sys
-from pathlib import Path
-from typing import Dict, Any, Optional, List
-import json
+import pkgutil
 import importlib
+from typing import Dict, Any, Optional, List
+from pathlib import Path
 
-# Add project root to path
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from src.adapters.base import BaseAdapter
+from .schema import UnifiedDungeonFormat, identify_entrance_exit
+from .spatial_inference import auto_infer_connections
 
 logger = logging.getLogger(__name__)
 
 class AdapterManager:
-    """
-    自动发现、加载和管理所有适配器插件。
-    """
+    """适配器管理器，负责加载和管理各种格式的适配器"""
+    
     def __init__(self):
-        self.adapters: Dict[str, BaseAdapter] = {}
+        self.adapters = {}
         self._load_adapters()
-
+    
     def _load_adapters(self):
-        """动态加载所有适配器插件"""
+        """动态加载所有适配器"""
         adapters_dir = Path(__file__).parent / "adapters"
         
-        # 确保适配器目录存在
-        if not adapters_dir.exists():
-            logger.error(f"Adapters directory not found: {adapters_dir}")
-            return
-        
-        # 遍历适配器目录
-        for adapter_file in adapters_dir.glob("*.py"):
-            if adapter_file.name in ["__init__.py", "base.py"]:
-                continue
-            
-            try:
-                # 动态导入适配器模块
-                module_name = f"src.adapters.{adapter_file.stem}"
-                module = importlib.import_module(module_name)
-                
-                # 查找适配器类
-                for attr_name in dir(module):
-                    attr = getattr(module, attr_name)
-                    if (isinstance(attr, type) and 
-                        issubclass(attr, BaseAdapter) and 
-                        attr != BaseAdapter):
-                        # 实例化适配器
-                        adapter = attr()
-                        self.adapters[adapter.format_name] = adapter
-                        logger.info(f"Loaded adapter: {adapter.format_name}")
-                        break
-                        
-            except Exception as e:
-                logger.error(f"Failed to load adapter from {adapter_file}: {e}")
-        
-        logger.info(f"Successfully Process {len(self.adapters)} Adapters: {list(self.adapters.keys())}")
-
+        try:
+            for _, module_name, _ in pkgutil.iter_modules([str(adapters_dir)]):
+                if module_name == "__init__":
+                    continue
+                    
+                try:
+                    module = importlib.import_module(f"src.adapters.{module_name}")
+                    
+                    # 查找适配器类
+                    for attr_name in dir(module):
+                        attr = getattr(module, attr_name)
+                        if (hasattr(attr, '__bases__') and 
+                            any('BaseAdapter' in str(base) for base in attr.__bases__) and
+                            attr_name != 'BaseAdapter'):
+                            
+                            adapter_instance = attr()
+                            format_name = adapter_instance.format_name
+                            self.adapters[format_name] = adapter_instance
+                            logger.info(f"Loaded adapter: {format_name}")
+                            
+                except Exception as e:
+                    logger.warning(f"Failed to load adapter {module_name}: {e}")
+                    
+        except Exception as e:
+            logger.error(f"Error loading adapters: {e}")
+    
+    def get_supported_formats(self) -> List[str]:
+        """获取所有支持的格式名称"""
+        return list(self.adapters.keys())
+    
     def detect_format(self, data: Dict[str, Any]) -> Optional[str]:
-        """遍历所有适配器，找到第一个能成功检测格式的。"""
+        """自动检测数据格式"""
         for format_name, adapter in self.adapters.items():
             try:
                 if adapter.detect(data):
-                    logger.info(f"Auto Detect Format: {format_name}")
                     return format_name
             except Exception as e:
-                logger.warning(f"Adapter {format_name} error when detecting: {e}")
-        logger.warning("Failed to auto detect any known format.")
+                logger.warning(f"Error detecting format {format_name}: {e}")
+                continue
         return None
-
-    def convert(self, data: Dict[str, Any], format_name: Optional[str] = None, enable_spatial_inference: bool = True, adjacency_threshold: float = 1.0) -> Optional[Dict[str, Any]]:
+    
+    def convert(self, data: Dict[str, Any], format_name: Optional[str] = None, 
+                enable_spatial_inference: bool = True, adjacency_threshold: float = 1.0) -> Optional[Dict[str, Any]]:
         """
-        转换数据为统一格式
+        转换数据到统一格式
         
         Args:
             data: 源数据
-            format_name: 指定格式名称（可选，会自动检测）
+            format_name: 指定格式名称，如果为None则自动检测
             enable_spatial_inference: 是否启用空间推断
             adjacency_threshold: 邻接判定阈值
             
         Returns:
-            转换后的统一格式数据，失败返回None
+            转换后的统一格式数据，如果转换失败返回None
         """
         try:
-            # 确定格式
+            # 1. 格式检测
             if format_name is None:
                 format_name = self.detect_format(data)
                 if format_name is None:
-                    logger.error("Unable to determine source file format.")
+                    logger.error("无法检测数据格式")
                     return None
-            
-            # 获取适配器
-            adapter = self.adapters.get(format_name)
-            if adapter is None:
-                logger.error(f"Unsupported format: {format_name}")
+            elif format_name not in self.adapters:
+                logger.error(f"不支持的格式: {format_name}")
                 return None
             
-            # 使用带空间推断的转换方法
-            unified_data = adapter.convert_with_inference(data, enable_spatial_inference, adjacency_threshold)
+            # 2. 数据转换
+            adapter = self.adapters[format_name]
+            unified_data = adapter.convert(data)
             if unified_data is None:
-                logger.error("Conversion failed")
+                logger.error(f"格式 {format_name} 转换失败")
                 return None
             
-            # 转换为字典格式
-            result = unified_data.to_dict()
-            
-            # 记录空间推断使用情况
+            # 3. 空间推断（如果需要）
             if enable_spatial_inference:
-                inference_used = any(level.get('connections_inferred', False) or level.get('doors_inferred', False) 
-                                   for level in result.get('levels', []))
-                if inference_used:
-                    logger.info(f"Spatial inference applied to {format_name} format conversion")
+                # 保证传递的是dict
+                if isinstance(unified_data, UnifiedDungeonFormat):
+                    enhanced_data = auto_infer_connections(unified_data.to_dict(), adjacency_threshold)
+                else:
+                    enhanced_data = auto_infer_connections(unified_data, adjacency_threshold)
+                if enhanced_data != unified_data:
+                    logger.info("空间推断完成，自动补全连接信息")
+                    unified_data = enhanced_data
             
-            return result
+            # 4. 入口出口识别
+            if isinstance(unified_data, UnifiedDungeonFormat):
+                unified_data = identify_entrance_exit(unified_data.to_dict())
+            else:
+                unified_data = identify_entrance_exit(unified_data)
             
+            # 5. 转换为字典格式
+            if isinstance(unified_data, UnifiedDungeonFormat):
+                return unified_data.to_dict()
+            else:
+                return unified_data
+                
         except Exception as e:
-            logger.error(f"Conversion error: {e}")
-            return None
-
-    def get_supported_formats(self) -> List[str]:
-        """返回所有已加载的适配器格式名称列表。"""
-        return list(self.adapters.keys()) 
+            logger.error(f"转换过程中发生错误: {e}")
+            return None 

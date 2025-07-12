@@ -11,10 +11,9 @@ logger = logging.getLogger(__name__)
 class SpatialInferenceEngine:
     """空间邻接推断引擎"""
     
-    def __init__(self, adjacency_threshold: float = 1.0):
+    def __init__(self, adjacency_threshold: float = 2.5):
         """
         初始化推断引擎
-        
         Args:
             adjacency_threshold: 邻接判定阈值，允许房间间的最小间隙
         """
@@ -40,7 +39,8 @@ class SpatialInferenceEngine:
                 pair_key = tuple(sorted([room_a['id'], room_b['id']]))
                 if pair_key in seen_pairs:
                     continue
-                if self._are_rooms_adjacent(room_a, room_b):
+                adjacent = self._are_rooms_adjacent(room_a, room_b)
+                if adjacent:
                     # 连接
                     connection = {
                         'from_room': room_a['id'],
@@ -112,32 +112,19 @@ class SpatialInferenceEngine:
                     for conn in connections:
                         pair = tuple(sorted([conn['from_room'], conn['to_room']]))
                         existing_connection_pairs.add(pair)
-                    
-                    # 添加推断的连接（如果不存在），并限制数量
+                    # 不再限制最大推断连接数
                     added_count = 0
-                    max_additional_connections = min(10, len(all_nodes))  # 减少最大连接数
-                    
-                    # 按置信度排序，优先添加高质量的连接
-                    sorted_connections = sorted(inferred_connections, 
-                                              key=lambda x: x.get('confidence', 0), 
-                                              reverse=True)
-                    
-                    for conn in sorted_connections:
-                        if added_count >= max_additional_connections:
-                            break
+                    for conn in inferred_connections:
                         pair = tuple(sorted([conn['from_room'], conn['to_room']]))
                         if pair not in existing_connection_pairs:
-                            # 降低置信度阈值
                             if conn.get('confidence', 0) > 0.1:
                                 connections.append(conn)
                                 existing_connection_pairs.add(pair)
                                 added_count += 1
-                    
                     if added_count > 0:
                         level['connections'] = connections
                         level['connections_inferred'] = True
                         logger.info(f"Added {added_count} inferred connections to level {level.get('id', 'unknown')}")
-                
                 if (not doors or len(doors) == 0) and inferred_doors:
                     level['doors'] = inferred_doors
                     level['doors_inferred'] = True
