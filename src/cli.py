@@ -11,11 +11,12 @@ from typing import List, Optional, Dict, Any
 import json
 import logging
 
+
 # Add project root to path to allow running as a script
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.adapter_manager import AdapterManager
-from src.visualizer import visualize_dungeon, visualize_dungeon_outline
+from src.visualizer import visualize_dungeon
 from src.quality_assessor import DungeonQualityAssessor
 
 # 设置日志
@@ -125,7 +126,9 @@ def detect_format(adapter_manager: AdapterManager, file_path: str) -> str:
     detected_format = adapter_manager.detect_format(source_data)
     return detected_format if detected_format else "Unknown"
 
-def visualize_file(input_path: str, output_path: Optional[str] = None, outline: bool = False, show_room_ids: bool = True, show_corridor_ids: bool = True, show_grid: bool = True, show_game_elements: bool = True):
+# 合并visualize相关命令和实现，只保留全细节可视化
+# 删除outline等简化模式及相关参数，命令行只保留一个visualize命令
+def visualize_file(input_path: str, output_path: Optional[str] = None, show_room_ids: bool = True, show_corridor_ids: bool = True, show_grid: bool = True, show_game_elements: bool = True):
     """为指定的统一格式JSON文件生成可视化图像（默认显示所有细节）"""
     print(f"Generating visualization for {input_path}...")
     unified_data = load_json_file(input_path)
@@ -136,110 +139,65 @@ def visualize_file(input_path: str, output_path: Optional[str] = None, outline: 
     if not output_path:
         output_path = str(Path(input_path).with_suffix('.png'))
     
-    if outline:
-        # 只画外接矩形和grid
-        from src.visualizer import visualize_dungeon_outline
-        visualize_dungeon_outline(unified_data, output_path, show_room_ids=False, show_corridor_ids=True, show_grid=True)
-    else:
-        # 默认画所有细节
-        from src.visualizer import visualize_dungeon
-        visualize_dungeon(unified_data, output_path, show_room_ids=show_room_ids, show_grid=show_grid, show_game_elements=show_game_elements)
+    # 默认画所有细节
+    from src.visualizer import visualize_dungeon
+    visualize_dungeon(unified_data, output_path, show_room_ids=show_room_ids, show_grid=show_grid, show_game_elements=show_game_elements)
 
-def export_polygon_file(input_path: str, output_path: Optional[str] = None):
-    """为指定的统一格式JSON文件导出polygon格式（PNG）"""
-    print(f"Exporting polygon format for {input_path}...")
-    unified_data = load_json_file(input_path)
-    if not unified_data:
-        print(f"✗ Failed to load file: {input_path}")
-        return
-
-    if not output_path:
-        output_path = str(Path(input_path).with_suffix('.png'))
-    
-    from src.visualizer import export_polygon_format
-    if export_polygon_format(unified_data, output_path):
-        print(f"✓ Polygon format exported to: {output_path}")
-    else:
-        print(f"✗ Failed to export polygon format")
-
-def convert_file(input_file: str, output_file: str, format_type: Optional[str] = None) -> bool:
-    """转换文件"""
-    try:
-        # 读取输入文件
-        with open(input_file, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-        
-        # 获取适配器管理器
-        manager = AdapterManager()
-        
-        # 转换数据
-        result = manager.convert(data, format_type)
-        if not result:
-            logger.error("Convert failed")
-            return False
-        
-        # 保存结果
-        with open(output_file, 'w', encoding='utf-8') as f:
-            json.dump(result, f, ensure_ascii=False, indent=2)
-        
-        logger.info(f"✓ Successfully converted: {output_file}")
-        return True
-        
-    except Exception as e:
-        logger.error(f"Error: {e}")
-        return False
-
+# 合并/精简assess_quality相关实现，只保留一套评估报告输出逻辑
 def assess_quality(input_file: str, enable_spatial_inference: bool = True, adjacency_threshold: float = 1.0) -> bool:
-    """评估地图质量"""
+    """评估地图质量，并自动保存详细报告到output/reports"""
+    import os
+    import json
     try:
         # 读取输入文件
         with open(input_file, 'r', encoding='utf-8') as f:
             dungeon_data = json.load(f)
-        
         # 初始化质量评估器
         assessor = DungeonQualityAssessor(
             enable_spatial_inference=enable_spatial_inference,
             adjacency_threshold=adjacency_threshold
         )
-        
         # 执行评估
         result = assessor.assess_quality(dungeon_data)
-        
         # 输出评估报告
         print("=" * 50)
         print("Dungeon Map Quality Assessment Report")
         print("=" * 50)
         print(f"\nOverall Score: {result['overall_score']:.3f}")
         print(f"Grade: {result['grade']}")
-        
         if result.get('spatial_inference_used'):
             print(f"\nSpatial Inference: Enabled (Threshold: {adjacency_threshold})")
-        
         print(f"\nDetailed Metrics:")
         for metric, score in result['scores'].items():
             print(f"  {metric}: {score:.3f}")
-        
         print(f"\nImprovements:")
         for i, rec in enumerate(result['recommendations'], 1):
             print(f"  {i}. {rec}")
         print("=" * 50)
-        
+        # 自动保存详细报告
+        report_dir = "output/reports"
+        os.makedirs(report_dir, exist_ok=True)
+        base_name = os.path.splitext(os.path.basename(input_file))[0]
+        report_path = os.path.join(report_dir, f"{base_name}_report.json")
+        with open(report_path, "w", encoding="utf-8") as f:
+            json.dump(result, f, ensure_ascii=False, indent=2)
+        print(f"详细评估报告已保存到: {report_path}")
         return True
     except Exception as e:
         logger.error(f"Assessment failed: {e}")
         return False
 
-def batch_assess(input_dir: str, output_file: str, enable_spatial_inference: bool = True, adjacency_threshold: float = 1.0):
+def batch_assess(input_dir: str, output_file: str, enable_spatial_inference: bool = True, adjacency_threshold: float = 1.0, timeout_per_file: int = 30):
     """批量评估地图质量"""
     try:
         from src.batch_assess import batch_assess_quality
-        batch_assess_quality(input_dir, output_file, enable_spatial_inference, adjacency_threshold)
+        batch_assess_quality(input_dir, output_file, enable_spatial_inference, adjacency_threshold, timeout_per_file)
         logger.info(f"Batch assessment completed: {output_file}")
     except Exception as e:
         logger.error(f"Batch assessment failed: {e}")
         sys.exit(1)
 
-# ======= 移除 click assess 命令，全部用 argparse 实现 =======
+# ======= argparse 实现 =======
 def main():
     parser = argparse.ArgumentParser(
         description="DnD Dungeon JSON Adapter - Convert various dungeon formats to unified format",
@@ -294,25 +252,18 @@ def main():
     # list-formats 命令
     subparsers.add_parser('list-formats', help='列出支持的格式 / list supported formats')
 
-    # New 'visualize' command
+    # 'visualize' command
     visualize_parser = subparsers.add_parser('visualize', help='为统一格式的JSON文件创建可视化图像 / create visualization image for unified JSON file')
     visualize_parser.add_argument('input', help='输入的统一格式JSON文件路径 / input unified JSON file path')
     visualize_parser.add_argument('output', nargs='?', default=None, help='输出的PNG图像文件路径 (可选) / output PNG image file path (optional)')
-    visualize_parser.add_argument('--outline', action='store_true', default=False, help='只画外框和grid / only draw bounding box and grid')
     visualize_parser.add_argument('--no-room-ids', action='store_true', default=False, help='不显示房间ID / do not show room ids')
     visualize_parser.add_argument('--no-corridor-ids', action='store_true', default=False, help='不显示走廊ID / do not show corridor ids')
     visualize_parser.add_argument('--no-grid', action='store_true', default=False, help='不显示grid / do not show grid')
     visualize_parser.add_argument('--no-game-elements', action='store_true', default=False, help='不显示游戏元素 / do not show game elements')
     
-    # New 'export-polygon' command
-    export_polygon_parser = subparsers.add_parser('export-polygon', help='导出为polygon格式（PNG） / export to polygon format (PNG)')
-    export_polygon_parser.add_argument('input', help='输入的统一格式JSON文件路径 / input unified JSON file path')
-    export_polygon_parser.add_argument('output', nargs='?', default=None, help='输出的PNG文件路径 (可选) / output PNG file path (optional)')
-
-    # New 'assess' command
+    # 'assess' command
     assess_parser = subparsers.add_parser('assess', help='评估地图质量 / assess dungeon quality')
     assess_parser.add_argument('input', help='输入文件路径 / input file path')
-    assess_parser.add_argument('--report-file', '-r', help='保存详细评估报告的路径')
     assess_parser.add_argument('--infer-connections', '-i', action='store_true', 
                               help='在评估前启用空间推断来补全连接')
     assess_parser.add_argument('--no-spatial-inference', action='store_true', 
@@ -320,7 +271,7 @@ def main():
     assess_parser.add_argument('--adjacency-threshold', type=float, default=1.0,
                               help='邻接判定阈值 (默认: 1.0)')
 
-    # New 'batch-assess' command
+    # 'batch-assess' command
     batch_parser = subparsers.add_parser('batch-assess', help='批量评估地图质量 / batch assess dungeon quality')
     batch_parser.add_argument('input_dir', help='输入目录路径 / input directory path')
     batch_parser.add_argument('output', help='输出报告文件路径 / output report file path')
@@ -328,6 +279,8 @@ def main():
                               help='禁用空间推断功能')
     batch_parser.add_argument('--adjacency-threshold', type=float, default=1.0,
                               help='邻接判定阈值 (默认: 1.0)')
+    batch_parser.add_argument('--timeout', type=int, default=30,
+                              help='每个文件的超时时间（秒）(默认: 30)')
 
     args = parser.parse_args()
     
@@ -370,15 +323,11 @@ def main():
         visualize_file(
             args.input, 
             args.output, 
-            outline=args.outline, 
             show_room_ids=not args.no_room_ids, 
             show_corridor_ids=not args.no_corridor_ids,
             show_grid=not args.no_grid,
             show_game_elements=not args.no_game_elements
         )
-
-    elif args.command == 'export-polygon':
-        export_polygon_file(args.input, args.output)
 
     elif args.command == 'assess':
         try:
@@ -409,22 +358,26 @@ def main():
             print(f"Grade: {report['grade']}")
             print("\nDetailed Metrics:")
             for rule_name, rule_result in report['scores'].items():
-                score = rule_result.get('score', 0.0)
+                score = rule_result.get('score', 0.0) if isinstance(rule_result, dict) else rule_result
                 print(f"  {rule_name}: {score:.3f}")
             print("\nImprovements:")
             for rec in report.get('recommendations', []):
                 print(f"  - {rec}")
             print("\n" + "="*50 + "\n")
-            if args.report_file:
-                with open(args.report_file, 'w', encoding='utf-8') as f:
-                    json.dump(report, f, indent=2, ensure_ascii=False)
-                logger.info(f"Detailed report saved to: {args.report_file}")
+            # 自动保存详细报告
+            report_dir = "output/reports"
+            os.makedirs(report_dir, exist_ok=True)
+            base_name = os.path.splitext(os.path.basename(args.input))[0]
+            auto_report_path = os.path.join(report_dir, f"{base_name}_report.json")
+            with open(auto_report_path, 'w', encoding='utf-8') as f:
+                json.dump(report, f, indent=2, ensure_ascii=False)
+            print(f"Automaticaly saved detailed report to: {auto_report_path}")
         except Exception as e:
             logger.error(f"Error during assessment: {e}")
             sys.exit(1)
 
     elif args.command == 'batch-assess':
-        batch_assess(args.input_dir, args.output, not args.no_spatial_inference, args.adjacency_threshold)
+        batch_assess(args.input_dir, args.output, not args.no_spatial_inference, args.adjacency_threshold, args.timeout)
 
 if __name__ == '__main__':
     main() 

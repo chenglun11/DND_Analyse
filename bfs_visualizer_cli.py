@@ -15,7 +15,7 @@ from pathlib import Path
 sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
 
 try:
-    from bfs_visualizer import create_bfs_visualizer, visualize_bfs_from_file
+    from src.visualizers.bfs_visualizer import create_bfs_visualizer, visualize_bfs_from_file
 except ImportError as e:
     print(f"错误: 无法导入BFS可视化器模块: {e}")
     print("请确保已安装所需的依赖包:")

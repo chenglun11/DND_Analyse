@@ -1,0 +1,1276 @@
+{
+  "header": {
+    "schemaName": "dnd-dungeon-unified",
+    "schemaVersion": "1.0.0",
+    "name": "Silverskull Library",
+    "author": "Watabou Generator",
+    "description": "The library is situated deep in the mountains, protected by the impassable terrain and dangerous local fauna. These days it is badly infested by cats. Rumors say that a legendary cape Va is still hidden here.",
+    "grid": {
+      "type": "square",
+      "size": 5,
+      "unit": "ft"
+    }
+  },
+  "levels": [
+    {
+      "id": "level_1",
+      "name": "Main Level",
+      "map": {
+        "width": 28,
+        "height": 43
+      },
+      "rooms": [
+        {
+          "id": "rect_0",
+          "shape": "rectangle",
+          "position": {
+            "x": 1,
+            "y": -1
+          },
+          "size": {
+            "width": 3,
+            "height": 3
+          },
+          "name": "room_1",
+          "description": "A battered door with two keyholes to the south."
+        },
+        {
+          "id": "rect_5",
+          "shape": "rectangle",
+          "position": {
+            "x": 6,
+            "y": -13
+          },
+          "size": {
+            "width": 5,
+            "height": 5
+          },
+          "name": "room_2",
+          "description": "A stuffed elf with a weird, made of an unknown material helm in their hands."
+        },
+        {
+          "id": "rect_7",
+          "shape": "rectangle",
+          "position": {
+            "x": 6,
+            "y": 9
+          },
+          "size": {
+            "width": 5,
+            "height": 5
+          },
+          "name": "room_6",
+          "description": "A mural on the wall, tells a story of this place when brushed."
+        },
+        {
+          "id": "rect_11",
+          "shape": "rectangle",
+          "position": {
+            "x": 5,
+            "y": 15
+          },
+          "size": {
+            "width": 7,
+            "height": 7
+          },
+          "name": "room_7",
+          "description": "A chest with a strange, covered with carvings niddle."
+        },
+        {
+          "id": "rect_12",
+          "shape": "rectangle",
+          "position": {
+            "x": -5,
+            "y": 6
+          },
+          "size": {
+            "width": 3,
+            "height": 2
+          },
+          "name": "room_8",
+          "description": "A tapestry on the wall, totally destroyed by mold."
+        },
+        {
+          "id": "rect_14",
+          "shape": "rectangle",
+          "position": {
+            "x": 13,
+            "y": -19
+          },
+          "size": {
+            "width": 3,
+            "height": 3
+          },
+          "name": "room_3",
+          "description": "A rear entrance into the library. A pilgrim, lying in a corner."
+        },
+        {
+          "id": "rect_15",
+          "shape": "rectangle",
+          "position": {
+            "x": 1,
+            "y": -19
+          },
+          "size": {
+            "width": 3,
+            "height": 3
+          },
+          "name": "room_4",
+          "description": "A corpse of an orc, an iron key close to it."
+        },
+        {
+          "id": "rect_16",
+          "shape": "rectangle",
+          "position": {
+            "x": -11,
+            "y": -19
+          },
+          "size": {
+            "width": 3,
+            "height": 3
+          },
+          "name": "room_5",
+          "description": "An iron key at the bottom of a small pool."
+        }
+      ],
+      "doors": [
+        {
+          "id": "door_0",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "dir": {
+              "x": 1,
+              "y": 0
+            },
+            "type": 3
+          }
+        },
+        {
+          "id": "door_1",
+          "position": {
+            "x": 2,
+            "y": -2,
+            "dir": {
+              "x": 0,
+              "y": -1
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_2",
+          "position": {
+            "x": 2,
+            "y": 2,
+            "dir": {
+              "x": 0,
+              "y": 1
+            },
+            "type": 5
+          }
+        },
+        {
+          "id": "door_3",
+          "position": {
+            "x": 2,
+            "y": -8,
+            "dir": {
+              "x": 0,
+              "y": -1
+            },
+            "type": 2
+          }
+        },
+        {
+          "id": "door_4",
+          "position": {
+            "x": 2,
+            "y": 8,
+            "dir": {
+              "x": 0,
+              "y": 1
+            },
+            "type": 2
+          }
+        },
+        {
+          "id": "door_5",
+          "position": {
+            "x": 5,
+            "y": -11,
+            "dir": {
+              "x": 1,
+              "y": 0
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_6",
+          "position": {
+            "x": -1,
+            "y": -11,
+            "dir": {
+              "x": -1,
+              "y": 0
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_7",
+          "position": {
+            "x": 5,
+            "y": 11,
+            "dir": {
+              "x": 1,
+              "y": 0
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_8",
+          "position": {
+            "x": -1,
+            "y": 11,
+            "dir": {
+              "x": -1,
+              "y": 0
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_9",
+          "position": {
+            "x": 8,
+            "y": -14,
+            "dir": {
+              "x": 0,
+              "y": -1
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_10",
+          "position": {
+            "x": -4,
+            "y": -14,
+            "dir": {
+              "x": 0,
+              "y": -1
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_11",
+          "position": {
+            "x": 8,
+            "y": 14,
+            "dir": {
+              "x": 0,
+              "y": 1
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_12",
+          "position": {
+            "x": -4,
+            "y": 8,
+            "dir": {
+              "x": 0,
+              "y": -1
+            },
+            "type": 6
+          }
+        },
+        {
+          "id": "door_13",
+          "position": {
+            "x": -4,
+            "y": 14,
+            "dir": {
+              "x": 0,
+              "y": 1
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_14",
+          "position": {
+            "x": 12,
+            "y": -18,
+            "dir": {
+              "x": 1,
+              "y": 0
+            },
+            "type": 6
+          }
+        },
+        {
+          "id": "door_15",
+          "position": {
+            "x": 4,
+            "y": -18,
+            "dir": {
+              "x": -1,
+              "y": 0
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_16",
+          "position": {
+            "x": -8,
+            "y": -18,
+            "dir": {
+              "x": -1,
+              "y": 0
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_17",
+          "position": {
+            "x": 12,
+            "y": 18,
+            "dir": {
+              "x": 1,
+              "y": 0
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_18",
+          "position": {
+            "x": 4,
+            "y": 18,
+            "dir": {
+              "x": -1,
+              "y": 0
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_19",
+          "position": {
+            "x": 16,
+            "y": -18,
+            "dir": {
+              "x": -1,
+              "y": 0
+            },
+            "type": 3
+          }
+        },
+        {
+          "id": "door_20",
+          "position": {
+            "x": 0,
+            "y": -19,
+            "dir": {
+              "x": 1,
+              "y": 0
+            },
+            "type": 0
+          }
+        }
+      ],
+      "corridors": [
+        {
+          "id": "rect_1",
+          "shape": "rectangle",
+          "position": {
+            "x": 0,
+            "y": -7
+          },
+          "size": {
+            "width": 5,
+            "height": 5
+          },
+          "name": "Corridor 1"
+        },
+        {
+          "id": "rect_2",
+          "shape": "rectangle",
+          "position": {
+            "x": 0,
+            "y": 3
+          },
+          "size": {
+            "width": 5,
+            "height": 5
+          },
+          "name": "Corridor 2"
+        },
+        {
+          "id": "rect_3",
+          "shape": "rectangle",
+          "position": {
+            "x": 0,
+            "y": -13
+          },
+          "size": {
+            "width": 5,
+            "height": 5
+          },
+          "name": "Corridor 3"
+        },
+        {
+          "id": "rect_4",
+          "shape": "rectangle",
+          "position": {
+            "x": 0,
+            "y": 9
+          },
+          "size": {
+            "width": 5,
+            "height": 5
+          },
+          "name": "Corridor 4"
+        },
+        {
+          "id": "rect_6",
+          "shape": "rectangle",
+          "position": {
+            "x": -6,
+            "y": -13
+          },
+          "size": {
+            "width": 5,
+            "height": 5
+          },
+          "name": "Corridor 6"
+        },
+        {
+          "id": "rect_8",
+          "shape": "rectangle",
+          "position": {
+            "x": -6,
+            "y": 9
+          },
+          "size": {
+            "width": 5,
+            "height": 5
+          },
+          "name": "Corridor 8"
+        },
+        {
+          "id": "rect_9",
+          "shape": "rectangle",
+          "position": {
+            "x": 5,
+            "y": -21
+          },
+          "size": {
+            "width": 7,
+            "height": 7
+          },
+          "name": "Corridor 9"
+        },
+        {
+          "id": "rect_10",
+          "shape": "rectangle",
+          "position": {
+            "x": -7,
+            "y": -21
+          },
+          "size": {
+            "width": 7,
+            "height": 7
+          },
+          "name": "Corridor 10"
+        },
+        {
+          "id": "rect_13",
+          "shape": "rectangle",
+          "position": {
+            "x": -5,
+            "y": 15
+          },
+          "size": {
+            "width": 3,
+            "height": 4
+          },
+          "name": "Corridor 13"
+        },
+        {
+          "id": "rect_17",
+          "shape": "rectangle",
+          "position": {
+            "x": 13,
+            "y": 17
+          },
+          "size": {
+            "width": 3,
+            "height": 3
+          },
+          "name": "Corridor 17"
+        },
+        {
+          "id": "rect_18",
+          "shape": "rectangle",
+          "position": {
+            "x": 1,
+            "y": 17
+          },
+          "size": {
+            "width": 3,
+            "height": 3
+          },
+          "name": "Corridor 18"
+        },
+        {
+          "id": "rect_19",
+          "shape": "rectangle",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 19"
+        },
+        {
+          "id": "rect_20",
+          "shape": "rectangle",
+          "position": {
+            "x": 2,
+            "y": -2
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 20"
+        },
+        {
+          "id": "rect_21",
+          "shape": "rectangle",
+          "position": {
+            "x": 2,
+            "y": 2
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 21"
+        },
+        {
+          "id": "rect_22",
+          "shape": "rectangle",
+          "position": {
+            "x": 2,
+            "y": -8
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 22"
+        },
+        {
+          "id": "rect_23",
+          "shape": "rectangle",
+          "position": {
+            "x": 2,
+            "y": 8
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 23"
+        },
+        {
+          "id": "rect_24",
+          "shape": "rectangle",
+          "position": {
+            "x": 5,
+            "y": -11
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 24"
+        },
+        {
+          "id": "rect_25",
+          "shape": "rectangle",
+          "position": {
+            "x": -1,
+            "y": -11
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 25"
+        },
+        {
+          "id": "rect_26",
+          "shape": "rectangle",
+          "position": {
+            "x": 5,
+            "y": 11
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 26"
+        },
+        {
+          "id": "rect_27",
+          "shape": "rectangle",
+          "position": {
+            "x": -1,
+            "y": 11
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 27"
+        },
+        {
+          "id": "rect_28",
+          "shape": "rectangle",
+          "position": {
+            "x": 8,
+            "y": -14
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 28"
+        },
+        {
+          "id": "rect_29",
+          "shape": "rectangle",
+          "position": {
+            "x": -4,
+            "y": -14
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 29"
+        },
+        {
+          "id": "rect_30",
+          "shape": "rectangle",
+          "position": {
+            "x": 8,
+            "y": 14
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 30"
+        },
+        {
+          "id": "rect_31",
+          "shape": "rectangle",
+          "position": {
+            "x": -4,
+            "y": 8
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 31"
+        },
+        {
+          "id": "rect_32",
+          "shape": "rectangle",
+          "position": {
+            "x": -4,
+            "y": 14
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 32"
+        },
+        {
+          "id": "rect_33",
+          "shape": "rectangle",
+          "position": {
+            "x": 12,
+            "y": -18
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 33"
+        },
+        {
+          "id": "rect_34",
+          "shape": "rectangle",
+          "position": {
+            "x": 4,
+            "y": -18
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 34"
+        },
+        {
+          "id": "rect_35",
+          "shape": "rectangle",
+          "position": {
+            "x": -8,
+            "y": -18
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 35"
+        },
+        {
+          "id": "rect_36",
+          "shape": "rectangle",
+          "position": {
+            "x": 12,
+            "y": 18
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 36"
+        },
+        {
+          "id": "rect_37",
+          "shape": "rectangle",
+          "position": {
+            "x": 4,
+            "y": 18
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 37"
+        },
+        {
+          "id": "rect_38",
+          "shape": "rectangle",
+          "position": {
+            "x": 16,
+            "y": -18
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 38"
+        },
+        {
+          "id": "rect_39",
+          "shape": "rectangle",
+          "position": {
+            "x": 0,
+            "y": -19
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 39"
+        }
+      ],
+      "connections": [
+        {
+          "from_room": "rect_1",
+          "to_room": "rect_20",
+          "door_id": "door_1"
+        },
+        {
+          "from_room": "rect_21",
+          "to_room": "rect_0",
+          "door_id": "door_2"
+        },
+        {
+          "from_room": "rect_22",
+          "to_room": "rect_3",
+          "door_id": "door_3"
+        },
+        {
+          "from_room": "rect_2",
+          "to_room": "rect_23",
+          "door_id": "door_4"
+        },
+        {
+          "from_room": "rect_24",
+          "to_room": "rect_3",
+          "door_id": "door_5"
+        },
+        {
+          "from_room": "rect_25",
+          "to_room": "rect_6",
+          "door_id": "door_6"
+        },
+        {
+          "from_room": "rect_4",
+          "to_room": "rect_26",
+          "door_id": "door_7"
+        },
+        {
+          "from_room": "rect_27",
+          "to_room": "rect_8",
+          "door_id": "door_8"
+        },
+        {
+          "from_room": "rect_28",
+          "to_room": "rect_9",
+          "door_id": "door_9"
+        },
+        {
+          "from_room": "rect_10",
+          "to_room": "rect_29",
+          "door_id": "door_10"
+        },
+        {
+          "from_room": "rect_7",
+          "to_room": "rect_30",
+          "door_id": "door_11"
+        },
+        {
+          "from_room": "rect_12",
+          "to_room": "rect_31",
+          "door_id": "door_12"
+        },
+        {
+          "from_room": "rect_8",
+          "to_room": "rect_32",
+          "door_id": "door_13"
+        },
+        {
+          "from_room": "rect_9",
+          "to_room": "rect_33",
+          "door_id": "door_14"
+        },
+        {
+          "from_room": "rect_15",
+          "to_room": "rect_34",
+          "door_id": "door_15"
+        },
+        {
+          "from_room": "rect_16",
+          "to_room": "rect_35",
+          "door_id": "door_16"
+        },
+        {
+          "from_room": "rect_36",
+          "to_room": "rect_11",
+          "door_id": "door_17"
+        },
+        {
+          "from_room": "rect_18",
+          "to_room": "rect_37",
+          "door_id": "door_18"
+        },
+        {
+          "from_room": "rect_14",
+          "to_room": "rect_38",
+          "door_id": "door_19"
+        },
+        {
+          "from_room": "rect_39",
+          "to_room": "rect_10",
+          "door_id": "door_20"
+        },
+        {
+          "from_room": "rect_0",
+          "to_room": "rect_1",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_0",
+          "to_room": "rect_2",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_0",
+          "to_room": "rect_19",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_0",
+          "to_room": "rect_20",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_5",
+          "to_room": "rect_3",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_5",
+          "to_room": "rect_9",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_5",
+          "to_room": "rect_24",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_5",
+          "to_room": "rect_28",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_7",
+          "to_room": "rect_11",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_7",
+          "to_room": "rect_4",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_7",
+          "to_room": "rect_26",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_11",
+          "to_room": "rect_17",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_11",
+          "to_room": "rect_18",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_11",
+          "to_room": "rect_30",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_11",
+          "to_room": "rect_37",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_12",
+          "to_room": "rect_8",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_14",
+          "to_room": "rect_9",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_14",
+          "to_room": "rect_33",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_15",
+          "to_room": "rect_9",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_15",
+          "to_room": "rect_10",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_15",
+          "to_room": "rect_39",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_16",
+          "to_room": "rect_10",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_1",
+          "to_room": "rect_3",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_1",
+          "to_room": "rect_22",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_2",
+          "to_room": "rect_4",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_2",
+          "to_room": "rect_21",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_3",
+          "to_room": "rect_6",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_3",
+          "to_room": "rect_25",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_4",
+          "to_room": "rect_8",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_4",
+          "to_room": "rect_23",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_4",
+          "to_room": "rect_27",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_6",
+          "to_room": "rect_10",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_6",
+          "to_room": "rect_29",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_8",
+          "to_room": "rect_13",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_8",
+          "to_room": "rect_31",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_9",
+          "to_room": "rect_34",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_10",
+          "to_room": "rect_35",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_13",
+          "to_room": "rect_32",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_17",
+          "to_room": "rect_36",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        }
+      ],
+      "game_elements": [
+        {
+          "id": "treasure_0",
+          "name": "Treasure",
+          "type": "treasure",
+          "position": {
+            "x": 2.5,
+            "y": 0.5
+          },
+          "description": "A battered door with two keyholes to the south.",
+          "ref": "1"
+        },
+        {
+          "id": "treasure_1",
+          "name": "Treasure",
+          "type": "treasure",
+          "position": {
+            "x": 8.5,
+            "y": -10.5
+          },
+          "description": "A stuffed elf with a weird, made of an unknown material helm in their hands.",
+          "ref": "2"
+        },
+        {
+          "id": "special_2",
+          "name": "Gate",
+          "type": "special",
+          "position": {
+            "x": 8.5,
+            "y": 11.5
+          },
+          "description": "A mural on the wall, tells a story of this place when brushed.",
+          "ref": "6"
+        },
+        {
+          "id": "treasure_3",
+          "name": "Treasure",
+          "type": "treasure",
+          "position": {
+            "x": 8.5,
+            "y": 18.5
+          },
+          "description": "A chest with a strange, covered with carvings niddle.",
+          "ref": "7"
+        },
+        {
+          "id": "special_4",
+          "name": "Gate",
+          "type": "special",
+          "position": {
+            "x": -3.5,
+            "y": 7
+          },
+          "description": "A tapestry on the wall, totally destroyed by mold.",
+          "ref": "8"
+        },
+        {
+          "id": "special_5",
+          "name": "Gate",
+          "type": "special",
+          "position": {
+            "x": 14.5,
+            "y": -17.5
+          },
+          "description": "A rear entrance into the library. A pilgrim, lying in a corner.",
+          "ref": "3"
+        },
+        {
+          "id": "treasure_6",
+          "name": "Treasure",
+          "type": "treasure",
+          "position": {
+            "x": 2.5,
+            "y": -17.5
+          },
+          "description": "A corpse of an orc, an iron key close to it.",
+          "ref": "4"
+        },
+        {
+          "id": "treasure_7",
+          "name": "Treasure",
+          "type": "treasure",
+          "position": {
+            "x": -9.5,
+            "y": -17.5
+          },
+          "description": "An iron key at the bottom of a small pool.",
+          "ref": "5"
+        }
+      ],
+      "connections_inferred": true
+    }
+  ]
+}

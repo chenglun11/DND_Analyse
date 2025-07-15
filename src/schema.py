@@ -95,6 +95,142 @@ def _analyze_room_semantics(room: Dict[str, Any]) -> Dict[str, float]:
 
 def identify_entrance_exit(dungeon_data: Dict[str, Any]) -> Dict[str, Any]:
     """
-    （已禁用）入口/出口自动识别逻辑。直接返回原始数据，不做任何处理。
+    智能识别地牢的入口和出口房间
+    
+    识别策略（按优先级）：
+    1. 明确标记的房间（is_entrance/is_exit）
+    2. 拓扑分析（连接度、连通性）
+    3. 空间位置分析（坐标位置）
     """
-    return dungeon_data 
+    if not dungeon_data.get('levels'):
+        return dungeon_data
+    
+    level = dungeon_data['levels'][0]
+    rooms = level.get('rooms', [])
+    connections = level.get('connections', [])
+    
+    if not rooms:
+        return dungeon_data
+    
+    # 构建连接图
+    graph = {room['id']: [] for room in rooms}
+    for conn in connections:
+        if conn['from_room'] in graph and conn['to_room'] in graph:
+            graph[conn['from_room']].append(conn['to_room'])
+            graph[conn['to_room']].append(conn['from_room'])
+    
+    # 1. 检查明确标记的房间
+    entrance_room = None
+    exit_room = None
+    
+    for room in rooms:
+        if room.get('is_entrance', False):
+            entrance_room = room['id']
+        elif room.get('is_exit', False):
+            exit_room = room['id']
+    
+    # 2. 拓扑分析识别（改进版）
+    if not entrance_room or not exit_room:
+        # 只考虑有连接的房间
+        connected_rooms = [room for room in rooms if len(graph[room['id']]) > 0]
+        
+        if len(connected_rooms) >= 2:
+            # 入口选择策略：连接度较低但不是死胡同的房间
+            if not entrance_room:
+                # 优先选择连接度为1的房间
+                degree_1_rooms = [r for r in connected_rooms if len(graph[r['id']]) == 1]
+                if degree_1_rooms:
+                    entrance_room = degree_1_rooms[0]['id']
+                else:
+                    # 如果没有度为1的房间，选择连接度最低的
+                    entrance_room = min(connected_rooms, key=lambda r: len(graph[r['id']]))['id']
+            
+            # 出口选择策略：另一个连接度较低的房间，且与入口可达
+            if not exit_room:
+                exit_candidates = [r for r in connected_rooms if r['id'] != entrance_room]
+                if exit_candidates:
+                    # 优先选择连接度为1的房间
+                    degree_1_exits = [r for r in exit_candidates if len(graph[r['id']]) == 1]
+                    if degree_1_exits:
+                        # 检查可达性
+                        for candidate in degree_1_exits:
+                            if _is_reachable(graph, entrance_room, candidate['id']):
+                                exit_room = candidate['id']
+                                break
+                    
+                    # 如果没有可达的度为1的房间，选择连接度最低的可达房间
+                    if not exit_room:
+                        for candidate in sorted(exit_candidates, key=lambda r: len(graph[r['id']])):
+                            if _is_reachable(graph, entrance_room, candidate['id']):
+                                exit_room = candidate['id']
+                                break
+    
+    # 3. 空间位置分析（如果拓扑分析失败）
+    if not entrance_room or not exit_room:
+        def get_room_center(room):
+            pos = room.get('position', {})
+            size = room.get('size', {})
+            x = pos.get('x', 0) + size.get('width', 0) / 2
+            y = pos.get('y', 0) + size.get('height', 0) / 2
+            return x, y
+        
+        # 只考虑有连接的房间
+        connected_rooms = [room for room in rooms if len(graph[room['id']]) > 0]
+        if len(connected_rooms) >= 2:
+            room_centers = []
+            for room in connected_rooms:
+                center = get_room_center(room)
+                room_centers.append({
+                    'room_id': room['id'],
+                    'center': center,
+                    'x': center[0],
+                    'y': center[1]
+                })
+            
+            if not entrance_room:
+                # 选择最左下角的房间作为入口
+                entrance_room = min(room_centers, key=lambda x: x['x'] + x['y'])['room_id']
+            
+            if not exit_room:
+                # 选择最右上角的房间作为出口（排除入口）
+                exit_candidates = [r for r in room_centers if r['room_id'] != entrance_room]
+                if exit_candidates:
+                    exit_room = max(exit_candidates, key=lambda x: x['x'] + x['y'])['room_id']
+    
+    # 4. 标记识别结果
+    if entrance_room and exit_room:
+        for room in rooms:
+            if room['id'] == entrance_room:
+                room['is_entrance'] = True
+                room['is_exit'] = False
+            elif room['id'] == exit_room:
+                room['is_entrance'] = False
+                room['is_exit'] = True
+            else:
+                # 清除其他房间的标记
+                room.pop('is_entrance', None)
+                room.pop('is_exit', None)
+    
+    return dungeon_data
+
+def _is_reachable(graph: Dict[str, List[str]], start: str, end: str) -> bool:
+    """
+    检查两个节点是否可达（BFS）
+    """
+    if start == end:
+        return True
+    
+    visited = set()
+    queue = [start]
+    visited.add(start)
+    
+    while queue:
+        current = queue.pop(0)
+        for neighbor in graph.get(current, []):
+            if neighbor == end:
+                return True
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append(neighbor)
+    
+    return False 

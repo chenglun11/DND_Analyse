@@ -28,23 +28,25 @@ class DungeonQualityAssessor:
         self.adjacency_threshold = adjacency_threshold
         
         # Categorized rule weights with balanced distribution
+        # TODO: NEED TO BE ADJUSTED
         self.rule_weights = rule_weights or {
-            # Structural rules (40% total)
-            'accessibility': 0.15,
-            'degree_variance': 0.10,
+            # Structural rules (35% total)
+            'accessibility': 0.12,
+            'degree_variance': 0.08,
             'door_distribution': 0.10,
             'loop_ratio': 0.05,
             
-            # Gameplay rules (40% total)
-            'path_diversity': 0.15,
+            # Gameplay rules (50% total) - 增加游戏性权重
+            'path_diversity': 0.20,  # 增加路径多样性权重
             'treasure_monster_distribution': 0.20,
-            'dead_end_ratio': 0.05,
+            'dead_end_ratio': 0.10,  # 增加死胡同权重
             
-            # Aesthetic rules (20% total)
-            'aesthetic_balance': 0.20
+            # Aesthetic rules (15% total)
+            'aesthetic_balance': 0.15
         }
         
         # Rule categories for better organization
+        #TODO: NEED TO BE ADJUSTED
         self.rule_categories = {
             'structural': ['accessibility', 'degree_variance', 'door_distribution', 'loop_ratio'],
             'gameplay': ['path_diversity', 'treasure_monster_distribution', 'dead_end_ratio'],
@@ -146,13 +148,13 @@ class DungeonQualityAssessor:
         return category_scores
 
     def _get_grade(self, score: float) -> str:
-        if score >= 0.8:
+        if score >= 0.85:
             return "A"
-        elif score >= 0.6:
+        elif score >= 0.70:
             return "B"
-        elif score >= 0.4:
+        elif score >= 0.55:
             return "C"
-        elif score >= 0.3:
+        elif score >= 0.40:
             return "D"
         else:
             return "F"

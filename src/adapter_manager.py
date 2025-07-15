@@ -83,17 +83,17 @@ class AdapterManager:
             if format_name is None:
                 format_name = self.detect_format(data)
                 if format_name is None:
-                    logger.error("无法检测数据格式")
+                    logger.error("Unable to detect data format")
                     return None
             elif format_name not in self.adapters:
-                logger.error(f"不支持的格式: {format_name}")
+                logger.error(f"Unsupported format: {format_name}")
                 return None
             
             # 2. 数据转换
             adapter = self.adapters[format_name]
             unified_data = adapter.convert(data)
             if unified_data is None:
-                logger.error(f"格式 {format_name} 转换失败")
+                logger.error(f"Failed to convert format {format_name}")
                 return None
             
             # 3. 空间推断（如果需要）
@@ -104,7 +104,7 @@ class AdapterManager:
                 else:
                     enhanced_data = auto_infer_connections(unified_data, adjacency_threshold)
                 if enhanced_data != unified_data:
-                    logger.info("空间推断完成，自动补全连接信息")
+                    logger.info("Spatial inference completed, automatically complete connection information")
                     unified_data = enhanced_data
             
             # 4. 入口出口识别
@@ -120,5 +120,5 @@ class AdapterManager:
                 return unified_data
                 
         except Exception as e:
-            logger.error(f"转换过程中发生错误: {e}")
+            logger.error(f"Error occurred during conversion: {e}")
             return None 

@@ -19,6 +19,9 @@ tqdm>=4.62.0
 click>=8.0.0
 pathlib2>=2.3.0
 
+# GUI框架
+PyQt5>=5.15.0
+
 # 开发依赖
 pytest>=6.2.0
 black>=21.0.0

@@ -9,7 +9,24 @@ from typing import List, Dict, Any, Tuple
 logger = logging.getLogger(__name__)
 
 class SpatialInferenceEngine:
-    """空间邻接推断引擎"""
+    """
+    空间邻接推断引擎
+    spatial adjacency inference engine
+
+    - 提取边界
+    - 判断邻接
+    - 计算置信度
+    - 补全连接信息
+    - 补全门信息
+    - 返回增强后的地牢数据
+
+    - extract the boundary
+    - determine the adjacency
+    - calculate the confidence
+    - complete the connection information
+    - complete the door information
+    - return the enhanced dungeon data
+    """
     
     def __init__(self, adjacency_threshold: float = 2.5):
         """
@@ -41,7 +58,9 @@ class SpatialInferenceEngine:
                     continue
                 adjacent = self._are_rooms_adjacent(room_a, room_b)
                 if adjacent:
-                    # 连接
+                    # 连接 - 无向图，从room_a到room_b
+                    # This is an unidirectional connection, from room_a to room_b[because the structure of some of the systems they provide the name as from_room and to_room, so i define it in this way]
+                    # NOTES: the name only represent the two points, not the direction
                     connection = {
                         'from_room': room_a['id'],
                         'to_room': room_b['id'],
@@ -91,7 +110,12 @@ class SpatialInferenceEngine:
 
     def enhance_dungeon_data(self, dungeon_data: Dict[str, Any]) -> Dict[str, Any]:
         """
-        增强地牢数据，自动补全缺失的连接和门信息
+        补全连接信息；外部调用函数
+        enhance the dungeon data, automatically complete the missing connection and door information ｜ externally invoked function
+        Args:
+            dungeon_data: the dungeon data
+        Returns:
+            the enhanced dungeon data
         """
         enhanced_data = dungeon_data.copy()
         for level in enhanced_data.get('levels', []):
@@ -133,7 +157,8 @@ class SpatialInferenceEngine:
 
     def _are_rooms_adjacent(self, room_a: Dict, room_b: Dict) -> bool:
         """
-        判断两个房间是否邻接
+        判断两个房间是否足够近，边界是否在阈值内，如果两个房间的边界在阈值内，则认为两个房间邻接
+        Determine whether the two rooms are close enough and whether the boundary is within the threshold, if the boundary of the two rooms is within the threshold, the two rooms are considered neighbouring
         """
         ax1, ay1, ax2, ay2 = self._get_room_bounds(room_a)
         bx1, by1, bx2, by2 = self._get_room_bounds(room_b)
@@ -186,6 +211,7 @@ class SpatialInferenceEngine:
     def _calculate_adjacency_confidence(self, room_a: Dict, room_b: Dict) -> float:
         """
         计算邻接置信度（0-1）
+        返回置信度，若有边界重叠则上浮
         """
         ax1, ay1, ax2, ay2 = self._get_room_bounds(room_a)
         bx1, by1, bx2, by2 = self._get_room_bounds(room_b)

@@ -133,23 +133,13 @@ class WatabouAdapter(BaseAdapter):
                 dungeon_center_x = (min_x + max_x) / 2
                 dungeon_center_y = (min_y + max_y) / 2
                 
-                if "gold" in dungeon_description or "treasure" in dungeon_description or "chest" in dungeon_description:
-                    game_elements.append({
-                        "id": f"treasure_{len(game_elements)}",
-                        "name": "Treasure",
-                        "type": "treasure",
-                        "position": {"x": dungeon_center_x, "y": dungeon_center_y},
-                        "description": "Contains treasure"
-                    })
-                elif "undead" in dungeon_description:
-                    game_elements.append({
-                        "id": f"monster_{len(game_elements)}",
-                        "name": "Monster",
-                        "type": "monster",
-                        "position": {"x": dungeon_center_x, "y": dungeon_center_y},
-                        "description": "Dangerous creature"
-                    })
-                elif "boss" in dungeon_description or "dragon" in dungeon_description:
+                # 扩展的boss关键词，包含更多boss类型
+                boss_keywords = ['boss', 'dragon', 'lich', 'king', 'queen', 'emperor', 'lord', 'master', 'commander', 'chieftain', 'leader', 'titan', 'general']
+                monster_keywords = ['undead', 'monster', 'creature', 'wyrm', 'beast', 'fiend', 'demon', 'ghost', 'zombie', 'sphinx', 'ant', 'wolf']
+                treasure_keywords = ['gold', 'treasure', 'chest', 'key', 'coin', 'gem', 'jewel', 'loot', 'wealth', 'valuable', 'artifacts']
+                
+                # 优先级判断：Boss > Monster > Treasure
+                if any(keyword in dungeon_description for keyword in boss_keywords):
                     game_elements.append({
                         "id": f"boss_{len(game_elements)}",
                         "name": "Boss",
@@ -157,13 +147,21 @@ class WatabouAdapter(BaseAdapter):
                         "position": {"x": dungeon_center_x, "y": dungeon_center_y},
                         "description": "Powerful enemy"
                     })
-                elif "monster" in dungeon_description or "creature" in dungeon_description or "wyrm" in dungeon_description:
+                elif any(keyword in dungeon_description for keyword in monster_keywords):
                     game_elements.append({
                         "id": f"monster_{len(game_elements)}",
                         "name": "Monster",
                         "type": "monster",
                         "position": {"x": dungeon_center_x, "y": dungeon_center_y},
                         "description": "Dangerous creature"
+                    })
+                elif any(keyword in dungeon_description for keyword in treasure_keywords):
+                    game_elements.append({
+                        "id": f"treasure_{len(game_elements)}",
+                        "name": "Treasure",
+                        "type": "treasure",
+                        "position": {"x": dungeon_center_x, "y": dungeon_center_y},
+                        "description": "Contains treasure"
                     })
             
             # 从notes中提取游戏元素 - 每个note都作为独立的game_element
@@ -186,7 +184,7 @@ class WatabouAdapter(BaseAdapter):
                 is_monster = any(keyword in note_lower for keyword in monster_keywords)
                 
                 # 3. 检查是否包含boss相关词汇
-                boss_keywords = ['boss', 'lord', 'king', 'queen', 'master', 'commander', 'chieftain', 'leader']
+                boss_keywords = ['boss', 'dragon', 'lich', 'king', 'queen', 'emperor', 'lord', 'master', 'commander', 'chieftain', 'leader', 'titan', 'general']
                 is_boss = any(keyword in note_lower for keyword in boss_keywords)
                 
                 # 4. 检查是否包含陷阱/机关相关词汇

@@ -1,11 +1,18 @@
-from .base import BaseQualityRule
 import numpy as np
+from .base import BaseQualityRule
 import math
 from collections import deque
+import logging
+logger = logging.getLogger(__name__)
 
 class PathDiversityRule(BaseQualityRule):
-    name = "path_diversity"
-    description = "路径多样性评分，适中最好（2.0最佳）"
+    @property
+    def name(self):
+        return "path_diversity"
+
+    @property
+    def description(self):
+        return "Path diversity score, the higher the score, the more diverse the paths, normalized to [0,1], max=10.0"
 
     def evaluate(self, dungeon_data):
         levels = dungeon_data.get('levels', [])
@@ -74,14 +81,15 @@ class PathDiversityRule(BaseQualityRule):
                 if cnt > 0:
                     path_counts.append(cnt)
         
+        logger.debug(f'path_counts: {path_counts}')
         if not path_counts:
             # 如果没有可达路径，给一个基础分数
             return 0.3, {"avg_path_diversity": 0.0, "path_counts": [], "reason": "No reachable paths between rooms"}
         
         avg_path_div = float(np.mean(path_counts))
-        
-        # 高斯型映射，中心2.0，σ=1.0（更宽松）
-        mu, sigma = 2.0, 1.0
-        score = math.exp(-((avg_path_div-mu)**2)/(2*sigma**2))
+        logger.debug(f'avg_path_diversity: {avg_path_div}')
+        # 归一化评分，分支均值越高分数越高，最大值max_diversity时为满分
+        max_diversity = 10.0  # 可根据实际情况调整
+        score = min(1.0, avg_path_div / max_diversity)
         
         return score, {"avg_path_diversity": avg_path_div, "path_counts": path_counts} 

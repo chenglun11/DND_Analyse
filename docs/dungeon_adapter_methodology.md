@@ -2,23 +2,17 @@
 
 ## 📋 项目概述
 
-Dungeon Adapter 是一个基于科学理论的地牢设计质量评估和格式适配系统。项目将地牢设计从艺术创作转化为可量化、可评估、可改进的工程过程，通过多维度评估体系为地牢设计提供科学指导。
-
-### 核心目标
-- **标准化**: 建立统一的地牢数据格式标准
-- **量化评估**: 基于理论的多维度质量评估体系
-- **持续改进**: 数据驱动的设计优化方法论
-- **科学指导**: 基于学术理论的设计原则
+Dungeon Adapter 是一个综合性的DnD地牢地图格式适配和质量评估系统，采用插件式架构设计，支持多种地图格式的转换、科学质量评估和可视化分析。项目核心目标是通过基于理论的方法论体系，实现地牢设计的标准化、量化和持续改进。
 
 ## 🏗️ 技术架构方法论
 
 ### 1. 插件式架构设计
 
-#### 设计原则
-- **模块化**: 功能模块独立，便于维护和扩展
-- **标准化**: 统一接口，确保系统一致性
-- **动态性**: 自动发现和加载插件
-- **松耦合**: 最小依赖，提高系统稳定性
+#### 核心原则
+- **模块化设计**: 每个功能模块独立，便于维护和扩展
+- **接口标准化**: 统一的适配器接口，确保系统一致性
+- **动态加载**: 自动发现和加载适配器插件
+- **松耦合**: 模块间最小依赖，提高系统稳定性
 
 #### 架构层次
 ```
@@ -99,102 +93,63 @@ class BaseAdapter(ABC):
 - **标准化**: 统一的数据结构定义
 - **完整性**: 包含所有必要的地牢元素
 
-## 📊 科学质量评估方法论
+## 📊 分类质量评估方法论
 
 ### 1. 三维评估体系
 
-基于游戏设计理论、空间认知科学和视觉感知理论，建立三维评估体系：
+基于游戏设计理论和视觉感知科学，我们将质量评估分为三个主要维度：
 
 #### 结构类 (Structural) - 40%权重
-**理论基础**: 图论、空间拓扑学、网络分析
+**理论基础**: 图论、空间拓扑学
 
-| 指标名称 | 权重 | 评估维度 | 理论基础 | 评分方法 | 理想范围 |
-|---------|------|----------|----------|----------|----------|
-| **可达性** | 15% | 连通性 | 图论连通性 | 分段线性映射 | 0.6-0.95 |
-| **度方差** | 10% | 连接平衡 | 网络分析 | 高斯映射 | 1.0-3.0 |
-| **门分布** | 10% | 入口合理性 | 空间拓扑 | 多维度评估 | 1.5-3.0门/房间 |
-| **环路比例** | 5% | 复杂度 | 图论环路 | 高斯映射 | 0.2-0.4 |
+| 指标名称 | 权重 | 评估维度 | 理论基础 | 评分方法 |
+|---------|------|----------|----------|----------|
+| **可达性** | 15% | 连通性 | 图论连通性 | 分段线性映射 |
+| **度方差** | 10% | 连接平衡 | 网络分析 | 高斯映射 |
+| **门分布** | 10% | 入口合理性 | 空间拓扑 | 线性映射 |
+| **环路比例** | 5% | 复杂度 | 图论环路 | 高斯映射 |
 
 #### 游戏性类 (Gameplay) - 40%权重
-**理论基础**: 游戏设计理论、玩家心理学、游戏经济学
+**理论基础**: 游戏设计理论、玩家心理学
 
-| 指标名称 | 权重 | 评估维度 | 理论基础 | 评分方法 | 理想范围 |
-|---------|------|----------|----------|----------|----------|
-| **路径多样性** | 15% | 探索性 | 选择理论 | 高斯映射 | 2.0±1.0 |
-| **宝藏怪物分布** | 20% | 游戏平衡 | 游戏经济学 | 多维度评估 | 密度0.1-0.6 |
-| **死胡同比例** | 5% | 探索体验 | 玩家心理学 | 线性递减 | <0.3 |
+| 指标名称 | 权重 | 评估维度 | 理论基础 | 评分方法 |
+|---------|------|----------|----------|----------|
+| **路径多样性** | 15% | 探索性 | 选择理论 | 高斯映射 |
+| **宝藏怪物分布** | 20% | 游戏平衡 | 游戏经济学 | 多维度评估 |
+| **死胡同比例** | 5% | 探索体验 | 玩家心理学 | 线性递减 |
 
 #### 美术类 (Aesthetic) - 20%权重
-**理论基础**: 格式塔心理学、视觉设计理论、空间认知
-
-| 指标名称 | 权重 | 评估维度 | 理论基础 | 评分方法 | 理想范围 |
-|---------|------|----------|----------|----------|----------|
-| **视觉平衡** | 20% | 美学质量 | 格式塔原则 | 多维度评估 | >0.7 |
-
-### 2. 详细评估指标理论依据
-
-#### 2.1 可达性 (Accessibility)
-**理论基础**: 图论连通性分析
-- **核心概念**: 从任意房间到达其他房间的难易程度
-- **计算方法**: BFS遍历，计算可达房间比例
-- **理想范围**: 0.6-0.95 (平衡探索与挑战)
-- **文献支持**: 
-  - Newman, M. E. J. (2010). Networks: An introduction
-  - Barabási, A. L. (2016). Network science
-
-#### 2.2 门分布 (Door Distribution)
-**理论基础**: 空间拓扑学、建筑空间理论
-- **核心概念**: 门在地牢中的数量和分布合理性
-- **评估维度**:
-  - 门数量合理性 (40%): 每个房间1.5-3个门
-  - 分布均匀性 (40%): 标准化方差评估
-  - 连通性保证 (20%): 防止孤立房间
-- **文献支持**:
-  - Lynch, K. (1960). The image of the city
-  - Kaplan, S., & Kaplan, R. (1982). Cognition and environment
-  - Schell, J. (2008). The art of game design
-
-#### 2.3 路径多样性 (Path Diversity)
-**理论基础**: 选择理论、探索心理学
-- **核心概念**: 房间对之间可选路径的数量
-- **计算方法**: 最短路径算法，统计路径数量
-- **理想范围**: 2.0±1.0 (适度选择，避免过度复杂)
-- **文献支持**:
-  - Schwartz, B. (2004). The paradox of choice
-  - Norman, D. A. (2013). The design of everyday things
-
-#### 2.4 宝藏怪物分布 (Treasure-Monster Distribution)
-**理论基础**: 游戏经济学、平衡设计理论
-- **评估维度**:
-  - 密度平衡: 宝藏和怪物密度在0.1-0.6之间
-  - 空间分布: 避免过度聚集
-  - 距离关系: 宝藏与怪物保持适当距离
-- **文献支持**:
-  - Koster, R. (2013). Theory of fun for game design
-  - Fullerton, T. (2014). Game design workshop
-
-#### 2.5 视觉平衡 (Aesthetic Balance)
 **理论基础**: 格式塔心理学、视觉设计理论
-- **评估维度**:
-  - 格式塔原则 (30%): 邻近性、相似性、连续性
-  - 视觉层次 (25%): 视觉重量平衡、焦点质量
-  - 空间认知 (25%): 空间可读性、空间组织
-  - 统一与多样 (20%): 设计一致性、趣味性
-- **文献支持**:
-  - Wertheimer, M. (1923). Laws of organization in perceptual forms
-  - Arnheim, R. (1954). Art and visual perception
-  - Norman, D. A. (2004). Emotional design
+
+| 指标名称 | 权重 | 评估维度 | 理论基础 | 评分方法 |
+|---------|------|----------|----------|----------|
+| **视觉平衡** | 20% | 美学质量 | 格式塔原则 | 多维度评估 |
+
+### 2. 视觉平衡评估理论基础
+
+#### 格式塔原则 (Wertheimer, 1923) - 30%权重
+- **邻近性原则**: 空间接近的元素被感知为相关
+- **相似性原则**: 相似元素被感知为相关
+- **连续性原则**: 平滑曲线的元素被感知为相关
+
+#### 视觉层次理论 (Arnheim, 1954) - 25%权重
+- **视觉重量平衡**: 左右/上下视觉重量分布
+- **焦点质量**: 重要元素的空间分布
+
+#### 空间认知理论 (Lynch, 1960) - 25%权重
+- **空间可读性**: 布局的清晰度和易理解性
+- **空间组织**: 元素的组织结构
+
+#### 游戏设计美学 (Schell, 2008) - 20%权重
+- **统一性**: 设计的整体一致性
+- **多样性**: 设计的多样性和趣味性
 
 ### 3. 算法实现原理
 
-#### 3.1 可达性评估算法
+#### 可达性评估算法
 ```python
 def evaluate_accessibility(dungeon_data):
-    """
-    基于图论的可达性评估
-    理论基础: 网络连通性分析
-    """
-    # 1. 构建邻接图
+    # 1. 构建图结构
     graph = build_adjacency_graph(dungeon_data)
     
     # 2. 计算每个节点的可达性
@@ -207,102 +162,83 @@ def evaluate_accessibility(dungeon_data):
     # 3. 分段线性映射评分
     avg_accessibility = np.mean(accessibility_scores)
     if 0.6 <= avg_accessibility <= 0.95:
-        score = 1.0  # 理想范围
+        score = 1.0
     elif avg_accessibility < 0.6:
-        score = 0.3 + 0.7 * (avg_accessibility / 0.6)  # 线性惩罚
+        score = 0.3 + 0.7 * (avg_accessibility / 0.6)
     else:
-        score = max(0.5, 1.0 - (avg_accessibility - 0.95) / 0.1)  # 过度连接惩罚
+        score = max(0.5, 1.0 - (avg_accessibility - 0.95) / 0.1)
     
     return score * complexity_factor
 ```
 
-#### 3.2 门分布评估算法
+#### 宝藏怪物分布评估算法
 ```python
-def evaluate_door_distribution(dungeon_data):
-    """
-    基于空间拓扑学的门分布评估
-    理论基础: 建筑空间理论、游戏设计原则
-    """
-    # 1. 统计门数量分布
-    room_door_counts = count_doors_per_room(dungeon_data)
-    mean_doors = np.mean(room_door_counts)
-    door_variance = np.var(room_door_counts)
+def evaluate_treasure_monster_distribution(dungeon_data):
+    # 1. 密度分析
+    treasure_density = len(treasures) / room_count
+    monster_density = len(monsters) / room_count
     
-    # 2. 门数量合理性评估 (40%)
-    if mean_doors < 1.0:
-        door_quantity_score = mean_doors / 1.0  # 连通性不足
-    elif 1.0 <= mean_doors <= 3.0:
-        door_quantity_score = 1.0  # 理想范围
-    else:
-        door_quantity_score = max(0.0, 1.0 - (mean_doors - 3.0) / 3.0)  # 过度复杂
+    # 2. 空间分布分析
+    treasure_spread = calculate_spatial_spread(treasure_positions)
+    monster_spread = calculate_spatial_spread(monster_positions)
     
-    # 3. 分布均匀性评估 (40%)
-    normalized_variance = door_variance / (mean_doors ** 2) if mean_doors > 0 else 0.0
-    distribution_score = max(0.0, 1.0 - normalized_variance)
+    # 3. 距离分析
+    treasure_monster_distance = calculate_avg_distance(treasure_positions, monster_positions)
     
-    # 4. 连通性保证评估 (20%)
-    isolated_rooms = sum(1 for count in room_door_counts if count == 0)
-    connectivity_score = max(0.0, 1.0 - (isolated_rooms / len(room_door_counts)))
-    
-    # 5. 综合评分
-    final_score = (door_quantity_score * 0.4 + 
-                  distribution_score * 0.4 + 
-                  connectivity_score * 0.2)
-    
-    return final_score
-```
-
-#### 3.3 路径多样性评估算法
-```python
-def evaluate_path_diversity(dungeon_data):
-    """
-    基于选择理论的路径多样性评估
-    理论基础: 探索心理学、选择理论
-    """
-    # 1. 计算所有房间对之间的路径数量
-    path_counts = []
-    for i, room_a in enumerate(rooms):
-        for j, room_b in enumerate(rooms):
-            if i >= j:
-                continue
-            paths = find_all_paths(graph, room_a, room_b)
-            path_counts.append(len(paths))
-    
-    # 2. 计算平均路径多样性
-    avg_path_diversity = np.mean(path_counts) if path_counts else 0.0
-    
-    # 3. 高斯映射评分
-    # 理想值: 2.0, 标准差: 1.0
-    score = np.exp(-((avg_path_diversity - 2.0) ** 2) / (2 * 1.0 ** 2))
-    
-    # 4. 特殊情况处理
-    if avg_path_diversity == 0:
-        score = 0.3  # 基础分数
+    # 4. 多维度评分
+    score = 1.0
+    if treasure_density < 0.1 or treasure_density > 0.6:
+        score -= 0.2
+    if monster_density < 0.1 or monster_density > 0.6:
+        score -= 0.2
+    if treasure_spread < 2.0:
+        score -= 0.15
+    if treasure_monster_distance < 3.0:
+        score -= 0.1
     
     return score
 ```
 
+#### 视觉平衡评估算法
+```python
+def evaluate_aesthetic_balance(dungeon_data):
+    # 1. 格式塔原则评估
+    proximity_score = calculate_proximity_score(room_positions)
+    similarity_score = calculate_similarity_score(room_sizes)
+    continuity_score = calculate_continuity_score(room_positions)
+    
+    # 2. 视觉层次评估
+    visual_weight_score = calculate_visual_weight_balance(room_sizes, room_positions)
+    focal_point_score = calculate_focal_point_quality(room_positions, game_elements)
+    
+    # 3. 空间认知评估
+    legibility_score = calculate_spatial_legibility(room_positions)
+    organization_score = calculate_spatial_organization(room_positions)
+    
+    # 4. 统一与多样评估
+    unity_score = calculate_unity_score(room_sizes, room_positions)
+    variety_score = calculate_variety_score(room_sizes, game_elements)
+    
+    # 5. 加权评分
+    gestalt_score = (proximity_score + similarity_score + continuity_score) / 3
+    hierarchy_score = (visual_weight_score + focal_point_score) / 2
+    spatial_score = (legibility_score + organization_score) / 2
+    design_score = (unity_score + variety_score) / 2
+    
+    return weighted_score(gestalt_score, hierarchy_score, spatial_score, design_score)
+```
+
 ### 4. 空间推断技术
 
-#### 4.1 邻接推断算法
+#### 邻接推断算法
 ```python
 def infer_connections(rooms, threshold=1.0):
-    """
-    基于空间邻接的连接推断
-    理论基础: 空间认知理论、建筑空间关系
-    """
     connections = []
     for i, room_a in enumerate(rooms):
         for j, room_b in enumerate(rooms):
             if i >= j:
                 continue
-            
-            # 计算房间边界
-            ax1, ay1, ax2, ay2 = get_room_bounds(room_a)
-            bx1, by1, bx2, by2 = get_room_bounds(room_b)
-            
-            # 判断邻接关系
-            if are_rooms_adjacent(ax1, ay1, ax2, ay2, bx1, by1, bx2, by2, threshold):
+            if are_rooms_adjacent(room_a, room_b, threshold):
                 connection = {
                     'from_room': room_a['id'],
                     'to_room': room_b['id'],
@@ -310,17 +246,12 @@ def infer_connections(rooms, threshold=1.0):
                     'confidence': calculate_adjacency_confidence(room_a, room_b)
                 }
                 connections.append(connection)
-    
     return connections
 ```
 
-#### 4.2 门位置推断
+#### 门位置推断
 ```python
 def infer_door_position(room_a, room_b):
-    """
-    基于空间关系的门位置推断
-    理论基础: 建筑空间设计原则
-    """
     # 计算重叠区域
     overlap_x1 = max(room_a.x1, room_b.x1)
     overlap_x2 = min(room_a.x2, room_b.x2)
@@ -551,23 +482,6 @@ def infer_door_position(room_a, room_b):
 - Koffka, K. (1935). Principles of Gestalt psychology
 - Wagemans, J., et al. (2012). A century of Gestalt psychology
 
-### 5. 网络科学
-- Newman, M. E. J. (2010). Networks: An introduction
-- Barabási, A. L. (2016). Network science
-- Watts, D. J. (2004). Six degrees: The science of a connected age
-
 ## 📋 总结
 
-Dungeon Adapter 项目通过科学的方法论体系，将地牢设计从艺术创作转化为可量化、可评估、可改进的工程过程。基于坚实的理论基础和先进的技术架构，项目为地牢设计提供了全面的解决方案，推动整个行业的标准化和专业化发展。
-
-### 核心贡献
-1. **科学化**: 基于学术理论的质量评估体系
-2. **标准化**: 统一的数据格式和评估标准
-3. **实用化**: 可操作的设计指导原则
-4. **可扩展**: 模块化架构支持持续发展
-
-### 应用价值
-1. **设计指导**: 为地牢设计者提供科学指导
-2. **质量保证**: 建立客观的质量评估标准
-3. **工具支持**: 提供实用的设计工具
-4. **研究基础**: 为相关研究提供数据支持 
+Dungeon Adapter 项目通过科学的方法论体系，将地牢设计从艺术创作转化为可量化、可评估、可改进的工程过程。基于坚实的理论基础和先进的技术架构，项目为地牢设计提供了全面的解决方案，推动整个行业的标准化和专业化发展。 
