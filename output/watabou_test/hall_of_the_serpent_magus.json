@@ -32,7 +32,9 @@
             "height": 4
           },
           "name": "room_1",
-          "description": "A massive iron double door with a keyhole to the east."
+          "description": "A massive iron double door with a keyhole to the east.",
+          "is_entrance": true,
+          "is_exit": false
         },
         {
           "id": "rect_4",
@@ -60,7 +62,9 @@
             "height": 3
           },
           "name": "room_2",
-          "description": "A key in a strongbox."
+          "description": "A key in a strongbox.",
+          "is_entrance": false,
+          "is_exit": true
         }
       ],
       "doors": [
@@ -331,8 +335,8 @@
           "door_id": "door_2"
         },
         {
-          "from_room": "rect_10",
-          "to_room": "rect_3",
+          "from_room": "rect_3",
+          "to_room": "rect_10",
           "door_id": "door_3"
         },
         {
@@ -351,8 +355,8 @@
           "door_id": "door_6"
         },
         {
-          "from_room": "rect_14",
-          "to_room": "rect_5",
+          "from_room": "rect_5",
+          "to_room": "rect_14",
           "door_id": "door_7"
         },
         {

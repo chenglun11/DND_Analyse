@@ -187,12 +187,12 @@ def assess_quality(input_file: str, enable_spatial_inference: bool = True, adjac
         logger.error(f"Assessment failed: {e}")
         return False
 
-def batch_assess(input_dir: str, output_file: str, enable_spatial_inference: bool = True, adjacency_threshold: float = 1.0, timeout_per_file: int = 30):
+def batch_assess(input_dir: str, output_dir: str, enable_spatial_inference: bool = True, adjacency_threshold: float = 1.0, timeout_per_file: int = 30):
     """批量评估地图质量"""
     try:
         from src.batch_assess import batch_assess_quality
-        batch_assess_quality(input_dir, output_file, enable_spatial_inference, adjacency_threshold, timeout_per_file)
-        logger.info(f"Batch assessment completed: {output_file}")
+        batch_assess_quality(input_dir, output_dir, enable_spatial_inference, adjacency_threshold, timeout_per_file)
+        logger.info(f"Batch assessment completed: {output_dir}")
     except Exception as e:
         logger.error(f"Batch assessment failed: {e}")
         sys.exit(1)
@@ -220,6 +220,12 @@ def main():
 
   # Generate visualization image for converted JSON file
   python cli.py visualize output/test_onepage_example.json
+
+  # Assess single file quality
+  python cli.py assess output/test_onepage_example.json
+
+  # Batch assess directory quality
+  python cli.py batch-assess output/watabou_test/ output/batch_reports/
         """
     )
     
@@ -274,7 +280,7 @@ def main():
     # 'batch-assess' command
     batch_parser = subparsers.add_parser('batch-assess', help='批量评估地图质量 / batch assess dungeon quality')
     batch_parser.add_argument('input_dir', help='输入目录路径 / input directory path')
-    batch_parser.add_argument('output', help='输出报告文件路径 / output report file path')
+    batch_parser.add_argument('output_dir', help='输出目录路径 / output directory path')
     batch_parser.add_argument('--no-spatial-inference', action='store_true',
                               help='禁用空间推断功能')
     batch_parser.add_argument('--adjacency-threshold', type=float, default=1.0,
@@ -377,7 +383,7 @@ def main():
             sys.exit(1)
 
     elif args.command == 'batch-assess':
-        batch_assess(args.input_dir, args.output, not args.no_spatial_inference, args.adjacency_threshold, args.timeout)
+        batch_assess(args.input_dir, args.output_dir, not args.no_spatial_inference, args.adjacency_threshold, args.timeout)
 
 if __name__ == '__main__':
     main() 

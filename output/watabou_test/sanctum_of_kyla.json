@@ -60,7 +60,9 @@
             "height": 3
           },
           "name": "room_4",
-          "description": "A chest containing rations and a scale mail."
+          "description": "A chest containing rations and a scale mail.",
+          "is_entrance": true,
+          "is_exit": false
         },
         {
           "id": "rect_9",
@@ -74,7 +76,9 @@
             "height": 3
           },
           "name": "room_5",
-          "description": "A smuggler. Pleads to borrow lockpicks."
+          "description": "A smuggler. Pleads to borrow lockpicks.",
+          "is_entrance": false,
+          "is_exit": true
         },
         {
           "id": "rect_11",
@@ -619,8 +623,8 @@
           "door_id": "door_0"
         },
         {
-          "from_room": "rect_1",
-          "to_room": "rect_15",
+          "from_room": "rect_15",
+          "to_room": "rect_1",
           "door_id": "door_1"
         },
         {
@@ -639,8 +643,8 @@
           "door_id": "door_4"
         },
         {
-          "from_room": "rect_19",
-          "to_room": "rect_5",
+          "from_room": "rect_5",
+          "to_room": "rect_19",
           "door_id": "door_5"
         },
         {
@@ -649,8 +653,8 @@
           "door_id": "door_6"
         },
         {
-          "from_room": "rect_7",
-          "to_room": "rect_21",
+          "from_room": "rect_21",
+          "to_room": "rect_7",
           "door_id": "door_7"
         },
         {
@@ -669,8 +673,8 @@
           "door_id": "door_10"
         },
         {
-          "from_room": "rect_25",
-          "to_room": "rect_10",
+          "from_room": "rect_10",
+          "to_room": "rect_25",
           "door_id": "door_11"
         },
         {
@@ -684,13 +688,13 @@
           "door_id": "door_13"
         },
         {
-          "from_room": "rect_28",
-          "to_room": "rect_5",
+          "from_room": "rect_5",
+          "to_room": "rect_28",
           "door_id": "door_14"
         },
         {
-          "from_room": "rect_4",
-          "to_room": "rect_29",
+          "from_room": "rect_29",
+          "to_room": "rect_4",
           "door_id": "door_15"
         },
         {

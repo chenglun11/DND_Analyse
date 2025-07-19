@@ -260,14 +260,21 @@ def print_summary_report(report: Dict[str, Any]) -> None:
     
     print("="*60)
 
-def batch_assess_quality(input_dir: str, output_file: str, enable_spatial_inference: bool = True, adjacency_threshold: float = 1.0, timeout_per_file: int = 30):
+def batch_assess_quality(input_dir: str, output_dir: str, enable_spatial_inference: bool = True, adjacency_threshold: float = 1.0, timeout_per_file: int = 30):
     """批量评估地图质量 - CLI 调用的接口函数"""
     try:
         logger.info(f"开始批量评估，输入目录: {input_dir}")
-        logger.info(f"输出文件: {output_file}")
+        logger.info(f"输出目录: {output_dir}")
         logger.info(f"每个文件超时时间: {timeout_per_file}秒")
         
-        results = assess_all_maps(input_dir, os.path.dirname(output_file), timeout_per_file)
+        # 确保输出目录存在
+        os.makedirs(output_dir, exist_ok=True)
+        
+        # 生成输出文件名
+        input_dir_name = os.path.basename(input_dir.rstrip('/'))
+        output_file = os.path.join(output_dir, f"{input_dir_name}_batch_report.json")
+        
+        results = assess_all_maps(input_dir, output_dir, timeout_per_file)
         
         # 保存到指定的输出文件
         with open(output_file, 'w', encoding='utf-8') as f:

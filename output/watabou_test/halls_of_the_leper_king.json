@@ -32,7 +32,9 @@
             "height": 6
           },
           "name": "room_1",
-          "description": "A mantle among rubble on the ground."
+          "description": "A mantle among rubble on the ground.",
+          "is_entrance": true,
+          "is_exit": false
         },
         {
           "id": "rect_3",
@@ -46,7 +48,9 @@
             "height": 3
           },
           "name": "room_2",
-          "description": "A battered stone double door to the east."
+          "description": "A battered stone double door to the east.",
+          "is_entrance": false,
+          "is_exit": true
         },
         {
           "id": "rect_14",
@@ -1150,8 +1154,8 @@
           "door_id": "door_6"
         },
         {
-          "from_room": "rect_7",
-          "to_room": "rect_33",
+          "from_room": "rect_33",
+          "to_room": "rect_7",
           "door_id": "door_7"
         },
         {
@@ -1160,28 +1164,28 @@
           "door_id": "door_8"
         },
         {
-          "from_room": "rect_35",
-          "to_room": "rect_5",
+          "from_room": "rect_5",
+          "to_room": "rect_35",
           "door_id": "door_9"
         },
         {
-          "from_room": "rect_10",
-          "to_room": "rect_36",
+          "from_room": "rect_36",
+          "to_room": "rect_10",
           "door_id": "door_10"
         },
         {
-          "from_room": "rect_11",
-          "to_room": "rect_37",
+          "from_room": "rect_37",
+          "to_room": "rect_11",
           "door_id": "door_11"
         },
         {
-          "from_room": "rect_38",
-          "to_room": "rect_9",
+          "from_room": "rect_9",
+          "to_room": "rect_38",
           "door_id": "door_12"
         },
         {
-          "from_room": "rect_39",
-          "to_room": "rect_9",
+          "from_room": "rect_9",
+          "to_room": "rect_39",
           "door_id": "door_13"
         },
         {
@@ -1190,13 +1194,13 @@
           "door_id": "door_14"
         },
         {
-          "from_room": "rect_11",
-          "to_room": "rect_41",
+          "from_room": "rect_41",
+          "to_room": "rect_11",
           "door_id": "door_15"
         },
         {
-          "from_room": "rect_16",
-          "to_room": "rect_42",
+          "from_room": "rect_42",
+          "to_room": "rect_16",
           "door_id": "door_16"
         },
         {
@@ -1210,8 +1214,8 @@
           "door_id": "door_18"
         },
         {
-          "from_room": "rect_45",
-          "to_room": "rect_17",
+          "from_room": "rect_17",
+          "to_room": "rect_45",
           "door_id": "door_19"
         },
         {
@@ -1220,13 +1224,13 @@
           "door_id": "door_20"
         },
         {
-          "from_room": "rect_21",
-          "to_room": "rect_47",
+          "from_room": "rect_47",
+          "to_room": "rect_21",
           "door_id": "door_21"
         },
         {
-          "from_room": "rect_19",
-          "to_room": "rect_48",
+          "from_room": "rect_48",
+          "to_room": "rect_19",
           "door_id": "door_22"
         },
         {
@@ -1235,13 +1239,13 @@
           "door_id": "door_23"
         },
         {
-          "from_room": "rect_24",
-          "to_room": "rect_50",
+          "from_room": "rect_50",
+          "to_room": "rect_24",
           "door_id": "door_24"
         },
         {
-          "from_room": "rect_25",
-          "to_room": "rect_51",
+          "from_room": "rect_51",
+          "to_room": "rect_25",
           "door_id": "door_25"
         },
         {
@@ -1255,23 +1259,23 @@
           "door_id": "door_27"
         },
         {
-          "from_room": "rect_19",
+          "from_room": "rect_54",
+          "to_room": "rect_19",
+          "door_id": "door_28"
+        },
+        {
+          "from_room": "rect_54",
           "to_room": "rect_45",
           "door_id": "door_28"
         },
         {
           "from_room": "rect_19",
-          "to_room": "rect_54",
+          "to_room": "rect_45",
           "door_id": "door_28"
         },
         {
-          "from_room": "rect_45",
-          "to_room": "rect_54",
-          "door_id": "door_28"
-        },
-        {
-          "from_room": "rect_8",
-          "to_room": "rect_55",
+          "from_room": "rect_55",
+          "to_room": "rect_8",
           "door_id": "door_29"
         },
         {

@@ -46,7 +46,9 @@
             "height": 3
           },
           "name": "room_2",
-          "description": "A blood-stained javelin among rubble on the ground."
+          "description": "A blood-stained javelin among rubble on the ground.",
+          "is_entrance": true,
+          "is_exit": false
         },
         {
           "id": "rect_4",
@@ -60,7 +62,9 @@
             "height": 5
           },
           "name": "room_3",
-          "description": "A charming one-eyed hunter, lying on the ground."
+          "description": "A charming one-eyed hunter, lying on the ground.",
+          "is_entrance": false,
+          "is_exit": true
         }
       ],
       "doors": [
@@ -384,13 +388,13 @@
           "door_id": "door_5"
         },
         {
-          "from_room": "rect_14",
-          "to_room": "rect_6",
+          "from_room": "rect_6",
+          "to_room": "rect_14",
           "door_id": "door_6"
         },
         {
-          "from_room": "rect_7",
-          "to_room": "rect_15",
+          "from_room": "rect_15",
+          "to_room": "rect_7",
           "door_id": "door_7"
         },
         {

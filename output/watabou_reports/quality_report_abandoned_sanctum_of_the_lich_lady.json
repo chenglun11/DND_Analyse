@@ -1,0 +1,354 @@
+{
+  "scores": {
+    "accessibility": {
+      "score": 0.8319089359156892,
+      "detail": {
+        "reachability_ratio": 1.0,
+        "avg_path_length": 3.52,
+        "path_variance": 4.4096,
+        "normalized": [
+          1.0,
+          0.6088888888888889,
+          0.9455604938271605
+        ],
+        "score": 0.8319089359156892
+      }
+    },
+    "degree_variance": {
+      "score": 0.0,
+      "detail": {
+        "raw_variance": 4.1875,
+        "normalized_variance": 1.0,
+        "score": 0.0,
+        "degrees": [
+          7,
+          2,
+          2,
+          4
+        ]
+      }
+    },
+    "door_distribution": {
+      "score": 0.461714759243568,
+      "detail": {
+        "cv": 0.4561333751816801,
+        "avg_distance": 2.279389107846601,
+        "avg_entropy": 0.781879173055599,
+        "weights": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333
+        ],
+        "normalized": [
+          0.77193331240916,
+          0.04920436255070587,
+          0.5640066027708381
+        ],
+        "score": 0.461714759243568,
+        "debug": {
+          "count": 92
+        }
+      }
+    },
+    "dead_end_ratio": {
+      "score": 0.5,
+      "detail": {
+        "dead_end_ratio": 0.5,
+        "dead_end_count": 2,
+        "total_rooms": 4,
+        "dead_end_rooms": [
+          "rect_24",
+          "rect_48"
+        ],
+        "score": 0.5
+      }
+    },
+    "key_path_length": {
+      "score": 0.5555555555555556,
+      "detail": {
+        "raw_length": 5,
+        "diameter": 9,
+        "normalized_length": 0.5555555555555556,
+        "branch_factor": 0.0,
+        "score": 0.5555555555555556,
+        "path": [
+          "rect_0",
+          "rect_3",
+          "rect_7",
+          "rect_10",
+          "rect_13",
+          "rect_21"
+        ]
+      }
+    },
+    "loop_ratio": {
+      "score": 0.86,
+      "detail": {
+        "total_rooms": 50,
+        "total_edges": 92,
+        "connected_components": 1,
+        "cyclomatic_number": 43,
+        "loop_ratio": 0.86,
+        "algorithm": "Cyclomatic formula",
+        "note": "Direct calculation using E - V + C formula",
+        "score_breakdown": {
+          "loop_ratio": 0.86,
+          "final_score": 0.86
+        }
+      }
+    },
+    "path_diversity": {
+      "score": 0.5370979453333867,
+      "detail": {
+        "avg_path_diversity": 0.4021073075146472,
+        "std_path_diversity": 0.20998464097621333,
+        "max_path_diversity": 0.7486666277694503,
+        "min_path_diversity": 0.0,
+        "total_pairs_analyzed": 61,
+        "rounds_completed": 8,
+        "detailed_analysis": {
+          "round_0": {
+            "pairs_analyzed": 8,
+            "avg_diversity": 0.33381984408345206
+          },
+          "round_1": {
+            "pairs_analyzed": 9,
+            "avg_diversity": 0.3680096259906407
+          },
+          "round_2": {
+            "pairs_analyzed": 7,
+            "avg_diversity": 0.4624418184556353
+          },
+          "round_3": {
+            "pairs_analyzed": 6,
+            "avg_diversity": 0.4479831806185608
+          },
+          "round_4": {
+            "pairs_analyzed": 6,
+            "avg_diversity": 0.467666576845205
+          },
+          "round_5": {
+            "pairs_analyzed": 9,
+            "avg_diversity": 0.3834565888001198
+          },
+          "round_6": {
+            "pairs_analyzed": 8,
+            "avg_diversity": 0.394883569984791
+          },
+          "round_7": {
+            "pairs_analyzed": 8,
+            "avg_diversity": 0.4005914048448305
+          }
+        },
+        "adaptive_params": {
+          "num_walks": 50,
+          "max_walk_length": 11,
+          "graph_diameter": 11,
+          "avg_degree": 3.68,
+          "total_nodes": 50,
+          "total_edges": 92
+        },
+        "algorithm": "Adaptive_random_walk_sampling",
+        "sampling_strategy": "Multi-round (8 rounds, 11 pairs/round)",
+        "normalization": "Robust_with_predefined_bounds",
+        "fusion_method": "Geometric_mean_of_normalized_metrics",
+        "performance": {
+          "time_taken": 0.028121232986450195,
+          "timeout": false
+        }
+      }
+    },
+    "treasure_monster_distribution": {
+      "score": 0.4560476639766109,
+      "detail": {
+        "cv_treasure": 1.0,
+        "uniformity_treasure": 0.42264973081037416,
+        "score": 0.4560476639766109,
+        "cv_monster": 1.7320508075688772,
+        "uniformity_monster": 0.0,
+        "avg_t2m_dist": 15.15256957717368,
+        "proximity_score": 0.4920847137882971
+      }
+    },
+    "aesthetic_balance": {
+      "score": 0.7659272801766249,
+      "detail": {
+        "symmetry_ratio": 0.0,
+        "uniformity_area": 0.735376137633015,
+        "uniformity_spacing": 0.797747667482139,
+        "score": 0.7659272801766249
+      }
+    }
+  },
+  "category_scores": {
+    "structural": 0.5400015663835414,
+    "gameplay": 0.49725824372399907,
+    "aesthetic": 0.7659272801766249
+  },
+  "overall_score": 0.5525187621227328,
+  "grade": "C",
+  "details": {
+    "accessibility": {
+      "reachability_ratio": 1.0,
+      "avg_path_length": 3.52,
+      "path_variance": 4.4096,
+      "normalized": [
+        1.0,
+        0.6088888888888889,
+        0.9455604938271605
+      ],
+      "score": 0.8319089359156892
+    },
+    "degree_variance": {
+      "raw_variance": 4.1875,
+      "normalized_variance": 1.0,
+      "score": 0.0,
+      "degrees": [
+        7,
+        2,
+        2,
+        4
+      ]
+    },
+    "door_distribution": {
+      "cv": 0.4561333751816801,
+      "avg_distance": 2.279389107846601,
+      "avg_entropy": 0.781879173055599,
+      "weights": [
+        0.3333333333333333,
+        0.3333333333333333,
+        0.3333333333333333
+      ],
+      "normalized": [
+        0.77193331240916,
+        0.04920436255070587,
+        0.5640066027708381
+      ],
+      "score": 0.461714759243568,
+      "debug": {
+        "count": 92
+      }
+    },
+    "dead_end_ratio": {
+      "dead_end_ratio": 0.5,
+      "dead_end_count": 2,
+      "total_rooms": 4,
+      "dead_end_rooms": [
+        "rect_24",
+        "rect_48"
+      ],
+      "score": 0.5
+    },
+    "key_path_length": {
+      "raw_length": 5,
+      "diameter": 9,
+      "normalized_length": 0.5555555555555556,
+      "branch_factor": 0.0,
+      "score": 0.5555555555555556,
+      "path": [
+        "rect_0",
+        "rect_3",
+        "rect_7",
+        "rect_10",
+        "rect_13",
+        "rect_21"
+      ]
+    },
+    "loop_ratio": {
+      "total_rooms": 50,
+      "total_edges": 92,
+      "connected_components": 1,
+      "cyclomatic_number": 43,
+      "loop_ratio": 0.86,
+      "algorithm": "Cyclomatic formula",
+      "note": "Direct calculation using E - V + C formula",
+      "score_breakdown": {
+        "loop_ratio": 0.86,
+        "final_score": 0.86
+      }
+    },
+    "path_diversity": {
+      "avg_path_diversity": 0.4021073075146472,
+      "std_path_diversity": 0.20998464097621333,
+      "max_path_diversity": 0.7486666277694503,
+      "min_path_diversity": 0.0,
+      "total_pairs_analyzed": 61,
+      "rounds_completed": 8,
+      "detailed_analysis": {
+        "round_0": {
+          "pairs_analyzed": 8,
+          "avg_diversity": 0.33381984408345206
+        },
+        "round_1": {
+          "pairs_analyzed": 9,
+          "avg_diversity": 0.3680096259906407
+        },
+        "round_2": {
+          "pairs_analyzed": 7,
+          "avg_diversity": 0.4624418184556353
+        },
+        "round_3": {
+          "pairs_analyzed": 6,
+          "avg_diversity": 0.4479831806185608
+        },
+        "round_4": {
+          "pairs_analyzed": 6,
+          "avg_diversity": 0.467666576845205
+        },
+        "round_5": {
+          "pairs_analyzed": 9,
+          "avg_diversity": 0.3834565888001198
+        },
+        "round_6": {
+          "pairs_analyzed": 8,
+          "avg_diversity": 0.394883569984791
+        },
+        "round_7": {
+          "pairs_analyzed": 8,
+          "avg_diversity": 0.4005914048448305
+        }
+      },
+      "adaptive_params": {
+        "num_walks": 50,
+        "max_walk_length": 11,
+        "graph_diameter": 11,
+        "avg_degree": 3.68,
+        "total_nodes": 50,
+        "total_edges": 92
+      },
+      "algorithm": "Adaptive_random_walk_sampling",
+      "sampling_strategy": "Multi-round (8 rounds, 11 pairs/round)",
+      "normalization": "Robust_with_predefined_bounds",
+      "fusion_method": "Geometric_mean_of_normalized_metrics",
+      "performance": {
+        "time_taken": 0.028121232986450195,
+        "timeout": false
+      }
+    },
+    "treasure_monster_distribution": {
+      "cv_treasure": 1.0,
+      "uniformity_treasure": 0.42264973081037416,
+      "score": 0.4560476639766109,
+      "cv_monster": 1.7320508075688772,
+      "uniformity_monster": 0.0,
+      "avg_t2m_dist": 15.15256957717368,
+      "proximity_score": 0.4920847137882971
+    },
+    "aesthetic_balance": {
+      "symmetry_ratio": 0.0,
+      "uniformity_area": 0.735376137633015,
+      "uniformity_spacing": 0.797747667482139,
+      "score": 0.7659272801766249
+    }
+  },
+  "recommendations": [
+    "Structural issues detected: improve room connectivity and door placement",
+    "Balance room connections to avoid rooms with too many or too few connections",
+    "Improve door distribution for better flow",
+    "Gameplay issues detected: enhance path diversity and element distribution",
+    "Add more path choices to provide more ways to reach the target",
+    "Improve treasure and monster distribution: ensure balanced density, add bosses, and spread elements spatially",
+    "Reduce dead ends for better exploration flow"
+  ],
+  "spatial_inference_used": true
+}

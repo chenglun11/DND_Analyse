@@ -2911,8 +2911,8 @@
           "door_id": "door_1"
         },
         {
-          "from_room": "rect_1",
-          "to_room": "rect_73",
+          "from_room": "rect_73",
+          "to_room": "rect_1",
           "door_id": "door_2"
         },
         {
@@ -2921,18 +2921,18 @@
           "door_id": "door_3"
         },
         {
-          "from_room": "rect_2",
+          "from_room": "rect_73",
+          "to_room": "rect_2",
+          "door_id": "door_4"
+        },
+        {
+          "from_room": "rect_73",
           "to_room": "rect_75",
           "door_id": "door_4"
         },
         {
           "from_room": "rect_2",
-          "to_room": "rect_73",
-          "door_id": "door_4"
-        },
-        {
-          "from_room": "rect_75",
-          "to_room": "rect_73",
+          "to_room": "rect_75",
           "door_id": "door_4"
         },
         {
@@ -2946,29 +2946,34 @@
           "door_id": "door_6"
         },
         {
-          "from_room": "rect_7",
-          "to_room": "rect_78",
+          "from_room": "rect_78",
+          "to_room": "rect_7",
           "door_id": "door_7"
         },
         {
-          "from_room": "rect_79",
-          "to_room": "rect_6",
+          "from_room": "rect_6",
+          "to_room": "rect_79",
           "door_id": "door_8"
         },
         {
-          "from_room": "rect_82",
+          "from_room": "rect_9",
           "to_room": "rect_80",
           "door_id": "door_9"
         },
         {
-          "from_room": "rect_82",
-          "to_room": "rect_9",
+          "from_room": "rect_9",
+          "to_room": "rect_82",
           "door_id": "door_9"
         },
         {
           "from_room": "rect_80",
-          "to_room": "rect_9",
+          "to_room": "rect_82",
           "door_id": "door_9"
+        },
+        {
+          "from_room": "rect_81",
+          "to_room": "rect_79",
+          "door_id": "door_10"
         },
         {
           "from_room": "rect_81",
@@ -2976,13 +2981,8 @@
           "door_id": "door_10"
         },
         {
-          "from_room": "rect_81",
-          "to_room": "rect_79",
-          "door_id": "door_10"
-        },
-        {
-          "from_room": "rect_8",
-          "to_room": "rect_79",
+          "from_room": "rect_79",
+          "to_room": "rect_8",
           "door_id": "door_10"
         },
         {
@@ -2991,8 +2991,8 @@
           "door_id": "door_11"
         },
         {
-          "from_room": "rect_10",
-          "to_room": "rect_83",
+          "from_room": "rect_83",
+          "to_room": "rect_10",
           "door_id": "door_12"
         },
         {
@@ -3006,13 +3006,13 @@
           "door_id": "door_14"
         },
         {
-          "from_room": "rect_86",
-          "to_room": "rect_15",
+          "from_room": "rect_15",
+          "to_room": "rect_86",
           "door_id": "door_15"
         },
         {
-          "from_room": "rect_14",
-          "to_room": "rect_87",
+          "from_room": "rect_87",
+          "to_room": "rect_14",
           "door_id": "door_16"
         },
         {
@@ -3026,28 +3026,28 @@
           "door_id": "door_18"
         },
         {
-          "from_room": "rect_19",
+          "from_room": "rect_90",
+          "to_room": "rect_19",
+          "door_id": "door_19"
+        },
+        {
+          "from_room": "rect_90",
           "to_room": "rect_95",
           "door_id": "door_19"
         },
         {
           "from_room": "rect_19",
-          "to_room": "rect_90",
+          "to_room": "rect_95",
           "door_id": "door_19"
         },
         {
-          "from_room": "rect_95",
-          "to_room": "rect_90",
-          "door_id": "door_19"
-        },
-        {
-          "from_room": "rect_91",
-          "to_room": "rect_20",
+          "from_room": "rect_20",
+          "to_room": "rect_91",
           "door_id": "door_20"
         },
         {
-          "from_room": "rect_92",
-          "to_room": "rect_21",
+          "from_room": "rect_21",
+          "to_room": "rect_92",
           "door_id": "door_21"
         },
         {
@@ -3061,17 +3061,17 @@
           "door_id": "door_23"
         },
         {
-          "from_room": "rect_100",
-          "to_room": "rect_24",
-          "door_id": "door_24"
-        },
-        {
-          "from_room": "rect_100",
-          "to_room": "rect_95",
+          "from_room": "rect_24",
+          "to_room": "rect_100",
           "door_id": "door_24"
         },
         {
           "from_room": "rect_24",
+          "to_room": "rect_95",
+          "door_id": "door_24"
+        },
+        {
+          "from_room": "rect_100",
           "to_room": "rect_95",
           "door_id": "door_24"
         },
@@ -3081,8 +3081,8 @@
           "door_id": "door_25"
         },
         {
-          "from_room": "rect_97",
-          "to_room": "rect_21",
+          "from_room": "rect_21",
+          "to_room": "rect_97",
           "door_id": "door_26"
         },
         {
@@ -3096,8 +3096,8 @@
           "door_id": "door_28"
         },
         {
-          "from_room": "rect_100",
-          "to_room": "rect_29",
+          "from_room": "rect_29",
+          "to_room": "rect_100",
           "door_id": "door_29"
         },
         {
@@ -3106,8 +3106,8 @@
           "door_id": "door_30"
         },
         {
-          "from_room": "rect_25",
-          "to_room": "rect_102",
+          "from_room": "rect_102",
+          "to_room": "rect_25",
           "door_id": "door_31"
         },
         {
@@ -3116,8 +3116,8 @@
           "door_id": "door_32"
         },
         {
-          "from_room": "rect_104",
-          "to_room": "rect_33",
+          "from_room": "rect_33",
+          "to_room": "rect_104",
           "door_id": "door_33"
         },
         {
@@ -3136,18 +3136,18 @@
           "door_id": "door_36"
         },
         {
-          "from_room": "rect_108",
+          "from_room": "rect_34",
+          "to_room": "rect_108",
+          "door_id": "door_37"
+        },
+        {
+          "from_room": "rect_34",
           "to_room": "rect_105",
           "door_id": "door_37"
         },
         {
           "from_room": "rect_108",
-          "to_room": "rect_34",
-          "door_id": "door_37"
-        },
-        {
-          "from_room": "rect_105",
-          "to_room": "rect_34",
+          "to_room": "rect_105",
           "door_id": "door_37"
         },
         {
@@ -3156,8 +3156,8 @@
           "door_id": "door_38"
         },
         {
-          "from_room": "rect_35",
-          "to_room": "rect_110",
+          "from_room": "rect_110",
+          "to_room": "rect_35",
           "door_id": "door_39"
         },
         {
@@ -3166,18 +3166,18 @@
           "door_id": "door_40"
         },
         {
-          "from_room": "rect_112",
-          "to_room": "rect_37",
+          "from_room": "rect_37",
+          "to_room": "rect_112",
           "door_id": "door_41"
         },
         {
-          "from_room": "rect_113",
-          "to_room": "rect_37",
+          "from_room": "rect_37",
+          "to_room": "rect_113",
           "door_id": "door_42"
         },
         {
-          "from_room": "rect_39",
-          "to_room": "rect_114",
+          "from_room": "rect_114",
+          "to_room": "rect_39",
           "door_id": "door_43"
         },
         {
@@ -3186,8 +3186,8 @@
           "door_id": "door_44"
         },
         {
-          "from_room": "rect_45",
-          "to_room": "rect_116",
+          "from_room": "rect_116",
+          "to_room": "rect_45",
           "door_id": "door_45"
         },
         {
@@ -3196,19 +3196,9 @@
           "door_id": "door_46"
         },
         {
-          "from_room": "rect_118",
-          "to_room": "rect_47",
+          "from_room": "rect_47",
+          "to_room": "rect_118",
           "door_id": "door_47"
-        },
-        {
-          "from_room": "rect_43",
-          "to_room": "rect_114",
-          "door_id": "door_48"
-        },
-        {
-          "from_room": "rect_43",
-          "to_room": "rect_119",
-          "door_id": "door_48"
         },
         {
           "from_room": "rect_114",
@@ -3216,23 +3206,33 @@
           "door_id": "door_48"
         },
         {
-          "from_room": "rect_120",
-          "to_room": "rect_47",
+          "from_room": "rect_114",
+          "to_room": "rect_43",
+          "door_id": "door_48"
+        },
+        {
+          "from_room": "rect_119",
+          "to_room": "rect_43",
+          "door_id": "door_48"
+        },
+        {
+          "from_room": "rect_47",
+          "to_room": "rect_120",
           "door_id": "door_49"
         },
         {
-          "from_room": "rect_48",
+          "from_room": "rect_121",
+          "to_room": "rect_48",
+          "door_id": "door_50"
+        },
+        {
+          "from_room": "rect_121",
           "to_room": "rect_119",
           "door_id": "door_50"
         },
         {
           "from_room": "rect_48",
-          "to_room": "rect_121",
-          "door_id": "door_50"
-        },
-        {
-          "from_room": "rect_119",
-          "to_room": "rect_121",
+          "to_room": "rect_119",
           "door_id": "door_50"
         },
         {
@@ -3242,17 +3242,17 @@
         },
         {
           "from_room": "rect_50",
-          "to_room": "rect_123",
+          "to_room": "rect_146",
           "door_id": "door_52"
         },
         {
           "from_room": "rect_50",
-          "to_room": "rect_146",
+          "to_room": "rect_123",
           "door_id": "door_52"
         },
         {
-          "from_room": "rect_123",
-          "to_room": "rect_146",
+          "from_room": "rect_146",
+          "to_room": "rect_123",
           "door_id": "door_52"
         },
         {
@@ -3272,17 +3272,17 @@
         },
         {
           "from_room": "rect_125",
-          "to_room": "rect_123",
+          "to_room": "rect_52",
           "door_id": "door_54"
         },
         {
           "from_room": "rect_125",
-          "to_room": "rect_52",
+          "to_room": "rect_123",
           "door_id": "door_54"
         },
         {
-          "from_room": "rect_123",
-          "to_room": "rect_52",
+          "from_room": "rect_52",
+          "to_room": "rect_123",
           "door_id": "door_54"
         },
         {
@@ -3306,17 +3306,17 @@
           "door_id": "door_56"
         },
         {
-          "from_room": "rect_54",
-          "to_room": "rect_125",
-          "door_id": "door_57"
-        },
-        {
-          "from_room": "rect_54",
-          "to_room": "rect_128",
+          "from_room": "rect_125",
+          "to_room": "rect_54",
           "door_id": "door_57"
         },
         {
           "from_room": "rect_125",
+          "to_room": "rect_128",
+          "door_id": "door_57"
+        },
+        {
+          "from_room": "rect_54",
           "to_room": "rect_128",
           "door_id": "door_57"
         },
@@ -3327,17 +3327,17 @@
         },
         {
           "from_room": "rect_126",
-          "to_room": "rect_130",
+          "to_room": "rect_55",
           "door_id": "door_59"
         },
         {
           "from_room": "rect_126",
-          "to_room": "rect_55",
+          "to_room": "rect_130",
           "door_id": "door_59"
         },
         {
-          "from_room": "rect_130",
-          "to_room": "rect_55",
+          "from_room": "rect_55",
+          "to_room": "rect_130",
           "door_id": "door_59"
         },
         {
@@ -3346,18 +3346,18 @@
           "door_id": "door_60"
         },
         {
-          "from_room": "rect_130",
+          "from_room": "rect_59",
           "to_room": "rect_132",
           "door_id": "door_61"
         },
         {
-          "from_room": "rect_130",
-          "to_room": "rect_59",
+          "from_room": "rect_59",
+          "to_room": "rect_130",
           "door_id": "door_61"
         },
         {
           "from_room": "rect_132",
-          "to_room": "rect_59",
+          "to_room": "rect_130",
           "door_id": "door_61"
         },
         {
@@ -3366,8 +3366,8 @@
           "door_id": "door_62"
         },
         {
-          "from_room": "rect_61",
-          "to_room": "rect_134",
+          "from_room": "rect_134",
+          "to_room": "rect_61",
           "door_id": "door_63"
         },
         {
@@ -3376,13 +3376,8 @@
           "door_id": "door_64"
         },
         {
-          "from_room": "rect_136",
-          "to_room": "rect_134",
-          "door_id": "door_65"
-        },
-        {
-          "from_room": "rect_136",
-          "to_room": "rect_63",
+          "from_room": "rect_134",
+          "to_room": "rect_136",
           "door_id": "door_65"
         },
         {
@@ -3391,32 +3386,37 @@
           "door_id": "door_65"
         },
         {
+          "from_room": "rect_136",
+          "to_room": "rect_63",
+          "door_id": "door_65"
+        },
+        {
+          "from_room": "rect_137",
+          "to_room": "rect_135",
+          "door_id": "door_66"
+        },
+        {
           "from_room": "rect_137",
           "to_room": "rect_64",
           "door_id": "door_66"
         },
         {
-          "from_room": "rect_137",
-          "to_room": "rect_135",
+          "from_room": "rect_135",
+          "to_room": "rect_64",
           "door_id": "door_66"
         },
         {
-          "from_room": "rect_64",
-          "to_room": "rect_135",
-          "door_id": "door_66"
-        },
-        {
-          "from_room": "rect_65",
-          "to_room": "rect_136",
-          "door_id": "door_67"
-        },
-        {
-          "from_room": "rect_65",
-          "to_room": "rect_138",
+          "from_room": "rect_136",
+          "to_room": "rect_65",
           "door_id": "door_67"
         },
         {
           "from_room": "rect_136",
+          "to_room": "rect_138",
+          "door_id": "door_67"
+        },
+        {
+          "from_room": "rect_65",
           "to_room": "rect_138",
           "door_id": "door_67"
         },
@@ -3426,13 +3426,8 @@
           "door_id": "door_68"
         },
         {
-          "from_room": "rect_67",
-          "to_room": "rect_140",
-          "door_id": "door_69"
-        },
-        {
-          "from_room": "rect_67",
-          "to_room": "rect_138",
+          "from_room": "rect_140",
+          "to_room": "rect_67",
           "door_id": "door_69"
         },
         {
@@ -3441,17 +3436,22 @@
           "door_id": "door_69"
         },
         {
-          "from_room": "rect_69",
-          "to_room": "rect_141",
-          "door_id": "door_70"
+          "from_room": "rect_67",
+          "to_room": "rect_138",
+          "door_id": "door_69"
         },
         {
-          "from_room": "rect_69",
-          "to_room": "rect_140",
+          "from_room": "rect_141",
+          "to_room": "rect_69",
           "door_id": "door_70"
         },
         {
           "from_room": "rect_141",
+          "to_room": "rect_140",
+          "door_id": "door_70"
+        },
+        {
+          "from_room": "rect_69",
           "to_room": "rect_140",
           "door_id": "door_70"
         },
@@ -3466,33 +3466,33 @@
           "door_id": "door_73"
         },
         {
-          "from_room": "rect_145",
-          "to_room": "rect_44",
+          "from_room": "rect_44",
+          "to_room": "rect_145",
           "door_id": "door_74"
         },
         {
-          "from_room": "rect_56",
-          "to_room": "rect_146",
+          "from_room": "rect_146",
+          "to_room": "rect_56",
           "door_id": "door_75"
         },
         {
-          "from_room": "rect_147",
-          "to_room": "rect_29",
+          "from_room": "rect_29",
+          "to_room": "rect_147",
           "door_id": "door_76"
         },
         {
-          "from_room": "rect_60",
+          "from_room": "rect_148",
           "to_room": "rect_133",
           "door_id": "door_77"
         },
         {
-          "from_room": "rect_60",
-          "to_room": "rect_148",
+          "from_room": "rect_148",
+          "to_room": "rect_60",
           "door_id": "door_77"
         },
         {
           "from_room": "rect_133",
-          "to_room": "rect_148",
+          "to_room": "rect_60",
           "door_id": "door_77"
         },
         {

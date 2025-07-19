@@ -603,8 +603,8 @@
       ],
       "connections": [
         {
-          "from_room": "rect_1",
-          "to_room": "rect_16",
+          "from_room": "rect_16",
+          "to_room": "rect_1",
           "door_id": "door_1"
         },
         {
@@ -628,8 +628,8 @@
           "door_id": "door_5"
         },
         {
-          "from_room": "rect_21",
-          "to_room": "rect_6",
+          "from_room": "rect_6",
+          "to_room": "rect_21",
           "door_id": "door_6"
         },
         {
@@ -648,13 +648,13 @@
           "door_id": "door_9"
         },
         {
-          "from_room": "rect_25",
-          "to_room": "rect_6",
+          "from_room": "rect_6",
+          "to_room": "rect_25",
           "door_id": "door_10"
         },
         {
-          "from_room": "rect_7",
-          "to_room": "rect_26",
+          "from_room": "rect_26",
+          "to_room": "rect_7",
           "door_id": "door_11"
         },
         {
@@ -663,8 +663,8 @@
           "door_id": "door_12"
         },
         {
-          "from_room": "rect_28",
-          "to_room": "rect_9",
+          "from_room": "rect_9",
+          "to_room": "rect_28",
           "door_id": "door_13"
         },
         {

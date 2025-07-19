@@ -538,8 +538,8 @@ class QtBFSVisualizer(QMainWindow):
     
     def __init__(self):
         super().__init__()
-        self.dungeon_data = None
         self.graph = {}
+        self.dungeon_data = None  # 添加dungeon_data属性
         self.bfs_worker = None
         
         self.init_ui()
@@ -658,6 +658,12 @@ class QtBFSVisualizer(QMainWindow):
         path_diversity_btn.clicked.connect(self.analyze_path_diversity)
         analysis_layout.addWidget(path_diversity_btn)
         
+        # 添加查看特定路径详情的功能
+        self.view_path_details_btn = QPushButton("查看路径详情")
+        self.view_path_details_btn.clicked.connect(self.view_path_details)
+        analysis_layout.addWidget(self.view_path_details_btn)
+        
+        analysis_group.setLayout(analysis_layout)
         layout.addWidget(analysis_group)
         
         # 信息显示组
@@ -706,27 +712,28 @@ class QtBFSVisualizer(QMainWindow):
     def load_dungeon_file(self):
         """加载地牢文件"""
         file_path, _ = QFileDialog.getOpenFileName(
-            self, "选择地牢数据文件", "", 
-            "JSON文件 (*.json);;所有文件 (*)"
+            self, "选择地牢文件", "", "JSON文件 (*.json);;所有文件 (*)"
         )
-        
         if file_path:
             try:
                 with open(file_path, 'r', encoding='utf-8') as f:
-                    self.dungeon_data = json.load(f)
+                    dungeon_data = json.load(f)
+                
+                # 保存dungeon_data到实例变量
+                self.dungeon_data = dungeon_data
+                
+                # 构建图结构
+                self.graph = self.canvas._build_graph(dungeon_data)
                 
                 # 加载到画布
-                if self.canvas.load_dungeon_data(self.dungeon_data):
-                    self.graph = self.canvas.graph
+                if self.canvas.load_dungeon_data(dungeon_data):
                     self.update_node_combos()
-                    self.start_btn.setEnabled(True)
-                    self.statusBar().showMessage(f"已加载: {Path(file_path).name}")
-                    self.info_text.append(f"已加载地牢数据: {Path(file_path).name}")
+                    self.start_btn.setEnabled(True)  # 启用BFS开始按钮
+                    self.statusBar().showMessage(f"已加载文件: {Path(file_path).name}")
                 else:
                     QMessageBox.warning(self, "错误", "无法加载地牢数据")
-                    
             except Exception as e:
-                QMessageBox.critical(self, "错误", f"加载文件失败: {str(e)}")
+                QMessageBox.critical(self, "错误", f"加载文件失败: {e}")
     
     def update_node_combos(self):
         """更新节点选择下拉框"""
@@ -866,27 +873,158 @@ class QtBFSVisualizer(QMainWindow):
         if not self.graph:
             QMessageBox.warning(self, "警告", "请先加载地牢数据")
             return
-        start_node = self.start_node_combo.currentText()
-        target_node = self.target_node_combo.currentText()
-        if not start_node or target_node == "无":
-            QMessageBox.warning(self, "警告", "请选择起始节点和目标节点")
+        
+        # 获取所有房间节点
+        room_nodes = []
+        if self.dungeon_data and 'levels' in self.dungeon_data:
+            level = self.dungeon_data['levels'][0]
+            rooms = level.get('rooms', [])
+            room_nodes = [room['id'] for room in rooms]
+        
+        if not room_nodes:
+            QMessageBox.warning(self, "警告", "未找到房间数据")
             return
-        # 计算最短路径数量
-        count = self._count_shortest_paths(start_node, target_node)
-        info = f"路径多样性分析:\n"
-        info += f"从 {start_node} 到 {target_node}\n"
-        info += f"最短路径数量: {count}"
+        
+        # 分析所有房间对之间的路径
+        path_counts = []
+        path_distribution = {}  # 统计路径数量分布
+        
+        for i in range(len(room_nodes)):
+            for j in range(i+1, len(room_nodes)):
+                room1, room2 = room_nodes[i], room_nodes[j]
+                count, _ = self._find_all_shortest_paths(room1, room2)
+                if count > 0:
+                    path_counts.append(count)
+                    # 统计路径数量分布
+                    if count not in path_distribution:
+                        path_distribution[count] = []
+                    path_distribution[count].append(f"{room1}->{room2}")
+        
+        if not path_counts:
+            self.info_text.setText("路径多样性分析:\n没有找到可达的房间对")
+            return
+        
+        # 计算统计信息
+        avg_paths = sum(path_counts) / len(path_counts)
+        max_paths = max(path_counts)
+        min_paths = min(path_counts)
+        
+        # 生成简洁的报告
+        info = f"路径多样性分析报告:\n"
+        info += f"分析房间对数量: {len(path_counts)}\n"
+        info += f"平均路径数: {avg_paths:.2f}\n"
+        info += f"最大路径数: {max_paths}\n"
+        info += f"最小路径数: {min_paths}\n\n"
+        
+        info += f"路径数量分布:\n"
+        for count in sorted(path_distribution.keys()):
+            room_pairs = path_distribution[count]
+            info += f"  {count}条路径: {len(room_pairs)}对房间\n"
+            # 只显示前3个房间对作为示例
+            if len(room_pairs) <= 3:
+                for pair in room_pairs:
+                    info += f"    {pair}\n"
+            else:
+                for pair in room_pairs[:2]:
+                    info += f"    {pair}\n"
+                info += f"    ... 还有{len(room_pairs)-2}对\n"
+        
+        # 添加评分信息
+        max_diversity = 5.0
+        score = min(1.0, avg_paths / max_diversity)
+        info += f"\n路径多样性评分: {score:.3f}"
+        
         self.info_text.setText(info)
 
-    def _count_shortest_paths(self, start: str, end: str) -> int:
-        """计算两个节点之间的最短路径数量"""
+    def view_path_details(self):
+        """查看特定房间对的路径详情"""
+        if not self.graph:
+            QMessageBox.warning(self, "警告", "请先加载地牢数据")
+            return
+        
+        # 获取所有房间节点
+        room_nodes = []
+        if self.dungeon_data and 'levels' in self.dungeon_data:
+            level = self.dungeon_data['levels'][0]
+            rooms = level.get('rooms', [])
+            room_nodes = [room['id'] for room in rooms]
+        
+        if not room_nodes:
+            QMessageBox.warning(self, "警告", "未找到房间数据")
+            return
+        
+        # 创建房间选择对话框
+        from PyQt5.QtWidgets import QDialog, QVBoxLayout, QHBoxLayout, QComboBox, QPushButton, QTextEdit
+        
+        dialog = QDialog(self)
+        dialog.setWindowTitle("查看路径详情")
+        dialog.setModal(True)
+        dialog.resize(600, 400)
+        
+        layout = QVBoxLayout()
+        
+        # 房间选择
+        select_layout = QHBoxLayout()
+        select_layout.addWidget(QLabel("起始房间:"))
+        start_combo = QComboBox()
+        start_combo.addItems(room_nodes)
+        select_layout.addWidget(start_combo)
+        
+        select_layout.addWidget(QLabel("目标房间:"))
+        end_combo = QComboBox()
+        end_combo.addItems(room_nodes)
+        select_layout.addWidget(end_combo)
+        
+        layout.addLayout(select_layout)
+        
+        # 查看按钮
+        view_btn = QPushButton("查看路径")
+        layout.addWidget(view_btn)
+        
+        # 结果显示
+        result_text = QTextEdit()
+        result_text.setReadOnly(True)
+        layout.addWidget(result_text)
+        
+        def show_paths():
+            start = start_combo.currentText()
+            end = end_combo.currentText()
+            
+            if start == end:
+                result_text.setText("起始房间和目标房间相同")
+                return
+            
+            count, paths = self._find_all_shortest_paths(start, end)
+            
+            if count == 0:
+                result_text.setText(f"从 {start} 到 {end} 没有可达路径")
+                return
+            
+            info = f"从 {start} 到 {end} 的路径详情:\n"
+            info += f"总路径数: {count}\n\n"
+            
+            for idx, path in enumerate(paths):
+                path_str = " -> ".join(path)
+                info += f"路径{idx+1}: {path_str}\n"
+            
+            result_text.setText(info)
+        
+        view_btn.clicked.connect(show_paths)
+        
+        dialog.setLayout(layout)
+        dialog.exec_()
+
+    def _find_all_shortest_paths(self, start: str, end: str) -> Tuple[int, List[List[str]]]:
+        """计算两个节点之间的所有最短路径"""
         if start == end:
-            return 1
+            return 1, [[start]]
+        
         # 使用BFS找到最短路径长度
         visited = set()
         queue = deque([(start, 0)])
         visited.add(start)
         shortest_length = None
+        
         while queue:
             curr, length = queue.popleft()
             if curr == end:
@@ -896,20 +1034,29 @@ class QtBFSVisualizer(QMainWindow):
                 if nb not in visited:
                     visited.add(nb)
                     queue.append((nb, length + 1))
+        
         if shortest_length is None:
-            return 0  # 不可达
-        # 计算最短路径的数量
-        def count_paths_with_length(curr, target, remaining_length, visited):
+            return 0, []  # 不可达
+        
+        # 计算所有最短路径
+        def find_paths_with_length(curr, target, remaining_length, visited, current_path):
             if remaining_length == 0:
-                return 1 if curr == target else 0
+                if curr == target:
+                    return [current_path + [curr]]
+                return []
             if remaining_length < 0:
-                return 0
-            count = 0
+                return []
+            
+            paths = []
             for nb in self.graph[curr]:
                 if nb not in visited:
-                    count += count_paths_with_length(nb, target, remaining_length - 1, visited | {curr})
-            return count
-        return count_paths_with_length(start, end, shortest_length, set())
+                    new_paths = find_paths_with_length(nb, target, remaining_length - 1, 
+                                                     visited | {curr}, current_path + [curr])
+                    paths.extend(new_paths)
+            return paths
+        
+        all_paths = find_paths_with_length(start, end, shortest_length, set(), [])
+        return len(all_paths), all_paths
     
     def _find_shortest_path(self, start: str, end: str):
         """BFS找最短路径，返回节点序列"""

@@ -32,7 +32,9 @@
             "height": 3
           },
           "name": "room_1",
-          "description": "A round iron double door to the north."
+          "description": "A round iron double door to the north.",
+          "is_entrance": true,
+          "is_exit": false
         },
         {
           "id": "rect_2",
@@ -46,7 +48,9 @@
             "height": 7
           },
           "name": "room_2",
-          "description": "A reinforced chest with a silver necklace in it."
+          "description": "A reinforced chest with a silver necklace in it.",
+          "is_entrance": false,
+          "is_exit": true
         },
         {
           "id": "rect_4",

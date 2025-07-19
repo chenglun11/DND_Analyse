@@ -219,8 +219,8 @@
       ],
       "connections": [
         {
-          "from_room": "rect_1",
-          "to_room": "rect_6",
+          "from_room": "rect_6",
+          "to_room": "rect_1",
           "door_id": "door_1"
         },
         {

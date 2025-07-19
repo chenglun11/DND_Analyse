@@ -1,161 +1,144 @@
 from .base import BaseQualityRule
-import numpy
+import math
+from collections import defaultdict
+from typing import Dict, Any, List, Tuple
 
 class TreasureMonsterDistributionRule(BaseQualityRule):
     """
-    Treasure and monster distribution assessment based on game economics and design principles.
-    
-    Theoretical foundations:
-    1. Game Economics (Koster, 2013) - Reward distribution and player motivation
-    2. Game Design Theory (Schell, 2008) - Balance and progression
-    3. Spatial Distribution Theory - Optimal placement strategies
-    
-    References:
-    - Koster, R. (2013). Theory of fun for game design.
-    - Schell, J. (2008). The art of game design.
+    Treasure-Monster distribution assessment: 客观融合宝藏与怪物的空间与数量分布
+
+    子指标:
+      1. treasure_uniformity: 宝藏数量在各房间间的变异系数一致性 (CV -> uniformity)
+      2. monster_uniformity: 怪物数量在各房间间的变异系数一致性
+      3. proximity_score: 宝藏到最近怪物的平均距离一致性
+
+    归一化:
+      - 对数量变异系数 CV 使用理论最大 CV=sqrt(n-1) 归一化，再取 1-CV_norm
+      - 对平均距离使用图边界对角线归一化，取 1 - (avg_dist/D_map)
+
+    融合: 几何平均，仅使用非零因子
     """
     
     @property
-    def name(self):
+    def name(self) -> str:
         return "treasure_monster_distribution"
 
     @property
-    def description(self):
-        return "Treasure and monster distribution quality assessment, focusing on treasure density, monster density, boss distribution, value gradient, difficulty gradient, etc."
+    def description(self) -> str:
+        return "Objective assessment of treasure and monster spatial & quantitative distribution"
 
-    def evaluate(self, dungeon_data):
+    def evaluate(self, dungeon_data: Dict[str, Any]) -> Tuple[float, Dict[str, Any]]:
         levels = dungeon_data.get('levels', [])
         if not levels:
             return 0.0, {"reason": "No level data"}
-        
         level = levels[0]
+
         rooms = level.get('rooms', [])
         game_elements = level.get('game_elements', [])
+        if not rooms or not game_elements:
+            return 0.0, {"reason": "Insufficient rooms or entities"}
+
+        # 从game_elements中提取treasures和monsters（包括boss）
+        treasures = [elem for elem in game_elements if elem.get('type') == 'treasure']
+        monsters = [elem for elem in game_elements if elem.get('type') in ['monster', 'boss']]
         
-        if not rooms:
-            return 0.0, {"reason": "No room data"}
+        if not treasures:
+            return 0.0, {"reason": "No treasures found"}
+
+        # 房间坐标列表
+        room_pos = {r['id']:(r['position']['x'], r['position']['y']) for r in rooms}
+        room_ids = list(room_pos.keys())
+        n = len(room_ids)
+
+        # 1. 统计每房间宝藏和怪物计数，并获取位置
+        t_counts = defaultdict(int)
+        m_counts = defaultdict(int)
+        t_positions = []
+        m_positions = []
         
-        # Extract game elements by type - Based on Koster (2013) game economics
-        treasures = []
-        monsters = []
-        bosses = []
-        specials = []
+        for t in treasures:
+            pos = t.get('position', {})
+            tx, ty = pos.get('x', 0), pos.get('y', 0)
+            t_positions.append((tx, ty))
+            # 找到最近的房间
+            nearest_room = min(room_ids, key=lambda rid: math.hypot(tx - room_pos[rid][0], ty - room_pos[rid][1]))
+            t_counts[nearest_room] += 1
+            
+        for m in monsters:
+            pos = m.get('position', {})
+            mx, my = pos.get('x', 0), pos.get('y', 0)
+            m_positions.append((mx, my))
+            # 找到最近的房间
+            nearest_room = min(room_ids, key=lambda rid: math.hypot(mx - room_pos[rid][0], my - room_pos[rid][1]))
+            m_counts[nearest_room] += 1
+            
+        # 确保所有房间都有key
+        for rid in room_ids:
+            t_counts.setdefault(rid, 0)
+            m_counts.setdefault(rid, 0)
+
+        # 2. 计算变异系数 CV
+        def compute_cv(counts: List[int]) -> float:
+            mean = sum(counts) / len(counts)
+            var = sum((x - mean)**2 for x in counts) / len(counts)
+            return math.sqrt(var) / mean if mean>0 else 0.0
+
+        t_vals = [t_counts[rid] for rid in room_ids]
+        cv_t = compute_cv(t_vals)
+        # 理论最大 CV
+        max_cv = math.sqrt(n-1) if n>1 else 1.0
+        # 归一化并转为"均匀度"
+        uni_t = max(0.0, 1.0 - min(cv_t / max_cv, 1.0))
+
+        # 3. 计算其他指标
+        uni_m = 0.0
+        prox_score = 0.0
+        avg_dist = 0.0
         
-        for element in game_elements:
-            elem_type = element.get('type', '')
-            if elem_type == 'treasure':
-                treasures.append(element)
-            elif elem_type == 'monster':
-                monsters.append(element)
-            elif elem_type == 'boss':
-                bosses.append(element)
-            elif elem_type == 'special':
-                specials.append(element)
-        
-        room_count = len(rooms)
-        treasure_density = len(treasures) / room_count if room_count else 0
-        monster_density = len(monsters) / room_count if room_count else 0
-        boss_count = len(bosses)
-        special_count = len(specials)
-        
-        # Calculate spatial distribution metrics - Based on spatial distribution theory
-        treasure_positions = [(t.get('position', {}).get('x', 0), t.get('position', {}).get('y', 0)) for t in treasures]
-        monster_positions = [(m.get('position', {}).get('x', 0), m.get('position', {}).get('y', 0)) for m in monsters]
-        
-        # Calculate spatial spread (standard deviation of positions) - Based on Schell (2008) balance principles
-        treasure_spread = self._calculate_spatial_spread(treasure_positions)
-        monster_spread = self._calculate_spatial_spread(monster_positions)
-        
-        # Calculate distance-based metrics - Based on optimal spacing theory
-        treasure_monster_distance = self._calculate_avg_distance(treasure_positions, monster_positions)
-        treasure_treasure_distance = self._calculate_avg_distance(treasure_positions, treasure_positions)
-        monster_monster_distance = self._calculate_avg_distance(monster_positions, monster_positions)
-        
-        # Scoring strategy: balanced distribution with good spacing - Based on Koster (2013) game economics
-        score = 1.0
-        
-        # Density checks - Based on optimal density ranges
-        if treasure_density < 0.1 or treasure_density > 0.6:
-            score -= 0.2
-        if monster_density < 0.1 or monster_density > 0.6:
-            score -= 0.2
-        
-        # Boss presence - Based on Schell (2008) climax design
-        if boss_count == 0:
-            score -= 0.15
-        elif boss_count > 3:
-            score -= 0.1
-        
-        # Spatial distribution - Based on spatial balance theory
-        if treasure_spread < 2.0:  # Too clustered
-            score -= 0.15
-        if monster_spread < 2.0:  # Too clustered
-            score -= 0.15
-        
-        # Distance checks - Based on optimal interaction distances
-        if treasure_monster_distance < 3.0:  # Too close
-            score -= 0.1
-        if treasure_treasure_distance < 2.0:  # Too clustered
-            score -= 0.1
-        if monster_monster_distance < 2.0:  # Too clustered
-            score -= 0.1
-        
-        # Special elements bonus - Based on Koster (2013) variety principles
-        if special_count > 0:
-            score += 0.05  # Bonus for having special elements
-        
-        score = max(0.0, min(1.0, score))
-        
-        detail = {
-            "treasure_density": treasure_density,
-            "monster_density": monster_density,
-            "boss_count": boss_count,
-            "special_count": special_count,
-            "treasure_spread": treasure_spread,
-            "monster_spread": monster_spread,
-            "treasure_monster_distance": treasure_monster_distance,
-            "treasure_treasure_distance": treasure_treasure_distance,
-            "monster_monster_distance": monster_monster_distance,
-            "treasure_count": len(treasures),
-            "monster_count": len(monsters),
-            "room_count": room_count,
-            "total_game_elements": len(game_elements)
+        if monsters:
+            # 如果有monsters，计算monster分布和接近度
+            m_vals = [m_counts[rid] for rid in room_ids]
+            cv_m = compute_cv(m_vals)
+            uni_m = max(0.0, 1.0 - min(cv_m / max_cv, 1.0))
+            
+            # 计算地图对角线
+            xs = [x for x,_ in room_pos.values()]
+            ys = [y for _,y in room_pos.values()]
+            D_map = math.hypot(max(xs)-min(xs), max(ys)-min(ys))
+
+            # 对每个宝藏位置，找最近怪物位置距离
+            dists = []
+            for tx, ty in t_positions:
+                if m_positions:
+                    min_d = min(math.hypot(tx-mx, ty-my) for mx, my in m_positions)
+                    dists.append(min_d)
+            avg_dist = sum(dists)/len(dists) if dists else D_map
+            prox_score = max(0.0, 1.0 - min(avg_dist/D_map, 1.0))
+
+        # 4. 几何平均融合
+        factors = [f for f in [uni_t, uni_m, prox_score] if f>0]
+        score = math.exp(sum(math.log(f) for f in factors)/len(factors)) if factors else 0.0
+
+        detail: Dict[str, Any] = {
+            'cv_treasure': cv_t,
+            'uniformity_treasure': uni_t,
+            'score': score
         }
         
-        return score, detail
-    
-    def _calculate_spatial_spread(self, positions):
-        """
-        Calculate spatial spread using standard deviation of positions
-        Based on spatial distribution theory
-        """
-        if len(positions) < 2:
-            return 0.0
-        
-        x_coords = [pos[0] for pos in positions]
-        y_coords = [pos[1] for pos in positions]
-        
-        x_std = numpy.std(x_coords) if len(x_coords) > 1 else 0.0
-        y_std = numpy.std(y_coords) if len(y_coords) > 1 else 0.0
-        
-        return numpy.sqrt(x_std**2 + y_std**2)
-    
-    def _calculate_avg_distance(self, positions1, positions2):
-        """
-        Calculate average distance between two sets of positions
-        Based on optimal spacing theory
-        """
-        if not positions1 or not positions2:
-            return 0.0
-        
-        total_distance = 0.0
-        count = 0
-        
-        for pos1 in positions1:
-            for pos2 in positions2:
-                if pos1 != pos2:  # Don't calculate distance to self
-                    distance = numpy.sqrt((pos1[0] - pos2[0])**2 + (pos1[1] - pos2[1])**2)
-                    total_distance += distance
-                    count += 1
-        
-        return total_distance / count if count > 0 else 0.0 
+        if monsters:
+            detail.update({
+                'cv_monster': cv_m,
+                'uniformity_monster': uni_m,
+                'avg_t2m_dist': avg_dist,
+                'proximity_score': prox_score
+            })
+        else:
+            detail.update({
+                'cv_monster': 0.0,
+                'uniformity_monster': 0.0,
+                'avg_t2m_dist': 0.0,
+                'proximity_score': 0.0,
+                'note': 'Only treasure distribution evaluated (no monsters found)'
+            })
+            
+        return score, detail 

@@ -22,8 +22,6 @@ import heapq
 import time
 import threading
 from queue import Queue
-import tkinter as tk
-from tkinter import simpledialog
 
 # 设置中文字体
 plt.rcParams['font.sans-serif'] = ['SimHei', 'Arial Unicode MS', 'DejaVu Sans']
@@ -153,12 +151,10 @@ class AStarVisualizer:
             
             all_nodes = rooms + corridors
             for node in all_nodes:
-                if 'position' in node and 'size' in node:
+                if 'position' in node:
                     x = node['position'].get('x', 0)
                     y = node['position'].get('y', 0)
-                    w = node['size'].get('width', 1)
-                    h = node['size'].get('height', 1)
-                    positions[node['id']] = (x + w/2, y + h/2)
+                    positions[node['id']] = (x, y)
                 else:
                     x = node.get('x', 0)
                     y = node.get('y', 0)
@@ -472,14 +468,14 @@ class AStarVisualizer:
         visited_count = len(visited)
         coverage = visited_count / total_nodes if total_nodes > 0 else 0
         
-        stats_text = f'访问节点数: {visited_count}/{total_nodes} ({coverage:.1%})'
+        stats_text = f'Accessed: {visited_count}/{total_nodes} ({coverage:.1%}) nodes'
         if target_node and path:
-            stats_text += f'\n路径长度: {len(path)} 步'
+            stats_text += f'\nPath length: {len(path)} steps'
             if len(path) > 1:
                 total_cost = sum(self._get_edge_cost(path[i], path[i+1]) for i in range(len(path)-1))
-                stats_text += f'\n总代价: {total_cost:.2f}'
+                stats_text += f'\nTotal cost: {total_cost:.2f}'
         elif target_node:
-            stats_text += f'\n未找到路径到 {target_node}'
+            stats_text += f'\nNo path to {target_node}'
             
         self.ax.text(0.02, 0.98, stats_text, transform=self.ax.transAxes,
                     fontsize=10, verticalalignment='top',
@@ -526,16 +522,16 @@ class AStarVisualizer:
         
         # 显示整体统计
         avg_accessibility = np.mean(list(accessibility_scores.values()))
-        stats_text = f'平均可达性: {avg_accessibility:.3f}\n'
-        stats_text += f'高可达性(≥0.8): {sum(1 for s in accessibility_scores.values() if s >= 0.8)}\n'
-        stats_text += f'中等可达性(0.6-0.8): {sum(1 for s in accessibility_scores.values() if 0.6 <= s < 0.8)}\n'
-        stats_text += f'低可达性(<0.6): {sum(1 for s in accessibility_scores.values() if s < 0.6)}'
+        stats_text = f'Average accessibility: {avg_accessibility:.3f}\n'
+        stats_text += f'High accessibility (≥0.8): {sum(1 for s in accessibility_scores.values() if s >= 0.8)}\n'
+        stats_text += f'Medium accessibility (0.6-0.8): {sum(1 for s in accessibility_scores.values() if 0.6 <= s < 0.8)}\n'
+        stats_text += f'Low accessibility (<0.6): {sum(1 for s in accessibility_scores.values() if s < 0.6)}'
         
         self.ax.text(0.02, 0.98, stats_text, transform=self.ax.transAxes,
                     fontsize=10, verticalalignment='top',
                     bbox=dict(boxstyle="round,pad=0.5", facecolor='white', alpha=0.8))
         
-        plt.title('A*可达性分析', fontsize=14, fontweight='bold')
+        plt.title('A* Accessibility Analysis', fontsize=14, fontweight='bold')
         plt.show()
     
     def create_interactive_window(self):
@@ -578,36 +574,35 @@ class AStarVisualizer:
         
         # 可达性分析按钮
         ax_btn1 = plt.axes([0.1, 0.05, 0.2, 0.04])
-        btn1 = Button(ax_btn1, '可达性分析')
+        btn1 = Button(ax_btn1, 'Accessibility Analysis')
         btn1.on_clicked(lambda event: self.visualize_accessibility_analysis())
         
         # A*搜索按钮
         ax_btn2 = plt.axes([0.35, 0.05, 0.2, 0.04])
-        btn2 = Button(ax_btn2, 'A*搜索')
+        btn2 = Button(ax_btn2, 'A* Search')
         btn2.on_clicked(lambda event: self._start_astar_interactive())
         
-        plt.title('地牢A*算法可视化器', fontsize=16, fontweight='bold')
+        plt.title('Dungeon A* Visualizer', fontsize=16, fontweight='bold')
         plt.show()
     
     def _start_astar_interactive(self):
-        """启动交互式A*搜索（弹窗输入）"""
+        """启动交互式A*搜索"""
         if not self.graph:
             return
         
-        # 获取Tk主窗口
-        root = tk.Tk()
-        root.withdraw()  # 隐藏主窗口
+        # 简单的交互式输入
+        print("\nAvailable nodes:")
+        for node in self.graph.keys():
+            print(f"  {node}")
         
-        # 弹窗输入起点
-        start_node = simpledialog.askstring("输入起始节点", "请输入起始节点ID：", parent=root)
-        if not start_node or start_node not in self.graph:
-            print(f"无效的起始节点: {start_node}")
+        start_node = input("\nEnter start node: ").strip()
+        if start_node not in self.graph:
+            print(f"Invalid start node: {start_node}")
             return
         
-        # 弹窗输入终点
-        target_node = simpledialog.askstring("输入目标节点", "请输入目标节点ID（可选）：", parent=root)
+        target_node = input("Enter target node (optional, press Enter to skip): ").strip()
         if target_node and target_node not in self.graph:
-            print(f"无效的目标节点: {target_node}")
+            print(f"Invalid target node: {target_node}")
             return
         
         if not target_node:

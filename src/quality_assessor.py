@@ -31,10 +31,11 @@ class DungeonQualityAssessor:
         # TODO: NEED TO BE ADJUSTED
         self.rule_weights = rule_weights or {
             # Structural rules (35% total)
-            'accessibility': 0.12,
+            'accessibility': 0.12,  
             'degree_variance': 0.08,
             'door_distribution': 0.10,
             'loop_ratio': 0.05,
+            'key_path_length': 0.0,  # 设置为0权重，使用客观评分方法
             
             # Gameplay rules (50% total) - 增加游戏性权重
             'path_diversity': 0.20,  # 增加路径多样性权重
@@ -48,7 +49,7 @@ class DungeonQualityAssessor:
         # Rule categories for better organization
         #TODO: NEED TO BE ADJUSTED
         self.rule_categories = {
-            'structural': ['accessibility', 'degree_variance', 'door_distribution', 'loop_ratio'],
+            'structural': ['accessibility', 'degree_variance', 'door_distribution', 'loop_ratio', 'key_path_length'],
             'gameplay': ['path_diversity', 'treasure_monster_distribution', 'dead_end_ratio'],
             'aesthetic': ['aesthetic_balance']
         }
@@ -81,7 +82,11 @@ class DungeonQualityAssessor:
         
         for rule_class in rule_classes:
             if issubclass(rule_class, BaseQualityRule) and rule_class is not BaseQualityRule:
-                rules.append(rule_class())
+                # 特殊处理DeadEndRatioRule，支持include_length参数
+                if rule_class.__name__ == 'DeadEndRatioRule':
+                    rules.append(rule_class(include_length=False))  # 默认不包含长度分析
+                else:
+                    rules.append(rule_class())
         
         logger.info(f"Loaded quality assessment rules: {[r.name for r in rules]}")
         return rules
@@ -148,13 +153,13 @@ class DungeonQualityAssessor:
         return category_scores
 
     def _get_grade(self, score: float) -> str:
-        if score >= 0.85:
+        if score >= 0.75:
             return "A"
-        elif score >= 0.70:
+        elif score >= 0.60:
             return "B"
-        elif score >= 0.55:
+        elif score >= 0.45:
             return "C"
-        elif score >= 0.40:
+        elif score >= 0.30:
             return "D"
         else:
             return "F"

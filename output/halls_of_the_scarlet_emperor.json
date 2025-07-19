@@ -1,0 +1,1685 @@
+{
+  "header": {
+    "schemaName": "dnd-dungeon-unified",
+    "schemaVersion": "1.0.0",
+    "name": "Halls of the Scarlet Emperor",
+    "author": "Watabou Generator",
+    "description": "The halls of the Scarlet Emperor are situated deep in the jungle, in uncharted lands. Currently they are overrun with bats, which don't care about the past of the place.",
+    "grid": {
+      "type": "square",
+      "size": 5,
+      "unit": "ft"
+    }
+  },
+  "levels": [
+    {
+      "id": "level_1",
+      "name": "Main Level",
+      "map": {
+        "width": 29,
+        "height": 41
+      },
+      "rooms": [
+        {
+          "id": "rect_8",
+          "shape": "rectangle",
+          "position": {
+            "x": -10,
+            "y": -4
+          },
+          "size": {
+            "width": 6,
+            "height": 3
+          },
+          "name": "room_1",
+          "description": "A notable door to the south."
+        },
+        {
+          "id": "rect_9",
+          "shape": "rectangle",
+          "position": {
+            "x": -3,
+            "y": -10
+          },
+          "size": {
+            "width": 5,
+            "height": 4
+          },
+          "name": "room_2",
+          "description": "A cheerful large shaman, lying on the ground."
+        },
+        {
+          "id": "rect_14",
+          "shape": "rectangle",
+          "position": {
+            "x": -12,
+            "y": 12
+          },
+          "size": {
+            "width": 5,
+            "height": 2
+          },
+          "name": "room_3",
+          "description": "A mysterious, made of an unknown material mirror hovering in the middle of the small chamber."
+        },
+        {
+          "id": "rect_21",
+          "shape": "rectangle",
+          "position": {
+            "x": -8,
+            "y": 23
+          },
+          "size": {
+            "width": 6,
+            "height": 3
+          },
+          "name": "room_4",
+          "description": "A reinforced locker containing gems."
+        },
+        {
+          "id": "rect_23",
+          "shape": "rectangle",
+          "position": {
+            "x": -11,
+            "y": 28
+          },
+          "size": {
+            "width": 3,
+            "height": 3
+          },
+          "name": "room_5",
+          "description": "A bottomless pit, bursts into flames if a coin is dropped into it."
+        }
+      ],
+      "doors": [
+        {
+          "id": "door_0",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "dir": {
+              "x": 1,
+              "y": 0
+            },
+            "type": 3
+          }
+        },
+        {
+          "id": "door_1",
+          "position": {
+            "x": 4,
+            "y": 0,
+            "dir": {
+              "x": 1,
+              "y": 0
+            },
+            "type": 2
+          }
+        },
+        {
+          "id": "door_2",
+          "position": {
+            "x": 6,
+            "y": -2,
+            "dir": {
+              "x": 0,
+              "y": -1
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_3",
+          "position": {
+            "x": 5,
+            "y": -3,
+            "dir": {
+              "x": -1,
+              "y": 0
+            },
+            "type": 0
+          }
+        },
+        {
+          "id": "door_4",
+          "position": {
+            "x": 2,
+            "y": -3,
+            "dir": {
+              "x": -1,
+              "y": 0
+            },
+            "type": 0
+          }
+        },
+        {
+          "id": "door_5",
+          "position": {
+            "x": 1,
+            "y": -4,
+            "dir": {
+              "x": 0,
+              "y": -1
+            },
+            "type": 6
+          }
+        },
+        {
+          "id": "door_6",
+          "position": {
+            "x": -1,
+            "y": -3,
+            "dir": {
+              "x": -1,
+              "y": 0
+            },
+            "type": 0
+          }
+        },
+        {
+          "id": "door_7",
+          "position": {
+            "x": 0,
+            "y": -5,
+            "dir": {
+              "x": -1,
+              "y": 0
+            },
+            "type": 0
+          }
+        },
+        {
+          "id": "door_8",
+          "position": {
+            "x": -4,
+            "y": -3,
+            "dir": {
+              "x": -1,
+              "y": 0
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_9",
+          "position": {
+            "x": -1,
+            "y": -6,
+            "dir": {
+              "x": 0,
+              "y": -1
+            },
+            "type": 2
+          }
+        },
+        {
+          "id": "door_10",
+          "position": {
+            "x": -5,
+            "y": -1,
+            "dir": {
+              "x": 0,
+              "y": 1
+            },
+            "type": 5
+          }
+        },
+        {
+          "id": "door_11",
+          "position": {
+            "x": -7,
+            "y": 2,
+            "dir": {
+              "x": -1,
+              "y": 0
+            },
+            "type": 2
+          }
+        },
+        {
+          "id": "door_12",
+          "position": {
+            "x": -10,
+            "y": 2,
+            "dir": {
+              "x": -1,
+              "y": 0
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_13",
+          "position": {
+            "x": -11,
+            "y": 4,
+            "dir": {
+              "x": 0,
+              "y": 1
+            },
+            "type": 0
+          }
+        },
+        {
+          "id": "door_14",
+          "position": {
+            "x": -10,
+            "y": 11,
+            "dir": {
+              "x": 0,
+              "y": 1
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_15",
+          "position": {
+            "x": -13,
+            "y": 12,
+            "dir": {
+              "x": -1,
+              "y": 0
+            },
+            "type": 9
+          }
+        },
+        {
+          "id": "door_16",
+          "position": {
+            "x": -7,
+            "y": 12,
+            "dir": {
+              "x": 1,
+              "y": 0
+            },
+            "type": 0
+          }
+        },
+        {
+          "id": "door_17",
+          "position": {
+            "x": -14,
+            "y": 14,
+            "dir": {
+              "x": 0,
+              "y": 1
+            },
+            "type": 2
+          }
+        },
+        {
+          "id": "door_18",
+          "position": {
+            "x": -6,
+            "y": 9,
+            "dir": {
+              "x": 0,
+              "y": -1
+            },
+            "type": 0
+          }
+        },
+        {
+          "id": "door_19",
+          "position": {
+            "x": -12,
+            "y": 17,
+            "dir": {
+              "x": 1,
+              "y": 0
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_20",
+          "position": {
+            "x": -11,
+            "y": 20,
+            "dir": {
+              "x": 0,
+              "y": 1
+            },
+            "type": 2
+          }
+        },
+        {
+          "id": "door_21",
+          "position": {
+            "x": -9,
+            "y": 24,
+            "dir": {
+              "x": 1,
+              "y": 0
+            },
+            "type": 6
+          }
+        },
+        {
+          "id": "door_22",
+          "position": {
+            "x": -13,
+            "y": 25,
+            "dir": {
+              "x": -1,
+              "y": 0
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_23",
+          "position": {
+            "x": -10,
+            "y": 27,
+            "dir": {
+              "x": 0,
+              "y": 1
+            },
+            "type": 6
+          }
+        },
+        {
+          "id": "door_24",
+          "position": {
+            "x": -16,
+            "y": 25,
+            "dir": {
+              "x": -1,
+              "y": 0
+            },
+            "type": 0
+          }
+        },
+        {
+          "id": "door_25",
+          "position": {
+            "x": -21,
+            "y": 25,
+            "dir": {
+              "x": -1,
+              "y": 0
+            },
+            "type": 8
+          }
+        },
+        {
+          "id": "door_26",
+          "position": {
+            "x": -6,
+            "y": 4,
+            "dir": {
+              "x": 0,
+              "y": 1
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_27",
+          "position": {
+            "x": -10,
+            "y": 14,
+            "dir": {
+              "x": 0,
+              "y": 1
+            },
+            "type": 0
+          }
+        }
+      ],
+      "corridors": [
+        {
+          "id": "rect_0",
+          "shape": "rectangle",
+          "position": {
+            "x": 1,
+            "y": 0
+          },
+          "size": {
+            "width": 3,
+            "height": 1
+          },
+          "name": "Corridor 0"
+        },
+        {
+          "id": "rect_1",
+          "shape": "rectangle",
+          "position": {
+            "x": 5,
+            "y": -1
+          },
+          "size": {
+            "width": 3,
+            "height": 3
+          },
+          "name": "Corridor 1"
+        },
+        {
+          "id": "rect_2",
+          "shape": "rectangle",
+          "position": {
+            "x": 6,
+            "y": -3
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 2"
+        },
+        {
+          "id": "rect_3",
+          "shape": "rectangle",
+          "position": {
+            "x": 3,
+            "y": -3
+          },
+          "size": {
+            "width": 2,
+            "height": 1
+          },
+          "name": "Corridor 3"
+        },
+        {
+          "id": "rect_4",
+          "shape": "rectangle",
+          "position": {
+            "x": 0,
+            "y": -3
+          },
+          "size": {
+            "width": 2,
+            "height": 1
+          },
+          "name": "Corridor 4"
+        },
+        {
+          "id": "rect_5",
+          "shape": "rectangle",
+          "position": {
+            "x": 1,
+            "y": -5
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 5"
+        },
+        {
+          "id": "rect_6",
+          "shape": "rectangle",
+          "position": {
+            "x": -3,
+            "y": -3
+          },
+          "size": {
+            "width": 2,
+            "height": 1
+          },
+          "name": "Corridor 6"
+        },
+        {
+          "id": "rect_7",
+          "shape": "rectangle",
+          "position": {
+            "x": -1,
+            "y": -5
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 7"
+        },
+        {
+          "id": "rect_10",
+          "shape": "rectangle",
+          "position": {
+            "x": -6,
+            "y": 0
+          },
+          "size": {
+            "width": 3,
+            "height": 4
+          },
+          "name": "Corridor 10"
+        },
+        {
+          "id": "rect_11",
+          "shape": "rectangle",
+          "position": {
+            "x": -9,
+            "y": 2
+          },
+          "size": {
+            "width": 2,
+            "height": 1
+          },
+          "name": "Corridor 11"
+        },
+        {
+          "id": "rect_12",
+          "shape": "rectangle",
+          "position": {
+            "x": -13,
+            "y": 1
+          },
+          "size": {
+            "width": 3,
+            "height": 3
+          },
+          "name": "Corridor 12"
+        },
+        {
+          "id": "rect_13",
+          "shape": "rectangle",
+          "position": {
+            "x": -12,
+            "y": 5
+          },
+          "size": {
+            "width": 3,
+            "height": 6
+          },
+          "name": "Corridor 13"
+        },
+        {
+          "id": "rect_15",
+          "shape": "rectangle",
+          "position": {
+            "x": -17,
+            "y": 11
+          },
+          "size": {
+            "width": 4,
+            "height": 3
+          },
+          "name": "Corridor 15"
+        },
+        {
+          "id": "rect_16",
+          "shape": "rectangle",
+          "position": {
+            "x": -6,
+            "y": 10
+          },
+          "size": {
+            "width": 4,
+            "height": 5
+          },
+          "name": "Corridor 16"
+        },
+        {
+          "id": "rect_17",
+          "shape": "rectangle",
+          "position": {
+            "x": -15,
+            "y": 15
+          },
+          "size": {
+            "width": 3,
+            "height": 5
+          },
+          "name": "Corridor 17"
+        },
+        {
+          "id": "rect_18",
+          "shape": "rectangle",
+          "position": {
+            "x": -6,
+            "y": 5
+          },
+          "size": {
+            "width": 1,
+            "height": 4
+          },
+          "name": "Corridor 18"
+        },
+        {
+          "id": "rect_19",
+          "shape": "rectangle",
+          "position": {
+            "x": -11,
+            "y": 15
+          },
+          "size": {
+            "width": 3,
+            "height": 5
+          },
+          "name": "Corridor 19"
+        },
+        {
+          "id": "rect_20",
+          "shape": "rectangle",
+          "position": {
+            "x": -12,
+            "y": 21
+          },
+          "size": {
+            "width": 3,
+            "height": 6
+          },
+          "name": "Corridor 20"
+        },
+        {
+          "id": "rect_22",
+          "shape": "rectangle",
+          "position": {
+            "x": -15,
+            "y": 25
+          },
+          "size": {
+            "width": 2,
+            "height": 1
+          },
+          "name": "Corridor 22"
+        },
+        {
+          "id": "rect_24",
+          "shape": "rectangle",
+          "position": {
+            "x": -20,
+            "y": 23
+          },
+          "size": {
+            "width": 4,
+            "height": 5
+          },
+          "name": "Corridor 24"
+        },
+        {
+          "id": "rect_25",
+          "shape": "rectangle",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 25"
+        },
+        {
+          "id": "rect_26",
+          "shape": "rectangle",
+          "position": {
+            "x": 4,
+            "y": 0
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 26"
+        },
+        {
+          "id": "rect_27",
+          "shape": "rectangle",
+          "position": {
+            "x": 6,
+            "y": -2
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 27"
+        },
+        {
+          "id": "rect_28",
+          "shape": "rectangle",
+          "position": {
+            "x": 5,
+            "y": -3
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 28"
+        },
+        {
+          "id": "rect_29",
+          "shape": "rectangle",
+          "position": {
+            "x": 2,
+            "y": -3
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 29"
+        },
+        {
+          "id": "rect_30",
+          "shape": "rectangle",
+          "position": {
+            "x": 1,
+            "y": -4
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 30"
+        },
+        {
+          "id": "rect_31",
+          "shape": "rectangle",
+          "position": {
+            "x": -1,
+            "y": -3
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 31"
+        },
+        {
+          "id": "rect_32",
+          "shape": "rectangle",
+          "position": {
+            "x": 0,
+            "y": -5
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 32"
+        },
+        {
+          "id": "rect_33",
+          "shape": "rectangle",
+          "position": {
+            "x": -4,
+            "y": -3
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 33"
+        },
+        {
+          "id": "rect_34",
+          "shape": "rectangle",
+          "position": {
+            "x": -1,
+            "y": -6
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 34"
+        },
+        {
+          "id": "rect_35",
+          "shape": "rectangle",
+          "position": {
+            "x": -5,
+            "y": -1
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 35"
+        },
+        {
+          "id": "rect_36",
+          "shape": "rectangle",
+          "position": {
+            "x": -7,
+            "y": 2
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 36"
+        },
+        {
+          "id": "rect_37",
+          "shape": "rectangle",
+          "position": {
+            "x": -10,
+            "y": 2
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 37"
+        },
+        {
+          "id": "rect_38",
+          "shape": "rectangle",
+          "position": {
+            "x": -11,
+            "y": 4
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 38"
+        },
+        {
+          "id": "rect_39",
+          "shape": "rectangle",
+          "position": {
+            "x": -10,
+            "y": 11
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 39"
+        },
+        {
+          "id": "rect_40",
+          "shape": "rectangle",
+          "position": {
+            "x": -13,
+            "y": 12
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 40"
+        },
+        {
+          "id": "rect_41",
+          "shape": "rectangle",
+          "position": {
+            "x": -7,
+            "y": 12
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 41"
+        },
+        {
+          "id": "rect_42",
+          "shape": "rectangle",
+          "position": {
+            "x": -14,
+            "y": 14
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 42"
+        },
+        {
+          "id": "rect_43",
+          "shape": "rectangle",
+          "position": {
+            "x": -6,
+            "y": 9
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 43"
+        },
+        {
+          "id": "rect_44",
+          "shape": "rectangle",
+          "position": {
+            "x": -12,
+            "y": 17
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 44"
+        },
+        {
+          "id": "rect_45",
+          "shape": "rectangle",
+          "position": {
+            "x": -11,
+            "y": 20
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 45"
+        },
+        {
+          "id": "rect_46",
+          "shape": "rectangle",
+          "position": {
+            "x": -9,
+            "y": 24
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 46"
+        },
+        {
+          "id": "rect_47",
+          "shape": "rectangle",
+          "position": {
+            "x": -13,
+            "y": 25
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 47"
+        },
+        {
+          "id": "rect_48",
+          "shape": "rectangle",
+          "position": {
+            "x": -10,
+            "y": 27
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 48"
+        },
+        {
+          "id": "rect_49",
+          "shape": "rectangle",
+          "position": {
+            "x": -16,
+            "y": 25
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 49"
+        },
+        {
+          "id": "rect_50",
+          "shape": "rectangle",
+          "position": {
+            "x": -21,
+            "y": 25
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 50"
+        },
+        {
+          "id": "rect_51",
+          "shape": "rectangle",
+          "position": {
+            "x": -6,
+            "y": 4
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 51"
+        },
+        {
+          "id": "rect_52",
+          "shape": "rectangle",
+          "position": {
+            "x": -10,
+            "y": 14
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 52"
+        }
+      ],
+      "connections": [
+        {
+          "from_room": "rect_26",
+          "to_room": "rect_0",
+          "door_id": "door_1"
+        },
+        {
+          "from_room": "rect_28",
+          "to_room": "rect_2",
+          "door_id": "door_2"
+        },
+        {
+          "from_room": "rect_28",
+          "to_room": "rect_27",
+          "door_id": "door_2"
+        },
+        {
+          "from_room": "rect_2",
+          "to_room": "rect_27",
+          "door_id": "door_2"
+        },
+        {
+          "from_room": "rect_28",
+          "to_room": "rect_3",
+          "door_id": "door_3"
+        },
+        {
+          "from_room": "rect_30",
+          "to_room": "rect_29",
+          "door_id": "door_4"
+        },
+        {
+          "from_room": "rect_30",
+          "to_room": "rect_4",
+          "door_id": "door_4"
+        },
+        {
+          "from_room": "rect_29",
+          "to_room": "rect_4",
+          "door_id": "door_4"
+        },
+        {
+          "from_room": "rect_30",
+          "to_room": "rect_32",
+          "door_id": "door_5"
+        },
+        {
+          "from_room": "rect_30",
+          "to_room": "rect_5",
+          "door_id": "door_5"
+        },
+        {
+          "from_room": "rect_32",
+          "to_room": "rect_5",
+          "door_id": "door_5"
+        },
+        {
+          "from_room": "rect_6",
+          "to_room": "rect_31",
+          "door_id": "door_6"
+        },
+        {
+          "from_room": "rect_7",
+          "to_room": "rect_34",
+          "door_id": "door_7"
+        },
+        {
+          "from_room": "rect_7",
+          "to_room": "rect_32",
+          "door_id": "door_7"
+        },
+        {
+          "from_room": "rect_34",
+          "to_room": "rect_32",
+          "door_id": "door_7"
+        },
+        {
+          "from_room": "rect_33",
+          "to_room": "rect_8",
+          "door_id": "door_8"
+        },
+        {
+          "from_room": "rect_9",
+          "to_room": "rect_34",
+          "door_id": "door_9"
+        },
+        {
+          "from_room": "rect_35",
+          "to_room": "rect_8",
+          "door_id": "door_10"
+        },
+        {
+          "from_room": "rect_11",
+          "to_room": "rect_36",
+          "door_id": "door_11"
+        },
+        {
+          "from_room": "rect_12",
+          "to_room": "rect_37",
+          "door_id": "door_12"
+        },
+        {
+          "from_room": "rect_38",
+          "to_room": "rect_12",
+          "door_id": "door_13"
+        },
+        {
+          "from_room": "rect_13",
+          "to_room": "rect_39",
+          "door_id": "door_14"
+        },
+        {
+          "from_room": "rect_40",
+          "to_room": "rect_15",
+          "door_id": "door_15"
+        },
+        {
+          "from_room": "rect_41",
+          "to_room": "rect_14",
+          "door_id": "door_16"
+        },
+        {
+          "from_room": "rect_15",
+          "to_room": "rect_42",
+          "door_id": "door_17"
+        },
+        {
+          "from_room": "rect_43",
+          "to_room": "rect_18",
+          "door_id": "door_18"
+        },
+        {
+          "from_room": "rect_17",
+          "to_room": "rect_44",
+          "door_id": "door_19"
+        },
+        {
+          "from_room": "rect_45",
+          "to_room": "rect_19",
+          "door_id": "door_20"
+        },
+        {
+          "from_room": "rect_20",
+          "to_room": "rect_46",
+          "door_id": "door_21"
+        },
+        {
+          "from_room": "rect_22",
+          "to_room": "rect_47",
+          "door_id": "door_22"
+        },
+        {
+          "from_room": "rect_48",
+          "to_room": "rect_20",
+          "door_id": "door_23"
+        },
+        {
+          "from_room": "rect_49",
+          "to_room": "rect_24",
+          "door_id": "door_24"
+        },
+        {
+          "from_room": "rect_10",
+          "to_room": "rect_51",
+          "door_id": "door_26"
+        },
+        {
+          "from_room": "rect_14",
+          "to_room": "rect_52",
+          "door_id": "door_27"
+        },
+        {
+          "from_room": "rect_8",
+          "to_room": "rect_6",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_8",
+          "to_room": "rect_10",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_9",
+          "to_room": "rect_5",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_9",
+          "to_room": "rect_7",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_9",
+          "to_room": "rect_32",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_14",
+          "to_room": "rect_13",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_14",
+          "to_room": "rect_15",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_14",
+          "to_room": "rect_16",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_14",
+          "to_room": "rect_19",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_14",
+          "to_room": "rect_39",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_14",
+          "to_room": "rect_40",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_21",
+          "to_room": "rect_20",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_21",
+          "to_room": "rect_46",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_23",
+          "to_room": "rect_20",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_23",
+          "to_room": "rect_48",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_0",
+          "to_room": "rect_1",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_0",
+          "to_room": "rect_25",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_1",
+          "to_room": "rect_2",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_1",
+          "to_room": "rect_26",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_1",
+          "to_room": "rect_27",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_1",
+          "to_room": "rect_28",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_2",
+          "to_room": "rect_3",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_3",
+          "to_room": "rect_4",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_3",
+          "to_room": "rect_29",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_4",
+          "to_room": "rect_5",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_4",
+          "to_room": "rect_6",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_4",
+          "to_room": "rect_31",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_4",
+          "to_room": "rect_32",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_5",
+          "to_room": "rect_7",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_6",
+          "to_room": "rect_33",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_7",
+          "to_room": "rect_31",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_10",
+          "to_room": "rect_11",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_10",
+          "to_room": "rect_18",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_10",
+          "to_room": "rect_35",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_10",
+          "to_room": "rect_36",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_11",
+          "to_room": "rect_12",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_11",
+          "to_room": "rect_37",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_12",
+          "to_room": "rect_13",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_13",
+          "to_room": "rect_38",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_15",
+          "to_room": "rect_17",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_16",
+          "to_room": "rect_18",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_16",
+          "to_room": "rect_41",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_16",
+          "to_room": "rect_43",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_17",
+          "to_room": "rect_19",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_17",
+          "to_room": "rect_42",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_18",
+          "to_room": "rect_51",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_19",
+          "to_room": "rect_20",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_19",
+          "to_room": "rect_44",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_19",
+          "to_room": "rect_52",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_20",
+          "to_room": "rect_22",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_20",
+          "to_room": "rect_45",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_20",
+          "to_room": "rect_47",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_22",
+          "to_room": "rect_24",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_22",
+          "to_room": "rect_49",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_24",
+          "to_room": "rect_50",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        }
+      ],
+      "game_elements": [
+        {
+          "id": "boss_0",
+          "name": "Boss",
+          "type": "boss",
+          "position": {
+            "x": -6.5,
+            "y": 10.5
+          },
+          "description": "Powerful enemy"
+        },
+        {
+          "id": "special_1",
+          "name": "Gate",
+          "type": "special",
+          "position": {
+            "x": -7,
+            "y": -2.5
+          },
+          "description": "A notable door to the south.",
+          "ref": "1"
+        },
+        {
+          "id": "special_2",
+          "name": "Special",
+          "type": "special",
+          "position": {
+            "x": -0.5,
+            "y": -8
+          },
+          "description": "A cheerful large shaman, lying on the ground.",
+          "ref": "2"
+        },
+        {
+          "id": "special_3",
+          "name": "Special",
+          "type": "special",
+          "position": {
+            "x": -9.5,
+            "y": 13
+          },
+          "description": "A mysterious, made of an unknown material mirror hovering in the middle of the small chamber.",
+          "ref": "3"
+        },
+        {
+          "id": "treasure_4",
+          "name": "Treasure",
+          "type": "treasure",
+          "position": {
+            "x": -5,
+            "y": 24.5
+          },
+          "description": "A reinforced locker containing gems.",
+          "ref": "4"
+        },
+        {
+          "id": "treasure_5",
+          "name": "Treasure",
+          "type": "treasure",
+          "position": {
+            "x": -9.5,
+            "y": 29.5
+          },
+          "description": "A bottomless pit, bursts into flames if a coin is dropped into it.",
+          "ref": "5"
+        }
+      ],
+      "connections_inferred": true
+    }
+  ]
+}

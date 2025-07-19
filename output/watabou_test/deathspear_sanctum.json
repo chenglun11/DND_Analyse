@@ -32,7 +32,9 @@
             "height": 3
           },
           "name": "room_1",
-          "description": "A broken chest containing a scarf."
+          "description": "A broken chest containing a scarf.",
+          "is_entrance": true,
+          "is_exit": false
         },
         {
           "id": "rect_3",
@@ -60,7 +62,9 @@
             "height": 5
           },
           "name": "room_3",
-          "description": "A painting on the wall, totally destroyed by mold."
+          "description": "A painting on the wall, totally destroyed by mold.",
+          "is_entrance": false,
+          "is_exit": true
         }
       ],
       "doors": [
@@ -554,13 +558,8 @@
           "door_id": "door_0"
         },
         {
-          "from_room": "rect_1",
-          "to_room": "rect_16",
-          "door_id": "door_1"
-        },
-        {
-          "from_room": "rect_1",
-          "to_room": "rect_14",
+          "from_room": "rect_16",
+          "to_room": "rect_1",
           "door_id": "door_1"
         },
         {
@@ -570,12 +569,17 @@
         },
         {
           "from_room": "rect_1",
-          "to_room": "rect_15",
+          "to_room": "rect_14",
+          "door_id": "door_1"
+        },
+        {
+          "from_room": "rect_15",
+          "to_room": "rect_1",
           "door_id": "door_2"
         },
         {
-          "from_room": "rect_16",
-          "to_room": "rect_3",
+          "from_room": "rect_3",
+          "to_room": "rect_16",
           "door_id": "door_3"
         },
         {
@@ -589,8 +593,8 @@
           "door_id": "door_5"
         },
         {
-          "from_room": "rect_19",
-          "to_room": "rect_6",
+          "from_room": "rect_6",
+          "to_room": "rect_19",
           "door_id": "door_6"
         },
         {
@@ -599,8 +603,8 @@
           "door_id": "door_7"
         },
         {
-          "from_room": "rect_21",
-          "to_room": "rect_6",
+          "from_room": "rect_6",
+          "to_room": "rect_21",
           "door_id": "door_8"
         },
         {
@@ -620,37 +624,37 @@
         },
         {
           "from_room": "rect_22",
-          "to_room": "rect_23",
+          "to_room": "rect_9",
           "door_id": "door_10"
         },
         {
           "from_room": "rect_22",
-          "to_room": "rect_9",
+          "to_room": "rect_23",
+          "door_id": "door_10"
+        },
+        {
+          "from_room": "rect_9",
+          "to_room": "rect_23",
           "door_id": "door_10"
         },
         {
           "from_room": "rect_23",
-          "to_room": "rect_9",
-          "door_id": "door_10"
-        },
-        {
-          "from_room": "rect_10",
           "to_room": "rect_24",
           "door_id": "door_11"
         },
         {
-          "from_room": "rect_10",
-          "to_room": "rect_23",
+          "from_room": "rect_23",
+          "to_room": "rect_10",
           "door_id": "door_11"
         },
         {
           "from_room": "rect_24",
-          "to_room": "rect_23",
+          "to_room": "rect_10",
           "door_id": "door_11"
         },
         {
-          "from_room": "rect_25",
-          "to_room": "rect_11",
+          "from_room": "rect_11",
+          "to_room": "rect_25",
           "door_id": "door_12"
         },
         {

@@ -1,28 +1,25 @@
 from .base import BaseQualityRule
-import numpy as np
 import math
+from collections import defaultdict, deque
+from typing import List, Set, Dict, Any, Tuple
+import logging
+
+logger = logging.getLogger(__name__)
 
 class LoopRatioRule(BaseQualityRule):
     """
-    Loop ratio assessment based on graph theory and network analysis.
+    基于cyclomatic formula的客观loop ratio评估
     
-    Theoretical foundations:
-    1. Graph Theory - Cycle detection and analysis
-    2. Network Science (Newman, 2010) - Network topology metrics
-    3. Spatial Cognition (Lynch, 1960) - Spatial navigation patterns
-    4. Game Design Theory (Schell, 2008) - Exploration and navigation balance
-    5. Environmental Psychology (Kaplan & Kaplan, 1982) - Environmental preferences
+    核心改进：
+    1. 使用cyclomatic formula直接计算独立环数
+    2. 移除Paton算法的复杂实现，提高性能
+    3. 基于图论理论设计科学的评估指标
+    4. 适用于大规模图的快速计算
     
-    References:
-    - Newman, M. E. J. (2010). Networks: An introduction.
-    - Schell, J. (2008). The art of game design.
-    - Lynch, K. (1960). The image of the city.
-    - Kaplan, S., & Kaplan, R. (1982). Cognition and environment.
-    - Barabási, A. L. (2016). Network science.
-    - Diestel, R. (2017). Graph theory.
-    - Golledge, R. G. (1999). Wayfinding behavior: Cognitive mapping and other spatial processes.
-    - Montello, D. R. (2005). Navigation.
-    - Thorndyke, P. W., & Hayes-Roth, B. (1982). Differences in spatial knowledge acquired from maps and navigation.
+    理论基础：
+    - 环数公式：|E| - |V| + C，其中C是连通分量数
+    - 通常C=1（连通图），所以环数 = |E| - |V| + 1
+    - loop_ratio = 环数 / 节点数
     """
     
     @property
@@ -31,7 +28,7 @@ class LoopRatioRule(BaseQualityRule):
     
     @property
     def description(self):
-        return "回环率评分，适中最好（0.2~0.4最佳）"
+        return "基于cyclomatic formula的客观loop ratio评估（高性能）"
 
     def evaluate(self, dungeon_data):
         levels = dungeon_data.get('levels', [])
@@ -42,67 +39,102 @@ class LoopRatioRule(BaseQualityRule):
         if not connections:
             return 0.0, {"reason": "No connection information"}
         
-        # 从connections中提取所有实际存在的房间ID - Based on graph theory (Diestel, 2017)
-        all_room_ids = set()
+        # 构建图
+        graph = self._build_graph(connections)
+        if not graph:
+            return 0.0, {"reason": "No valid graph constructed"}
+        
+        # 使用cyclomatic formula计算客观指标
+        metrics = self._calculate_cyclomatic_metrics(graph)
+        
+        # 直接使用loop ratio作为分数
+        loop_ratio = metrics['loop_ratio']
+        
+        # 如果loop ratio为0，给予最小分数
+        if loop_ratio == 0:
+            loop_ratio = 0.1
+        
+        # 添加调试信息
+        detail_info = {
+            "total_rooms": metrics['vertices'],
+            "total_edges": metrics['edges'],
+            "connected_components": metrics['components_count'],
+            "cyclomatic_number": metrics['cyclomatic_number'],
+            "loop_ratio": loop_ratio,
+            "algorithm": "Cyclomatic formula",
+            "note": "Direct calculation using E - V + C formula",
+            "score_breakdown": {
+                "loop_ratio": loop_ratio,
+                "final_score": loop_ratio
+            }
+        }
+        
+        return loop_ratio, detail_info
+    
+    def _build_graph(self, connections: List[Dict[str, Any]]) -> Dict[str, List[str]]:
+        """构建无向图"""
+        graph = defaultdict(list)
         for conn in connections:
-            all_room_ids.add(conn['from_room'])
-            all_room_ids.add(conn['to_room'])
+            from_room = conn['from_room']
+            to_room = conn['to_room']
+            graph[from_room].append(to_room)
+            graph[to_room].append(from_room)
+        return dict(graph)
+    
+    def _calculate_cyclomatic_metrics(self, graph: Dict[str, List[str]]) -> Dict[str, Any]:
+        """
+        使用cyclomatic formula计算客观指标
         
-        if not all_room_ids:
-            return 0.0, {"reason": "No valid rooms found in connections"}
+        核心公式：
+        - 环数 = |E| - |V| + C
+        - loop_ratio = 环数 / |V|
+        """
+        V = len(graph)  # 顶点数
+        E = sum(len(neighbors) for neighbors in graph.values()) // 2  # 边数
+        C = self._count_components(graph)  # 连通分量数
         
-        # 构建图 - Based on Newman (2010) network analysis
-        graph = {room_id: [] for room_id in all_room_ids}
-        for conn in connections:
-            if conn['from_room'] in graph and conn['to_room'] in graph:
-                graph[conn['from_room']].append(conn['to_room'])
-                graph[conn['to_room']].append(conn['from_room'])
+        # 计算cyclomatic number（独立环数）
+        cyclomatic_number = E - V + C
         
-        # 计算回路数 - Based on graph theory cycle detection (Diestel, 2017)
+        # 计算loop ratio
+        loop_ratio = cyclomatic_number / V if V > 0 else 0.0
+        
+        # 其他有用的指标
+        graph_density = E / (V * (V - 1) / 2) if V > 1 else 0.0
+        average_degree = 2 * E / V if V > 0 else 0.0
+        
+        return {
+            'vertices': V,
+            'edges': E,
+            'components_count': C,
+            'cyclomatic_number': cyclomatic_number,
+            'loop_ratio': loop_ratio,
+            'graph_density': graph_density,
+            'average_degree': average_degree,
+            'is_connected': C == 1
+        }
+    
+    def _count_components(self, graph: Dict[str, List[str]]) -> int:
+        """计算连通分量数量"""
+        if not graph:
+            return 0
+        
         visited = set()
-        loops = []
-        def dfs(node, parent, path):
-            visited.add(node)
-            path.append(node)
-            for nb in graph[node]:
-                if nb == parent:
-                    continue
-                if nb in path:
-                    # 找到回路 - Based on cycle detection algorithms
-                    loop = path[path.index(nb):] + [nb]
-                    loops.append(loop)
-                elif nb not in visited:
-                    dfs(nb, node, path.copy())
+        components = 0
         
         for node in graph:
             if node not in visited:
-                dfs(node, None, [])
+                components += 1
+                queue = deque([node])
+                visited.add(node)
+                
+                while queue:
+                    current = queue.popleft()
+                    for neighbor in graph[current]:
+                        if neighbor not in visited:
+                            visited.add(neighbor)
+                            queue.append(neighbor)
         
-        # 统计回路 - Based on network topology analysis (Barabási, 2016)
-        unique_loops = []
-        for loop in loops:
-            # 标准化回路表示（选择最小的起始点）
-            min_idx = 0
-            for i in range(1, len(loop)):
-                if loop[i] < loop[min_idx]:
-                    min_idx = i
-            normalized_loop = loop[min_idx:] + loop[:min_idx]
-            if normalized_loop not in unique_loops:
-                unique_loops.append(normalized_loop)
-        
-        # 计算回环率 - Based on Schell (2008) game design principles
-        total_rooms = len(all_room_ids)
-        loop_ratio = len(unique_loops) / total_rooms if total_rooms > 0 else 0.0
-        
-        # 高斯型映射，中心0.3，σ=0.3 - Based on optimal exploration balance
-        # 理论基础：Lynch (1960) 空间认知 + Kaplan & Kaplan (1982) 环境偏好
-        mu, sigma = 0.3, 0.3
-        score = math.exp(-((loop_ratio - mu) ** 2) / (2 * sigma ** 2))
-        
-        return score, {
-            "loop_ratio": loop_ratio,
-            "unique_loops": len(unique_loops),
-            "total_rooms": total_rooms,
-            "loops": unique_loops,
-            "optimal_range": "0.2-0.4"
-        } 
+        return components
+    
+ 
