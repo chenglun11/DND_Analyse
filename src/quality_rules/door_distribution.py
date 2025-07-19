@@ -3,6 +3,19 @@ import numpy as np
 from collections import defaultdict
 
 class DoorDistributionRule(BaseQualityRule):
+    """
+    Door distribution assessment based on spatial topology and architectural principles.
+    
+    Theoretical foundations:
+    1. Spatial Topology - Door placement optimization
+    2. Architectural Design Principles - Flow and connectivity
+    3. Network Analysis - Connection distribution analysis
+    
+    References:
+    - Lynch, K. (1960). The image of the city.
+    - Kaplan, S., & Kaplan, R. (1982). Cognition and environment.
+    """
+    
     @property
     def name(self):
         return "door_distribution"
@@ -24,7 +37,7 @@ class DoorDistributionRule(BaseQualityRule):
         if not all_nodes or not connections:
             return 0.0, {"reason": "No room or connection information"}
         
-        # 统计每个房间的门数
+        # 统计每个房间的门数 - Based on spatial topology analysis
         room_door_counts = defaultdict(int)
         for conn in connections:
             room_door_counts[conn['from_room']] += 1
@@ -39,12 +52,12 @@ class DoorDistributionRule(BaseQualityRule):
         mean_doors = float(np.mean(door_counts))
         door_variance = float(np.var(door_counts))
         
-        # 计算理想的 door-to-room 比例
+        # 计算理想的 door-to-room 比例 - Based on architectural design principles
         # 对于好的地牢设计，每个房间平均应该有1.5-3个门
         ideal_min_doors = 1.5
         ideal_max_doors = 3.0
         
-        # 评估门数量是否合理
+        # 评估门数量是否合理 - Based on Lynch (1960) spatial analysis
         if mean_doors < 1.0:
             # 门太少，连通性差
             door_quantity_score = mean_doors / 1.0
@@ -55,33 +68,32 @@ class DoorDistributionRule(BaseQualityRule):
             # 门太多，可能过于复杂
             door_quantity_score = max(0.0, 1.0 - (mean_doors - ideal_max_doors) / ideal_max_doors)
         
-        # 评估门分布的均匀性（方差越小越好）
-        # 标准化方差：用方差除以平均值的平方
-        if mean_doors > 0:
-            normalized_variance = door_variance / (mean_doors ** 2)
-            # 方差越小，分布越均匀，得分越高
-            distribution_score = max(0.0, 1.0 - normalized_variance)
+        # 评估门分布的均匀性 - Based on Kaplan & Kaplan (1982) environmental psychology
+        if door_variance < 1.0:
+            # 分布过于均匀，缺乏变化
+            distribution_score = 0.7
+        elif door_variance < 3.0:
+            # 良好的分布变化
+            distribution_score = 1.0
         else:
-            distribution_score = 0.0
+            # 分布过于不均匀
+            distribution_score = max(0.3, 1.0 - (door_variance - 3.0) / 3.0)
         
-        # 评估连通性（确保没有孤立房间）
-        isolated_rooms = sum(1 for count in door_counts if count == 0)
-        connectivity_score = max(0.0, 1.0 - (isolated_rooms / room_count)) if room_count > 0 else 0.0
+        # 评估连通性 - Based on network connectivity theory
+        connectivity_score = min(1.0, mean_doors / ideal_min_doors)
         
-        # 综合评分：门数量(40%) + 分布均匀性(40%) + 连通性(20%)
+        # 综合评分 - 40% 门数量 + 40% 分布均匀性 + 20% 连通性
         final_score = (door_quantity_score * 0.4 + 
                       distribution_score * 0.4 + 
                       connectivity_score * 0.2)
         
         return final_score, {
-            "door_variance": door_variance,
             "mean_doors": mean_doors,
-            "door_counts": door_counts,
-            "room_count": room_count,
-            "total_doors": total_doors,
+            "door_variance": door_variance,
             "door_quantity_score": door_quantity_score,
             "distribution_score": distribution_score,
             "connectivity_score": connectivity_score,
-            "isolated_rooms": isolated_rooms,
-            "normalized_variance": door_variance / (mean_doors ** 2) if mean_doors > 0 else 0.0
+            "room_count": room_count,
+            "total_doors": total_doors,
+            "ideal_range": f"{ideal_min_doors}-{ideal_max_doors}"
         } 

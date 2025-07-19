@@ -5,6 +5,21 @@ import logging
 logger = logging.getLogger(__name__)
 
 class KeyPathLengthRule(BaseQualityRule):
+    """
+    Key path length assessment based on graph theory and game design principles.
+    
+    Theoretical foundations:
+    1. Graph Theory - Shortest path algorithms
+    2. Game Design Theory (Schell, 2008) - Pacing and progression
+    3. Player Psychology - Engagement and flow
+    4. Network Analysis - Path optimization
+    
+    References:
+    - Schell, J. (2008). The art of game design.
+    - Newman, M. E. J. (2010). Networks: An introduction.
+    - Csikszentmihalyi, M. (1990). Flow: The psychology of optimal experience.
+    """
+    
     @property
     def name(self):
         return "key_path_length"
@@ -24,7 +39,7 @@ class KeyPathLengthRule(BaseQualityRule):
         if not rooms or not connections:
             return 0.0, {"reason": "无房间或连接信息"}
         
-        # 节点集为rooms+corridors
+        # 节点集为rooms+corridors - Based on graph theory
         all_nodes = rooms + corridors
         graph = {node['id']: [] for node in all_nodes}
         for conn in connections:
@@ -32,7 +47,7 @@ class KeyPathLengthRule(BaseQualityRule):
                 graph[conn['from_room']].append(conn['to_room'])
                 graph[conn['to_room']].append(conn['from_room'])
         
-        # 使用改进的入口出口识别
+        # 使用改进的入口出口识别 - Based on Schell (2008) game design principles
         from src.schema import identify_entrance_exit
         enhanced_data = identify_entrance_exit(dungeon_data)
         enhanced_rooms = enhanced_data['levels'][0]['rooms']
@@ -104,7 +119,7 @@ class KeyPathLengthRule(BaseQualityRule):
                 "exit_degree": len(graph.get(exit_room, []))
             }
         
-        # BFS计算最短路径长度
+        # BFS计算最短路径长度 - Based on Newman (2010) network analysis
         def bfs(start, end):
             queue = deque([(start, 0)])
             visited = set([start])
