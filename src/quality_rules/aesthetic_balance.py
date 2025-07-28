@@ -14,7 +14,7 @@ class AestheticBalanceRule(BaseQualityRule):
 
     融合: 几何平均，仅使用非零因子
     """
-
+    
     @property
     def name(self) -> str:
         return "aesthetic_balance"

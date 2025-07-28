@@ -1,0 +1,249 @@
+{
+  "header": {
+    "schemaName": "dnd-dungeon-unified",
+    "schemaVersion": "1.0.0",
+    "name": "Edgar Dungeon",
+    "author": "Edgar Generator",
+    "description": "Converted from Edgar format",
+    "grid": {
+      "type": "square",
+      "size": 5,
+      "unit": "ft"
+    }
+  },
+  "levels": [
+    {
+      "id": "level_1",
+      "name": "Main Level",
+      "map": {
+        "width": 58,
+        "height": 51
+      },
+      "rooms": [
+        {
+          "id": "room_8",
+          "name": "Room 8",
+          "shape": "rectangle",
+          "position": {
+            "x": 50,
+            "y": 50
+          },
+          "size": {
+            "width": 18,
+            "height": 18
+          },
+          "is_room": true,
+          "description": "Room 8 from Edgar generator",
+          "is_entrance": true,
+          "is_exit": false
+        },
+        {
+          "id": "room_0",
+          "name": "Room 0",
+          "shape": "rectangle",
+          "position": {
+            "x": 50,
+            "y": 20
+          },
+          "size": {
+            "width": 9,
+            "height": 6
+          },
+          "is_room": true,
+          "description": "Room 0 from Edgar generator"
+        },
+        {
+          "id": "room_1",
+          "name": "Room 1",
+          "shape": "rectangle",
+          "position": {
+            "x": 20,
+            "y": 34
+          },
+          "size": {
+            "width": 6,
+            "height": 9
+          },
+          "is_room": true,
+          "description": "Room 1 from Edgar generator"
+        },
+        {
+          "id": "room_2",
+          "name": "Room 2",
+          "shape": "rectangle",
+          "position": {
+            "x": 10,
+            "y": 54
+          },
+          "size": {
+            "width": 6,
+            "height": 9
+          },
+          "is_room": true,
+          "description": "Room 2 from Edgar generator",
+          "is_entrance": false,
+          "is_exit": true
+        },
+        {
+          "id": "room_3",
+          "name": "Room 3",
+          "shape": "rectangle",
+          "position": {
+            "x": 50,
+            "y": 24
+          },
+          "size": {
+            "width": 6,
+            "height": 9
+          },
+          "is_room": true,
+          "description": "Room 3 from Edgar generator"
+        },
+        {
+          "id": "room_4",
+          "name": "Room 4",
+          "shape": "rectangle",
+          "position": {
+            "x": 17,
+            "y": 26
+          },
+          "size": {
+            "width": 6,
+            "height": 6
+          },
+          "is_room": true,
+          "description": "Room 4 from Edgar generator"
+        },
+        {
+          "id": "room_5",
+          "name": "Room 5",
+          "shape": "rectangle",
+          "position": {
+            "x": 10,
+            "y": 55
+          },
+          "size": {
+            "width": 9,
+            "height": 6
+          },
+          "is_room": true,
+          "description": "Room 5 from Edgar generator"
+        },
+        {
+          "id": "room_6",
+          "name": "Room 6",
+          "shape": "rectangle",
+          "position": {
+            "x": 40,
+            "y": 17
+          },
+          "size": {
+            "width": 6,
+            "height": 6
+          },
+          "is_room": true,
+          "description": "Room 6 from Edgar generator"
+        },
+        {
+          "id": "room_7",
+          "name": "Room 7",
+          "shape": "rectangle",
+          "position": {
+            "x": 51,
+            "y": 56
+          },
+          "size": {
+            "width": 6,
+            "height": 6
+          },
+          "is_room": true,
+          "description": "Room 7 from Edgar generator"
+        }
+      ],
+      "doors": [],
+      "connections": [
+        {
+          "from_room": "room_8",
+          "to_room": "room_7",
+          "door_id": "door_8_7"
+        },
+        {
+          "from_room": "room_0",
+          "to_room": "room_1",
+          "door_id": "door_0_1"
+        },
+        {
+          "from_room": "room_0",
+          "to_room": "room_3",
+          "door_id": "door_0_3"
+        },
+        {
+          "from_room": "room_1",
+          "to_room": "room_0",
+          "door_id": "door_1_0"
+        },
+        {
+          "from_room": "room_1",
+          "to_room": "room_2",
+          "door_id": "door_1_2"
+        },
+        {
+          "from_room": "room_1",
+          "to_room": "room_4",
+          "door_id": "door_1_4"
+        },
+        {
+          "from_room": "room_1",
+          "to_room": "room_5",
+          "door_id": "door_1_5"
+        },
+        {
+          "from_room": "room_2",
+          "to_room": "room_1",
+          "door_id": "door_2_1"
+        },
+        {
+          "from_room": "room_3",
+          "to_room": "room_0",
+          "door_id": "door_3_0"
+        },
+        {
+          "from_room": "room_3",
+          "to_room": "room_6",
+          "door_id": "door_3_6"
+        },
+        {
+          "from_room": "room_4",
+          "to_room": "room_1",
+          "door_id": "door_4_1"
+        },
+        {
+          "from_room": "room_5",
+          "to_room": "room_1",
+          "door_id": "door_5_1"
+        },
+        {
+          "from_room": "room_6",
+          "to_room": "room_3",
+          "door_id": "door_6_3"
+        },
+        {
+          "from_room": "room_6",
+          "to_room": "room_7",
+          "door_id": "door_6_7"
+        },
+        {
+          "from_room": "room_7",
+          "to_room": "room_8",
+          "door_id": "door_7_8"
+        },
+        {
+          "from_room": "room_7",
+          "to_room": "room_6",
+          "door_id": "door_7_6"
+        }
+      ],
+      "game_elements": []
+    }
+  ]
+}

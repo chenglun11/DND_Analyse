@@ -15,11 +15,13 @@ class LoopRatioRule(BaseQualityRule):
     2. 移除Paton算法的复杂实现，提高性能
     3. 基于图论理论设计科学的评估指标
     4. 适用于大规模图的快速计算
+    5. 使用sigmoid函数将loop ratio映射到0-1区间
     
     理论基础：
     - 环数公式：|E| - |V| + C，其中C是连通分量数
     - 通常C=1（连通图），所以环数 = |E| - |V| + 1
     - loop_ratio = 环数 / 节点数
+    - 最终分数 = sigmoid(loop_ratio) 映射到0-1区间
     """
     
     @property
@@ -28,7 +30,7 @@ class LoopRatioRule(BaseQualityRule):
     
     @property
     def description(self):
-        return "基于cyclomatic formula的客观loop ratio评估（高性能）"
+        return "基于cyclomatic formula的客观loop ratio评估（高性能，sigmoid归一化）"
 
     def evaluate(self, dungeon_data):
         levels = dungeon_data.get('levels', [])
@@ -47,12 +49,18 @@ class LoopRatioRule(BaseQualityRule):
         # 使用cyclomatic formula计算客观指标
         metrics = self._calculate_cyclomatic_metrics(graph)
         
-        # 直接使用loop ratio作为分数
-        loop_ratio = metrics['loop_ratio']
+        # 获取原始loop ratio
+        raw_loop_ratio = metrics['loop_ratio']
         
         # 如果loop ratio为0，给予最小分数
-        if loop_ratio == 0:
-            loop_ratio = 0.1
+        if raw_loop_ratio == 0:
+            raw_loop_ratio = 0.1
+        
+        # 使用sigmoid函数将loop ratio映射到0-1区间
+        # sigmoid(x) = 1 / (1 + e^(-x))
+        # 为了更好的映射效果，我们使用 sigmoid(loop_ratio - 1)
+        # 这样当loop_ratio=1时，sigmoid(0)=0.5，这是一个合理的中间值
+        sigmoid_loop_ratio = self._sigmoid(raw_loop_ratio - 1)
         
         # 添加调试信息
         detail_info = {
@@ -60,16 +68,30 @@ class LoopRatioRule(BaseQualityRule):
             "total_edges": metrics['edges'],
             "connected_components": metrics['components_count'],
             "cyclomatic_number": metrics['cyclomatic_number'],
-            "loop_ratio": loop_ratio,
-            "algorithm": "Cyclomatic formula",
-            "note": "Direct calculation using E - V + C formula",
+            "loop_ratio": raw_loop_ratio,
+            "sigmoid_loop_ratio": sigmoid_loop_ratio,
+            "algorithm": "Cyclomatic formula + Sigmoid normalization",
+            "note": "Direct calculation using E - V + C formula, then sigmoid mapping to [0,1]",
             "score_breakdown": {
-                "loop_ratio": loop_ratio,
-                "final_score": loop_ratio
+                "raw_loop_ratio": raw_loop_ratio,
+                "sigmoid_loop_ratio": sigmoid_loop_ratio,
+                "final_score": sigmoid_loop_ratio
             }
         }
         
-        return loop_ratio, detail_info
+        return sigmoid_loop_ratio, detail_info
+    
+    def _sigmoid(self, x: float) -> float:
+        """
+        计算sigmoid函数值
+        sigmoid(x) = 1 / (1 + e^(-x))
+        
+        这个函数将任意实数映射到(0,1)区间
+        - 当x很大时，sigmoid(x)接近1
+        - 当x很小时，sigmoid(x)接近0
+        - 当x=0时，sigmoid(0)=0.5
+        """
+        return 1.0 / (1.0 + math.exp(-x))
     
     def _build_graph(self, connections: List[Dict[str, Any]]) -> Dict[str, List[str]]:
         """构建无向图"""

@@ -37,7 +37,7 @@ def assess_all_maps(input_dir: str = "output", output_dir: str = "output/reports
     # 过滤掉报告文件
     json_files = [f for f in json_files if not f.name.startswith("quality_report") and not f.name.startswith("report")]
     
-    logger.info(f"找到 {len(json_files)} 个地图文件进行评估")
+    logger.info(f" {len(json_files)} Maps to be assessed")
     
     results = {}
     assessor = DungeonQualityAssessor()
@@ -73,6 +73,7 @@ def assess_all_maps(input_dir: str = "output", output_dir: str = "output/reports
                     'overall_score': metrics['overall_score'],
                     'grade': metrics['grade'],
                     'detailed_metrics': metrics['scores'],
+                    'category_scores': metrics['category_scores'],
                     'recommendations': metrics['recommendations'],
                     'processing_time': end_time - start_time
                 }
@@ -81,27 +82,27 @@ def assess_all_maps(input_dir: str = "output", output_dir: str = "output/reports
                 
             except TimeoutError:
                 signal.alarm(0)
-                logger.error(f"评估 {json_file.name} 超时")
+                logger.error(f"Assess {json_file.name} overtime")
                 results[json_file.name] = {
-                    'error': '评估超时',
+                    'error': 'overtime',
                     'overall_score': 0.0,
                     'grade': '超时'
                 }
             except Exception as e:
                 signal.alarm(0)
-                logger.error(f"评估 {json_file.name} 时出错: {e}")
+                logger.error(f"Assess {json_file.name} cause error: {e}")
                 results[json_file.name] = {
                     'error': str(e),
                     'overall_score': 0.0,
-                    'grade': '错误'
+                    'grade': 'error'
                 }
                 
         except Exception as e:
-            logger.error(f"处理文件 {json_file.name} 时出现意外错误: {e}")
+            logger.error(f"Error while using {json_file.name} expection: {e}")
             results[json_file.name] = {
-                'error': f'意外错误: {str(e)}',
+                'error': f'un-expect error: {str(e)}',
                 'overall_score': 0.0,
-                'grade': '错误'
+                'grade': 'un-expect error'
             }
     
     # 生成汇总报告
@@ -117,7 +118,7 @@ def assess_all_maps(input_dir: str = "output", output_dir: str = "output/reports
         print_summary_report(summary_report)
         
     except Exception as e:
-        logger.error(f"生成汇总报告时出错: {e}")
+        logger.error(f"Error in summarise reports: {e}")
         # 即使汇总报告失败，也返回已处理的结果
         results['_summary_error'] = str(e)
     
@@ -131,7 +132,7 @@ def generate_summary_report(results: Dict[str, Any]) -> Dict[str, Any]:
     
     if not valid_results:
         return {
-            'summary': '没有有效的评估结果',
+            'summary': 'no valide reports',
             'total_files': len(results),
             'valid_files': 0,
             'error_files': len(results)
@@ -176,6 +177,24 @@ def generate_summary_report(results: Dict[str, Any]) -> Dict[str, Any]:
                     'min': min(values)
                 }
         
+        # 计算类别评分统计
+        category_stats = {}
+        categories = ['structural', 'gameplay', 'aesthetic']
+        
+        for category in categories:
+            values = []
+            for r in valid_results.values():
+                category_scores = r.get('category_scores', {})
+                score = category_scores.get(category, 0.0)
+                values.append(score)
+            
+            if values:  # 确保有有效值
+                category_stats[category] = {
+                    'average': sum(values) / len(values),
+                    'max': max(values),
+                    'min': min(values)
+                }
+        
         return {
             'summary': {
                 'total_files': len(results),
@@ -197,6 +216,7 @@ def generate_summary_report(results: Dict[str, Any]) -> Dict[str, Any]:
             },
             'grade_distribution': grade_counts,
             'metric_statistics': metric_stats,
+            'category_statistics': category_stats,
             'detailed_results': valid_results
         }
         
@@ -213,7 +233,7 @@ def print_summary_report(report: Dict[str, Any]) -> None:
     """打印汇总报告到控制台"""
     
     print("\n" + "="*60)
-    print("地牢地图质量评估汇总报告")
+    print("Dungeon Map Quality Reports")
     print("="*60)
     
     if 'summary' not in report or isinstance(report['summary'], str):
@@ -222,41 +242,51 @@ def print_summary_report(report: Dict[str, Any]) -> None:
         return
     
     summary = report['summary']
-    print(f"\n📊 总体统计:")
-    print(f"  总文件数: {summary['total_files']}")
-    print(f"  有效文件: {summary['valid_files']}")
-    print(f"  错误文件: {summary['error_files']}")
-    print(f"  平均评分: {summary['average_score']:.3f}")
-    print(f"  最高评分: {summary['max_score']:.3f}")
-    print(f"  最低评分: {summary['min_score']:.3f}")
+    print(f"\n Overall Summary:")
+    print(f"  Total Files: {summary['total_files']}")
+    print(f"  Valied Files: {summary['valid_files']}")
+    print(f"  Error Files: {summary['error_files']}")
+    print(f"  Average Score: {summary['average_score']:.3f}")
+    print(f"  Bast Score: {summary['max_score']:.3f}")
+    print(f"  Lowest Score: {summary['min_score']:.3f}")
     
     if 'best_map' in summary:
-        print(f"\n🏆 最佳地图:")
+        print(f"\n BEST MAP:")
         best = summary['best_map']
         print(f"  {best['name']}: {best['score']:.3f} ({best['grade']})")
         
-        print(f"\n⚠️  最差地图:")
+        print(f"\n WORST MAP:")
         worst = summary['worst_map']
         print(f"  {worst['name']}: {worst['score']:.3f} ({worst['grade']})")
     
     if 'grade_distribution' in report:
-        print(f"\n📈 等级分布:")
+        print(f"\n GRADE DSITRIBUTION:")
         for grade, count in report['grade_distribution'].items():
             print(f"  {grade}: {count} 个")
     
     if 'metric_statistics' in report:
-        print(f"\n📋 指标统计:")
+        print(f"\nMETRIC STATISTICS:")
         for metric, stats in report['metric_statistics'].items():
             metric_name = {
-                'accessibility': '可达性',
-                'degree_variance': '度差',
-                'path_diversity': '路径多样性',
-                'loop_ratio': '回环率',
-                'door_distribution': '门分布',
-                'treasure_monster_distribution': '宝藏怪物分布',
-                'aesthetic_balance': '视觉平衡'
+                'accessibility': 'Accessibility',
+                'degree_variance': 'Degree Variance',
+                'path_diversity': 'Path Diversity',
+                'loop_ratio': 'Loop Raito',
+                'door_distribution': 'Door Ditstribution',
+                'treasure_monster_distribution': 'Treasure Monster Distribution',
+                'aesthetic_balance': 'Aesthetic Balance'
             }.get(metric, metric)
-            print(f"  {metric_name}: 平均 {stats['average']:.3f}, 最高 {stats['max']:.3f}, 最低 {stats['min']:.3f}")
+            print(f"  {metric_name}: AVG {stats['average']:.3f}, MAX {stats['max']:.3f}, MIN {stats['min']:.3f}")
+    
+    if 'category_statistics' in report:
+        print(f"\n 类别评分统计:")
+        for category, stats in report['category_statistics'].items():
+            category_name = {
+                'structural': 'Structural',
+                'gameplay': 'Playability',
+                'aesthetic': 'Aestetic'
+            }.get(category, category)
+            print(f"  {category_name}: AVG {stats['average']:.3f}, MAX {stats['max']:.3f}, MIN {stats['min']:.3f}")
     
     print("="*60)
 

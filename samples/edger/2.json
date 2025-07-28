@@ -1,0 +1,1297 @@
+{
+  "Rooms": [
+    {
+      "Room": 8,
+      "RoomDescription": {
+        "IsCorridor": false,
+        "RoomTemplates": [
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 324,
+                "Width": 18,
+                "Height": 18
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          }
+        ]
+      },
+      "Outline": {
+        "BoundingRectangle": {
+          "Center": {},
+          "Area": 324,
+          "Width": 18,
+          "Height": 18
+        }
+      },
+      "Position": {},
+      "RoomTemplate": {
+        "Name": "Room template",
+        "Outline": {
+          "BoundingRectangle": {
+            "Center": {},
+            "Area": 324,
+            "Width": 18,
+            "Height": 18
+          }
+        },
+        "Doors": {},
+        "RepeatMode": 0,
+        "AllowedTransformations": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "IsCorridor": false,
+      "Doors": [
+        {
+          "FromRoom": 8,
+          "ToRoom": 6,
+          "DoorLine": {
+            "Length": 1
+          }
+        },
+        {
+          "FromRoom": 8,
+          "ToRoom": 7,
+          "DoorLine": {
+            "Length": 1
+          }
+        }
+      ],
+      "Transformation": 2
+    },
+    {
+      "Room": 0,
+      "RoomDescription": {
+        "IsCorridor": false,
+        "RoomTemplates": [
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 36,
+                "Width": 6,
+                "Height": 6
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 54,
+                "Width": 6,
+                "Height": 9
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 36,
+                "Width": 6,
+                "Height": 6
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 54,
+                "Width": 6,
+                "Height": 9
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 54,
+                "Width": 9,
+                "Height": 6
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          }
+        ]
+      },
+      "Outline": {
+        "BoundingRectangle": {
+          "Center": {},
+          "Area": 36,
+          "Width": 6,
+          "Height": 6
+        }
+      },
+      "Position": {},
+      "RoomTemplate": {
+        "Name": "Room template",
+        "Outline": {
+          "BoundingRectangle": {
+            "Center": {},
+            "Area": 36,
+            "Width": 6,
+            "Height": 6
+          }
+        },
+        "Doors": {},
+        "RepeatMode": 0,
+        "AllowedTransformations": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "IsCorridor": false,
+      "Doors": [
+        {
+          "FromRoom": 0,
+          "ToRoom": 1,
+          "DoorLine": {
+            "Length": 1
+          }
+        },
+        {
+          "FromRoom": 0,
+          "ToRoom": 3,
+          "DoorLine": {
+            "Length": 1
+          }
+        }
+      ],
+      "Transformation": 3
+    },
+    {
+      "Room": 1,
+      "RoomDescription": {
+        "IsCorridor": false,
+        "RoomTemplates": [
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 36,
+                "Width": 6,
+                "Height": 6
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 54,
+                "Width": 6,
+                "Height": 9
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 36,
+                "Width": 6,
+                "Height": 6
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 54,
+                "Width": 6,
+                "Height": 9
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 54,
+                "Width": 9,
+                "Height": 6
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          }
+        ]
+      },
+      "Outline": {
+        "BoundingRectangle": {
+          "Center": {},
+          "Area": 54,
+          "Width": 9,
+          "Height": 6
+        }
+      },
+      "Position": {},
+      "RoomTemplate": {
+        "Name": "Room template",
+        "Outline": {
+          "BoundingRectangle": {
+            "Center": {},
+            "Area": 54,
+            "Width": 9,
+            "Height": 6
+          }
+        },
+        "Doors": {},
+        "RepeatMode": 0,
+        "AllowedTransformations": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "IsCorridor": false,
+      "Doors": [
+        {
+          "FromRoom": 1,
+          "ToRoom": 0,
+          "DoorLine": {
+            "Length": 1
+          }
+        },
+        {
+          "FromRoom": 1,
+          "ToRoom": 2,
+          "DoorLine": {
+            "Length": 1
+          }
+        },
+        {
+          "FromRoom": 1,
+          "ToRoom": 4,
+          "DoorLine": {
+            "Length": 1
+          }
+        },
+        {
+          "FromRoom": 1,
+          "ToRoom": 5,
+          "DoorLine": {
+            "Length": 1
+          }
+        }
+      ],
+      "Transformation": 0
+    },
+    {
+      "Room": 2,
+      "RoomDescription": {
+        "IsCorridor": false,
+        "RoomTemplates": [
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 36,
+                "Width": 6,
+                "Height": 6
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 54,
+                "Width": 6,
+                "Height": 9
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 36,
+                "Width": 6,
+                "Height": 6
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 54,
+                "Width": 6,
+                "Height": 9
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 54,
+                "Width": 9,
+                "Height": 6
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          }
+        ]
+      },
+      "Outline": {
+        "BoundingRectangle": {
+          "Center": {},
+          "Area": 54,
+          "Width": 9,
+          "Height": 6
+        }
+      },
+      "Position": {},
+      "RoomTemplate": {
+        "Name": "Room template",
+        "Outline": {
+          "BoundingRectangle": {
+            "Center": {},
+            "Area": 54,
+            "Width": 6,
+            "Height": 9
+          }
+        },
+        "Doors": {},
+        "RepeatMode": 0,
+        "AllowedTransformations": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "IsCorridor": false,
+      "Doors": [
+        {
+          "FromRoom": 2,
+          "ToRoom": 1,
+          "DoorLine": {
+            "Length": 1
+          }
+        },
+        {
+          "FromRoom": 2,
+          "ToRoom": 3,
+          "DoorLine": {
+            "Length": 1
+          }
+        }
+      ],
+      "Transformation": 1
+    },
+    {
+      "Room": 3,
+      "RoomDescription": {
+        "IsCorridor": false,
+        "RoomTemplates": [
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 36,
+                "Width": 6,
+                "Height": 6
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 54,
+                "Width": 6,
+                "Height": 9
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 36,
+                "Width": 6,
+                "Height": 6
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 54,
+                "Width": 6,
+                "Height": 9
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 54,
+                "Width": 9,
+                "Height": 6
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          }
+        ]
+      },
+      "Outline": {
+        "BoundingRectangle": {
+          "Center": {},
+          "Area": 54,
+          "Width": 6,
+          "Height": 9
+        }
+      },
+      "Position": {},
+      "RoomTemplate": {
+        "Name": "Room template",
+        "Outline": {
+          "BoundingRectangle": {
+            "Center": {},
+            "Area": 54,
+            "Width": 9,
+            "Height": 6
+          }
+        },
+        "Doors": {},
+        "RepeatMode": 0,
+        "AllowedTransformations": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "IsCorridor": false,
+      "Doors": [
+        {
+          "FromRoom": 3,
+          "ToRoom": 0,
+          "DoorLine": {
+            "Length": 1
+          }
+        },
+        {
+          "FromRoom": 3,
+          "ToRoom": 2,
+          "DoorLine": {
+            "Length": 1
+          }
+        },
+        {
+          "FromRoom": 3,
+          "ToRoom": 6,
+          "DoorLine": {
+            "Length": 1
+          }
+        }
+      ],
+      "Transformation": 3
+    },
+    {
+      "Room": 4,
+      "RoomDescription": {
+        "IsCorridor": false,
+        "RoomTemplates": [
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 36,
+                "Width": 6,
+                "Height": 6
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 54,
+                "Width": 6,
+                "Height": 9
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 36,
+                "Width": 6,
+                "Height": 6
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 54,
+                "Width": 6,
+                "Height": 9
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 54,
+                "Width": 9,
+                "Height": 6
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          }
+        ]
+      },
+      "Outline": {
+        "BoundingRectangle": {
+          "Center": {},
+          "Area": 54,
+          "Width": 9,
+          "Height": 6
+        }
+      },
+      "Position": {},
+      "RoomTemplate": {
+        "Name": "Room template",
+        "Outline": {
+          "BoundingRectangle": {
+            "Center": {},
+            "Area": 54,
+            "Width": 9,
+            "Height": 6
+          }
+        },
+        "Doors": {},
+        "RepeatMode": 0,
+        "AllowedTransformations": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "IsCorridor": false,
+      "Doors": [
+        {
+          "FromRoom": 4,
+          "ToRoom": 1,
+          "DoorLine": {
+            "Length": 1
+          }
+        },
+        {
+          "FromRoom": 4,
+          "ToRoom": 5,
+          "DoorLine": {
+            "Length": 1
+          }
+        }
+      ],
+      "Transformation": 0
+    },
+    {
+      "Room": 5,
+      "RoomDescription": {
+        "IsCorridor": false,
+        "RoomTemplates": [
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 36,
+                "Width": 6,
+                "Height": 6
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 54,
+                "Width": 6,
+                "Height": 9
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 36,
+                "Width": 6,
+                "Height": 6
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 54,
+                "Width": 6,
+                "Height": 9
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 54,
+                "Width": 9,
+                "Height": 6
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          }
+        ]
+      },
+      "Outline": {
+        "BoundingRectangle": {
+          "Center": {},
+          "Area": 54,
+          "Width": 9,
+          "Height": 6
+        }
+      },
+      "Position": {},
+      "RoomTemplate": {
+        "Name": "Room template",
+        "Outline": {
+          "BoundingRectangle": {
+            "Center": {},
+            "Area": 54,
+            "Width": 6,
+            "Height": 9
+          }
+        },
+        "Doors": {},
+        "RepeatMode": 0,
+        "AllowedTransformations": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "IsCorridor": false,
+      "Doors": [
+        {
+          "FromRoom": 5,
+          "ToRoom": 1,
+          "DoorLine": {
+            "Length": 1
+          }
+        },
+        {
+          "FromRoom": 5,
+          "ToRoom": 4,
+          "DoorLine": {
+            "Length": 1
+          }
+        }
+      ],
+      "Transformation": 3
+    },
+    {
+      "Room": 6,
+      "RoomDescription": {
+        "IsCorridor": false,
+        "RoomTemplates": [
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 36,
+                "Width": 6,
+                "Height": 6
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 54,
+                "Width": 6,
+                "Height": 9
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 36,
+                "Width": 6,
+                "Height": 6
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 54,
+                "Width": 6,
+                "Height": 9
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 54,
+                "Width": 9,
+                "Height": 6
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          }
+        ]
+      },
+      "Outline": {
+        "BoundingRectangle": {
+          "Center": {},
+          "Area": 54,
+          "Width": 6,
+          "Height": 9
+        }
+      },
+      "Position": {},
+      "RoomTemplate": {
+        "Name": "Room template",
+        "Outline": {
+          "BoundingRectangle": {
+            "Center": {},
+            "Area": 54,
+            "Width": 9,
+            "Height": 6
+          }
+        },
+        "Doors": {},
+        "RepeatMode": 0,
+        "AllowedTransformations": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "IsCorridor": false,
+      "Doors": [
+        {
+          "FromRoom": 6,
+          "ToRoom": 8,
+          "DoorLine": {
+            "Length": 1
+          }
+        },
+        {
+          "FromRoom": 6,
+          "ToRoom": 3,
+          "DoorLine": {
+            "Length": 1
+          }
+        },
+        {
+          "FromRoom": 6,
+          "ToRoom": 7,
+          "DoorLine": {
+            "Length": 1
+          }
+        }
+      ],
+      "Transformation": 1
+    },
+    {
+      "Room": 7,
+      "RoomDescription": {
+        "IsCorridor": false,
+        "RoomTemplates": [
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 36,
+                "Width": 6,
+                "Height": 6
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 54,
+                "Width": 6,
+                "Height": 9
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 36,
+                "Width": 6,
+                "Height": 6
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 54,
+                "Width": 6,
+                "Height": 9
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "Name": "Room template",
+            "Outline": {
+              "BoundingRectangle": {
+                "Center": {},
+                "Area": 54,
+                "Width": 9,
+                "Height": 6
+              }
+            },
+            "Doors": {},
+            "RepeatMode": 0,
+            "AllowedTransformations": [
+              0,
+              1,
+              2,
+              3
+            ]
+          }
+        ]
+      },
+      "Outline": {
+        "BoundingRectangle": {
+          "Center": {},
+          "Area": 54,
+          "Width": 6,
+          "Height": 9
+        }
+      },
+      "Position": {},
+      "RoomTemplate": {
+        "Name": "Room template",
+        "Outline": {
+          "BoundingRectangle": {
+            "Center": {},
+            "Area": 54,
+            "Width": 9,
+            "Height": 6
+          }
+        },
+        "Doors": {},
+        "RepeatMode": 0,
+        "AllowedTransformations": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "IsCorridor": false,
+      "Doors": [
+        {
+          "FromRoom": 7,
+          "ToRoom": 8,
+          "DoorLine": {
+            "Length": 1
+          }
+        },
+        {
+          "FromRoom": 7,
+          "ToRoom": 6,
+          "DoorLine": {
+            "Length": 1
+          }
+        }
+      ],
+      "Transformation": 3
+    }
+  ]
+}

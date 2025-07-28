@@ -295,7 +295,7 @@ class DungeonCanvas(QWidget):
             # 绘制提示信息
             painter.setPen(self.colors['text'])
             painter.setFont(QFont('Arial', 14))
-            painter.drawText(self.rect(), Qt.AlignCenter, "请加载地牢数据")
+            painter.drawText(self.rect(), Qt.AlignCenter, "Please upload dungeon data")
             return
         
         # 应用变换
@@ -486,11 +486,11 @@ class BFSWorker(QThread):
         """运行BFS算法"""
         try:
             if self.start_node not in self.graph:
-                self.error.emit(f"起始节点 {self.start_node} 不存在")
+                self.error.emit(f"Starting node {self.start_node} not exist")
                 return
             
             if self.target_node and self.target_node not in self.graph:
-                self.error.emit(f"目标节点 {self.target_node} 不存在")
+                self.error.emit(f"Target node {self.target_node} not exist")
                 return
             
             # BFS算法
@@ -546,7 +546,7 @@ class QtBFSVisualizer(QMainWindow):
         
     def init_ui(self):
         """初始化用户界面"""
-        self.setWindowTitle("地牢BFS可视化器")
+        self.setWindowTitle("BFS dungeon visualizer")
         self.setGeometry(100, 100, 1200, 800)
         
         # 创建中央部件
@@ -575,7 +575,7 @@ class QtBFSVisualizer(QMainWindow):
         self.create_menu_bar()
         
         # 创建状态栏
-        self.statusBar().showMessage("就绪")
+        self.statusBar().showMessage("Stand by")
         
     def create_control_panel(self) -> QWidget:
         """创建控制面板"""
@@ -584,34 +584,34 @@ class QtBFSVisualizer(QMainWindow):
         layout = QVBoxLayout(panel)
         
         # 文件加载组
-        file_group = QGroupBox("文件操作")
+        file_group = QGroupBox("File Group")
         file_layout = QVBoxLayout(file_group)
         
-        load_btn = QPushButton("加载地牢数据")
+        load_btn = QPushButton("Load dungeon file")
         load_btn.clicked.connect(self.load_dungeon_file)
         file_layout.addWidget(load_btn)
         
         layout.addWidget(file_group)
         
         # BFS控制组
-        bfs_group = QGroupBox("BFS控制")
+        bfs_group = QGroupBox("BFS Control")
         bfs_layout = QGridLayout(bfs_group)
         
         # 起始节点选择
-        bfs_layout.addWidget(QLabel("起始节点:"), 0, 0)
+        bfs_layout.addWidget(QLabel("Starting Point:"), 0, 0)
         self.start_node_combo = QComboBox()
         self.start_node_combo.setEditable(True)
         bfs_layout.addWidget(self.start_node_combo, 0, 1)
         
         # 目标节点选择
-        bfs_layout.addWidget(QLabel("目标节点:"), 1, 0)
+        bfs_layout.addWidget(QLabel("Target Point:"), 1, 0)
         self.target_node_combo = QComboBox()
         self.target_node_combo.setEditable(True)
-        self.target_node_combo.addItem("无")
+        self.target_node_combo.addItem("None")
         bfs_layout.addWidget(self.target_node_combo, 1, 1)
         
         # 动画速度
-        bfs_layout.addWidget(QLabel("动画速度:"), 2, 0)
+        bfs_layout.addWidget(QLabel("Speed:"), 2, 0)
         self.speed_slider = QSlider(Qt.Horizontal)
         self.speed_slider.setRange(100, 2000)
         self.speed_slider.setValue(500)
@@ -628,17 +628,17 @@ class QtBFSVisualizer(QMainWindow):
         # 控制按钮
         button_layout = QHBoxLayout()
         
-        self.start_btn = QPushButton("开始BFS")
+        self.start_btn = QPushButton("BFS")
         self.start_btn.clicked.connect(self.start_bfs)
         self.start_btn.setEnabled(False)
         button_layout.addWidget(self.start_btn)
         
-        self.stop_btn = QPushButton("停止")
+        self.stop_btn = QPushButton("Stop")
         self.stop_btn.clicked.connect(self.stop_bfs)
         self.stop_btn.setEnabled(False)
         button_layout.addWidget(self.stop_btn)
         
-        self.reset_btn = QPushButton("重置")
+        self.reset_btn = QPushButton("Reset")
         self.reset_btn.clicked.connect(self.reset_visualization)
         button_layout.addWidget(self.reset_btn)
         
@@ -647,19 +647,19 @@ class QtBFSVisualizer(QMainWindow):
         layout.addWidget(bfs_group)
         
         # 分析组
-        analysis_group = QGroupBox("分析功能")
+        analysis_group = QGroupBox("Analysis")
         analysis_layout = QVBoxLayout(analysis_group)
         
-        accessibility_btn = QPushButton("可达性分析")
+        accessibility_btn = QPushButton("Accessibility")
         accessibility_btn.clicked.connect(self.analyze_accessibility)
         analysis_layout.addWidget(accessibility_btn)
         
-        path_diversity_btn = QPushButton("路径多样性分析")
+        path_diversity_btn = QPushButton("Path Diversity")
         path_diversity_btn.clicked.connect(self.analyze_path_diversity)
         analysis_layout.addWidget(path_diversity_btn)
         
         # 添加查看特定路径详情的功能
-        self.view_path_details_btn = QPushButton("查看路径详情")
+        self.view_path_details_btn = QPushButton("Show Path details")
         self.view_path_details_btn.clicked.connect(self.view_path_details)
         analysis_layout.addWidget(self.view_path_details_btn)
         
@@ -667,7 +667,7 @@ class QtBFSVisualizer(QMainWindow):
         layout.addWidget(analysis_group)
         
         # 信息显示组
-        info_group = QGroupBox("信息显示")
+        info_group = QGroupBox("Informations")
         info_layout = QVBoxLayout(info_group)
         
         self.info_text = QTextEdit()
@@ -687,18 +687,18 @@ class QtBFSVisualizer(QMainWindow):
         menubar = self.menuBar()
         
         # 文件菜单
-        file_menu = menubar.addMenu('文件')
+        file_menu = menubar.addMenu('File')
         
-        load_action = file_menu.addAction('打开')
+        load_action = file_menu.addAction('Open')
         load_action.triggered.connect(self.load_dungeon_file)
         
         file_menu.addSeparator()
         
-        exit_action = file_menu.addAction('退出')
+        exit_action = file_menu.addAction('Exit')
         exit_action.triggered.connect(self.close)
         
         # 视图菜单
-        view_menu = menubar.addMenu('视图')
+        view_menu = menubar.addMenu('')
         
         fit_view_action = view_menu.addAction('适应视图')
         fit_view_action.triggered.connect(self.canvas._auto_fit_view)
