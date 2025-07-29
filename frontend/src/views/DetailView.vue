@@ -9,6 +9,7 @@
           <p class="page-subtitle">{{ t('detail.analysisResults') }}</p>
         </div>
         <div class="header-right">
+          <button @click="exportReport" class="export-btn">{{ t('detail.exportReport') }}</button>
           <button @click="forceRefresh" class="refresh-btn">{{ t('detail.refreshButton') }}</button>
         </div>
       </div>
@@ -392,6 +393,47 @@ const forceRefresh = () => {
   fetchAnalysisResult()
 }
 
+const exportReport = async () => {
+  console.log('Exporting report...')
+  
+  try {
+    // 创建详细的报告数据
+    const reportData = {
+      dungeon_name: dungeonName.value,
+      analysis_date: new Date().toISOString(),
+      overall_score: overallScore.value,
+      detailed_scores: detailedScores.value,
+      dungeon_data: dungeonData.value,
+      improvement_suggestions: improvementSuggestions.value,
+      summary: {
+        grade: getScoreClass(overallScore.value),
+        description: getScoreDescription(overallScore.value),
+        overall_score: overallScore.value
+      }
+    }
+    
+    // 转换为JSON格式并下载
+    const data = JSON.stringify(reportData, null, 2)
+    const blob = new Blob([data], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${dungeonName.value}_detailed_report_${new Date().toISOString().slice(0, 10)}.json`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+    
+    console.log('Report exported successfully:', dungeonName.value)
+    
+    // 显示成功消息
+    alert('报告导出成功！')
+  } catch (error) {
+    console.error('Error exporting report:', error)
+    alert('报告导出失败，请重试')
+  }
+}
+
 onMounted(async () => {
   console.log('DetailView mounted')
   await fetchAnalysisResult()
@@ -477,6 +519,21 @@ onMounted(async () => {
 }
 
 .back-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.export-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s ease;
+}
+
+.export-btn:hover {
   background: rgba(255, 255, 255, 0.3);
 }
 

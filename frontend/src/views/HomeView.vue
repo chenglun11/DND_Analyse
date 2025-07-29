@@ -165,7 +165,89 @@ const viewDetails = (result: AnalysisResult) => {
 
 const exportResult = (result: AnalysisResult) => {
   console.log('导出报告:', result)
-  // TODO: 实现报告导出功能
+  
+  // 创建详细的报告数据
+  const reportData = {
+    dungeon_name: result.name,
+    analysis_date: new Date().toISOString(),
+    overall_score: result.overallScore,
+    detailed_scores: result.detailedScores,
+    unified_data: result.unifiedData,
+    recommendations: generateRecommendations(result.detailedScores),
+    summary: generateSummary(result)
+  }
+  
+  // 转换为JSON格式
+  const data = JSON.stringify(reportData, null, 2)
+  const blob = new Blob([data], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `${result.name}_analysis_report_${new Date().toISOString().slice(0, 10)}.json`
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+  console.log('已导出分析报告:', result.name)
+}
+
+// 生成改进建议
+const generateRecommendations = (scores: Record<string, { score: number; detail?: any }>) => {
+  const recommendations: string[] = []
+  
+  if (scores.dead_end_ratio?.score < 0.5) {
+    recommendations.push('减少死胡同比例，增加环路连接以提高探索体验')
+  }
+  
+  if (scores.aesthetic_balance?.score < 0.7) {
+    recommendations.push('改善美学平衡，调整房间大小和位置分布')
+  }
+  
+  if (scores.treasure_monster_distribution?.score < 0.5) {
+    recommendations.push('优化宝藏和怪物分布，提供更好的游戏体验')
+  }
+  
+  if (scores.accessibility?.score < 0.7) {
+    recommendations.push('改善可达性，优化路径设计')
+  }
+  
+  if (scores.path_diversity?.score < 0.5) {
+    recommendations.push('增加路径多样性，提供不同的探索路径')
+  }
+  
+  if (scores.loop_ratio?.score < 0.3) {
+    recommendations.push('增加环路比例，提高地图的探索性')
+  }
+  
+  return recommendations
+}
+
+// 生成总结
+const generateSummary = (result: AnalysisResult) => {
+  const score = result.overallScore
+  let grade = 'F'
+  let description = '需要大幅改进'
+  
+  if (score >= 8) {
+    grade = 'A'
+    description = '优秀的地下城设计'
+  } else if (score >= 6) {
+    grade = 'B'
+    description = '良好的地下城设计'
+  } else if (score >= 4) {
+    grade = 'C'
+    description = '一般的地下城设计'
+  } else if (score >= 2) {
+    grade = 'D'
+    description = '需要改进的地下城设计'
+  }
+  
+  return {
+    grade,
+    description,
+    overall_score: score,
+    analysis_date: new Date().toISOString()
+  }
 }
 
 const clearFiles = () => {
