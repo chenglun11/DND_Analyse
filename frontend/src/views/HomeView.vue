@@ -296,6 +296,14 @@ const exportAllResults = () => {
   console.log('已导出所有分析结果')
 }
 
+const clearAll = () => {
+  if (confirm(`确定要清除所有文件和分析结果吗？`)) {
+    uploadedFiles.value = []
+    analysisResults.value = []
+    console.log('已清除所有文件和分析结果')
+  }
+}
+
 const showHelp = () => {
   router.push('/help')
 }
@@ -352,27 +360,30 @@ onMounted(async () => {
         <div class="analysis-options">
           <h2>{{ t('home.quickActions') }}</h2>
           <div class="quick-actions">
-            <div class="action-card" @click="clearFiles" :class="{ 'disabled': uploadedFiles.length === 0 }">
-              <div class="action-icon">🗑️</div>
-              <h3>{{ t('home.clearFiles') }}</h3>
-              <p>{{ uploadedFiles.length === 0 ? t('home.noFilesToClear') : t('home.clearFilesDescription', { count: uploadedFiles.length }) }}</p>
+            <div class="action-card" @click="startAnalysis" :class="{ 'disabled': uploadedFiles.length === 0 || isAnalyzing }">
+              <div class="action-icon">⚡</div>
+              <h3>{{ isAnalyzing ? t('home.analyzing') : t('home.startAnalysis') }}</h3>
+              <p>{{ uploadedFiles.length === 0 ? t('home.noFilesToAnalyze') : t('home.startAnalysisDescription', { count: uploadedFiles.length }) }}</p>
             </div>
 
             <div class="action-card" @click="exportAllResults" :class="{ 'disabled': analysisResults.length === 0 }">
               <div class="action-icon">📤</div>
-              <h3>{{ t('home.exportResults') }}</h3>
-              <p>{{ analysisResults.length === 0 ? t('home.noResultsToExport') : t('home.exportResultsDescription', { count: analysisResults.length }) }}</p>
+              <h3>{{ t('home.exportAllResults') }}</h3>
+              <p>{{ analysisResults.length === 0 ? t('home.noResultsToExport') : t('home.exportAllResultsDescription', { count: analysisResults.length }) }}</p>
             </div>
-            <div class="action-card" @click="clearResults" :class="{ 'disabled': analysisResults.length === 0 }">
+
+            <div class="action-card" @click="clearAll" :class="{ 'disabled': uploadedFiles.length === 0 && analysisResults.length === 0 }">
               <div class="action-icon">🗑️</div>
-              <h3>{{ t('home.clearResults') }}</h3>
-              <p>{{ analysisResults.length === 0 ? t('home.noResultsToClear') : t('home.clearResultsDescription', { count: analysisResults.length }) }}</p>
+              <h3>{{ t('home.clearAll') }}</h3>
+              <p>{{ t('home.clearAllDescription') }}</p>
             </div>
+
             <div class="action-card" @click="showHelp">
               <div class="action-icon">❓</div>
               <h3>{{ t('home.help') }}</h3>
               <p>{{ t('home.helpDescription') }}</p>
             </div>
+
             <div class="action-card" @click="router.push('/about')">
               <div class="action-icon">ℹ️</div>
               <h3>{{ t('home.about') }}</h3>
@@ -410,16 +421,6 @@ onMounted(async () => {
               <li>{{ t('home.usageTip3') }}</li>
               <li>{{ t('home.usageTip4') }}</li>
             </ul>
-          </div>
-          
-          <div class="analyze-btn-container">
-            <button 
-              class="analyze-btn" 
-              @click="startAnalysis"
-              :disabled="uploadedFiles.length === 0 || isAnalyzing"
-            >
-              {{ isAnalyzing ? t('home.analyzing') : t('home.startAnalysis') }}
-            </button>
           </div>
         </div>
       </div>

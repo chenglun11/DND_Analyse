@@ -68,11 +68,8 @@ const zh = {
     analysisResults: '分析结果',
     overallScore: '总体评分',
     viewDetails: '查看详情',
-    exportReport: '导出报告',
-    quickActions: '快速操作',
-    clearFiles: '清空文件',
-    exportResults: '导出结果',
-    clearResults: '清除结果',
+    exportAllResults: '导出所有结果',
+    clearAll: '清空所有',
     help: '使用帮助',
     about: '关于我们',
     systemStats: '系统统计',
@@ -87,9 +84,10 @@ const zh = {
     usageTip4: '建议使用Chrome或Firefox浏览器获得最佳体验',
     helpDescription: '查看详细的使用说明和教程',
     aboutDescription: '了解项目信息和技术特性',
-    clearFilesDescription: '清除 {count} 个文件',
-    exportResultsDescription: '导出 {count} 个结果',
-    clearResultsDescription: '清除 {count} 个结果'
+    noFilesToAnalyze: '没有文件可以分析',
+    startAnalysisDescription: '分析 {count} 个文件',
+    exportAllResultsDescription: '导出 {count} 个结果',
+    clearAllDescription: '清空所有文件和分析结果'
   },
 
   // 详情页
@@ -438,11 +436,8 @@ const en = {
     analysisResults: 'Analysis Results',
     overallScore: 'Overall Score',
     viewDetails: 'View Details',
-    exportReport: 'Export Report',
-    quickActions: 'Quick Actions',
-    clearFiles: 'Clear Files',
-    exportResults: 'Export Results',
-    clearResults: 'Clear Results',
+    exportAllResults: 'Export All Results',
+    clearAll: 'Clear All',
     help: 'Help',
     about: 'About',
     systemStats: 'System Statistics',
@@ -457,9 +452,10 @@ const en = {
     usageTip4: 'Recommended to use Chrome or Firefox browser for best experience',
     helpDescription: 'View detailed usage instructions and tutorials',
     aboutDescription: 'Learn about project information and technical features',
-    clearFilesDescription: 'Clear {count} files',
-    exportResultsDescription: 'Export {count} results',
-    clearResultsDescription: 'Clear {count} results'
+    noFilesToAnalyze: 'No files to analyze',
+    startAnalysisDescription: 'Analyze {count} files',
+    exportAllResultsDescription: 'Export {count} results',
+    clearAllDescription: 'Clear all files and analysis results'
   },
 
   // Detail page
