@@ -322,13 +322,15 @@ onMounted(async () => {
           </ul>
         </div>
         
-        <button 
-          class="analyze-btn" 
-          @click="startAnalysis"
-          :disabled="uploadedFiles.length === 0 || isAnalyzing"
-        >
-          {{ isAnalyzing ? '分析中...' : '开始分析' }}
-        </button>
+        <div class="analyze-btn-container">
+          <button 
+            class="analyze-btn" 
+            @click="startAnalysis"
+            :disabled="uploadedFiles.length === 0 || isAnalyzing"
+          >
+            {{ isAnalyzing ? '分析中...' : '开始分析' }}
+          </button>
+        </div>
       </div>
 
       <!-- 分析结果 -->
@@ -615,6 +617,12 @@ onMounted(async () => {
   margin-bottom: 0;
 }
 
+.analyze-btn-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
 .analyze-btn {
   background: #28a745;
   color: white;
@@ -625,6 +633,7 @@ onMounted(async () => {
   font-size: 1.1rem;
   font-weight: 500;
   transition: background 0.3s ease;
+  min-width: 200px;
 }
 
 .analyze-btn:hover:not(:disabled) {
