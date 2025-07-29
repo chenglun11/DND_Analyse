@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于和帮助页面测试</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-section {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        .test-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 1rem;
+        }
+        .test-button:hover {
+            background: #5a6fd8;
+        }
+        .success {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .info {
+            color: #17a2b8;
+        }
+    </style>
+</head>
+<body>
+    <h1>关于和帮助页面测试</h1>
+    
+    <div class="test-section">
+        <h2>✅ 已完成的功能</h2>
+        <ul>
+            <li class="success">✅ 创建了关于页面 (AboutView.vue)</li>
+            <li class="success">✅ 创建了帮助页面 (HelpView.vue)</li>
+            <li class="success">✅ 更新了路由配置</li>
+            <li class="success">✅ 更新了页头导航</li>
+            <li class="success">✅ 更新了快速操作区域</li>
+            <li class="success">✅ 构建测试通过</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>🔗 页面链接</h2>
+        <p class="info">点击以下按钮测试页面跳转功能：</p>
+        <button class="test-button" onclick="window.open('http://localhost:5173/about', '_blank')">
+            测试关于页面
+        </button>
+        <button class="test-button" onclick="window.open('http://localhost:5173/help', '_blank')">
+            测试帮助页面
+        </button>
+        <button class="test-button" onclick="window.open('http://localhost:5173/', '_blank')">
+            返回首页
+        </button>
+    </div>
+
+    <div class="test-section">
+        <h2>📋 功能特性</h2>
+        <h3>关于页面包含：</h3>
+        <ul>
+            <li>项目简介和核心功能</li>
+            <li>质量评估指标说明</li>
+            <li>技术栈介绍</li>
+            <li>版本信息</li>
+            <li>快速操作按钮</li>
+        </ul>
+        
+        <h3>帮助页面包含：</h3>
+        <ul>
+            <li>快速开始指南</li>
+            <li>详细功能说明</li>
+            <li>常见问题解答</li>
+            <li>使用提示</li>
+            <li>质量评估指标详细说明</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>🎯 导航集成</h2>
+        <ul>
+            <li>页头导航栏中的"关于"和"帮助"按钮</li>
+            <li>首页快速操作区域的"使用帮助"和"关于我们"按钮</li>
+            <li>页面间的相互链接和返回功能</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>📱 响应式设计</h2>
+        <ul>
+            <li>移动端适配</li>
+            <li>网格布局自适应</li>
+            <li>触摸友好的按钮设计</li>
+        </ul>
+    </div>
+
+    <script>
+        console.log('关于和帮助页面测试页面已加载');
+        console.log('新创建的页面：');
+        console.log('- AboutView.vue: 关于页面');
+        console.log('- HelpView.vue: 帮助页面');
+        console.log('- 路由配置已更新');
+        console.log('- 页头导航已更新');
+        console.log('- 快速操作已更新');
+    </script>
+</body>
+</html> 
