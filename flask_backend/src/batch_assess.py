@@ -6,23 +6,19 @@
 
 import os
 import json
-import logging
 import time
+import logging
 from pathlib import Path
-from typing import Dict, List, Any
-import signal
-
-from .quality_assessor import DungeonQualityAssessor
+from typing import Dict, Any
+from src.quality_assessor import DungeonQualityAssessor
 
 # 设置日志
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 class TimeoutError(Exception):
+    """超时异常"""
     pass
-
-def timeout_handler(signum, frame):
-    raise TimeoutError("操作超时")
 
 def assess_all_maps(input_dir: str = "output", output_dir: str = "output/reports", timeout_per_file: int = 30) -> Dict[str, Any]:
     """评估目录中所有统一格式的地牢地图文件"""
@@ -34,8 +30,9 @@ def assess_all_maps(input_dir: str = "output", output_dir: str = "output/reports
     # 查找所有统一格式的JSON文件
     json_files = list(input_path.glob("*.json"))
     
-    # 过滤掉报告文件
-    json_files = [f for f in json_files if not f.name.startswith("quality_report") and not f.name.startswith("report")]
+    if not json_files:
+        logger.warning(f"No JSON files found in {input_dir}")
+        return {}
     
     logger.info(f" {len(json_files)} Maps to be assessed")
     
@@ -45,10 +42,6 @@ def assess_all_maps(input_dir: str = "output", output_dir: str = "output/reports
     for i, json_file in enumerate(json_files, 1):
         try:
             logger.info(f"评估文件 [{i}/{len(json_files)}]: {json_file.name}")
-            
-            # 设置超时
-            signal.signal(signal.SIGALRM, timeout_handler)
-            signal.alarm(timeout_per_file)
             
             try:
                 # 读取地图数据
@@ -60,8 +53,15 @@ def assess_all_maps(input_dir: str = "output", output_dir: str = "output/reports
                 metrics = assessor.assess_quality(data)
                 end_time = time.time()
                 
-                # 取消超时
-                signal.alarm(0)
+                # 检查是否超时
+                if end_time - start_time > timeout_per_file:
+                    logger.error(f"Assess {json_file.name} overtime")
+                    results[json_file.name] = {
+                        'error': 'overtime',
+                        'overall_score': 0.0,
+                        'grade': '超时'
+                    }
+                    continue
                 
                 # 保存单独的报告
                 report_file = output_path / f"quality_report_{json_file.stem}.json"
@@ -80,16 +80,7 @@ def assess_all_maps(input_dir: str = "output", output_dir: str = "output/reports
                 
                 logger.info(f"✓ {json_file.name}: {metrics['overall_score']:.3f} ({metrics['grade']}) - {end_time - start_time:.2f}s")
                 
-            except TimeoutError:
-                signal.alarm(0)
-                logger.error(f"Assess {json_file.name} overtime")
-                results[json_file.name] = {
-                    'error': 'overtime',
-                    'overall_score': 0.0,
-                    'grade': '超时'
-                }
             except Exception as e:
-                signal.alarm(0)
                 logger.error(f"Assess {json_file.name} cause error: {e}")
                 results[json_file.name] = {
                     'error': str(e),
