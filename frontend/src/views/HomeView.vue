@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { DungeonAPI } from '../services/api'
 
 interface AnalysisOptions {
@@ -21,6 +22,7 @@ interface AnalysisResult {
 }
 
 const router = useRouter()
+const { t } = useI18n()
 const fileInput = ref<HTMLInputElement>()
 const uploadedFiles = ref<File[]>([])
 const isAnalyzing = ref(false)
@@ -146,20 +148,7 @@ const getScoreClass = (score: number): string => {
 }
 
 const getMetricName = (metric: string): string => {
-  const names: Record<string, string> = {
-    accessibility: '可达性',
-    aesthetic_balance: '美学平衡',
-    loop_ratio: '环路比例',
-    dead_end_ratio: '死胡同比例',
-    treasure_distribution: '宝藏分布',
-    monster_distribution: '怪物分布',
-    degree_variance: '度方差',
-    door_distribution: '门分布',
-    key_path_length: '关键路径长度',
-    path_diversity: '路径多样性',
-    treasure_monster_distribution: '宝藏怪物分布'
-  }
-  return names[metric] || metric
+  return t(`metrics.${metric}`) || metric
 }
 
 const viewDetails = (result: AnalysisResult) => {
@@ -189,6 +178,18 @@ const clearFiles = () => {
     uploadedFiles.value = []
     analysisResults.value = []
     console.log('已清除所有文件和分析结果')
+  }
+}
+
+const clearResults = () => {
+  if (analysisResults.value.length === 0) {
+    alert('没有分析结果需要清除')
+    return
+  }
+  
+  if (confirm(`确定要清除 ${analysisResults.value.length} 个分析结果吗？`)) {
+    analysisResults.value = []
+    console.log('已清除所有分析结果')
   }
 }
 
@@ -230,143 +231,153 @@ onMounted(async () => {
 
 <template>
   <div class="home">
-    <div class="main-content">
-      <!-- 文件上传区域 -->
-      <div class="upload-section">
-        <h2>上传地下城文件</h2>
-        <div class="upload-area" @drop="handleDrop" @dragover.prevent @dragenter.prevent>
-          <div class="upload-content">
-            <div class="upload-icon">📁</div>
-            <p>拖拽文件到此处或点击选择文件</p>
-            <p class="supported-formats">支持格式: JSON, Watabou, Donjon, DungeonDraft</p>
-            <input
-              ref="fileInput"
-              type="file"
-              accept=".json"
-              multiple
-              @change="handleFileSelect"
-              style="display: none"
-            />
-            <button class="upload-btn" @click="fileInput?.click()">
-              选择文件
+    <div class="main-content" :class="{ 'has-results': analysisResults.length > 0 }">
+      <!-- 左侧栏：文件上传和操作 -->
+      <div class="left-panel">
+        <!-- 文件上传区域 -->
+        <div class="upload-section">
+          <h2>{{ t('home.uploadTitle') }}</h2>
+          <div class="upload-area" @drop="handleDrop" @dragover.prevent @dragenter.prevent>
+            <div class="upload-content">
+              <div class="upload-icon">📁</div>
+              <p>{{ t('home.uploadDescription') }}</p>
+              <p class="supported-formats">{{ t('home.supportedFormats') }}</p>
+              <input
+                ref="fileInput"
+                type="file"
+                accept=".json"
+                multiple
+                @change="handleFileSelect"
+                style="display: none"
+              />
+              <button class="upload-btn" @click="fileInput?.click()">
+                {{ t('home.selectFiles') }}
+              </button>
+            </div>
+          </div>
+          
+          <div v-if="uploadedFiles.length > 0" class="file-list">
+            <h3>{{ t('home.uploadedFiles') }}</h3>
+            <div v-for="(file, index) in uploadedFiles" :key="index" class="file-item">
+              <span class="file-name">{{ file.name }}</span>
+              <span class="file-size">{{ formatFileSize(file.size) }}</span>
+              <button class="remove-btn" @click="removeFile(index)">{{ t('common.delete') }}</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="analysis-options">
+          <h2>{{ t('home.quickActions') }}</h2>
+          <div class="quick-actions">
+            <div class="action-card" @click="clearFiles" :class="{ 'disabled': uploadedFiles.length === 0 }">
+              <div class="action-icon">🗑️</div>
+              <h3>{{ t('home.clearFiles') }}</h3>
+              <p>{{ uploadedFiles.length === 0 ? t('home.noFilesToClear') : t('home.clearFilesDescription', { count: uploadedFiles.length }) }}</p>
+            </div>
+
+            <div class="action-card" @click="exportAllResults" :class="{ 'disabled': analysisResults.length === 0 }">
+              <div class="action-icon">📤</div>
+              <h3>{{ t('home.exportResults') }}</h3>
+              <p>{{ analysisResults.length === 0 ? t('home.noResultsToExport') : t('home.exportResultsDescription', { count: analysisResults.length }) }}</p>
+            </div>
+            <div class="action-card" @click="clearResults" :class="{ 'disabled': analysisResults.length === 0 }">
+              <div class="action-icon">🗑️</div>
+              <h3>{{ t('home.clearResults') }}</h3>
+              <p>{{ analysisResults.length === 0 ? t('home.noResultsToClear') : t('home.clearResultsDescription', { count: analysisResults.length }) }}</p>
+            </div>
+            <div class="action-card" @click="showHelp">
+              <div class="action-icon">❓</div>
+              <h3>{{ t('home.help') }}</h3>
+              <p>{{ t('home.helpDescription') }}</p>
+            </div>
+            <div class="action-card" @click="router.push('/about')">
+              <div class="action-icon">ℹ️</div>
+              <h3>{{ t('home.about') }}</h3>
+              <p>{{ t('home.aboutDescription') }}</p>
+            </div>
+          </div>
+          
+          <div class="stats-section">
+            <h3>📈 {{ t('home.systemStats') }}</h3>
+            <div class="stats-grid">
+              <div class="stat-item">
+                <div class="stat-number">{{ uploadedFiles.length }}</div>
+                <div class="stat-label">{{ t('home.uploadedFilesCount') }}</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-number">{{ analysisResults.length }}</div>
+                <div class="stat-label">{{ t('home.analysisResultsCount') }}</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-number">9</div>
+                <div class="stat-label">{{ t('home.evaluationMetrics') }}</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-number">4</div>
+                <div class="stat-label">{{ t('home.supportedFormatsCount') }}</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="usage-tips">
+            <h3>💡 {{ t('home.usageTips') }}</h3>
+            <ul>
+              <li>{{ t('home.usageTip1') }}</li>
+              <li>{{ t('home.usageTip2') }}</li>
+              <li>{{ t('home.usageTip3') }}</li>
+              <li>{{ t('home.usageTip4') }}</li>
+            </ul>
+          </div>
+          
+          <div class="analyze-btn-container">
+            <button 
+              class="analyze-btn" 
+              @click="startAnalysis"
+              :disabled="uploadedFiles.length === 0 || isAnalyzing"
+            >
+              {{ isAnalyzing ? t('home.analyzing') : t('home.startAnalysis') }}
             </button>
           </div>
         </div>
-        
-        <div v-if="uploadedFiles.length > 0" class="file-list">
-          <h3>已上传文件:</h3>
-          <div v-for="(file, index) in uploadedFiles" :key="index" class="file-item">
-            <span class="file-name">{{ file.name }}</span>
-            <span class="file-size">{{ formatFileSize(file.size) }}</span>
-            <button class="remove-btn" @click="removeFile(index)">删除</button>
-          </div>
-        </div>
       </div>
 
-      <!-- 快速操作 -->
-      <div class="analysis-options">
-        <h2>快速操作</h2>
-        <div class="quick-actions">
-          <div class="action-card" @click="clearFiles" :class="{ 'disabled': uploadedFiles.length === 0 }">
-            <div class="action-icon">🗑️</div>
-            <h3>清空文件</h3>
-            <p>{{ uploadedFiles.length === 0 ? '没有文件需要清除' : `清除 ${uploadedFiles.length} 个文件` }}</p>
-          </div>
-
-          <div class="action-card" @click="exportAllResults" :class="{ 'disabled': analysisResults.length === 0 }">
-            <div class="action-icon">📤</div>
-            <h3>导出结果</h3>
-            <p>{{ analysisResults.length === 0 ? '没有结果可以导出' : `导出 ${analysisResults.length} 个结果` }}</p>
-          </div>
-          <div class="action-card" @click="showHelp">
-            <div class="action-icon">❓</div>
-            <h3>使用帮助</h3>
-            <p>查看详细的使用说明和教程</p>
-          </div>
-          <div class="action-card" @click="router.push('/about')">
-            <div class="action-icon">ℹ️</div>
-            <h3>关于我们</h3>
-            <p>了解项目信息和技术特性</p>
-          </div>
-        </div>
-        
-        <div class="stats-section">
-          <h3>📈 系统统计</h3>
-          <div class="stats-grid">
-            <div class="stat-item">
-              <div class="stat-number">{{ uploadedFiles.length }}</div>
-              <div class="stat-label">已上传文件</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-number">{{ analysisResults.length }}</div>
-              <div class="stat-label">分析结果</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-number">9</div>
-              <div class="stat-label">评估指标</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-number">4</div>
-              <div class="stat-label">支持格式</div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="usage-tips">
-          <h3>💡 使用提示</h3>
-          <ul>
-            <li>支持多种地下城格式：Watabou、Donjon、DungeonDraft等</li>
-            <li>拖拽文件到上传区域或点击选择文件按钮</li>
-            <li>分析完成后可查看详细的可视化结果</li>
-            <li>建议使用Chrome或Firefox浏览器获得最佳体验</li>
-          </ul>
-        </div>
-        
-        <div class="analyze-btn-container">
-          <button 
-            class="analyze-btn" 
-            @click="startAnalysis"
-            :disabled="uploadedFiles.length === 0 || isAnalyzing"
-          >
-            {{ isAnalyzing ? '分析中...' : '开始分析' }}
-          </button>
-        </div>
-      </div>
-
-      <!-- 分析结果 -->
-      <div v-if="analysisResults.length > 0" class="results-section">
-        <h2>分析结果</h2>
-        <div class="results-container">
-          <div class="results-grid">
-            <div 
-              v-for="result in analysisResults" 
-              :key="result.id" 
-              class="result-card"
-            >
-              <h3>{{ result.name }}</h3>
-              <div class="score-overview">
-                <div class="overall-score">
-                  <span class="score-label">总体评分</span>
-                  <span class="score-value" :class="getScoreClass(result.overallScore)">
-                    {{ result.overallScore.toFixed(2) }}
-                  </span>
+      <!-- 右侧栏：分析结果 -->
+      <div v-if="analysisResults.length > 0" class="right-panel">
+        <div class="results-section">
+          <h2>{{ t('home.analysisResults') }}</h2>
+          <div class="results-container">
+            <div class="results-grid">
+              <div 
+                v-for="result in analysisResults" 
+                :key="result.id" 
+                class="result-card"
+              >
+                <h3>{{ result.name }}</h3>
+                <div class="score-overview">
+                  <div class="overall-score">
+                    <span class="score-label">{{ t('home.overallScore') }}</span>
+                    <span class="score-value" :class="getScoreClass(result.overallScore)">
+                      {{ result.overallScore.toFixed(2) }}
+                    </span>
+                  </div>
                 </div>
-              </div>
-              <div class="detailed-scores">
-                <div v-for="(scoreData, metric) in result.detailedScores" :key="metric" class="metric-score">
-                  <span class="metric-name">{{ getMetricName(metric) }}</span>
-                  <span class="metric-value" :class="getScoreClass(scoreData.score || 0)">
-                    {{ (scoreData.score || 0).toFixed(2) }}
-                  </span>
+                <div class="detailed-scores">
+                  <div v-for="(scoreData, metric) in result.detailedScores" :key="metric" class="metric-score">
+                    <span class="metric-name">{{ getMetricName(metric) }}</span>
+                    <span class="metric-value" :class="getScoreClass(scoreData.score || 0)">
+                      {{ (scoreData.score || 0).toFixed(2) }}
+                    </span>
+                  </div>
                 </div>
-              </div>
-              <div class="result-actions">
-                <button class="view-details-btn" @click="viewDetails(result)">
-                  查看详情
-                </button>
-                <button class="export-btn" @click="exportResult(result)">
-                  导出报告
-                </button>
+                <div class="result-actions">
+                  <button class="view-details-btn" @click="viewDetails(result)">
+                    {{ t('home.viewDetails') }}
+                  </button>
+                  <button class="export-btn" @click="exportResult(result)">
+                    {{ t('home.exportReport') }}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -387,17 +398,59 @@ onMounted(async () => {
 }
 
 .main-content {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   background: white;
   border-radius: 20px;
   padding: 40px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.main-content.has-results {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+}
+
+.left-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  max-width: 800px;
+  width: 100%;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.main-content.has-results .left-panel {
+  max-width: none;
+}
+
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 600px;
+  animation: slideInFromRight 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .upload-section {
-  margin-bottom: 40px;
+  margin-bottom: 0;
 }
 
 .upload-section h2 {
@@ -490,7 +543,7 @@ onMounted(async () => {
 }
 
 .analysis-options {
-  margin-bottom: 40px;
+  margin-bottom: 0;
 }
 
 .analysis-options h2 {
@@ -646,21 +699,13 @@ onMounted(async () => {
 }
 
 .results-section {
-  margin-top: 40px;
-  /* 移除flex: 1和overflow: hidden，让内容自然流动 */
-  /* flex: 1; */
-  /* display: flex; */
-  /* flex-direction: column; */
-  /* overflow: hidden; */
+  margin-top: 0;
 }
 
 .results-section h2 {
-  color: white;
+  color: #333;
   margin-bottom: 20px;
-  text-align: center;
-  font-size: 2rem;
-  /* 移除flex-shrink: 0; */
-  /* flex-shrink: 0; */
+  font-size: 1.5rem;
 }
 
 .results-container {
@@ -690,22 +735,22 @@ onMounted(async () => {
 } */
 
 .results-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 20px;
 }
 
 .result-card {
   background: #f8f9fa;
   border-radius: 15px;
-  padding: 25px;
+  padding: 20px;
   border: 1px solid #e9ecef;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .result-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 .result-card h3 {
@@ -822,6 +867,37 @@ onMounted(async () => {
   background: #545b62;
 }
 
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 20px;
+  background: #f8f9fa;
+  border-radius: 15px;
+  border: 2px dashed #dee2e6;
+  min-height: 400px;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  opacity: 0.6;
+}
+
+.empty-state h3 {
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+}
+
+.empty-state p {
+  color: #666;
+  font-size: 1rem;
+  margin: 0;
+}
+
 @media (max-width: 768px) {
   .home {
     padding: 10px;
@@ -829,6 +905,20 @@ onMounted(async () => {
   
   .main-content {
     padding: 20px;
+  }
+  
+  .main-content.has-results {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .left-panel {
+    gap: 20px;
+    max-width: none;
+  }
+  
+  .right-panel {
+    min-height: auto;
   }
   
   .title {
@@ -861,6 +951,23 @@ onMounted(async () => {
   
   .action-card p {
     font-size: 0.6rem;
+  }
+  
+  .empty-state {
+    min-height: 300px;
+    padding: 40px 20px;
+  }
+  
+  .empty-icon {
+    font-size: 3rem;
+  }
+  
+  .empty-state h3 {
+    font-size: 1.2rem;
+  }
+  
+  .empty-state p {
+    font-size: 0.9rem;
   }
 }
 </style>

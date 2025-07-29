@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
 const router = useRouter()
+const { t } = useI18n()
 
 const goBack = () => {
   router.push('/')
@@ -10,33 +12,33 @@ const goBack = () => {
 const features = [
   {
     icon: '🎯',
-    title: '智能质量评估',
-    description: '基于9个核心指标的地下城质量评估系统'
+    title: t('about.features.0.title'),
+    description: t('about.features.0.description')
   },
   {
     icon: '📊',
-    title: '可视化分析',
-    description: '生成详细的可视化图表和路径分析'
+    title: t('about.features.1.title'),
+    description: t('about.features.1.description')
   },
   {
     icon: '🔄',
-    title: '多格式支持',
-    description: '支持Watabou、Donjon、DungeonDraft等多种格式'
+    title: t('about.features.2.title'),
+    description: t('about.features.2.description')
   },
   {
     icon: '⚡',
-    title: '批量处理',
-    description: '支持批量上传和分析多个地下城文件'
+    title: t('about.features.3.title'),
+    description: t('about.features.3.description')
   },
   {
     icon: '📈',
-    title: '详细报告',
-    description: '生成包含改进建议的详细分析报告'
+    title: t('about.features.4.title'),
+    description: t('about.features.4.description')
   },
   {
     icon: '💾',
-    title: '结果导出',
-    description: '支持导出分析结果和可视化图像'
+    title: t('about.features.5.title'),
+    description: t('about.features.5.description')
   }
 ]
 
@@ -64,31 +66,29 @@ const techStack = [
   <div class="about-page">
     <div class="about-header">
       <button class="back-btn" @click="goBack">
-        ← 返回首页
+        {{ t('about.backButton') }}
       </button>
-      <h1>关于地下城分析器</h1>
-      <p class="subtitle">专业的D&D地下城质量评估工具</p>
+      <h1>{{ t('about.title') }}</h1>
+      <p class="subtitle">{{ t('about.subtitle') }}</p>
     </div>
 
     <div class="about-content">
       <!-- 项目介绍 -->
       <section class="section">
-        <h2>🎯 项目简介</h2>
+        <h2>{{ t('about.intro.title') }}</h2>
         <div class="intro-card">
           <p>
-            地下城分析器是一个专门为D&D（龙与地下城）游戏设计的智能工具，
-            旨在帮助游戏设计师和地下城制作者创建高质量的地下城。
+            {{ t('about.intro.description1') }}
           </p>
           <p>
-            通过先进的算法和9个核心评估指标，我们能够自动分析地下城的结构、
-            布局和游戏性，提供详细的质量评估和改进建议。
+            {{ t('about.intro.description2') }}
           </p>
         </div>
       </section>
 
       <!-- 核心功能 -->
       <section class="section">
-        <h2>🚀 核心功能</h2>
+        <h2>🚀 {{ t('common.coreFeatures') }}</h2>
         <div class="features-grid">
           <div v-for="feature in features" :key="feature.title" class="feature-card">
             <div class="feature-icon">{{ feature.icon }}</div>
@@ -184,18 +184,18 @@ const techStack = [
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  background: #667eea;
+  background: rgba(255, 255, 255, 0.2);
   color: white;
   border: none;
   padding: 10px 20px;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 16px;
   transition: background 0.3s ease;
 }
 
 .back-btn:hover {
-  background: #5a6fd8;
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .about-header h1 {
@@ -395,6 +395,8 @@ const techStack = [
     position: static;
     transform: none;
     margin-bottom: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
   }
   
   .features-grid {

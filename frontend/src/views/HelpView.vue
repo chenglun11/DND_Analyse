@@ -1,58 +1,61 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { computed } from 'vue'
 
 const router = useRouter()
+const { t } = useI18n()
 
 const goBack = () => {
   router.push('/')
 }
 
-const helpSections = [
+const helpSections = computed(() => [
   {
-    title: '📁 文件上传',
+    title: t('help.fileUpload.title'),
     icon: '📁',
     content: [
-      '支持拖拽文件到上传区域',
-      '支持点击选择文件按钮',
-      '支持多种JSON格式的地下城文件',
-      '支持批量上传多个文件',
-      '支持的文件格式：Watabou、Donjon、DungeonDraft等'
+      t('help.fileUpload.content.0'),
+      t('help.fileUpload.content.1'),
+      t('help.fileUpload.content.2'),
+      t('help.fileUpload.content.3'),
+      t('help.fileUpload.content.4')
     ]
   },
   {
-    title: '📊 分析功能',
+    title: t('help.analysis.title'),
     icon: '📊',
     content: [
-      '自动评估地下城质量',
-      '生成可视化图像',
-      '提供详细的分析报告',
-      '计算9个核心质量指标',
-      '生成改进建议'
+      t('help.analysis.content.0'),
+      t('help.analysis.content.1'),
+      t('help.analysis.content.2'),
+      t('help.analysis.content.3'),
+      t('help.analysis.content.4')
     ]
   },
   {
-    title: '📈 结果查看',
+    title: t('help.results.title'),
     icon: '📈',
     content: [
-      '点击"查看详情"查看完整报告',
-      '支持导出分析结果',
-      '提供改进建议',
-      '可视化路径分析',
-      '质量评分详情'
+      t('help.results.content.0'),
+      t('help.results.content.1'),
+      t('help.results.content.2'),
+      t('help.results.content.3'),
+      t('help.results.content.4')
     ]
   },
   {
-    title: '💾 数据导出',
+    title: t('help.export.title'),
     icon: '💾',
     content: [
-      '导出JSON格式的分析结果',
-      '导出可视化图像',
-      '批量导出多个文件结果',
-      '自定义导出选项',
-      '支持多种导出格式'
+      t('help.export.content.0'),
+      t('help.export.content.1'),
+      t('help.export.content.2'),
+      t('help.export.content.3'),
+      t('help.export.content.4')
     ]
   }
-]
+])
 
 const faqs = [
   {
@@ -81,64 +84,118 @@ const faqs = [
   }
 ]
 
-const quickSteps = [
+const quickSteps = computed(() => [
   {
     step: 1,
-    title: '上传文件',
-    description: '拖拽或选择地下城JSON文件',
+    title: t('help.quickSteps.0.title'),
+    description: t('help.quickSteps.0.description'),
     icon: '📁'
   },
   {
     step: 2,
-    title: '开始分析',
-    description: '点击"开始分析"按钮',
+    title: t('help.quickSteps.1.title'),
+    description: t('help.quickSteps.1.description'),
     icon: '⚡'
   },
   {
     step: 3,
-    title: '查看结果',
-    description: '等待分析完成，查看评分',
+    title: t('help.quickSteps.2.title'),
+    description: t('help.quickSteps.2.description'),
     icon: '📊'
   },
   {
     step: 4,
-    title: '详细报告',
-    description: '点击"查看详情"查看完整报告',
-    icon: '📋'
-  },
-  {
-    step: 5,
-    title: '导出结果',
-    description: '导出分析结果和可视化图像',
+    title: t('help.quickSteps.3.title'),
+    description: t('help.quickSteps.3.description'),
     icon: '💾'
   }
-]
+])
 
-const tips = [
-  '建议使用Chrome或Firefox浏览器获得最佳体验',
-  '支持批量分析多个文件，提高工作效率',
-  '分析结果会自动保存，刷新页面后会丢失',
-  '可以随时导出分析结果，避免数据丢失',
-  '系统会自动处理常见的数据格式问题',
-  '可视化图像支持缩放和交互操作',
-  '质量评分基于9个核心指标，全面评估地下城质量'
-]
+const helpFaqs = computed(() => [
+  {
+    question: t('help.faqs.0.question'),
+    answer: t('help.faqs.0.answer')
+  },
+  {
+    question: t('help.faqs.1.question'),
+    answer: t('help.faqs.1.answer')
+  },
+  {
+    question: t('help.faqs.2.question'),
+    answer: t('help.faqs.2.answer')
+  },
+  {
+    question: t('help.faqs.3.question'),
+    answer: t('help.faqs.3.answer')
+  },
+  {
+    question: t('help.faqs.4.question'),
+    answer: t('help.faqs.4.answer')
+  },
+  {
+    question: t('help.faqs.5.question'),
+    answer: t('help.faqs.5.answer')
+  }
+])
+
+const helpTips = computed(() => [
+  t('help.usageTips.tip1'),
+  t('help.usageTips.tip2'),
+  t('help.usageTips.tip3'),
+  t('help.usageTips.tip4'),
+  t('help.usageTips.tip5'),
+  t('help.usageTips.tip6'),
+  t('help.usageTips.tip7')
+])
+
+const helpMetrics = computed(() => [
+  {
+    name: 'accessibility',
+    title: t('help.metricsExplanation.accessibility.title'),
+    description: t('help.metricsExplanation.accessibility.description')
+  },
+  {
+    name: 'aesthetic_balance',
+    title: t('help.metricsExplanation.aesthetic_balance.title'),
+    description: t('help.metricsExplanation.aesthetic_balance.description')
+  },
+  {
+    name: 'loop_ratio',
+    title: t('help.metricsExplanation.loop_ratio.title'),
+    description: t('help.metricsExplanation.loop_ratio.description')
+  },
+  {
+    name: 'dead_end_ratio',
+    title: t('help.metricsExplanation.dead_end_ratio.title'),
+    description: t('help.metricsExplanation.dead_end_ratio.description')
+  },
+  {
+    name: 'treasure_distribution',
+    title: t('help.metricsExplanation.treasure_distribution.title'),
+    description: t('help.metricsExplanation.treasure_distribution.description')
+  },
+  {
+    name: 'monster_distribution',
+    title: t('help.metricsExplanation.monster_distribution.title'),
+    description: t('help.metricsExplanation.monster_distribution.description')
+  }
+])
 </script>
 
 <template>
   <div class="help-page">
     <div class="help-header">
       <button class="back-btn" @click="goBack">
-        ← 返回首页
+        {{ t('help.backButton') }}
       </button>
-      <h1>使用帮助</h1>
-      <p class="subtitle">详细的使用指南和常见问题解答</p>
+      <h1>{{ t('help.title') }}</h1>
+      <p class="subtitle">{{ t('help.subtitle') }}</p>
     </div>
 
     <div class="help-content">
       <!-- 快速开始 -->
       <section class="section">
-        <h2>🚀 快速开始</h2>
+        <h2>🚀 {{ t('common.quickStart') }}</h2>
         <div class="steps-grid">
           <div v-for="step in quickSteps" :key="step.step" class="step-card">
             <div class="step-number">{{ step.step }}</div>
@@ -151,7 +208,7 @@ const tips = [
 
       <!-- 功能指南 -->
       <section class="section">
-        <h2>📖 功能指南</h2>
+        <h2>📖 {{ t('common.functionGuide') }}</h2>
         <div class="guides-grid">
           <div v-for="guide in helpSections" :key="guide.title" class="guide-card">
             <div class="guide-header">
@@ -167,9 +224,9 @@ const tips = [
 
       <!-- 常见问题 -->
       <section class="section">
-        <h2>❓ 常见问题</h2>
+        <h2>❓ {{ t('common.faq') }}</h2>
         <div class="faq-list">
-          <div v-for="faq in faqs" :key="faq.question" class="faq-item">
+          <div v-for="faq in helpFaqs" :key="faq.question" class="faq-item">
             <div class="faq-question">
               <h4>{{ faq.question }}</h4>
             </div>
@@ -182,9 +239,9 @@ const tips = [
 
       <!-- 使用提示 -->
       <section class="section">
-        <h2>💡 使用提示</h2>
+        <h2>💡 {{ t('help.usageTips.title') }}</h2>
         <div class="tips-grid">
-          <div v-for="tip in tips" :key="tip" class="tip-item">
+          <div v-for="tip in helpTips" :key="tip" class="tip-item">
             <span class="tip-icon">💡</span>
             <span>{{ tip }}</span>
           </div>
@@ -193,47 +250,27 @@ const tips = [
 
       <!-- 质量评估指标说明 -->
       <section class="section">
-        <h2>📊 质量评估指标说明</h2>
+        <h2>📊 {{ t('help.metricsExplanation.title') }}</h2>
         <div class="metrics-explanation">
-          <div class="metric-item">
-            <h4>可达性评估 (Accessibility)</h4>
-            <p>评估地下城各区域的连通性和可达性，确保玩家能够到达所有重要区域。</p>
-          </div>
-          <div class="metric-item">
-            <h4>美学平衡 (Aesthetic Balance)</h4>
-            <p>分析房间布局的美观性和平衡性，评估视觉设计的合理性。</p>
-          </div>
-          <div class="metric-item">
-            <h4>环路比例 (Loop Ratio)</h4>
-            <p>计算地下城中的环路结构比例，适当的环路可以增加探索的趣味性。</p>
-          </div>
-          <div class="metric-item">
-            <h4>死胡同比例 (Dead End Ratio)</h4>
-            <p>评估死胡同和无效路径的比例，过多的死胡同会影响游戏体验。</p>
-          </div>
-          <div class="metric-item">
-            <h4>宝藏分布 (Treasure Distribution)</h4>
-            <p>分析宝藏和战利品的分布合理性，确保奖励的公平性。</p>
-          </div>
-          <div class="metric-item">
-            <h4>怪物分布 (Monster Distribution)</h4>
-            <p>评估怪物和敌人的分布策略，平衡挑战性和可玩性。</p>
+          <div v-for="metric in helpMetrics" :key="metric.name" class="metric-item">
+            <h4>{{ metric.title }}</h4>
+            <p>{{ metric.description }}</p>
           </div>
         </div>
       </section>
 
       <!-- 快速操作 -->
       <section class="section">
-        <h2>⚡ 快速操作</h2>
+        <h2>⚡ {{ t('help.quickActions.title') }}</h2>
         <div class="quick-actions">
           <button class="action-btn primary" @click="router.push('/')">
-            开始分析
+            {{ t('help.quickActions.startAnalysis') }}
           </button>
           <button class="action-btn" @click="router.push('/about')">
-            关于我们
+            {{ t('help.quickActions.about') }}
           </button>
           <button class="action-btn" @click="router.push('/test')">
-            功能测试
+            {{ t('help.quickActions.test') }}
           </button>
         </div>
       </section>
@@ -259,18 +296,18 @@ const tips = [
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  background: #667eea;
+  background: rgba(255, 255, 255, 0.2);
   color: white;
   border: none;
   padding: 10px 20px;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 16px;
   transition: background 0.3s ease;
 }
 
 .back-btn:hover {
-  background: #5a6fd8;
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .help-header h1 {
@@ -524,6 +561,8 @@ const tips = [
     position: static;
     transform: none;
     margin-bottom: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
   }
   
   .steps-grid {

@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { RouterView, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import LanguageSwitcher from './components/LanguageSwitcher.vue'
+import { onMounted } from 'vue'
 
 const router = useRouter()
+const { t } = useI18n()
 
 // 更新页头功能，链接到新页面
 const goToAbout = () => {
@@ -11,6 +15,15 @@ const goToAbout = () => {
 const goToHelp = () => {
   router.push('/help')
 }
+
+// 初始化语言设置
+onMounted(() => {
+  const savedLanguage = localStorage.getItem('preferred-language')
+  if (savedLanguage) {
+    // 这里需要访问i18n实例来设置语言
+    // 由于在setup中无法直接访问，我们将在组件中处理
+  }
+})
 </script>
 
 <template>
@@ -19,17 +32,18 @@ const goToHelp = () => {
     <header class="global-header">
       <div class="header-content">
         <div class="header-left">
-          <h1 class="app-title">地下城分析器</h1>
-          <p class="app-subtitle">专业的D&D地下城质量评估工具</p>
+          <h1 class="app-title">{{ t('app.title') }}</h1>
+          <p class="app-subtitle">{{ t('app.subtitle') }}</p>
         </div>
         <div class="header-right">
           <nav class="nav-menu">
-            <router-link to="/" class="nav-link">首页</router-link>
-            <router-link to="/test" class="nav-link">测试</router-link>
+            <router-link to="/" class="nav-link">{{ t('nav.home') }}</router-link>
+            <router-link to="/test" class="nav-link">{{ t('nav.test') }}</router-link>
           </nav>
+          <LanguageSwitcher />
           <div class="header-actions">
-            <button class="action-btn" @click="goToAbout">关于</button>
-            <button class="action-btn" @click="goToHelp">帮助</button>
+            <button class="action-btn" @click="goToAbout">{{ t('nav.about') }}</button>
+            <button class="action-btn" @click="goToHelp">{{ t('nav.help') }}</button>
           </div>
         </div>
       </div>

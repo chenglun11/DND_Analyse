@@ -3,15 +3,13 @@
     <!-- 页头 -->
     <header class="page-header">
       <div class="header-content">
-        <div class="header-left">
-          <button @click="$router.back()" class="back-btn">← 返回</button>
-          <div class="page-info">
-            <h1>{{ dungeonName }}</h1>
-            <p class="page-subtitle">地下城质量分析报告</p>
-          </div>
+                  <button @click="goBack" class="back-btn" :title="t('detail.backButtonTitle')">{{ t('detail.backButton') }}</button>
+        <div class="page-info">
+          <h1>{{ dungeonName }}</h1>
+          <p class="page-subtitle">{{ t('detail.analysisResults') }}</p>
         </div>
         <div class="header-right">
-          <button @click="forceRefresh" class="refresh-btn">🔄 刷新</button>
+          <button @click="forceRefresh" class="refresh-btn">{{ t('detail.refreshButton') }}</button>
         </div>
       </div>
     </header>
@@ -19,10 +17,10 @@
     <div class="content">
       <div class="dungeon-details">
         <div class="visualization-section">
-          <h2>地牢可视化</h2>
+          <h2>{{ t('detail.dungeonVisualization') }}</h2>
           
           <div v-if="loading" class="loading">
-            <p>加载中...</p>
+            <p>{{ t('common.loading') }}</p>
           </div>
           
           <div v-else-if="error" class="error">
@@ -30,7 +28,7 @@
           </div>
           
           <div v-if="dungeonData" class="canvas-visualization">
-            <h3>Canvas可视化</h3>
+            <h3>{{ t('detail.canvasVisualization') }}</h3>
             <div class="visualizer-container">
               <DungeonVisualizer 
                 :dungeon-data="dungeonData"
@@ -41,25 +39,25 @@
           </div>
           
           <div v-if="imageData" class="generated-image">
-            <h3>生成的可视化图像</h3>
+            <h3>{{ t('detail.generatedImage') }}</h3>
             <div class="image-container">
               <img :src="`data:image/png;base64,${imageData}`" alt="Generated visualization" />
             </div>
           </div>
           
           <div v-else class="no-data">
-            <p>没有可视化数据</p>
+            <p>{{ t('detail.noVisualizationData') }}</p>
           </div>
         </div>
       </div>
 
       <div class="analysis-section">
-        <h2>分析结果</h2>
+        <h2>{{ t('detail.analysisResults') }}</h2>
         
         <div class="analysis-content">
           <!-- 总体评分 -->
           <div class="overall-score-card">
-            <h3>总体评分</h3>
+            <h3>{{ t('detail.overallScore') }}</h3>
             <div class="score-display">
               <div class="score-circle" :class="getScoreClass(overallScore)">
                 {{ overallScore.toFixed(1) }}
@@ -88,7 +86,7 @@
 
           <!-- 建议改进 -->
           <div class="improvements-section">
-            <h3>改进建议</h3>
+            <h3>{{ t('detail.improvementSuggestions') }}</h3>
             <div class="improvements-list">
               <div v-for="(suggestion, index) in improvementSuggestions" :key="index" class="suggestion-item">
                 <div class="suggestion-icon">💡</div>
@@ -136,8 +134,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import DungeonVisualizer from '../components/DungeonVisualizer.vue'
 import { DungeonAPI } from '../services/api'
 import type { DungeonData, Room, Corridor } from '../types/dungeon'
@@ -148,6 +147,18 @@ interface ImprovementSuggestion {
 }
 
 const route = useRoute()
+const router = useRouter()
+const { t } = useI18n()
+
+const goBack = () => {
+  // 如果有历史记录，返回上一页
+  if (window.history.length > 1) {
+    router.back()
+  } else {
+    // 否则返回首页
+    router.push('/')
+  }
+}
 const dungeonData = ref<DungeonData | undefined>(undefined);
 const overallScore = ref(0);
 const detailedScores = ref<Record<string, number>>({});
@@ -338,26 +349,15 @@ const getScoreClass = (score: number): string => {
 }
 
 const getScoreDescription = (score: number): string => {
-  if (score >= 0.8) return '卓越的地下城设计，具有极佳的游戏体验'
-  if (score >= 0.65) return '优秀的地下城设计，具有很好的游戏体验'
-  if (score >= 0.5) return '良好的地下城设计，整体表现不错'
-  if (score >= 0.35) return '一般的地下城设计，有改进空间'
-  return '需要大幅改进的地下城设计'
+  if (score >= 0.8) return t('detail.scoreDescription.excellent')
+  if (score >= 0.65) return t('detail.scoreDescription.good')
+  if (score >= 0.5) return t('detail.scoreDescription.average')
+  if (score >= 0.35) return t('detail.scoreDescription.poor')
+  return t('detail.scoreDescription.poor')
 }
 
 const getMetricName = (metric: string): string => {
-  const names: Record<string, string> = {
-    accessibility: '可达性',
-    aesthetic_balance: '美学平衡',
-    loop_ratio: '环路比例',
-    dead_end_ratio: '死胡同比例',
-    treasure_monster_distribution: '宝藏怪物分布',
-    degree_variance: '度方差',
-    door_distribution: '门分布',
-    key_path_length: '关键路径长度',
-    path_diversity: '路径多样性'
-  }
-  return names[metric] || metric
+  return t(`metrics.${metric}`) || metric
 }
 
 const getMetricDescription = (metric: string, score: number): string => {
@@ -395,6 +395,20 @@ const forceRefresh = () => {
 onMounted(async () => {
   console.log('DetailView mounted')
   await fetchAnalysisResult()
+  
+  // 添加键盘事件监听器
+  const handleKeydown = (event: KeyboardEvent) => {
+    if (event.key === 'Escape') {
+      goBack()
+    }
+  }
+  
+  document.addEventListener('keydown', handleKeydown)
+  
+  // 清理事件监听器
+  onUnmounted(() => {
+    document.removeEventListener('keydown', handleKeydown)
+  })
 })
 </script>
 
@@ -419,6 +433,7 @@ onMounted(async () => {
   position: sticky;
   top: 0;
   z-index: 100;
+  position: relative;
 }
 
 .header-content {
@@ -428,12 +443,13 @@ onMounted(async () => {
   max-width: 1400px;
   margin: 0 auto;
   width: 100%;
+  position: relative;
 }
 
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 20px;
+.page-info {
+  flex: 1;
+  text-align: center;
+  margin: 0 20px;
 }
 
 .header-right {
@@ -453,6 +469,11 @@ onMounted(async () => {
   cursor: pointer;
   font-size: 16px;
   transition: background 0.3s ease;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
 }
 
 .back-btn:hover {
@@ -542,10 +563,11 @@ onMounted(async () => {
 }
 
 .visualizer-container {
-  height: 400px;
+  height: 600px;
   border: 1px solid #e9ecef;
   border-radius: 8px;
   overflow: hidden;
+  margin-bottom: 20px;
 }
 
 .overall-score-card {
@@ -906,6 +928,10 @@ onMounted(async () => {
 
 .canvas-visualization {
   margin: 20px 0;
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #e9ecef;
 }
 
 .loading, .error, .no-data {
@@ -942,20 +968,27 @@ onMounted(async () => {
   .header-content {
     flex-direction: column;
     gap: 15px;
+    position: relative;
   }
   
-  .header-left {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
+  .page-info {
+    margin: 0;
+    order: 2;
   }
   
   .header-right {
-    flex-direction: column;
-    gap: 10px;
+    order: 3;
+    justify-content: center;
   }
   
-
+  .back-btn {
+    position: static;
+    transform: none;
+    align-self: flex-start;
+    padding: 10px 20px;
+    font-size: 16px;
+    order: 1;
+  }
   
   .page-info h1 {
     font-size: 1.5rem;
@@ -973,6 +1006,10 @@ onMounted(async () => {
   .score-display {
     flex-direction: column;
     text-align: center;
+  }
+  
+  .visualizer-container {
+    height: 400px;
   }
 }
 
