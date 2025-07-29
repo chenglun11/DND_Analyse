@@ -192,26 +192,7 @@ const clearFiles = () => {
   }
 }
 
-const loadSampleFiles = async () => {
-  // 这里可以加载一些示例文件
-  // 由于前端无法直接访问文件系统，我们创建一个示例文件
-  const sampleData = {
-    name: "示例地下城",
-    rooms: [
-      { id: "room_1", x: 10, y: 10, width: 20, height: 15, type: "entrance" },
-      { id: "room_2", x: 40, y: 10, width: 25, height: 20, type: "treasure" },
-      { id: "room_3", x: 70, y: 10, width: 30, height: 25, type: "boss" }
-    ],
-    corridors: [
-      { id: "corridor_1", start: { x: 30, y: 17 }, end: { x: 40, y: 20 } },
-      { id: "corridor_2", start: { x: 65, y: 22 }, end: { x: 70, y: 22 } }
-    ]
-  }
-  
-  const sampleFile = new File([JSON.stringify(sampleData, null, 2)], 'sample_dungeon.json', { type: 'application/json' })
-  addFiles([sampleFile])
-  console.log('已加载示例文件')
-}
+
 
 const exportAllResults = () => {
   if (analysisResults.value.length === 0) {
@@ -291,11 +272,7 @@ onMounted(async () => {
             <h3>清空文件</h3>
             <p>{{ uploadedFiles.length === 0 ? '没有文件需要清除' : `清除 ${uploadedFiles.length} 个文件` }}</p>
           </div>
-          <div class="action-card" @click="loadSampleFiles">
-            <div class="action-icon">📁</div>
-            <h3>加载示例</h3>
-            <p>加载示例地下城文件进行测试</p>
-          </div>
+
           <div class="action-card" @click="exportAllResults" :class="{ 'disabled': analysisResults.length === 0 }">
             <div class="action-icon">📤</div>
             <h3>导出结果</h3>
