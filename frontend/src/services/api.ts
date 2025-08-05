@@ -50,6 +50,17 @@ export interface CacheInfo {
   }>
 }
 
+export interface BatchTestResult {
+  success: boolean
+  message?: string
+  results?: any
+  summary?: any
+  total_files?: number
+  successful_files?: number
+  failed_files?: number
+  error?: string
+}
+
 export class DungeonAPI {
   private static async request(endpoint: string, options: RequestInit = {}): Promise<any> {
     const url = `${API_BASE_URL}${endpoint}`
@@ -290,5 +301,44 @@ export class DungeonAPI {
     }
 
     return response.json()
+  }
+
+  // 批量测试相关方法
+  static async batchTest(files: File[], options: any = {}): Promise<BatchTestResult> {
+    const formData = new FormData()
+    
+    // 添加所有文件
+    files.forEach(file => {
+      formData.append('files', file)
+    })
+    
+    // 添加选项
+    formData.append('options', JSON.stringify(options))
+
+    const response = await fetch(`${API_BASE_URL}/batch-test`, {
+      method: 'POST',
+      body: formData,
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    return response.json()
+  }
+
+  static async batchTestDirectory(inputDirectory: string, outputDirectory: string = 'temp_reports', options: any = {}): Promise<BatchTestResult> {
+    return this.request('/batch-test-directory', {
+      method: 'POST',
+      body: JSON.stringify({
+        input_directory: inputDirectory,
+        output_directory: outputDirectory,
+        options: options
+      })
+    })
+  }
+
+  static async getBatchTestStatus(): Promise<any> {
+    return this.request('/batch-test-status')
   }
 } 

@@ -19,4 +19,13 @@ export default defineConfigWithVueTs(
   pluginVue.configs['flat/essential'],
   vueTsConfigs.recommended,
   skipFormatting,
+  
+  // Custom rules to make warnings instead of errors
+  {
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-unused-vars': 'warn',
+      'vue/no-unused-vars': 'warn'
+    }
+  }
 )

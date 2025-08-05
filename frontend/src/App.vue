@@ -2,6 +2,7 @@
 import { RouterView, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import LanguageSwitcher from './components/LanguageSwitcher.vue'
+import BaseButton from './components/BaseButton.vue'
 import { onMounted } from 'vue'
 
 const router = useRouter()
@@ -32,19 +33,46 @@ onMounted(() => {
     <header class="global-header">
       <div class="header-content">
         <div class="header-left">
-          <h1 class="app-title">{{ t('app.title') }}</h1>
-          <p class="app-subtitle">{{ t('app.subtitle') }}</p>
-        </div>
-        <div class="header-right">
-          <nav class="nav-menu">
-            <router-link to="/" class="nav-link">{{ t('nav.home') }}</router-link>
-            <router-link to="/test" class="nav-link">{{ t('nav.test') }}</router-link>
-          </nav>
-          <LanguageSwitcher />
-          <div class="header-actions">
-            <button class="action-btn" @click="goToAbout">{{ t('nav.about') }}</button>
-            <button class="action-btn" @click="goToHelp">{{ t('nav.help') }}</button>
+          <div class="logo-section">
+            <div class="logo-icon">🏰</div>
+            <div class="logo-text">
+              <h1 class="app-title">{{ t('app.title') }}</h1>
+              <p class="app-subtitle">{{ t('app.subtitle') }}</p>
+            </div>
           </div>
+        </div>
+        
+        <div class="header-center">
+          <nav class="nav-menu">
+            <router-link to="/" class="nav-link" active-class="nav-link-active">
+              {{ t('nav.home') }}
+            </router-link>
+            <router-link to="/test" class="nav-link" active-class="nav-link-active">
+              {{ t('nav.test') }}
+            </router-link>
+          </nav>
+        </div>
+        
+        <div class="header-right">
+          <div class="header-actions">
+            <BaseButton 
+              variant="ghost" 
+              size="sm" 
+              @click="goToAbout"
+              class="header-btn"
+            >
+              {{ t('nav.about') }}
+            </BaseButton>
+            <BaseButton 
+              variant="ghost" 
+              size="sm" 
+              @click="goToHelp"
+              class="header-btn"
+            >
+              {{ t('nav.help') }}
+            </BaseButton>
+          </div>
+          <LanguageSwitcher />
         </div>
       </div>
     </header>
@@ -57,18 +85,18 @@ onMounted(() => {
     <!-- 页脚 -->
     <footer class="global-footer">
       <div class="footer-content">
-        <div class="footer-section">
-          <h3>Dungeon Analyzer</h3>
-          <p>专业的D&D地下城质量评估工具</p>
-          <div class="footer-links">
-            <a href="#" class="footer-link">使用指南</a>
-            <a href="#" class="footer-link">API文档</a>
-            <a href="#" class="footer-link">更新日志</a>
+        <div class="footer-section main-section">
+          <div class="footer-logo">
+            <div class="footer-logo-icon">🏰</div>
+            <div class="footer-logo-text">
+              <h3>Dungeon Analyzer</h3>
+              <p>专业的D&D地下城质量评估工具</p>
+            </div>
           </div>
         </div>
         
         <div class="footer-section">
-          <h4>功能特性</h4>
+          <h4 class="footer-section-title">功能特性</h4>
           <ul class="footer-list">
             <li>多格式支持</li>
             <li>质量评估</li>
@@ -78,30 +106,26 @@ onMounted(() => {
         </div>
         
         <div class="footer-section">
-          <h4>技术支持</h4>
-          <ul class="footer-list">
-            <li>问题反馈</li>
-            <li>功能建议</li>
-            <li>Bug报告</li>
-            <li>联系我们</li>
-          </ul>
-        </div>
-        
-        <div class="footer-section">
-          <h4>版本信息</h4>
-          <p>当前版本: v1.0.0</p>
-          <p>最后更新: 2024年12月</p>
-          <div class="footer-social">
-            <span class="social-icon">📧</span>
-            <span class="social-icon">🐙</span>
-            <span class="social-icon">💬</span>
+          <h4 class="footer-section-title">版本信息</h4>
+          <div class="version-info">
+            <div class="version-item">
+              <span class="version-label">版本:</span>
+              <span class="version-value">v1.0.0</span>
+            </div>
+            <div class="version-item">
+              <span class="version-label">更新:</span>
+              <span class="version-value">2024年12月</span>
+            </div>
           </div>
         </div>
       </div>
       
       <div class="footer-bottom">
-        <p>&copy; 2024 Dungeon Analyzer. 保留所有权利。</p>
-        <p>专为D&D地下城设计师打造</p>
+        <div class="footer-bottom-content">
+          <div class="footer-bottom-left">
+            <p>&copy; 2024 Dungeon Analyzer. 保留所有权利。</p>
+          </div>
+        </div>
       </div>
     </footer>
   </div>
@@ -118,7 +142,6 @@ onMounted(() => {
 html, body {
   height: 100%;
   width: 100%;
-  /* 移除 overflow: hidden，允许页面滚动 */
 }
 
 body {
@@ -153,36 +176,55 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 20px;
 }
 
 .header-left {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  flex-shrink: 0;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  font-size: 2rem;
+  color: #ffd700;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
 }
 
 .app-title {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   font-weight: bold;
   margin: 0;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .app-subtitle {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   opacity: 0.9;
   margin: 0;
 }
 
-.header-right {
+.header-center {
+  flex: 1;
   display: flex;
-  align-items: center;
-  gap: 20px;
+  justify-content: flex-start;
 }
 
 .nav-menu {
   display: flex;
   gap: 20px;
+  justify-content: flex-start;
 }
 
 .nav-link {
@@ -192,14 +234,24 @@ body {
   border-radius: 6px;
   transition: background 0.3s ease;
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .nav-link:hover {
   background: rgba(255, 255, 255, 0.2);
 }
 
-.nav-link.router-link-active {
+.nav-link-active {
   background: rgba(255, 255, 255, 0.3);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
 }
 
 .header-actions {
@@ -207,19 +259,16 @@ body {
   gap: 10px;
 }
 
-.action-btn {
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background 0.3s ease;
+.header-btn {
+  color: white !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 8px 16px !important;
+  font-size: 0.9rem !important;
 }
 
-.action-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
+.header-btn:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
 }
 
 .main-content {
@@ -246,37 +295,54 @@ body {
   margin-bottom: 30px;
 }
 
-.footer-section h3 {
-  font-size: 1.5rem;
+.footer-section.main-section {
+  grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin-bottom: 15px;
+}
+
+.footer-logo-icon {
+  font-size: 2rem;
+  color: #ffd700;
+}
+
+.footer-logo-text h3 {
+  font-size: 1.3rem;
+  margin-bottom: 5px;
   color: #e2e8f0;
 }
 
-.footer-section h4 {
-  font-size: 1.2rem;
-  margin-bottom: 15px;
-  color: #e2e8f0;
-}
-
-.footer-section p {
+.footer-logo-text p {
+  font-size: 0.9rem;
   color: #a0aec0;
-  line-height: 1.6;
   margin-bottom: 10px;
 }
 
-.footer-links {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.footer-link {
+.footer-description p {
   color: #a0aec0;
-  text-decoration: none;
-  transition: color 0.3s ease;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  max-width: 400px;
 }
 
-.footer-link:hover {
+.footer-section h4 {
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  color: #e2e8f0;
+}
+
+.footer-section-title {
+  font-size: 1.1rem;
+  margin-bottom: 15px;
   color: #e2e8f0;
 }
 
@@ -295,20 +361,26 @@ body {
   color: #e2e8f0;
 }
 
-.footer-social {
+.version-info {
   display: flex;
-  gap: 15px;
-  margin-top: 15px;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.social-icon {
-  font-size: 1.5rem;
-  cursor: pointer;
-  transition: transform 0.3s ease;
+.version-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.social-icon:hover {
-  transform: scale(1.2);
+.version-label {
+  font-size: 0.9rem;
+  color: #a0aec0;
+}
+
+.version-value {
+  font-weight: bold;
+  color: #e2e8f0;
 }
 
 .footer-bottom {
@@ -316,13 +388,36 @@ body {
   margin: 0 auto;
   padding-top: 20px;
   border-top: 1px solid #4a5568;
-  text-align: center;
 }
 
-.footer-bottom p {
+.footer-bottom-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.footer-bottom-left p {
   color: #718096;
   margin: 5px 0;
   font-size: 0.9rem;
+}
+
+.footer-bottom-right {
+  display: flex;
+  gap: 15px;
+}
+
+.footer-bottom-link {
+  color: #a0aec0;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.footer-bottom-link:hover {
+  color: #e2e8f0;
 }
 
 /* 响应式设计 */
@@ -336,12 +431,17 @@ body {
     gap: 15px;
   }
   
-  .header-right {
-    flex-direction: column;
-    gap: 15px;
+  .header-left, .header-center, .header-right {
+    width: 100%;
+    text-align: center;
+  }
+
+  .logo-section {
+    justify-content: center;
   }
   
   .nav-menu {
+    justify-content: center;
     gap: 10px;
   }
   
@@ -351,28 +451,43 @@ body {
   }
   
   .app-title {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
   
   .app-subtitle {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
   }
-  
-  .global-footer {
-    padding: 30px 15px 15px;
+
+  .header-actions {
+    justify-content: center;
   }
-  
+
+  .header-btn {
+    padding: 6px 12px !important;
+    font-size: 0.8rem !important;
+  }
+
   .footer-content {
     grid-template-columns: 1fr;
     gap: 30px;
   }
-  
+
+  .footer-section.main-section {
+    grid-column: 1 / -1;
+  }
+
   .footer-section {
     text-align: center;
   }
-  
-  .footer-social {
-    justify-content: center;
+
+  .footer-bottom-content {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .footer-bottom-right {
+    flex-direction: column;
+    gap: 10px;
   }
 }
 </style>

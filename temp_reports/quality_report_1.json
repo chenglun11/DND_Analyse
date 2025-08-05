@@ -105,42 +105,50 @@
       }
     },
     "path_diversity": {
-      "score": 0.14285714285714285,
+      "score": 0.2265625003154848,
       "detail": {
-        "avg_path_diversity": 0.044405313084597074,
-        "std_path_diversity": 0.1087703589257962,
-        "max_path_diversity": 0.31083719159217954,
+        "avg_path_diversity": 0.1132812499943121,
+        "std_path_diversity": 0.18378880103017256,
+        "max_path_diversity": 0.49999999927865246,
         "min_path_diversity": 0.0,
-        "total_pairs_analyzed": 7,
-        "rounds_completed": 3,
+        "total_pairs_analyzed": 14,
+        "rounds_completed": 5,
         "detailed_analysis": {
           "round_0": {
-            "pairs_analyzed": 2,
-            "avg_diversity": 0.0
+            "pairs_analyzed": 3,
+            "avg_diversity": 0.1053551753851109
           },
           "round_1": {
             "pairs_analyzed": 2,
-            "avg_diversity": 0.15541859579608977
+            "avg_diversity": 0.24999999963932623
           },
           "round_2": {
             "pairs_analyzed": 3,
             "avg_diversity": 0.0
+          },
+          "round_3": {
+            "pairs_analyzed": 3,
+            "avg_diversity": 0.10959678338352902
+          },
+          "round_4": {
+            "pairs_analyzed": 3,
+            "avg_diversity": 0.14702720811193243
           }
         },
         "adaptive_params": {
           "num_walks": 9,
-          "max_walk_length": 2,
-          "graph_diameter": 2,
+          "max_walk_length": 4,
+          "graph_diameter": 4,
           "avg_degree": 3.7777777777777777,
           "total_nodes": 9,
           "total_edges": 17
         },
         "algorithm": "Adaptive_random_walk_sampling",
-        "sampling_strategy": "Multi-round (4 rounds, 4 pairs/round)",
+        "sampling_strategy": "Multi-round (5 rounds, 3 pairs/round)",
         "normalization": "Robust_with_predefined_bounds",
         "fusion_method": "Geometric_mean_of_normalized_metrics",
         "performance": {
-          "time_taken": 0.002092123031616211,
+          "time_taken": 0.0009388923645019531,
           "timeout": false
         }
       }
@@ -162,11 +170,11 @@
     }
   },
   "category_scores": {
-    "structural": 0.641339005951756,
+    "structural": 0.6532969141600905,
     "gameplay": 0.0,
     "aesthetic": 0.7433989670988772
   },
-  "overall_score": 0.46157932435021104,
+  "overall_score": 0.4655652937529892,
   "grade": "D",
   "details": {
     "accessibility": {
@@ -256,40 +264,48 @@
       }
     },
     "path_diversity": {
-      "avg_path_diversity": 0.044405313084597074,
-      "std_path_diversity": 0.1087703589257962,
-      "max_path_diversity": 0.31083719159217954,
+      "avg_path_diversity": 0.1132812499943121,
+      "std_path_diversity": 0.18378880103017256,
+      "max_path_diversity": 0.49999999927865246,
       "min_path_diversity": 0.0,
-      "total_pairs_analyzed": 7,
-      "rounds_completed": 3,
+      "total_pairs_analyzed": 14,
+      "rounds_completed": 5,
       "detailed_analysis": {
         "round_0": {
-          "pairs_analyzed": 2,
-          "avg_diversity": 0.0
+          "pairs_analyzed": 3,
+          "avg_diversity": 0.1053551753851109
         },
         "round_1": {
           "pairs_analyzed": 2,
-          "avg_diversity": 0.15541859579608977
+          "avg_diversity": 0.24999999963932623
         },
         "round_2": {
           "pairs_analyzed": 3,
           "avg_diversity": 0.0
+        },
+        "round_3": {
+          "pairs_analyzed": 3,
+          "avg_diversity": 0.10959678338352902
+        },
+        "round_4": {
+          "pairs_analyzed": 3,
+          "avg_diversity": 0.14702720811193243
         }
       },
       "adaptive_params": {
         "num_walks": 9,
-        "max_walk_length": 2,
-        "graph_diameter": 2,
+        "max_walk_length": 4,
+        "graph_diameter": 4,
         "avg_degree": 3.7777777777777777,
         "total_nodes": 9,
         "total_edges": 17
       },
       "algorithm": "Adaptive_random_walk_sampling",
-      "sampling_strategy": "Multi-round (4 rounds, 4 pairs/round)",
+      "sampling_strategy": "Multi-round (5 rounds, 3 pairs/round)",
       "normalization": "Robust_with_predefined_bounds",
       "fusion_method": "Geometric_mean_of_normalized_metrics",
       "performance": {
-        "time_taken": 0.002092123031616211,
+        "time_taken": 0.0009388923645019531,
         "timeout": false
       }
     },

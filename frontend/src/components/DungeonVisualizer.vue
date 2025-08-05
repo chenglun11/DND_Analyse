@@ -60,9 +60,15 @@ const showLabels = ref(props.showLabels)
 // 颜色映射
 const roomColors = {
   room: '#3498db',
-  chamber: '#e74c3c',
+  chamber: '#e74c3c', 
   boss: '#f39c12',
-  treasure: '#f1c40f'
+  treasure: '#f1c40f',
+  entrance: '#2ecc71',
+  exit: '#e67e22',
+  corridor: '#95a5a6',
+  hall: '#9b59b6',
+  bathroom: '#1abc9c',
+  storage: '#34495e'
 }
 
 // 鼠标事件处理
@@ -155,7 +161,7 @@ const pointToLineDistance = (px: number, py: number, x1: number, y1: number, x2:
   
   if (lenSq === 0) return Math.sqrt(A * A + B * B)
   
-  let param = dot / lenSq
+  const param = dot / lenSq
   
   let xx, yy
   
@@ -307,25 +313,50 @@ const renderRooms = (ctx: CanvasRenderingContext2D) => {
   for (const room of props.dungeonData.rooms) {
     console.log('Rendering room:', room.id, 'at', room.x, room.y, 'size', room.width, 'x', room.height)
     
-    // 绘制房间
+    // 绘制房间背景
     ctx.fillStyle = roomColors[room.type] || '#3498db'
     ctx.fillRect(room.x, room.y, room.width, room.height)
     
-    // 绘制边框
+    // 绘制房间边框
     ctx.strokeStyle = '#ffffff'
     ctx.lineWidth = 2 / zoom.value
     ctx.strokeRect(room.x, room.y, room.width, room.height)
     
+    // 绘制房间内容图标
+    const centerX = room.x + room.width / 2
+    const centerY = room.y + room.height / 2
+    const iconSize = Math.min(room.width, room.height) * 0.3
+    
+    ctx.fillStyle = '#ffffff'
+    ctx.font = `${iconSize / zoom.value}px Arial`
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    
+    // 根据房间类型绘制图标
+    const roomIcon = getRoomIcon(room.type)
+    if (roomIcon) {
+      ctx.fillText(roomIcon, centerX, centerY - iconSize / 4)
+    }
+    
     // 绘制标签
     if (showLabels.value) {
       ctx.fillStyle = '#ffffff'
-      ctx.font = `${12 / zoom.value}px Arial`
+      ctx.font = `${10 / zoom.value}px Arial`
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
+      
+      // 房间ID标签
+      ctx.fillText(
+        `#${room.id}`,
+        room.x + room.width / 2,
+        room.y + room.height + 15 / zoom.value
+      )
+      
+      // 房间类型标签  
       ctx.fillText(
         room.type,
         room.x + room.width / 2,
-        room.y + room.height / 2
+        room.y + room.height / 2 + iconSize / 2
       )
     }
   }
@@ -357,6 +388,23 @@ const toggleGrid = () => {
 const toggleLabels = () => {
   showLabels.value = !showLabels.value
   render()
+}
+
+// 获取房间图标
+const getRoomIcon = (roomType: string): string => {
+  const iconMap: Record<string, string> = {
+    room: '🏠',
+    chamber: '🏛️',
+    boss: '👑',
+    treasure: '💰',
+    entrance: '🚪',
+    exit: '🚫',
+    corridor: '➡️',
+    hall: '🏰',
+    bathroom: '🚿',
+    storage: '📦'
+  }
+  return iconMap[roomType] || '❓'
 }
 
 // 监听数据变化
@@ -442,8 +490,8 @@ onUnmounted(() => {
 
 .controls {
   display: flex;
-  gap: 10px;
-  padding: 15px;
+  gap: 8px;
+  padding: 10px;
   background: #34495e;
   border-bottom: 1px solid #2c3e50;
 }
@@ -452,10 +500,10 @@ onUnmounted(() => {
   background: #3498db;
   color: white;
   border: none;
-  padding: 8px 16px;
+  padding: 6px 12px;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 12px;
   transition: background 0.2s;
 }
 
@@ -474,11 +522,11 @@ onUnmounted(() => {
   background: #e74c3c;
   color: white;
   border: none;
-  width: 30px;
-  height: 30px;
+  width: 24px;
+  height: 24px;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
 }
 
@@ -498,8 +546,9 @@ onUnmounted(() => {
   position: relative;
   overflow: hidden;
   min-height: 600px;
+  height: 600px;
   background: #2c3e50;
-  border: 2px solid #34495e;
+  border: 1px solid #34495e;
 }
 
 canvas {

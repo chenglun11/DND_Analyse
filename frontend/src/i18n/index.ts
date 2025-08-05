@@ -29,6 +29,7 @@ const zh = {
     yes: '是',
     no: '否',
     ok: '确定',
+    actions: '操作',
     quickStart: '快速开始',
     functionGuide: '功能指南',
     faq: '常见问题',
@@ -55,66 +56,56 @@ const zh = {
 
   // 首页
   home: {
-    uploadTitle: '上传地下城文件',
-    uploadDescription: '拖拽文件到此处或点击选择文件',
-    supportedFormats: '支持格式: JSON, Watabou, Donjon, DungeonDraft',
+    title: '地下城质量评估系统',
+    subtitle: '上传地下城地图文件，获取详细的质量分析报告',
+    uploadFiles: '上传文件',
+    dragAndDrop: '拖拽文件到此处，或点击选择文件',
+    supportedFormats: '支持格式：JSON',
     selectFiles: '选择文件',
-    uploadedFiles: '已上传文件:',
-    noFilesToClear: '没有文件需要清除',
-    noResultsToExport: '没有结果可以导出',
-    noResultsToClear: '没有结果需要清除',
-    clearFilesConfirm: '确定要清除 {count} 个文件吗？',
-    clearResultsConfirm: '确定要清除 {count} 个分析结果吗？',
-    startAnalysis: '开始分析',
-    analyzing: '分析中...',
-    analysisResults: '分析结果',
-    overallScore: '总体评分',
+    uploadedFiles: '已上传文件',
+    uploadPrompt: '上传文件后即可开始分析',
+    analysisConfig: '分析配置',
+    analysisConfigDescription: '配置分析参数以获得更好的结果',
+    startAnalysis: '开始分析 ({count} 个文件)',
+    analyzing: '分析中... ({current}/{total})',
+    progress: '已完成 {completed} / {total} 个文件 ({percentage}%)',
+    clickToAnalyze: '点击开始批量分析所有上传的文件',
+    pleaseUploadFirst: '请先上传文件',
+    viewAllDetails: '查看所有详情',
     viewDetails: '查看详情',
-    quickActions: '快速操作',
-    exportReport: '导出报告',
-    exportAllResults: '导出所有结果',
-    clearAll: '清空所有',
-    help: '使用帮助',
-    about: '关于我们',
-    systemStats: '系统统计',
-    uploadedFilesCount: '已上传文件',
-    analysisResultsCount: '分析结果',
-    evaluationMetrics: '评估指标',
-    supportedFormatsCount: '支持格式',
-    usageTips: '使用提示',
-    usageTip1: '支持多种地下城格式：Watabou、Donjon、DungeonDraft等',
-    usageTip2: '拖拽文件到上传区域或点击选择文件按钮',
-    usageTip3: '分析完成后可查看详细的可视化结果',
-    usageTip4: '建议使用Chrome或Firefox浏览器获得最佳体验',
-    helpDescription: '查看详细的使用说明和教程',
-    aboutDescription: '了解项目信息和技术特性',
-    noFilesToAnalyze: '没有文件可以分析',
-    startAnalysisDescription: '分析 {count} 个文件',
-    exportAllResultsDescription: '导出 {count} 个结果',
-    clearAllDescription: '清空所有文件和分析结果'
+    exportResults: '导出结果',
+    clearResults: '清除结果',
+    fileNumber: '文件 {current} / {total}',
+    analyzeAll: '分析所有文件',
+    analysisResults: '分析结果'
   },
 
   // 详情页
   detail: {
-    backButton: '← 返回',
-    backButtonTitle: '返回 (ESC)',
+    backButton: '返回',
+    backButtonTitle: '返回上一页',
     refreshButton: '🔄 刷新',
     exportReport: '📄 导出报告',
-    dungeonVisualization: '地牢可视化',
-    canvasVisualization: 'Canvas可视化',
-    generatedImage: '生成的可视化图像',
-    noVisualizationData: '没有可视化数据',
     analysisResults: '分析结果',
+    dungeonVisualization: '地下城可视化',
+    canvasVisualization: 'Canvas可视化',
+    generatedImage: '生成的图像',
+    noVisualizationData: '没有可视化数据',
     overallScore: '总体评分',
-    detailedMetrics: '详细指标',
     improvementSuggestions: '改进建议',
+    metricDetails: '指标详情',
+    disabled: '(已禁用)',
+    noSuggestions: '当前设计表现优秀，暂无改进建议',
     noData: '没有数据',
-    scoreDescription: {
-      excellent: '卓越的地下城设计，具有极佳的游戏体验',
-      good: '优秀的地下城设计，具有很好的游戏体验',
-      average: '良好的地下城设计，整体表现不错',
-      poor: '需要大幅改进的地下城设计'
-    }
+    multipleDetails: '多个详情',
+    showing: '显示',
+    of: '共',
+    items: '项',
+    previous: '上一页',
+    next: '下一页',
+    page: '第',
+    noDetailAvailable: '没有可用的详情数据',
+    pageInfo: '第 {current} 页，共 {total} 页'
   },
 
   // 帮助页
@@ -241,14 +232,6 @@ const zh = {
       dead_end_ratio: {
         title: '死胡同比例 (Dead End Ratio)',
         description: '评估死胡同和无效路径的比例，过多的死胡同会影响游戏体验。'
-      },
-      treasure_distribution: {
-        title: '宝藏分布 (Treasure Distribution)',
-        description: '分析宝藏和战利品的分布合理性，确保奖励的公平性。'
-      },
-      monster_distribution: {
-        title: '怪物分布 (Monster Distribution)',
-        description: '评估怪物和敌人的分布策略，平衡挑战性和可玩性。'
       }
     },
     quickActions: {
@@ -332,8 +315,6 @@ const zh = {
     geometric_balance: '几何平衡',
     loop_ratio: '环路比例',
     dead_end_ratio: '死胡同比例',
-    treasure_distribution: '宝藏分布',
-    monster_distribution: '怪物分布',
     degree_variance: '度方差',
     door_distribution: '门分布',
     key_path_length: '关键路径长度',
@@ -341,44 +322,70 @@ const zh = {
     treasure_monster_distribution: '宝藏怪物分布'
   },
 
+  // 指标类别
+  metricCategories: {
+    layout: '布局设计',
+    gameplay: '游戏性',
+    navigation: '导航路径'
+  },
+
   // 指标描述
   metricDescriptions: {
     accessibility: {
+      description: '评估各区域的可达性和连通程度',
       good: '玩家可以轻松到达各个区域',
       poor: '某些区域难以到达，需要改善路径设计'
     },
     geometric_balance: {
+      description: '分析房间布局的几何平衡性和对称性',
       good: '房间布局几何平衡良好',
       poor: '房间布局的几何平衡需要改善'
     },
     loop_ratio: {
+      description: '计算地下城中环路结构的比例',
       good: '环路设计合理，避免线性体验',
       poor: '环路较少，可能导致线性体验'
     },
     dead_end_ratio: {
+      description: '评估死胡同和无效路径的比例',
       good: '死胡同比例适中',
       poor: '死胡同过多，影响探索体验'
     },
     treasure_monster_distribution: {
+      description: '分析宝藏和怪物的分布合理性',
       good: '宝藏和怪物分布合理',
       poor: '宝藏和怪物分布需要调整'
     },
     degree_variance: {
+      description: '评估房间连接度的分布情况',
       good: '房间连接度分布均匀',
       poor: '房间连接度分布不均匀'
     },
     door_distribution: {
+      description: '分析门的分布和连接情况',
       good: '门分布合理',
       poor: '门分布需要优化'
     },
     key_path_length: {
+      description: '评估关键路径的长度和复杂度',
       good: '关键路径长度适中',
       poor: '关键路径过长或过短'
     },
     path_diversity: {
+      description: '分析路径的多样性和选择性',
       good: '路径多样性良好',
       poor: '路径多样性需要改善'
     }
+  },
+
+  // 指标选择器
+  metricSelector: {
+    title: '评估指标选择',
+    selectAll: '全选',
+    deselectAll: '全不选',
+    selectedCount: '已选择 {count} / {total} 项',
+    apply: '应用选择',
+    reset: '重置'
   },
 
   // 评分等级
@@ -389,10 +396,21 @@ const zh = {
     poor: '较差'
   },
 
+  // 确认对话框
+  confirm: {
+    deleteFile: '确定要删除这个文件吗？',
+    clearAllFiles: '确定要清除所有文件吗？',
+    clearAllResults: '确定要清除所有结果吗？',
+    clearResults: '确认清除',
+    clearResultsConfirm: '确定要清除 {count} 个分析结果吗？此操作无法撤销。',
+    exportData: '确定要导出数据吗？'
+  },
+
   // 错误信息
   errors: {
     fileUploadFailed: '文件上传失败',
     analysisFailed: '分析失败',
+    analysisError: '分析错误',
     networkError: '网络错误',
     serverError: '服务器错误',
     unknownError: '未知错误',
@@ -400,7 +418,10 @@ const zh = {
     fileTooLarge: '文件过大',
     noFilesSelected: '未选择文件',
     missingFilename: '缺少文件名参数',
-    exportFailed: '报告导出失败，请重试'
+    exportFailed: '报告导出失败，请重试',
+    notFound: '页面未找到',
+    pageNotFound: '抱歉，您访问的页面不存在或已被移除。',
+    suggestions: '您可能想要访问：'
   },
 
   // 成功信息
@@ -412,36 +433,90 @@ const zh = {
     reportExported: '报告导出成功！'
   },
 
-  // 确认对话框
-  confirm: {
-    deleteFile: '确定要删除这个文件吗？',
-    clearAllFiles: '确定要清除所有文件吗？',
-    clearAllResults: '确定要清除所有结果吗？',
-    exportData: '确定要导出数据吗？'
+  // 批量评估
+  batch: {
+    title: '批量评估详情',
+    subtitle: '共 {count} 个地下城',
+    summary: '批量统计',
+    totalDungeons: '总地下城数',
+    averageScore: '平均评分',
+    excellentCount: '优秀数量',
+    needsImprovementCount: '需改进数量',
+    filterByScore: '按评分筛选',
+    allScores: '所有评分',
+    excellentOnly: '仅优秀',
+    goodOnly: '仅良好',
+    averageOnly: '仅一般',
+    poorOnly: '仅较差',
+    sortBy: '排序方式',
+    sortByName: '按名称',
+    sortByScore: '按评分',
+    sortByGrade: '按等级',
+    sortByDate: '按日期',
+    gridView: '网格视图',
+    listView: '列表视图',
+    exportAll: '导出所有',
+    refreshAll: '刷新所有',
+    noResults: '没有符合条件的结果',
+    showOverview: '批量概览',
+    hideOverview: '隐藏概览',
+    viewDetail: '查看详情',
+    excellentCountLabel: '优秀地下城',
+    goodCountLabel: '良好地下城',
+    averageCountLabel: '一般地下城',
+    poorCountLabel: '较差地下城'
   },
 
-  // 改进建议
-  suggestions: {
-    deadEndRatio: {
-      title: '减少死胡同',
-      description: '当前死胡同比例较高，建议增加环路连接以提高探索体验。'
-    },
-    geometricBalance: {
-      title: '改善几何平衡',
-      description: '房间布局的几何平衡需要改善，考虑调整房间大小和位置分布。'
-    },
-    treasureMonsterDistribution: {
-      title: '优化宝藏和怪物分布',
-      description: '宝藏和怪物的分布需要调整，以提供更好的游戏体验。'
-    },
-    accessibility: {
-      title: '改善可达性',
-      description: '某些区域难以到达，建议优化路径设计。'
-    },
-    pathDiversity: {
-      title: '增加路径多样性',
-      description: '路径多样性较低，建议增加不同的探索路径。'
-    }
+  // 批量测试
+  batchTest: {
+    title: '批量测试',
+    subtitle: '批量评估多个地下城文件',
+    testOptions: '测试选项',
+    testMode: '测试模式',
+    fileUpload: '文件上传',
+    directoryPath: '目录路径',
+    timeout: '超时时间（秒）',
+    timeoutPlaceholder: '30',
+    outputFormat: '输出格式',
+    jsonFormat: 'JSON格式',
+    summaryFormat: '汇总格式',
+    uploadFiles: '上传文件',
+    dragAndDrop: '拖拽文件到此处或点击选择文件',
+    supportedFormats: '支持格式: JSON',
+    selectFiles: '选择文件',
+    uploadedFiles: '已上传文件',
+    analyzeAll: '分析所有文件',
+    analyzing: '分析中...',
+    analysisResults: '分析结果',
+    viewDetails: '查看详情',
+    viewAllDetails: '查看所有详情',
+    export: '导出'
+  },
+
+  // 多详情模态框
+  multipleDetailsModal: {
+    title: '多个地下城详情',
+    subtitle: '共 {count} 个地下城',
+    summary: '批量统计',
+    totalDungeons: '总地下城数',
+    averageScore: '平均评分',
+    excellentCount: '优秀数量',
+    needsImprovementCount: '需改进数量',
+    filterByScore: '按评分筛选',
+    allScores: '所有评分',
+    excellentOnly: '仅优秀',
+    goodOnly: '仅良好',
+    averageOnly: '仅一般',
+    poorOnly: '仅较差',
+    sortBy: '排序方式',
+    sortByName: '按名称',
+    sortByScore: '按评分',
+    sortByDate: '按日期',
+    gridView: '网格视图',
+    listView: '列表视图',
+    exportAll: '导出所有',
+    refreshAll: '刷新所有',
+    noResults: '没有符合条件的结果'
   }
 }
 
@@ -474,6 +549,7 @@ const en = {
     yes: 'Yes',
     no: 'No',
     ok: 'OK',
+    actions: 'Actions',
     quickStart: 'Quick Start',
     functionGuide: 'Function Guide',
     faq: 'FAQ',
@@ -505,16 +581,27 @@ const en = {
     supportedFormats: 'Supported formats: JSON, Watabou, Donjon, DungeonDraft',
     selectFiles: 'Select Files',
     uploadedFiles: 'Uploaded files:',
+    uploadPrompt: 'Upload files to start analysis',
+    analysisConfig: 'Analysis Configuration',
+    analysisConfigDescription: 'Configure analysis parameters for better results',
+    startAnalysis: 'Start Analysis ({count} files)',
+    analyzing: 'Analyzing... ({current}/{total})',
+    progress: 'Completed {completed} / {total} files ({percentage}%)',
+    clickToAnalyze: 'Click to start batch analysis of all uploaded files',
+    pleaseUploadFirst: 'Please upload files first',
+    viewAllDetails: 'View All Details',
+    viewDetails: 'View Details',
+    exportResults: 'Export Results',
+    clearResults: 'Clear Results',
+    fileNumber: 'File {current} / {total}',
     noFilesToClear: 'No files to clear',
     noResultsToExport: 'No results to export',
     noResultsToClear: 'No results to clear',
     clearFilesConfirm: 'Are you sure you want to clear {count} files?',
     clearResultsConfirm: 'Are you sure you want to clear {count} analysis results?',
-    startAnalysis: 'Start Analysis',
-    analyzing: 'Analyzing...',
+    analyzeAll: 'Analyze All Files',
     analysisResults: 'Analysis Results',
     overallScore: 'Overall Score',
-    viewDetails: 'View Details',
     quickActions: 'Quick Actions',
     exportReport: 'Export Report',
     exportAllResults: 'Export All Results',
@@ -534,9 +621,12 @@ const en = {
     helpDescription: 'View detailed usage instructions and tutorials',
     aboutDescription: 'Learn about project information and technical features',
     noFilesToAnalyze: 'No files to analyze',
-    startAnalysisDescription: 'Analyze {count} files',
     exportAllResultsDescription: 'Export {count} results',
-    clearAllDescription: 'Clear all files and analysis results'
+    clearAllDescription: 'Clear all files and analysis results',
+    viewBatchDetails: 'Batch Details',
+    viewBatchDetailsDescription: 'View detailed comparison of {count} dungeons',
+    batchTest: 'Batch Test',
+    batchTestDescription: 'Batch evaluate multiple dungeon files'
   },
 
   // Detail page
@@ -545,13 +635,26 @@ const en = {
     backButtonTitle: 'Back (ESC)',
     refreshButton: '🔄 Refresh',
     exportReport: '📄 Export Report',
+    analysisResults: 'Analysis Results',
     dungeonVisualization: 'Dungeon Visualization',
     canvasVisualization: 'Canvas Visualization',
     generatedImage: 'Generated Image',
     noVisualizationData: 'No visualization data available',
+    overallScore: 'Overall Score',
     improvementSuggestions: 'Improvement Suggestions',
-    refreshButtonTitle: 'Refresh data',
-    exportReportTitle: 'Export analysis report'
+    metricDetails: 'Metric Details',
+    disabled: '(Disabled)',
+    noSuggestions: 'Current design performs excellently, no improvement suggestions',
+    noData: 'No Data',
+    multipleDetails: 'Multiple Details',
+    showing: 'Showing',
+    of: 'of',
+    items: 'items',
+    previous: 'Previous',
+    next: 'Next',
+    page: 'Page',
+    noDetailAvailable: 'No detail data available',
+    pageInfo: 'Page {current} of {total}'
   },
 
   // Help page
@@ -627,7 +730,33 @@ const en = {
         q5: 'Can I export my analysis results?',
         a5: 'Yes, you can export detailed reports in JSON format.'
       }
-    }
+    },
+    faqs: [
+      {
+        question: 'What dungeon file formats are supported?',
+        answer: 'Currently supports JSON files from Watabou, Donjon, DungeonDraft and other formats. Each format has a dedicated adapter for conversion.'
+      },
+      {
+        question: 'How long does analysis take?',
+        answer: 'Single file analysis typically takes a few seconds to tens of seconds, depending on dungeon complexity. Batch analysis time increases accordingly.'
+      },
+      {
+        question: 'How to understand quality scores?',
+        answer: 'Score range is 0-100, higher scores indicate better dungeon quality. The system evaluates from multiple dimensions including accessibility, aesthetic balance, loop ratio, etc.'
+      },
+      {
+        question: 'How large dungeons can be analyzed?',
+        answer: 'Theoretically no size limit, but recommend single dungeon room count not exceeding 1000 for optimal performance.'
+      },
+      {
+        question: 'Are analysis results saved?',
+        answer: 'Current session analysis results are saved in browser, will be lost after page refresh. Recommend exporting important results promptly.'
+      },
+      {
+        question: 'How to get better analysis results?',
+        answer: 'Ensure dungeon file format is correct, room and corridor information is complete. System automatically handles common data issues.'
+      }
+    ]
   },
 
   // About page
@@ -688,6 +817,8 @@ const en = {
   // Error pages
   errors: {
     notFound: 'Page not found',
+    pageNotFound: 'Sorry, the page you are looking for does not exist or has been removed.',
+    suggestions: 'You might want to visit:',
     serverError: 'Server error',
     networkError: 'Network error',
     fileError: 'File error',
@@ -701,18 +832,215 @@ const en = {
     visualizationFailed: 'Visualization failed'
   },
 
+  // Confirm dialogs
+  confirm: {
+    deleteFile: 'Are you sure you want to delete this file?',
+    clearAllFiles: 'Are you sure you want to clear all files?',
+    clearAllResults: 'Are you sure you want to clear all results?',
+    clearResults: 'Confirm Clear',
+    clearResultsConfirm: 'Are you sure you want to clear {count} analysis results? This action cannot be undone.',
+    exportData: 'Are you sure you want to export data?'
+  },
+
   // Metrics
   metrics: {
     accessibility: 'Accessibility',
     geometric_balance: 'Geometric Balance',
     loop_ratio: 'Loop Ratio',
     dead_end_ratio: 'Dead End Ratio',
-    treasure_distribution: 'Treasure Distribution',
-    monster_distribution: 'Monster Distribution',
     key_path_length: 'Key Path Length',
     degree_variance: 'Degree Variance',
     path_diversity: 'Path Diversity',
-    door_distribution: 'Door Distribution'
+    door_distribution: 'Door Distribution',
+    treasure_monster_distribution: 'Treasure & Monster Distribution'
+  },
+
+  // Metric Categories
+  metricCategories: {
+    layout: 'Layout Design',
+    gameplay: 'Gameplay',
+    navigation: 'Navigation'
+  },
+
+  // Metric Descriptions
+  metricDescriptions: {
+    accessibility: {
+      description: 'Evaluate reachability and connectivity of areas',
+      good: 'Players can easily reach all areas',
+      poor: 'Some areas are hard to reach, need better path design'
+    },
+    geometric_balance: {
+      description: 'Analyze geometric balance and symmetry of room layout',
+      good: 'Room layout has good geometric balance',
+      poor: 'Room layout geometric balance needs improvement'
+    },
+    loop_ratio: {
+      description: 'Calculate the ratio of loop structures in dungeon',
+      good: 'Loop design is reasonable, avoiding linear experience',
+      poor: 'Few loops, may lead to linear experience'
+    },
+    dead_end_ratio: {
+      description: 'Evaluate the ratio of dead ends and invalid paths',
+      good: 'Dead end ratio is moderate',
+      poor: 'Too many dead ends, affecting exploration experience'
+    },
+    treasure_monster_distribution: {
+      description: 'Analyze the reasonable distribution of treasures and monsters',
+      good: 'Treasure and monster distribution is reasonable',
+      poor: 'Treasure and monster distribution needs adjustment'
+    },
+    degree_variance: {
+      description: 'Evaluate the distribution of room connectivity',
+      good: 'Room connectivity distribution is even',
+      poor: 'Room connectivity distribution is uneven'
+    },
+    door_distribution: {
+      description: 'Analyze door distribution and connections',
+      good: 'Door distribution is reasonable',
+      poor: 'Door distribution needs optimization'
+    },
+    key_path_length: {
+      description: 'Evaluate the length and complexity of key paths',
+      good: 'Key path length is moderate',
+      poor: 'Key path is too long or too short'
+    },
+    path_diversity: {
+      description: 'Analyze path diversity and choices',
+      good: 'Path diversity is good',
+      poor: 'Path diversity needs improvement'
+    }
+  },
+
+  // Metric Selector
+  metricSelector: {
+    title: 'Evaluation Metrics Selection',
+    selectAll: 'Select All',
+    deselectAll: 'Deselect All',
+    selectedCount: 'Selected {count} / {total} items',
+    apply: 'Apply Selection',
+    reset: 'Reset'
+  },
+
+  // 多详情模态框
+  multipleDetailsModal: {
+    title: 'Multiple Dungeon Details',
+    subtitle: '共 {count} 个地下城',
+    summary: 'Batch Statistics',
+    totalDungeons: 'Total Dungeons',
+    averageScore: 'Average Score',
+    excellentCount: 'Excellent Count',
+    needsImprovementCount: 'Needs Improvement Count',
+    filterByScore: 'Filter by Score',
+    allScores: 'All Scores',
+    excellentOnly: 'Only Excellent',
+    goodOnly: 'Only Good',
+    averageOnly: 'Only Average',
+    poorOnly: 'Only Poor',
+    sortBy: 'Sort By',
+    sortByName: 'By Name',
+    sortByScore: 'By Score',
+    sortByGrade: 'By Grade',
+    sortByDate: 'By Date',
+    gridView: 'Grid View',
+    listView: 'List View',
+    exportAll: 'Export All',
+    refreshAll: 'Refresh All',
+    noResults: 'No results found',
+    showOverview: 'Batch Overview',
+    hideOverview: 'Hide Overview',
+    viewDetail: 'View Detail',
+    excellentCountLabel: 'Excellent Dungeons',
+    goodCountLabel: 'Good Dungeons',
+    averageCountLabel: 'Average Dungeons',
+    poorCountLabel: 'Poor Dungeons'
+  },
+
+  // Suggestions
+  suggestions: {
+    deadEndRatio: {
+      title: 'Reduce Dead Ends',
+      description: 'Current dead end ratio is high, suggest adding loop connections to improve exploration experience.'
+    },
+    deadEndRatioOptimize: {
+      title: 'Optimize Dead End Distribution',
+      description: 'Dead end ratio is moderate but has room for optimization. Suggest placing dead ends on secondary paths, keeping main paths clear.'
+    },
+    geometricBalance: {
+      title: 'Improve Geometric Balance',
+      description: 'Room layout geometric balance needs improvement, consider adjusting room size and position distribution.'
+    },
+    treasureMonsterDistribution: {
+      title: 'Optimize Treasure and Monster Distribution',
+      description: 'Treasure and monster distribution needs adjustment to provide better gameplay experience.'
+    },
+    treasureMonsterDistributionBalance: {
+      title: 'Balance Treasure-Monster Ratio',
+      description: 'Treasure and monster distribution is basically reasonable, but can further optimize the ratio to ensure balance between challenge and reward.'
+    },
+    accessibility: {
+      title: 'Improve Accessibility',
+      description: 'Some areas are hard to reach, suggest optimizing path design.'
+    },
+    pathDiversity: {
+      title: 'Increase Path Diversity',
+      description: 'Path diversity is low, suggest adding different exploration paths.'
+    },
+    pathDiversityOptimize: {
+      title: 'Optimize Path Design',
+      description: 'Path diversity is moderate, consider adding some hidden paths or branch routes to increase exploration fun.'
+    },
+    loopRatio: {
+      title: 'Increase Loop Design',
+      description: 'Loop ratio is low, suggest adding circular paths to let players return to previous areas, improving map exploration.'
+    },
+    loopRatioOptimize: {
+      title: 'Optimize Loop Distribution',
+      description: 'Loop design is basically reasonable, consider adding small loops in key areas to enhance exploration experience.'
+    },
+    degreeVariance: {
+      title: 'Optimize Connectivity Distribution',
+      description: 'Room connectivity variance is too large, suggest balancing connection numbers of each room, avoiding some rooms being too isolated or too crowded.'
+    },
+    doorDistribution: {
+      title: 'Improve Door Distribution',
+      description: 'Door distribution is not reasonable, suggest appropriately adding doors on key paths and reducing door usage on secondary paths.'
+    },
+    keyPathLength: {
+      title: 'Optimize Key Path Length',
+      description: 'Key path is too short or too long, suggest designing moderate key path length that won\'t bore players or be too complex.'
+    },
+    roomCount: {
+      title: 'Increase Room Count',
+      description: 'Currently only {count} rooms, suggest increasing to 10-20 rooms to provide richer exploration space.'
+    },
+    roomCountOptimize: {
+      title: 'Streamline Room Design',
+      description: 'Room count is high ({count} rooms), suggest merging some functionally similar rooms to avoid over-complexity.'
+    },
+    corridorDensity: {
+      title: 'Increase Connection Corridors',
+      description: 'Room connections are few, suggest increasing corridor count to improve room connectivity.'
+    },
+    corridorDensityOptimize: {
+      title: 'Optimize Corridor Design',
+      description: 'Too many corridors may make the maze too complex, suggest streamlining some unnecessary corridors.'
+    },
+    overallScoreRedesign: {
+      title: 'Complete Redesign',
+      description: 'Overall score is low, suggest redesigning the dungeon from multiple dimensions, focusing on accessibility, path design, and game element distribution.'
+    },
+    overallScoreOptimize: {
+      title: 'Key Optimization',
+      description: 'Design is basically reasonable but has room for improvement. Suggest focusing on lower-scored metrics for targeted optimization.'
+    },
+    overallScoreExcellent: {
+      title: 'Maintain Excellent Design',
+      description: 'Current design performs excellently! Suggest maintaining this design style as a reference template for other dungeon designs.'
+    },
+    continuousOptimization: {
+      title: 'Continuous Optimization',
+      description: 'Current design performs well, suggest continuing to focus on detail optimization such as room decoration and atmosphere creation.'
+    }
   }
 }
 

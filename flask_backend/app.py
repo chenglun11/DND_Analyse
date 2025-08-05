@@ -32,7 +32,7 @@ def cleanup_expired_cache():
     
     for file_id, cache_data in file_cache.items():
         # 文件过期时间：1小时
-        if current_time - cache_data['timestamp'] > timedelta(hours=1):
+        if current_time - cache_data['timestamp'] > timedelta(hours=24):
             expired_keys.append(file_id)
     
     for key in expired_keys:
@@ -129,8 +129,8 @@ def analyze_dungeon_by_id():
         
         file_data = file_cache[file_id]
         
-        # 检查文件是否过期（1小时后）
-        if datetime.now() - file_data['timestamp'] > timedelta(hours=1):
+        # 检查文件是否过期（24小时后）
+        if datetime.now() - file_data['timestamp'] > timedelta(hours=24):
             del file_cache[file_id]
             return jsonify({'error': '文件已过期，请重新上传'}), 410
         
@@ -182,8 +182,8 @@ def visualize_dungeon_by_id():
         
         file_data = file_cache[file_id]
         
-        # 检查文件是否过期（1小时后）
-        if datetime.now() - file_data['timestamp'] > timedelta(hours=1):
+        # 检查文件是否过期（24小时后）
+        if datetime.now() - file_data['timestamp'] > timedelta(hours=24):
             del file_cache[file_id]
             return jsonify({'error': '文件已过期，请重新上传'}), 410
         
@@ -262,7 +262,7 @@ def get_visualization_data_by_id():
         file_data = file_cache[file_id]
         
         # 检查文件是否过期（1小时后）
-        if datetime.now() - file_data['timestamp'] > timedelta(hours=1):
+        if datetime.now() - file_data['timestamp'] > timedelta(hours=24):
             del file_cache[file_id]
             return jsonify({'error': '文件已过期，请重新上传'}), 410
         
@@ -923,6 +923,304 @@ def get_visualization_data():
             'success': False,
             'error': str(e)
         }), 500
+
+@app.route('/api/batch-test', methods=['POST'])
+def batch_test():
+    """批量测试接口 - 评估多个地下城文件"""
+    try:
+        if 'files' not in request.files:
+            return jsonify({'error': '没有上传文件'}), 400
+        
+        files = request.files.getlist('files')
+        if not files:
+            return jsonify({'error': '没有选择文件'}), 400
+        
+        # 获取测试选项
+        test_options = request.form.get('options', '{}')
+        options = json.loads(test_options) if test_options else {}
+        
+        # 创建临时目录存储文件
+        import tempfile
+        import shutil
+        
+        temp_dir = tempfile.mkdtemp()
+        output_dir = os.path.join(temp_dir, 'reports')
+        os.makedirs(output_dir, exist_ok=True)
+        
+        try:
+            # 保存上传的文件到临时目录
+            file_paths = []
+            for file in files:
+                if file.filename and file.filename.endswith('.json'):
+                    file_path = os.path.join(temp_dir, file.filename)
+                    file.save(file_path)
+                    file_paths.append(file_path)
+            
+            if not file_paths:
+                return jsonify({'error': '没有有效的JSON文件'}), 400
+            
+            # 执行批量评估
+            from src.batch_assess import batch_assess_files
+            results = batch_assess_files(file_paths, output_dir, timeout_per_file=30)
+            
+            # 读取生成的报告文件
+            summary_file = os.path.join(output_dir, "batch_assessment_summary.json")
+            summary_data = {}
+            if os.path.exists(summary_file):
+                with open(summary_file, 'r', encoding='utf-8') as f:
+                    summary_data = json.load(f)
+            
+            # 清理临时文件
+            shutil.rmtree(temp_dir)
+            
+            return jsonify({
+                'success': True,
+                'message': f'批量测试完成，共处理 {len(file_paths)} 个文件',
+                'results': results,
+                'summary': summary_data,
+                'total_files': len(file_paths),
+                'successful_files': len([r for r in results.values() if r.get('status') == 'success']),
+                'failed_files': len([r for r in results.values() if r.get('status') != 'success'])
+            })
+            
+        except Exception as e:
+            # 清理临时文件
+            if os.path.exists(temp_dir):
+                shutil.rmtree(temp_dir)
+            raise e
+            
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': f'批量测试失败: {str(e)}'
+        }), 500
+
+@app.route('/api/batch-test-directory', methods=['POST'])
+def batch_test_directory():
+    """批量测试目录接口 - 评估指定目录中的所有JSON文件"""
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({'error': '没有提供数据'}), 400
+        
+        input_dir = data.get('input_directory')
+        if not input_dir:
+            return jsonify({'error': '没有指定输入目录'}), 400
+        
+        if not os.path.exists(input_dir):
+            return jsonify({'error': f'目录不存在: {input_dir}'}), 400
+        
+        # 获取测试选项
+        options = data.get('options', {})
+        timeout_per_file = options.get('timeout', 30)
+        
+        # 创建输出目录
+        output_dir = data.get('output_directory', 'temp_reports')
+        os.makedirs(output_dir, exist_ok=True)
+        
+        try:
+            # 执行批量评估
+            from src.batch_assess import batch_assess_quality
+            results = batch_assess_quality(
+                input_dir=input_dir,
+                output_dir=output_dir,
+                timeout_per_file=timeout_per_file
+            )
+            
+            # 读取生成的汇总报告
+            summary_file = os.path.join(output_dir, "quality_summary_report.json")
+            summary_data = {}
+            if os.path.exists(summary_file):
+                with open(summary_file, 'r', encoding='utf-8') as f:
+                    summary_data = json.load(f)
+            
+            return jsonify({
+                'success': True,
+                'message': f'批量测试完成，目录: {input_dir}',
+                'results': results,
+                'summary': summary_data,
+                'input_directory': input_dir,
+                'output_directory': output_dir
+            })
+            
+        except Exception as e:
+            raise e
+            
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': f'批量测试失败: {str(e)}'
+        }), 500
+
+@app.route('/api/batch-test-status', methods=['GET'])
+def batch_test_status():
+    """获取批量测试状态"""
+    return jsonify({
+        'success': True,
+        'status': 'ready',
+        'message': '批量测试服务正常运行',
+        'supported_features': [
+            'multiple_file_upload',
+            'directory_processing',
+            'timeout_control',
+            'detailed_reports',
+            'summary_statistics'
+        ]
+    })
+
+@app.route('/api/generate-improvement-suggestions', methods=['POST'])
+def generate_improvement_suggestions():
+    """根据分析结果生成详细的改进建议"""
+    try:
+        file_id = request.form.get('file_id')
+        scores_data = request.form.get('scores', '{}')
+        
+        if not file_id or file_id not in file_cache:
+            return jsonify({'error': '文件ID无效或已过期'}), 404
+        
+        scores = json.loads(scores_data) if scores_data else {}
+        
+        # 生成改进建议
+        suggestions = []
+        
+        # 分析各项指标并生成针对性建议
+        for metric, score_data in scores.items():
+            if isinstance(score_data, dict) and 'score' in score_data:
+                score = score_data['score']
+                detail = score_data.get('detail', {})
+                
+                if score < 0.6:  # 低分指标需要改进
+                    suggestion = generate_metric_suggestion(metric, score, detail)
+                    if suggestion:
+                        suggestions.append(suggestion)
+        
+        # 按优先级排序
+        suggestions.sort(key=lambda x: {'high': 3, 'medium': 2, 'low': 1}[x['priority']], reverse=True)
+        
+        return jsonify({
+            'success': True,
+            'suggestions': suggestions,
+            'total_count': len(suggestions),
+            'high_priority_count': len([s for s in suggestions if s['priority'] == 'high']),
+            'medium_priority_count': len([s for s in suggestions if s['priority'] == 'medium']),
+            'low_priority_count': len([s for s in suggestions if s['priority'] == 'low'])
+        })
+        
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+def generate_metric_suggestion(metric, score, detail):
+    """为特定指标生成改进建议"""
+    suggestions_map = {
+        'dead_end_ratio': {
+            'title': '减少死胡同设计',
+            'description': '当前地牢存在过多死胡同，可能导致玩家感到挫败或探索体验单调。',
+            'priority': 'high' if score < 0.3 else 'medium',
+            'category': '布局优化',
+            'actions': [
+                '将部分死胡同连接到其他区域',
+                '在死胡同末端放置有价值的奖励',
+                '创建循环路径替代直线通道',
+                '增加隐藏通道或秘密房间'
+            ],
+            'expected_improvement': '提升探索流畅性，减少玩家挫败感'
+        },
+        'geometric_balance': {
+            'title': '优化空间布局平衡',
+            'description': '地牢的几何布局不够平衡，可能影响视觉美感和游戏体验。',
+            'priority': 'medium' if score < 0.4 else 'low',
+            'category': '视觉设计',
+            'actions': [
+                '调整房间大小比例，避免过大或过小的房间',
+                '优化房间分布，创造更好的视觉平衡',
+                '确保主要区域的对称性或有序性',
+                '合理安排重要房间的位置'
+            ],
+            'expected_improvement': '提升地牢美观度和空间感'
+        },
+        'treasure_monster_distribution': {
+            'title': '优化奖励分布策略',
+            'description': '宝藏和怪物的分布可能不够合理，影响游戏平衡性和探索动机。',
+            'priority': 'high',
+            'category': '游戏平衡',
+            'actions': [
+                '确保高价值奖励伴随相应的挑战',
+                '在探索路径上合理分布小奖励',
+                '避免奖励过于集中或分散',
+                '根据地牢深度调整奖励价值'
+            ],
+            'expected_improvement': '提升游戏平衡性和探索动机'
+        },
+        'accessibility': {
+            'title': '改善区域连通性',
+            'description': '部分区域的可达性存在问题，可能导致玩家无法到达某些重要位置。',
+            'priority': 'high',
+            'category': '连通性',
+            'actions': [
+                '检查并修复断开的连接',
+                '增加备用路径到达重要区域',
+                '确保所有房间都可以从入口到达',
+                '考虑添加快捷通道或传送点'
+            ],
+            'expected_improvement': '确保完整的探索体验'
+        },
+        'path_diversity': {
+            'title': '增加路径选择多样性',
+            'description': '当前地牢的路径选择较为单一，缺乏探索的策略性和趣味性。',
+            'priority': 'medium',
+            'category': '探索体验',
+            'actions': [
+                '创建多条通往目标的路径',
+                '设计分支路径和可选区域',
+                '增加需要特殊钥匙或技能的路径',
+                '平衡不同路径的风险和奖励'
+            ],
+            'expected_improvement': '提升探索策略性和重玩价值'
+        },
+        'loop_ratio': {
+            'title': '增加循环路径设计',
+            'description': '地牢缺乏足够的环路设计，可能导致线性化的探索体验。',
+            'priority': 'medium',
+            'category': '布局优化',
+            'actions': [
+                '连接现有的死胡同形成环路',
+                '设计大型循环区域',
+                '创建多层次的环路结构',
+                '确保环路有明确的游戏目的'
+            ],
+            'expected_improvement': '提升探索流畅性和导航便利性'
+        },
+        'degree_variance': {
+            'title': '优化连接度分布',
+            'description': '房间连接度的变化不够丰富，可能影响地牢的复杂性和探索体验。',
+            'priority': 'low',
+            'category': '结构优化',
+            'actions': [
+                '创建具有不同连接数的房间',
+                '设计中心枢纽房间',
+                '平衡简单通道和复杂交叉点',
+                '确保重要房间有多个入口'
+            ],
+            'expected_improvement': '增加地牢结构的复杂性和趣味性'
+        }
+    }
+    
+    if metric in suggestions_map:
+        suggestion = suggestions_map[metric].copy()
+        suggestion['metric'] = metric
+        suggestion['current_score'] = score
+        suggestion['target_score'] = 0.7 if score < 0.7 else 0.8
+        
+        # 根据详细信息调整建议
+        if detail and isinstance(detail, dict):
+            suggestion['detail_info'] = detail
+        
+        return suggestion
+    
+    return None
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5001) 

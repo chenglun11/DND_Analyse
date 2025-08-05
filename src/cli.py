@@ -187,15 +187,16 @@ def assess_quality(input_file: str, enable_spatial_inference: bool = True, adjac
         logger.error(f"Assessment failed: {e}")
         return False
 
-def batch_assess(input_dir: str, output_dir: str, enable_spatial_inference: bool = True, adjacency_threshold: float = 1.0, timeout_per_file: int = 30):
+def batch_assess(input_dir: str, output_dir: str, enable_spatial_inference: bool = True, adjacency_threshold: float = 1.0, timeout_per_file: int = 30) -> Dict[str, Any]:
     """批量评估地图质量"""
     try:
         from src.batch_assess import batch_assess_quality
-        batch_assess_quality(input_dir, output_dir, enable_spatial_inference, adjacency_threshold, timeout_per_file)
-        logger.info(f"Batch assessment completed: {output_dir}")
+        results = batch_assess_quality(input_dir, output_dir, enable_spatial_inference, adjacency_threshold, timeout_per_file)
+        logger.info(f"批量评估完成: {output_dir}")
+        return results
     except Exception as e:
-        logger.error(f"Batch assessment failed: {e}")
-        sys.exit(1)
+        logger.error(f"批量评估失败: {e}")
+        raise
 
 # ======= argparse 实现 =======
 def main():
@@ -383,7 +384,24 @@ def main():
             sys.exit(1)
 
     elif args.command == 'batch-assess':
-        batch_assess(args.input_dir, args.output_dir, not args.no_spatial_inference, args.adjacency_threshold, args.timeout)
+        try:
+            results = batch_assess(args.input_dir, args.output_dir, not args.no_spatial_inference, args.adjacency_threshold, args.timeout)
+            print("\nBatch Assessment Results:")
+            for file_name, report in results.items():
+                print(f"\n--- {file_name} ---")
+                print(f"Overall Score: {report['overall_score']:.3f}")
+                print(f"Grade: {report['grade']}")
+                print("\nDetailed Metrics:")
+                for rule_name, rule_result in report['scores'].items():
+                    score = rule_result.get('score', 0.0) if isinstance(rule_result, dict) else rule_result
+                    print(f"  {rule_name}: {score:.3f}")
+                print("\nImprovements:")
+                for rec in report.get('recommendations', []):
+                    print(f"  - {rec}")
+                print("-" * 20)
+        except Exception as e:
+            logger.error(f"Error during batch assessment: {e}")
+            sys.exit(1)
 
 if __name__ == '__main__':
     main() 

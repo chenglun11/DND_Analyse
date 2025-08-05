@@ -1,132 +1,417 @@
 <template>
-  <div class="detail-view">
-    <!-- 页头 -->
-    <header class="page-header">
-      <div class="header-content">
-                  <button @click="goBack" class="back-btn" :title="t('detail.backButtonTitle')">{{ t('detail.backButton') }}</button>
-        <div class="page-info">
-          <h1>{{ dungeonName }}</h1>
-          <p class="page-subtitle">{{ t('detail.analysisResults') }}</p>
-        </div>
-        <div class="header-right">
-          <button @click="exportReport" class="export-btn">{{ t('detail.exportReport') }}</button>
-          <button @click="forceRefresh" class="refresh-btn">{{ t('detail.refreshButton') }}</button>
-        </div>
-      </div>
-    </header>
-
-    <div class="content">
-      <div class="dungeon-details">
-        <div class="visualization-section">
-          <h2>{{ t('detail.dungeonVisualization') }}</h2>
-          
-          <div v-if="loading" class="loading">
-            <p>{{ t('common.loading') }}</p>
-          </div>
-          
-          <div v-else-if="error" class="error">
-            <p>{{ error }}</p>
-          </div>
-          
-          <div v-if="dungeonData" class="canvas-visualization">
-            <h3>{{ t('detail.canvasVisualization') }}</h3>
-            <div class="visualizer-container">
-              <DungeonVisualizer 
-                :dungeon-data="dungeonData"
-                @room-click="handleRoomClick"
-                @corridor-click="handleCorridorClick"
-              />
+  <div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <!-- 顶部导航栏 - 与全局页头配合 -->
+    <div class="bg-white/95 backdrop-blur-xl border-b border-gray-200/60 shadow-sm sticky top-16 z-40">
+      <div class="max-w-full mx-auto px-4 py-3">
+        <div class="flex items-center justify-between">
+          <!-- 左侧：返回按钮和标题 -->
+          <div class="flex items-center gap-3">
+            <button 
+              @click="goBack"
+              class="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-300 shadow-sm text-sm font-medium"
+              :title="t('detail.backButtonTitle')"
+            >
+              <ArrowLeftIcon class="w-4 h-4" />
+              返回
+            </button>
+            
+            <div class="text-lg font-semibold text-gray-800">
+              {{ currentDetail?.name || dungeonName || '地下城详情' }}
             </div>
           </div>
           
-          <div v-if="imageData" class="generated-image">
-            <h3>{{ t('detail.generatedImage') }}</h3>
-            <div class="image-container">
-              <img :src="`data:image/png;base64,${imageData}`" alt="Generated visualization" />
-            </div>
-          </div>
-          
-          <div v-else class="no-data">
-            <p>{{ t('detail.noVisualizationData') }}</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="analysis-section">
-        <h2>{{ t('detail.analysisResults') }}</h2>
-        
-        <div class="analysis-content">
-          <!-- 总体评分 -->
-          <div class="overall-score-card">
-            <h3>{{ t('detail.overallScore') }}</h3>
-            <div class="score-display">
-              <div class="score-circle" :class="getScoreClass(overallScore)">
-                {{ overallScore.toFixed(1) }}
-              </div>
-              <div class="score-description">
-                <p>{{ getScoreDescription(overallScore) }}</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 详细指标 -->
-          <div class="metrics-grid">
-            <div v-for="(score, metric) in detailedScores" :key="metric" class="metric-card" :class="getScoreClass(score)">
-              <div class="metric-header">
-                <h4>{{ getMetricName(metric) }}</h4>
-                <span class="metric-score" :class="getScoreClass(score)">
-                  {{ (score * 100).toFixed(0) }}%
-                </span>
-              </div>
-              <div class="metric-bar">
-                <div class="bar-fill" :style="{ width: `${score * 100}%` }" :class="getScoreClass(score)"></div>
-              </div>
-              <p class="metric-description">{{ getMetricDescription(metric, score) }}</p>
-            </div>
-          </div>
-
-          <!-- 建议改进 -->
-          <div class="improvements-section">
-            <h3>{{ t('detail.improvementSuggestions') }}</h3>
-            <div class="improvements-list">
-              <div v-for="(suggestion, index) in improvementSuggestions" :key="index" class="suggestion-item">
-                <div class="suggestion-icon">💡</div>
-                <div class="suggestion-content">
-                  <h4>{{ suggestion.title }}</h4>
-                  <p>{{ suggestion.description }}</p>
-                </div>
-              </div>
-            </div>
+          <!-- 右侧：批量概览切换 -->
+          <div v-if="isMultiDetail" class="flex items-center gap-3">
+            <button 
+              @click="showBatchOverview = !showBatchOverview"
+              class="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+              </svg>
+              {{ showBatchOverview ? '隐藏概览' : '批量概览' }}
+            </button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- 页脚 -->
-    <footer class="footer">
-      <p>&copy; 2024 地下城适配器</p>
-    </footer>
-
-    <!-- 房间详情弹窗 -->
-    <div v-if="selectedRoom" class="room-modal" @click="closeRoomModal">
-      <div class="modal-content" @click.stop>
-        <div class="modal-header">
-          <h3>{{ selectedRoom.type }} 房间</h3>
-          <button @click="closeRoomModal" class="close-btn">×</button>
-        </div>
-        <div class="modal-body">
-          <div class="room-info">
-            <p><strong>位置:</strong> ({{ selectedRoom.x }}, {{ selectedRoom.y }})</p>
-            <p><strong>尺寸:</strong> {{ selectedRoom.width }} × {{ selectedRoom.height }}</p>
-            <p><strong>连接数:</strong> {{ selectedRoom.connections.length }}</p>
+    <!-- 多详情导航栏 - 独立于sticky页头 -->
+    <div v-if="isMultiDetail && detailList.length > 1" class="bg-white/80 backdrop-blur-sm border-b border-gray-200/60 shadow-sm">
+      <div class="max-w-full mx-auto px-4 py-3">
+        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+          <!-- 当前地下城信息 -->
+          <div class="flex-1">
+            <div class="text-sm text-gray-500">
+              第 {{ currentPage }} 页，共 {{ totalPages }} 页
+            </div>
           </div>
-          <div class="room-connections">
-            <h4>连接房间:</h4>
-            <ul>
-              <li v-for="connection in selectedRoom.connections" :key="connection">
-                {{ connection }}
-              </li>
-            </ul>
+          
+          <!-- 分页控制 -->
+          <div class="flex items-center gap-3">
+            <button 
+              @click="goToPage(currentPage - 1)"
+              :disabled="currentPage <= 1"
+              class="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+            >
+              ← 上一个
+            </button>
+            
+            <div class="flex gap-1">
+              <button 
+                v-for="page in visiblePages" 
+                :key="page"
+                @click="page > 0 ? goToPage(page) : null"
+                :class="[
+                  'px-3 py-2 rounded-lg transition-colors text-sm font-medium',
+                  page === currentPage 
+                    ? 'bg-blue-600 text-white' 
+                    : page > 0
+                      ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      : 'bg-transparent text-gray-400 cursor-default'
+                ]"
+                :disabled="page <= 0"
+              >
+                {{ page > 0 ? page : '...' }}
+              </button>
+            </div>
+            
+            <button 
+              @click="goToPage(currentPage + 1)"
+              :disabled="currentPage >= totalPages"
+              class="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+            >
+              下一个 →
+            </button>
+          </div>
+        </div>
+        
+        <!-- 快速导航 -->
+        <div class="mt-4">
+          <div class="text-sm font-medium text-gray-700 mb-2">快速导航</div>
+          <div class="flex flex-wrap gap-2">
+            <button 
+              v-for="(detail, index) in detailList" 
+              :key="detail.name"
+              @click="goToPage(index + 1)"
+              :class="[
+                'px-3 py-2 rounded-lg text-sm font-medium transition-colors',
+                currentPage === index + 1
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              ]"
+              :title="detail.name"
+            >
+              {{ detail.name.length > 15 ? detail.name.substring(0, 15) + '...' : detail.name }}
+            </button>
+          </div>
+        </div>
+        
+        <!-- 键盘导航提示 -->
+        <div class="mt-3 p-2 bg-blue-50 border border-blue-200 rounded-lg">
+          <div class="flex items-center gap-2 text-sm text-blue-700">
+            <span class="text-lg">💡</span>
+            <span>键盘快捷键：← → 切换地下城，Home/End 跳转到第一个/最后一个</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 两列布局 -->
+    <div class="max-w-full mx-auto p-4">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <!-- 左侧边栏：操作面板 -->
+        <div class="lg:col-span-2">
+          <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-3 sticky top-24">
+            <h3 class="text-base font-semibold text-gray-800 mb-3">操作</h3>
+            
+            <!-- 基础操作 -->
+            <div class="space-y-2 mb-4">
+              <button 
+                @click="refreshData"
+                class="w-full flex items-center gap-2 px-2 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+                刷新
+              </button>
+              
+              <button 
+                @click="exportReport"
+                class="w-full flex items-center gap-2 px-2 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                导出
+              </button>
+            </div>
+            
+            <!-- 批量操作 -->
+            <div v-if="isMultiDetail" class="space-y-2 mb-4">
+              <button 
+                @click="exportBatchReport"
+                class="w-full flex items-center gap-2 px-2 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                导出全部
+              </button>
+            </div>
+            
+            <!-- 当前信息 -->
+            <div class="space-y-2">
+              <div class="bg-gray-50 rounded-lg p-2">
+                <div class="text-xs text-gray-600 mb-1">当前地下城</div>
+                <div class="text-xs font-medium text-gray-800 truncate">
+                  {{ currentDetail?.name || dungeonName || '未知' }}
+                </div>
+              </div>
+              
+              <div v-if="isMultiDetail" class="bg-gray-50 rounded-lg p-2">
+                <div class="text-xs text-gray-600 mb-1">进度</div>
+                <div class="text-xs font-medium text-gray-800">
+                  {{ currentPage }} / {{ totalPages }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 右侧：主要内容区域 -->
+        <div class="lg:col-span-10">
+          <!-- 批量评估概览面板 -->
+          <div v-if="showBatchOverview" class="bg-white rounded-xl shadow-lg border border-gray-200 p-6 mb-6">
+            <div class="flex items-center justify-between mb-6">
+              <h3 class="text-xl font-bold text-gray-800">批量评估概览</h3>
+              <div class="flex gap-2">
+                <button 
+                  @click="showBatchOverview = false"
+                  class="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm"
+                >
+                  关闭概览
+                </button>
+              </div>
+            </div>
+            
+            <!-- 统计卡片 -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+              <div class="bg-gradient-to-br from-green-50 to-green-100 border border-green-200 rounded-xl p-4 text-center">
+                <div class="text-2xl font-bold text-green-600">{{ excellentCount }}</div>
+                <div class="text-sm text-green-700 font-medium">优秀</div>
+              </div>
+              <div class="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-xl p-4 text-center">
+                <div class="text-2xl font-bold text-blue-600">{{ goodCount }}</div>
+                <div class="text-sm text-blue-700 font-medium">良好</div>
+              </div>
+              <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 border border-yellow-200 rounded-xl p-4 text-center">
+                <div class="text-2xl font-bold text-yellow-600">{{ averageCount }}</div>
+                <div class="text-sm text-yellow-700 font-medium">一般</div>
+              </div>
+              <div class="bg-gradient-to-br from-red-50 to-red-100 border border-red-200 rounded-xl p-4 text-center">
+                <div class="text-2xl font-bold text-red-600">{{ poorCount }}</div>
+                <div class="text-sm text-red-700 font-medium">需改进</div>
+              </div>
+            </div>
+            
+            <!-- 筛选和排序控制 -->
+            <div class="flex flex-col md:flex-row gap-4 mb-6">
+              <div class="flex-1">
+                <label class="block text-sm font-medium text-gray-700 mb-2">排序方式</label>
+                <select v-model="sortBy" @change="sortDetails" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                  <option value="name">按名称排序</option>
+                  <option value="score">按评分排序</option>
+                  <option value="grade">按等级排序</option>
+                </select>
+              </div>
+              
+              <div class="flex-1">
+                <label class="block text-sm font-medium text-gray-700 mb-2">筛选等级</label>
+                <select v-model="filterBy" @change="filterDetails" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                  <option value="all">全部等级</option>
+                  <option value="excellent">仅优秀</option>
+                  <option value="good">仅良好</option>
+                  <option value="average">仅一般</option>
+                  <option value="poor">仅需改进</option>
+                </select>
+              </div>
+            </div>
+            
+            <!-- 地下城卡片网格 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              <div v-for="(detail, index) in filteredDetailList" :key="detail.name" 
+                   :class="[
+                     'border-2 rounded-xl p-4 hover:shadow-lg transition-all duration-200 cursor-pointer transform hover:scale-105',
+                     currentDetail?.name === detail.name 
+                       ? 'border-blue-400 bg-blue-50 shadow-lg' 
+                       : 'border-gray-200 bg-white hover:border-gray-300'
+                   ]"
+                   @click="goToDetail(detail.name)">
+                <div class="flex items-start justify-between mb-3">
+                  <h4 class="font-semibold text-gray-800 text-sm leading-tight">{{ detail.name }}</h4>
+                  <span :class="[
+                    'px-2 py-1 rounded-full text-xs font-medium',
+                    getScoreClass(detail.overallScore || 0) === 'excellent' ? 'bg-green-100 text-green-700' :
+                    getScoreClass(detail.overallScore || 0) === 'good' ? 'bg-blue-100 text-blue-700' :
+                    getScoreClass(detail.overallScore || 0) === 'average' ? 'bg-yellow-100 text-yellow-700' :
+                    'bg-red-100 text-red-700'
+                  ]">
+                    {{ getScoreClass(detail.overallScore || 0) === 'excellent' ? '优秀' :
+                       getScoreClass(detail.overallScore || 0) === 'good' ? '良好' :
+                       getScoreClass(detail.overallScore || 0) === 'average' ? '一般' : '需改进' }}
+                  </span>
+                </div>
+                
+                <div class="space-y-2">
+                  <div class="text-xs text-gray-500 truncate">{{ detail.filename }}</div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-lg font-bold" :class="[
+                      getScoreClass(detail.overallScore || 0) === 'excellent' ? 'text-green-600' :
+                      getScoreClass(detail.overallScore || 0) === 'good' ? 'text-blue-600' :
+                      getScoreClass(detail.overallScore || 0) === 'average' ? 'text-yellow-600' :
+                      'text-red-600'
+                    ]">
+                      {{ detail.score?.toFixed(2) || detail.overallScore?.toFixed(2) || '0.00' }}
+                    </span>
+                    <span class="text-xs text-gray-400">{{ index + 1 }}/{{ filteredDetailList.length }}</span>
+                  </div>
+                  
+                  <button class="w-full mt-3 bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
+                    {{ currentDetail?.name === detail.name ? '当前查看' : '查看详情' }}
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div v-if="filteredDetailList.length === 0" class="text-center py-8 text-gray-500">
+              <div class="text-4xl mb-2">📭</div>
+              <div class="text-lg font-medium">没有找到匹配的地下城</div>
+              <div class="text-sm">请尝试调整筛选条件</div>
+            </div>
+          </div>
+
+          <!-- 主要内容区域 -->
+          <div class="max-w-full mx-auto px-6 py-6">
+            <!-- 批量概览面板 -->
+            <div v-if="isMultiDetail && showBatchOverview" class="mb-8">
+              <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-6">
+                <div class="flex items-center justify-between mb-6">
+                  <h2 class="text-2xl font-bold text-gray-800">批量分析概览</h2>
+                  <div class="text-sm text-gray-600">
+                    共 {{ detailList.length }} 个地下城
+                  </div>
+                </div>
+                
+                <!-- 统计卡片 -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                  <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-6 rounded-xl shadow-lg">
+                    <div class="text-3xl font-bold">{{ averageScore.toFixed(1) }}</div>
+                    <div class="text-blue-100">平均评分</div>
+                  </div>
+                  <div class="bg-gradient-to-br from-green-500 to-green-600 text-white p-6 rounded-xl shadow-lg">
+                    <div class="text-3xl font-bold">{{ bestScore.toFixed(1) }}</div>
+                    <div class="text-green-100">最高评分</div>
+                  </div>
+                  <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white p-6 rounded-xl shadow-lg">
+                    <div class="text-3xl font-bold">{{ detailList.length }}</div>
+                    <div class="text-purple-100">地下城数量</div>
+                  </div>
+                </div>
+                
+                <!-- 过滤和排序 -->
+                <div class="flex flex-col lg:flex-row gap-4 mb-6">
+                  <div class="flex-1">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">排序方式</label>
+                    <select 
+                      v-model="sortBy" 
+                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
+                      <option value="name">按名称</option>
+                      <option value="score">按评分</option>
+                      <option value="index">按顺序</option>
+                    </select>
+                  </div>
+                  <div class="flex-1">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">评分范围</label>
+                    <select 
+                      v-model="scoreFilter" 
+                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
+                      <option value="all">全部</option>
+                      <option value="high">高分 (8.0+)</option>
+                      <option value="medium">中等 (5.0-8.0)</option>
+                      <option value="low">低分 (<5.0)</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <!-- 地下城卡片网格 -->
+                <div class="grid xl:grid-cols-4 gap-6">
+                  <div 
+                    v-for="(detail, index) in filteredAndSortedDetails" 
+                    :key="detail.name"
+                    class="bg-white/60 backdrop-blur-sm rounded-xl shadow-md border border-white/20 hover:shadow-lg transition-all duration-300 cursor-pointer"
+                    :class="currentPage === index + 1 ? 'ring-2 ring-blue-500 bg-blue-50/80' : ''"
+                    @click="goToPage(index + 1)"
+                  >
+                    <div class="p-6">
+                      <div class="flex items-start justify-between mb-4">
+                        <div class="flex-1">
+                          <h3 class="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">
+                            {{ detail.name }}
+                          </h3>
+                          <div class="text-sm text-gray-600">
+                            第 {{ index + 1 }} 个地下城
+                          </div>
+                        </div>
+                        <div class="flex flex-col items-end">
+                          <div class="text-2xl font-bold text-gray-800">
+                            {{ detail.score?.toFixed(1) || 'N/A' }}
+                          </div>
+                          <div class="text-xs text-gray-500">
+                            {{ getGradeLabel(detail.score) }}
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-600">
+                          {{ currentPage === index + 1 ? '当前' : '查看详情' }}
+                        </div>
+                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                          <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- 空状态 -->
+                <div v-if="filteredAndSortedDetails.length === 0" class="text-center py-12">
+                  <div class="text-gray-400 text-lg">没有找到匹配的地下城</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 主要内容网格 -->
+            <div class="grid lg:grid-cols-12 gap-8">
+              <!-- 主要内容区域 -->
+              <div class="lg:col-span-12">
+                <DungeonDetail 
+                  v-if="currentDetail"
+                  :dungeon-name="currentDetail.name"
+                  :file-id="currentDetail.fileId"
+                  :scores="currentDetail.score"
+                  :selected-metrics="selectedMetrics"
+                  :visualization-mode="visualizationMode"
+                  @visualization-mode-change="visualizationMode = $event"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -135,291 +420,412 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { computed, ref, onMounted, watch, nextTick, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import DungeonVisualizer from '../components/DungeonVisualizer.vue'
-import { DungeonAPI } from '../services/api'
-import type { DungeonData, Room, Corridor } from '../types/dungeon'
-
-interface ImprovementSuggestion {
-  title: string
-  description: string
-}
+import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue'
+import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
+import { ArrowLeftIcon, DocumentArrowDownIcon } from '@heroicons/vue/24/outline'
+import DungeonDetail from '../components/DungeonDetail.vue'
 
 const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
 
-const goBack = () => {
-  // 如果有历史记录，返回上一页
-  if (window.history.length > 1) {
-    router.back()
-  } else {
-    // 否则返回首页
-    router.push('/')
+// 分页相关
+const currentPage = ref(1)
+const itemsPerPage = 1 // 每页显示1个详情
+const forceUpdate = ref(0) // 强制更新计数器
+
+// 多详情相关
+const detailList = ref<any[]>([])
+const showBatchOverview = ref(false)
+
+// 批量评估相关
+const sortBy = ref('name')
+const filterBy = ref('all')
+const filteredDetailList = ref<any[]>([])
+
+// Headless UI 状态
+const showExportDialog = ref(false)
+const pendingExportData = ref<any>(null)
+
+// 监听detailList变化
+watch(detailList, (newList) => {
+  console.log('详情列表变化:', newList.length, '项')
+  if (newList.length > 0 && currentPage.value > Math.ceil(newList.length / itemsPerPage)) {
+    console.log('当前页超出范围，重置到第一页')
+    currentPage.value = 1
   }
-}
-const dungeonData = ref<DungeonData | undefined>(undefined);
-const overallScore = ref(0);
-const detailedScores = ref<Record<string, number>>({});
-const loading = ref(false);
-const error = ref<string | null>(null);
-const imageData = ref<string | null>(null);
-const selectedRoom = ref<Room | null>(null)
-
-const dungeonName = computed(() => {
-      return route.params.name as string || t('common.unknown')
-})
-
-// 获取分析结果
-const fetchAnalysisResult = async () => {
-  try {
-    loading.value = true
-    error.value = null
-    
-    const filename = route.params.filename as string
-    const dungeonName = route.params.name as string
-    const fileId = route.params.fileId as string  // 获取文件ID
-    
-    console.log('获取分析结果，文件名:', filename, '地下城名称:', dungeonName, '文件ID:', fileId)
-    
-    // 优先使用文件ID，如果没有则使用文件名
-    if (fileId) {
-      // 使用新的内存缓存API
-      console.log('使用文件ID进行查询:', fileId)
-      
-      // 获取分析结果
-      try {
-        const analysisResult = await DungeonAPI.analyzeDungeonById(fileId)
-        console.log('分析结果:', analysisResult)
-        
-        if (analysisResult.success && analysisResult.result) {
-          const assessment = analysisResult.result
-          console.log('评估数据:', assessment)
-          
-          overallScore.value = assessment.overall_score || 0
-          console.log('整体分数:', overallScore.value)
-          
-          // 处理详细分数 - 从scores中提取分数
-          const scores = assessment.scores || {}
-          const processedScores: Record<string, number> = {}
-          
-          for (const [metric, scoreData] of Object.entries(scores)) {
-            if (typeof scoreData === 'object' && scoreData !== null && 'score' in scoreData) {
-              // 保持0-1的分数范围
-              processedScores[metric] = scoreData.score as number
-            }
-          }
-          
-          detailedScores.value = processedScores
-          console.log('处理后的分数:', processedScores)
-          
-          // 如果没有整体分数，计算平均分
-          if (!assessment.overall_score && Object.keys(processedScores).length > 0) {
-            const totalScore = Object.values(processedScores).reduce((sum, score) => sum + score, 0)
-            overallScore.value = (totalScore / Object.keys(processedScores).length) * 10
-            console.log('计算的整体分数:', overallScore.value)
-          }
-        }
-      } catch (analysisErr) {
-        console.error('通过文件ID获取分析结果失败:', analysisErr)
-        error.value = '获取分析结果失败'
-        return
-      }
-      
-      // 获取可视化数据
-      try {
-        const result = await DungeonAPI.getVisualizationDataById(fileId)
-        if (result.success && result.visualization_data) {
-          dungeonData.value = result.visualization_data
-        }
-      } catch (dataErr) {
-        console.warn('通过文件ID获取可视化数据失败:', dataErr)
-      }
-      
-      // 生成图像
-      try {
-        const imageResult = await DungeonAPI.visualizeDungeonById(fileId, {
-          show_connections: true,
-          show_room_ids: true,
-          show_grid: true,
-          show_game_elements: true
-        })
-        
-        if (imageResult.success && imageResult.image_data) {
-          imageData.value = imageResult.image_data
-          console.log('图像生成成功')
-        }
-      } catch (imageErr) {
-        console.warn('通过文件ID生成图像失败:', imageErr)
-      }
-      
-    } else if (filename) {
-      // 回退到使用文件名（向后兼容）
-      console.log('使用文件名进行查询:', filename)
-      
-      // 如果没有文件名，显示错误
-      if (!filename) {
-        error.value = t('errors.missingFilename')
-        return
-      }
-      
-      // 创建文件对象（这里需要实际的文件内容）
-      // 由于前端无法直接访问文件系统，我们需要从后端获取数据
-      const file = new File([''], filename, { type: 'application/json' })
-      
-      // 首先尝试生成图像
-      try {
-        const imageResult = await DungeonAPI.visualizeDungeonByFilename(filename, {
-          show_connections: true,
-          show_room_ids: true,
-          show_grid: true,
-          show_game_elements: true
-        })
-        
-        if (imageResult.success && imageResult.image_data) {
-          imageData.value = imageResult.image_data
-          console.log('图像生成成功')
-        }
-      } catch (imageErr) {
-        console.warn('图像生成失败，回退到Canvas可视化:', imageErr)
-      }
-      
-      // 获取可视化数据（作为备用）
-      try {
-        const result = await DungeonAPI.getVisualizationDataByFilename(filename)
-        if (result.success && result.visualization_data) {
-          dungeonData.value = result.visualization_data
-        }
-      } catch (dataErr) {
-        console.warn('可视化数据获取失败:', dataErr)
-      }
-      
-      // 获取分析结果
-      const analysisResult = await DungeonAPI.analyzeDungeonByFilename(filename)
-      console.log('分析结果:', analysisResult)
-      
-      if (analysisResult.success && analysisResult.result) {
-        const assessment = analysisResult.result
-        console.log('评估数据:', assessment)
-        
-        overallScore.value = assessment.overall_score || 0
-        console.log('整体分数:', overallScore.value)
-        
-        // 处理详细分数 - 从scores中提取分数
-        const scores = assessment.scores || {}
-        const processedScores: Record<string, number> = {}
-        
-        for (const [metric, scoreData] of Object.entries(scores)) {
-          if (typeof scoreData === 'object' && scoreData !== null && 'score' in scoreData) {
-            // 保持0-1的分数范围
-            processedScores[metric] = scoreData.score as number
-          }
-        }
-        
-        detailedScores.value = processedScores
-        console.log('处理后的分数:', processedScores)
-        
-        // 如果没有整体分数，计算平均分
-        if (!assessment.overall_score && Object.keys(processedScores).length > 0) {
-          const totalScore = Object.values(processedScores).reduce((sum, score) => sum + score, 0)
-          overallScore.value = (totalScore / Object.keys(processedScores).length) * 10
-          console.log('计算的整体分数:', overallScore.value)
-        }
-      }
-    } else {
-      error.value = '缺少文件名或文件ID'
-      return
-    }
-  } catch (err) {
-    console.error('获取分析结果时出错:', err)
-    error.value = err instanceof Error ? err.message : '获取数据失败'
-    
-    // 清空数据，不设置默认值
-    overallScore.value = 0
-    detailedScores.value = {}
-  } finally {
-    loading.value = false
-  }
-}
-
-// 监听数据变化
-watch(() => dungeonData.value, (newData) => {
-  console.log('DungeonData changed:', newData)
-  console.log('Rooms count:', newData?.rooms.length)
-  console.log('Corridors count:', newData?.corridors.length)
+  // 更新筛选后的列表
+  filterAndSortDetails()
 }, { deep: true })
 
-// 处理地下城数据
-const processDungeonData = (unifiedData: any) => {
-  try {
-    // 检查是否是FiMap Elites格式
-    if (unifiedData.plan_graph && unifiedData.plan_graph.graph) {
-      return unifiedData // 直接返回，因为已经处理过
-    } else {
-      // 假设是其他格式，尝试转换
-      // 这里需要根据实际的统一数据格式进行转换
-      // 例如，如果统一数据包含 rooms 和 corridors 数组
-      return {
-        rooms: unifiedData.rooms || [],
-        corridors: unifiedData.corridors || [],
-        width: unifiedData.width || 800,
-        height: unifiedData.height || 600
+// 监听当前页变化
+watch(currentPage, (newPage) => {
+  console.log('当前页变化:', newPage)
+})
+
+const goBack = () => {
+  // 直接返回主页，而不是使用浏览器历史记录
+  router.push('/')
+}
+
+// 判断是否为多详情模式
+const isMultiDetail = computed(() => {
+  // 检查路由名称或参数
+  return route.name === 'detail-multi' || route.params.names !== undefined
+})
+
+// 页面标题
+const pageTitle = computed(() => {
+  if (isMultiDetail.value) {
+    return `${t('detail.multipleDetails')} (${detailList.value.length})`
+  }
+  return dungeonName.value
+})
+
+// 单个详情相关
+const dungeonName = computed(() => {
+  return route.params.name as string || t('common.unknown')
+})
+
+const fileId = computed(() => {
+  return route.params.fileId as string
+})
+
+const filename = computed(() => {
+  return route.params.filename as string
+})
+
+// 批量评估统计
+const excellentCount = computed(() => {
+  return detailList.value.filter(d => getScoreClass(d.overallScore || 0) === 'excellent').length
+})
+
+const goodCount = computed(() => {
+  return detailList.value.filter(d => getScoreClass(d.overallScore || 0) === 'good').length
+})
+
+const averageCount = computed(() => {
+  return detailList.value.filter(d => getScoreClass(d.overallScore || 0) === 'average').length
+})
+
+const poorCount = computed(() => {
+  return detailList.value.filter(d => getScoreClass(d.overallScore || 0) === 'poor' || getScoreClass(d.overallScore || 0) === 'very-poor').length
+})
+
+// 筛选和排序
+const filterAndSortDetails = () => {
+  let filtered = [...detailList.value]
+  
+  // 筛选
+  if (filterBy.value !== 'all') {
+    filtered = filtered.filter(detail => {
+      const scoreClass = getScoreClass(detail.overallScore || 0)
+      switch (filterBy.value) {
+        case 'excellent':
+          return scoreClass === 'excellent'
+        case 'good':
+          return scoreClass === 'good'
+        case 'average':
+          return scoreClass === 'average'
+        case 'poor':
+          return scoreClass === 'poor' || scoreClass === 'very-poor'
+        default:
+          return true
       }
+    })
+  }
+  
+  // 排序
+  filtered.sort((a, b) => {
+    switch (sortBy.value) {
+      case 'score':
+        return (b.overallScore || 0) - (a.overallScore || 0)
+      case 'grade':
+        return getScoreClass(a.overallScore || 0).localeCompare(getScoreClass(b.overallScore || 0))
+      case 'name':
+      default:
+        return a.name.localeCompare(b.name)
     }
-  } catch (error) {
-    console.error('Error processing dungeon data:', error)
-    // 返回默认数据
-    return {
-      width: 800,
-      height: 600,
-      rooms: [],
-      corridors: []
-    }
+  })
+  
+  filteredDetailList.value = filtered
+}
+
+const sortDetails = () => {
+  filterAndSortDetails()
+}
+
+const filterDetails = () => {
+  filterAndSortDetails()
+}
+
+// 导航到指定详情
+const goToDetail = (name: string) => {
+  const originalIndex = detailList.value.findIndex(d => d.name === name)
+  if (originalIndex !== -1) {
+    currentPage.value = originalIndex + 1
+    showBatchOverview.value = false
   }
 }
 
-const improvementSuggestions = computed<ImprovementSuggestion[]>(() => {
-  const suggestions: ImprovementSuggestion[] = []
-  
-  if (detailedScores.value.dead_end_ratio < 0.5) {
-          suggestions.push({
-        title: t('suggestions.deadEndRatio.title'),
-        description: t('suggestions.deadEndRatio.description')
-      })
-    }
-    
-    if (detailedScores.value.geometric_balance < 0.7) {
-      suggestions.push({
-        title: t('suggestions.geometricBalance.title'),
-        description: t('suggestions.geometricBalance.description')
-      })
-    }
-    
-    if (detailedScores.value.treasure_monster_distribution < 0.5) {
-      suggestions.push({
-        title: t('suggestions.treasureMonsterDistribution.title'),
-        description: t('suggestions.treasureMonsterDistribution.description')
-      })
-    }
-    
-    if (detailedScores.value.accessibility < 0.7) {
-      suggestions.push({
-        title: t('suggestions.accessibility.title'),
-        description: t('suggestions.accessibility.description')
-      })
-    }
-    
-    if (detailedScores.value.path_diversity < 0.5) {
-      suggestions.push({
-        title: t('suggestions.pathDiversity.title'),
-        description: t('suggestions.pathDiversity.description')
-      })
-    }
-  
-  return suggestions
+const viewDetail = (index: number) => {
+  goToDetail(detailList.value[index].name)
+}
+
+// 分页计算
+const totalPages = computed(() => {
+  const pages = Math.ceil(detailList.value.length / itemsPerPage)
+  console.log('总页数计算:', detailList.value.length, '/', itemsPerPage, '=', pages)
+  return pages
 })
+
+const currentPageStart = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage + 1
+  console.log('当前页起始索引:', start)
+  return start
+})
+
+const currentPageEnd = computed(() => {
+  const end = Math.min(currentPage.value * itemsPerPage, detailList.value.length)
+  console.log('当前页结束索引:', end)
+  return end
+})
+
+const currentDetail = computed(() => {
+  if (!isMultiDetail.value || detailList.value.length === 0) {
+    console.log('没有多详情数据或详情列表为空')
+    return null
+  }
+  const index = (currentPage.value - 1) * itemsPerPage
+  const detail = detailList.value[index]
+  console.log('当前详情计算:', {
+    currentPage: currentPage.value,
+    index: index,
+    totalItems: detailList.value.length,
+    detail: detail,
+    detailList: detailList.value
+  })
+  return detail
+})
+
+const visiblePages = computed(() => {
+  const pages: number[] = []
+  const total = totalPages.value
+  const current = currentPage.value
+  
+  console.log('计算可见页码，总页数:', total, '当前页:', current)
+  
+  if (total <= 7) {
+    // 如果总页数少于等于7，显示所有页码
+    for (let i = 1; i <= total; i++) {
+      pages.push(i)
+    }
+  } else {
+    // 如果总页数大于7，显示当前页附近的页码
+    const start = Math.max(1, current - 3)
+    const end = Math.min(total, current + 3)
+    
+    // 确保显示第一页和最后一页
+    if (start > 1) {
+      pages.push(1)
+      if (start > 2) {
+        pages.push(-1) // 表示省略号
+      }
+    }
+    
+    for (let i = start; i <= end; i++) {
+      pages.push(i)
+    }
+    
+    if (end < total) {
+      if (end < total - 1) {
+        pages.push(-1) // 表示省略号
+      }
+      pages.push(total)
+    }
+  }
+  
+  console.log('可见页码:', pages)
+  return pages
+})
+
+// Tab切换处理
+const handleTabChange = (index: number) => {
+  console.log('Tab切换:', index)
+  currentPage.value = index + 1
+  forceUpdate.value++
+}
+
+// 分页导航
+const goToPage = (page: number) => {
+  console.log('尝试跳转到页面:', page, '总页数:', totalPages.value)
+  if (page >= 1 && page <= totalPages.value) {
+    console.log('页面跳转前 - 当前页:', currentPage.value)
+    currentPage.value = page
+    forceUpdate.value++ // 强制重新渲染
+    console.log('页面跳转后 - 当前页:', currentPage.value)
+    console.log('成功跳转到页面:', page)
+    
+    // 强制触发响应式更新
+    nextTick(() => {
+      console.log('nextTick后 - 当前页:', currentPage.value)
+      console.log('nextTick后 - 当前详情:', currentDetail.value)
+    })
+  } else {
+    console.warn('页面跳转失败，页码超出范围:', page)
+  }
+}
+
+// 初始化多详情数据
+const initMultiDetails = () => {
+  if (!isMultiDetail.value) return
+  
+  const names = route.params.names as string
+  if (!names) return
+  
+  console.log('初始化多详情数据，names参数:', names)
+  
+  // 从localStorage获取分析结果
+  const analysisResults = localStorage.getItem('analysisResults')
+  if (analysisResults) {
+    try {
+      const results = JSON.parse(analysisResults)
+      console.log('从localStorage获取的分析结果:', results)
+      
+      detailList.value = results.map((result: any) => ({
+        name: result.name,
+        fileId: result.fileId || result.id,
+        filename: result.filename || result.name,
+        overallScore: result.overallScore,
+        grade: result.grade
+      }))
+      
+      console.log('处理后的详情列表:', detailList.value)
+      
+      // 重置到第一页
+      currentPage.value = 1
+      
+      // 初始化筛选和排序
+      filterAndSortDetails()
+    } catch (error) {
+      console.error('解析分析结果失败:', error)
+    }
+  } else {
+    console.warn('localStorage中没有找到analysisResults')
+  }
+}
+
+// 键盘导航
+const handleKeydown = (event: KeyboardEvent) => {
+  if (!isMultiDetail.value || detailList.value.length <= 1) return
+  
+  switch (event.key) {
+    case 'ArrowLeft':
+      event.preventDefault()
+      if (currentPage.value > 1) {
+        goToPage(currentPage.value - 1)
+      }
+      break
+    case 'ArrowRight':
+      event.preventDefault()
+      if (currentPage.value < totalPages.value) {
+        goToPage(currentPage.value + 1)
+      }
+      break
+    case 'Home':
+      event.preventDefault()
+      goToPage(1)
+      break
+    case 'End':
+      event.preventDefault()
+      goToPage(totalPages.value)
+      break
+  }
+}
+
+const handleExport = (data: any) => {
+  console.log('导出报告:', data)
+  pendingExportData.value = data
+  showExportDialog.value = true
+}
+
+// 批量导出报告
+const exportBatchReport = () => {
+  try {
+    const batchReportData = {
+      export_date: new Date().toISOString(),
+      total_dungeons: detailList.value.length,
+      summary: {
+        excellent_count: excellentCount.value,
+        good_count: goodCount.value,
+        average_count: averageCount.value,
+        poor_count: poorCount.value,
+        average_score: detailList.value.reduce((sum, d) => sum + (d.overallScore || 0), 0) / detailList.value.length
+      },
+      dungeons: detailList.value.map(detail => ({
+        name: detail.name,
+        filename: detail.filename,
+        overall_score: detail.overallScore,
+        grade: detail.grade,
+        score_class: getScoreClass(detail.overallScore || 0)
+      }))
+    }
+    
+    const reportData = JSON.stringify(batchReportData, null, 2)
+    const blob = new Blob([reportData], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `batch_dungeon_report_${new Date().toISOString().slice(0, 10)}.json`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+    
+    console.log('批量报告导出成功')
+    alert('批量报告导出成功！')
+  } catch (error) {
+    console.error('批量导出失败:', error)
+    alert('批量导出失败，请重试')
+  }
+}
+
+const confirmExport = () => {
+  if (!pendingExportData.value) return
+  
+  try {
+    const reportData = JSON.stringify(pendingExportData.value, null, 2)
+    const blob = new Blob([reportData], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${pendingExportData.value.dungeon_name}_detailed_report_${new Date().toISOString().slice(0, 10)}.json`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+    
+    console.log('Report exported successfully:', pendingExportData.value.dungeon_name)
+    alert(t('success.reportExported'))
+  } catch (error) {
+    console.error('Error exporting report:', error)
+    alert(t('errors.exportFailed'))
+  } finally {
+    showExportDialog.value = false
+    pendingExportData.value = null
+  }
+}
+
+const handleRefresh = () => {
+  console.log('刷新地下城详情')
+}
+
+const handleError = (errorMsg: string) => {
+  console.error('地下城详情错误:', errorMsg)
+}
 
 const getScoreClass = (score: number): string => {
   if (score >= 0.8) return 'excellent'
@@ -429,732 +835,225 @@ const getScoreClass = (score: number): string => {
   return 'very-poor'
 }
 
-const getScoreDescription = (score: number): string => {
-  if (score >= 0.8) return t('detail.scoreDescription.excellent')
-  if (score >= 0.65) return t('detail.scoreDescription.good')
-  if (score >= 0.5) return t('detail.scoreDescription.average')
-  if (score >= 0.35) return t('detail.scoreDescription.poor')
-  return t('detail.scoreDescription.poor')
+const handleLoaded = (data: any) => {
+  console.log('地下城详情加载完成:', data)
 }
 
-const getMetricName = (metric: string): string => {
-  return t(`metrics.${metric}`) || metric
+// 添加缺失的属性和方法
+const refreshData = () => {
+  console.log('刷新数据')
+  handleRefresh()
 }
 
-const getMetricDescription = (metric: string, score: number): string => {
-  const quality = score >= 0.7 ? 'good' : 'poor'
-  return t(`metricDescriptions.${metric}.${quality}`) || t('common.noData')
+const exportReport = () => {
+  console.log('导出报告')
+  // 这里可以调用handleExport方法
 }
 
-const handleRoomClick = (room: Room) => {
-  selectedRoom.value = room
-}
+// 添加缺失的计算属性
+const averageScore = computed(() => {
+  if (detailList.value.length === 0) return 0
+  const total = detailList.value.reduce((sum, d) => sum + (d.overallScore || 0), 0)
+  return total / detailList.value.length
+})
 
-const handleCorridorClick = (corridor: Corridor) => {
-  console.log('点击通道:', corridor)
-}
+const bestScore = computed(() => {
+  if (detailList.value.length === 0) return 0
+  return Math.max(...detailList.value.map(d => d.overallScore || 0))
+})
 
-const closeRoomModal = () => {
-  selectedRoom.value = null
-}
+const scoreFilter = ref('all')
 
-const forceRefresh = () => {
-  console.log('Forcing refresh...')
-  fetchAnalysisResult()
-}
-
-const exportReport = async () => {
-  console.log('Exporting report...')
+const filteredAndSortedDetails = computed(() => {
+  let filtered = [...detailList.value]
   
-  try {
-    // 创建详细的报告数据
-    const reportData = {
-      dungeon_name: dungeonName.value,
-      analysis_date: new Date().toISOString(),
-      overall_score: overallScore.value,
-      detailed_scores: detailedScores.value,
-      dungeon_data: dungeonData.value,
-      improvement_suggestions: improvementSuggestions.value,
-      summary: {
-        grade: getScoreClass(overallScore.value),
-        description: getScoreDescription(overallScore.value),
-        overall_score: overallScore.value
+  // 筛选
+  if (scoreFilter.value !== 'all') {
+    filtered = filtered.filter(detail => {
+      const score = detail.overallScore || 0
+      switch (scoreFilter.value) {
+        case 'high':
+          return score >= 8.0
+        case 'medium':
+          return score >= 5.0 && score < 8.0
+        case 'low':
+          return score < 5.0
+        default:
+          return true
       }
+    })
+  }
+  
+  // 排序
+  filtered.sort((a, b) => {
+    switch (sortBy.value) {
+      case 'score':
+        return (b.overallScore || 0) - (a.overallScore || 0)
+      case 'name':
+        return a.name.localeCompare(b.name)
+      case 'index':
+      default:
+        return 0 // 保持原始顺序
     }
-    
-    // 转换为JSON格式并下载
-    const data = JSON.stringify(reportData, null, 2)
-    const blob = new Blob([data], { type: 'application/json' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `${dungeonName.value}_detailed_report_${new Date().toISOString().slice(0, 10)}.json`
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-    URL.revokeObjectURL(url)
-    
-    console.log('Report exported successfully:', dungeonName.value)
-    
-    // 显示成功消息
-    alert(t('success.reportExported'))
-  } catch (error) {
-    console.error('Error exporting report:', error)
-    alert(t('errors.exportFailed'))
+  })
+  
+  return filtered
+})
+
+const getGradeLabel = (score: number | undefined): string => {
+  if (!score) return 'N/A'
+  if (score >= 8.0) return '优秀'
+  if (score >= 6.5) return '良好'
+  if (score >= 5.0) return '一般'
+  if (score >= 3.5) return '较差'
+  return '很差'
+}
+
+// 添加缺失的方法
+const refreshAnalysis = () => {
+  console.log('刷新分析')
+  handleRefresh()
+}
+
+const exportCurrentReport = () => {
+  console.log('导出当前报告')
+  if (currentDetail.value) {
+    handleExport({
+      dungeon_name: currentDetail.value.name,
+      file_id: currentDetail.value.fileId,
+      overall_score: currentDetail.value.overallScore,
+      grade: currentDetail.value.grade
+    })
   }
 }
 
-onMounted(async () => {
-  console.log('DetailView mounted')
-  await fetchAnalysisResult()
-  
-  // 添加键盘事件监听器
-  const handleKeydown = (event: KeyboardEvent) => {
-    if (event.key === 'Escape') {
-      goBack()
+const exportAllReports = () => {
+  console.log('导出全部报告')
+  exportBatchReport()
+}
+
+// 添加selectedMetrics属性
+const selectedMetrics = ref<string[]>([])
+const visualizationMode = ref('radar')
+
+// 加载选中的指标
+const loadSelectedMetrics = () => {
+  const saved = localStorage.getItem('selectedMetrics')
+  if (saved) {
+    try {
+      selectedMetrics.value = JSON.parse(saved)
+    } catch (error) {
+      console.error('解析选中的指标失败:', error)
+      selectedMetrics.value = []
     }
+  } else {
+    // 默认选择所有指标
+    selectedMetrics.value = [
+      'accessibility', 'aesthetic_balance', 'dead_end_ratio',
+      'degree_variance', 'key_path_length', 'loop_ratio',
+      'treasure_monster_distribution', 'connectivity', 'complexity'
+    ]
+  }
+}
+
+onMounted(() => {
+  if (isMultiDetail.value) {
+    initMultiDetails()
   }
   
-  document.addEventListener('keydown', handleKeydown)
+  // 加载选中的指标
+  loadSelectedMetrics()
   
-  // 清理事件监听器
-  onUnmounted(() => {
-    document.removeEventListener('keydown', handleKeydown)
-  })
+  // 添加键盘事件监听
+  document.addEventListener('keydown', handleKeydown)
+})
+
+onUnmounted(() => {
+  // 移除键盘事件监听
+  document.removeEventListener('keydown', handleKeydown)
 })
 </script>
 
 <style scoped>
-.detail-view {
-  background: var(--color-background);
-  padding: 20px;
-  min-height: calc(100vh - 80px); /* 减去页头高度 */
-  /* 确保页面可以正常滚动 */
+/* 只保留必要的动画和特殊效果 */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-.page-header {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 15px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: white;
-  margin-bottom: 30px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  position: relative;
-}
-
-.header-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 1400px;
-  margin: 0 auto;
-  width: 100%;
-  position: relative;
-}
-
-.page-info {
-  flex: 1;
-  text-align: center;
-  margin: 0 20px;
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-
-
-.back-btn {
-  background: #2d3748;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background 0.3s ease;
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
-}
-
-.back-btn:hover {
-  background: #1a202c;
-}
-
-.export-btn {
-  background: #3182ce;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background 0.3s ease;
-}
-
-.export-btn:hover {
-  background: #2c5aa0;
-}
-
-.refresh-btn {
-  background: #38a169;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background 0.3s ease;
-}
-
-.refresh-btn:hover {
-  background: #2f855a;
-}
-
-.page-info h1 {
-  font-size: 2.5rem;
-  font-weight: bold;
-  margin: 0;
-  color: #2d3748;
-  text-shadow: none;
-}
-
-.page-info p {
-  font-size: 1rem;
-  color: #4a5568;
-  margin: 0;
-  text-shadow: none;
-}
-
-.content {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 30px;
-  max-width: 1400px;
-  margin: 0 auto;
-  margin-bottom: 40px;
-}
-
-.visualization-section,
-.analysis-section {
-  background: white;
-  border-radius: 15px;
-  padding: 25px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-}
-
-.analysis-content {
-  /* 移除固定高度和滚动，让内容自然流动 */
-  /* max-height: 600px; */
-  /* overflow-y: auto; */
-  padding-right: 10px;
-}
-
-/* 移除滚动条样式，因为不再需要 */
-/* .analysis-content::-webkit-scrollbar {
-  width: 8px;
-}
-
-.analysis-content::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 4px;
-}
-
-.analysis-content::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 4px;
-}
-
-.analysis-content::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
-} */
-
-.visualization-section h2,
-.analysis-section h2 {
-  color: #333;
-  margin-bottom: 20px;
-  font-size: 1.5rem;
-  flex-shrink: 0;
-}
-
-.visualizer-container {
-  height: 600px;
-  border: 1px solid #e9ecef;
-  border-radius: 8px;
-  overflow: hidden;
-  margin-bottom: 20px;
-}
-
-.overall-score-card {
-  background: #f8f9fa;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 25px;
-}
-
-.overall-score-card h3 {
-  color: #333;
-  margin-bottom: 15px;
-}
-
-.score-display {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.score-circle {
-  width: 80px;
-  height: 80px;
-  border-radius: 50% !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: white;
-  flex-shrink: 0;
-  overflow: hidden;
-  position: relative;
-  min-width: 80px;
-  min-height: 80px;
-  max-width: 80px;
-  max-height: 80px;
-}
-
-.score-circle.excellent {
-  background: linear-gradient(135deg, #28a745, #20c997);
-  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
-}
-
-.score-circle.good {
-  background: linear-gradient(135deg, #17a2b8, #20c997);
-  box-shadow: 0 4px 15px rgba(23, 162, 184, 0.3);
-}
-
-.score-circle.average {
-  background: linear-gradient(135deg, #ffc107, #fd7e14);
-  color: #333;
-  box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
-}
-
-.score-circle.poor {
-  background: linear-gradient(135deg, #dc3545, #e83e8c);
-  box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
-}
-
-.score-circle.very-poor {
-  background: linear-gradient(135deg, #6c757d, #495057);
-  box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
-}
-
-.score-description p {
-  color: #666;
-  margin: 0;
-  line-height: 1.5;
-}
-
-.metrics-grid {
-  display: grid;
-  gap: 15px;
-  margin-bottom: 25px;
-}
-
-.metric-card {
-  background: #f8f9fa;
-  border-radius: 8px;
-  padding: 15px;
-  border-left: 4px solid #dee2e6;
+/* TransitionGroup 动画 */
+.thumbnail-list-enter-active,
+.thumbnail-list-leave-active {
   transition: all 0.3s ease;
 }
 
-.metric-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.thumbnail-list-enter-from,
+.thumbnail-list-leave-to {
+  opacity: 0;
+  transform: scale(0.8);
 }
 
-.metric-card.excellent {
-  border-left-color: #28a745;
-  background: linear-gradient(135deg, #f8fff9, #f0fff4);
+.thumbnail-list-move {
+  transition: transform 0.3s ease;
 }
 
-.metric-card.good {
-  border-left-color: #17a2b8;
-  background: linear-gradient(135deg, #f8feff, #f0f9ff);
-}
-
-.metric-card.average {
-  border-left-color: #ffc107;
-  background: linear-gradient(135deg, #fffdf8, #fffbf0);
-}
-
-.metric-card.poor {
-  border-left-color: #dc3545;
-  background: linear-gradient(135deg, #fff8f8, #fff0f0);
-}
-
-.metric-card.very-poor {
-  border-left-color: #6c757d;
-  background: linear-gradient(135deg, #f8f9fa, #f0f0f0);
-}
-
-.metric-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.metric-header h4 {
-  color: #333;
-  margin: 0;
-  font-size: 1rem;
-}
-
-.metric-score {
-  font-weight: bold;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* Transition 动画 */
+.detail-fade-enter-active,
+.detail-fade-leave-active {
   transition: all 0.3s ease;
 }
 
-.metric-score:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+.detail-fade-enter-from {
+  opacity: 0;
+  transform: translateX(20px);
 }
 
-.metric-score.excellent {
-  background: #d4edda;
-  color: #155724;
+.detail-fade-leave-to {
+  opacity: 0;
+  transform: translateX(-20px);
 }
 
-.metric-score.good {
-  background: #d1ecf1;
-  color: #0c5460;
-}
-
-.metric-score.average {
-  background: #fff3cd;
-  color: #856404;
-}
-
-.metric-score.poor {
-  background: #f8d7da;
-  color: #721c24;
-}
-
-.metric-score.very-poor {
-  background: #e2e3e5;
-  color: #383d41;
-}
-
-.metric-bar {
-  height: 8px;
-  background: #e9ecef;
-  border-radius: 4px;
-  margin-bottom: 10px;
-  overflow: hidden;
-}
-
-.bar-fill {
-  height: 100%;
-  transition: width 0.3s ease;
-}
-
-.bar-fill.excellent {
-  background: #28a745;
-}
-
-.bar-fill.good {
-  background: #17a2b8;
-}
-
-.bar-fill.average {
-  background: #ffc107;
-}
-
-.bar-fill.poor {
-  background: #dc3545;
-}
-
-.bar-fill.very-poor {
-  background: #6c757d;
-}
-
-.metric-description {
-  color: #666;
-  font-size: 0.9rem;
-  margin: 0;
-  line-height: 1.4;
-}
-
-.improvements-section h3 {
-  color: #333;
-  margin-bottom: 15px;
-}
-
-.improvements-list {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.suggestion-item {
-  display: flex;
-  gap: 15px;
-  padding: 15px;
-  background: #f8f9fa;
-  border-radius: 8px;
-  border-left: 4px solid #007bff;
-}
-
-.suggestion-icon {
-  font-size: 1.5rem;
-  flex-shrink: 0;
-}
-
-.suggestion-content h4 {
-  color: #333;
-  margin: 0 0 8px 0;
-  font-size: 1rem;
-}
-
-.suggestion-content p {
-  color: #666;
-  margin: 0;
-  font-size: 0.9rem;
-  line-height: 1.4;
-}
-
-.room-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.modal-content {
-  background: white;
-  border-radius: 12px;
-  padding: 0;
-  max-width: 500px;
-  width: 90%;
-  max-height: 80vh;
-  overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  background: #f8f9fa;
-  border-bottom: 1px solid #dee2e6;
-}
-
-.modal-header h3 {
-  margin: 0;
-  color: #333;
-}
-
-.close-btn {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: #666;
-  padding: 0;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: background 0.3s ease;
-}
-
-.close-btn:hover {
-  background: #e9ecef;
-}
-
-.modal-body {
-  padding: 20px;
-}
-
-.room-info {
-  margin-bottom: 20px;
-}
-
-.room-info p {
-  margin: 8px 0;
-  color: #333;
-}
-
-.room-connections h4 {
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.room-connections ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.room-connections li {
-  padding: 5px 0;
-  color: #666;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.room-connections li:last-child {
-  border-bottom: none;
-}
-
-.generated-image {
-  margin: 20px 0;
-}
-
-.image-container {
-  margin: 20px 0;
-  padding: 20px;
-  background: #f8f9fa;
-  border-radius: 8px;
-  border: 1px solid #e9ecef;
-  text-align: center;
-}
-
-.image-container img {
-  max-width: 100%;
-  height: auto;
-  border: 1px solid #dee2e6;
-  border-radius: 4px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.canvas-visualization {
-  margin: 20px 0;
-  background: #f8f9fa;
-  border-radius: 12px;
-  padding: 20px;
-  border: 1px solid #e9ecef;
-}
-
-.loading, .error, .no-data {
-  text-align: center;
-  padding: 40px;
-  color: #6c757d;
-}
-
-.error {
-  color: #dc3545;
-}
-
-@media (max-width: 1024px) {
-  .content {
-    grid-template-columns: 1fr;
-  }
-  
-  .page-info h1 {
-    font-size: 2rem;
-  }
-  
-
-}
-
+/* 响应式设计 */
 @media (max-width: 768px) {
-  .detail-view {
-    padding: 10px;
+  .max-w-full {
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
   
-  .page-header {
-    padding: 10px 15px;
+  .p-6 {
+    padding: 1rem;
   }
   
-  .header-content {
+  .p-8 {
+    padding: 1rem;
+  }
+  
+  .text-2xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+  
+  .gap-6 {
+    gap: 1rem;
+  }
+  
+  .flex {
     flex-direction: column;
-    gap: 15px;
-    position: relative;
-  }
-  
-  .page-info {
-    margin: 0;
-    order: 2;
-  }
-  
-  .header-right {
-    order: 3;
-    justify-content: center;
-  }
-  
-  .back-btn {
-    position: static;
-    transform: none;
-    align-self: flex-start;
-    padding: 10px 20px;
-    font-size: 16px;
-    order: 1;
-  }
-  
-  .page-info h1 {
-    font-size: 1.5rem;
-  }
-  
-  .page-info p {
-    font-size: 0.9rem;
-  }
-  
-  .visualization-section,
-  .analysis-section {
-    padding: 15px;
-  }
-  
-  .score-display {
-    flex-direction: column;
-    text-align: center;
-  }
-  
-  .visualizer-container {
-    height: 400px;
   }
 }
 
-/* 页脚样式 */
-.footer {
-  background: rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  margin-top: 40px;
-  padding: 20px;
-  color: white;
-  text-align: center;
-}
-
-.footer p {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.9rem;
+@media (max-width: 640px) {
+  .p-3 {
+    padding: 0.5rem;
+  }
+  
+  .gap-2 {
+    gap: 0.5rem;
+  }
+  
+  .text-xs {
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
 }
 </style> 

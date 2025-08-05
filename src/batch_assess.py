@@ -9,7 +9,7 @@ import json
 import logging
 import time
 from pathlib import Path
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Optional
 import signal
 
 from .quality_assessor import DungeonQualityAssessor
@@ -37,7 +37,7 @@ def assess_all_maps(input_dir: str = "output", output_dir: str = "output/reports
     # 过滤掉报告文件
     json_files = [f for f in json_files if not f.name.startswith("quality_report") and not f.name.startswith("report")]
     
-    logger.info(f" {len(json_files)} Maps to be assessed")
+    logger.info(f"找到 {len(json_files)} 个地图文件需要评估")
     
     results = {}
     assessor = DungeonQualityAssessor()
@@ -75,34 +75,38 @@ def assess_all_maps(input_dir: str = "output", output_dir: str = "output/reports
                     'detailed_metrics': metrics['scores'],
                     'category_scores': metrics['category_scores'],
                     'recommendations': metrics['recommendations'],
-                    'processing_time': end_time - start_time
+                    'processing_time': end_time - start_time,
+                    'status': 'success'
                 }
                 
                 logger.info(f"✓ {json_file.name}: {metrics['overall_score']:.3f} ({metrics['grade']}) - {end_time - start_time:.2f}s")
                 
             except TimeoutError:
                 signal.alarm(0)
-                logger.error(f"Assess {json_file.name} overtime")
+                logger.error(f"评估 {json_file.name} 超时")
                 results[json_file.name] = {
-                    'error': 'overtime',
+                    'error': 'timeout',
                     'overall_score': 0.0,
-                    'grade': '超时'
+                    'grade': '超时',
+                    'status': 'timeout'
                 }
             except Exception as e:
                 signal.alarm(0)
-                logger.error(f"Assess {json_file.name} cause error: {e}")
+                logger.error(f"评估 {json_file.name} 出错: {e}")
                 results[json_file.name] = {
                     'error': str(e),
                     'overall_score': 0.0,
-                    'grade': 'error'
+                    'grade': 'error',
+                    'status': 'error'
                 }
                 
         except Exception as e:
-            logger.error(f"Error while using {json_file.name} expection: {e}")
+            logger.error(f"处理 {json_file.name} 时发生意外错误: {e}")
             results[json_file.name] = {
-                'error': f'un-expect error: {str(e)}',
+                'error': f'unexpected error: {str(e)}',
                 'overall_score': 0.0,
-                'grade': 'un-expect error'
+                'grade': 'unexpected error',
+                'status': 'error'
             }
     
     # 生成汇总报告
@@ -114,11 +118,11 @@ def assess_all_maps(input_dir: str = "output", output_dir: str = "output/reports
         with open(summary_file, 'w', encoding='utf-8') as f:
             json.dump(summary_report, f, ensure_ascii=False, indent=2)
         
-        # 打印汇总报告
-        print_summary_report(summary_report)
+        # 不打印到控制台，只记录到日志
+        logger.info("批量评估完成，汇总报告已生成")
         
     except Exception as e:
-        logger.error(f"Error in summarise reports: {e}")
+        logger.error(f"生成汇总报告时出错: {e}")
         # 即使汇总报告失败，也返回已处理的结果
         results['_summary_error'] = str(e)
     
@@ -132,7 +136,7 @@ def generate_summary_report(results: Dict[str, Any]) -> Dict[str, Any]:
     
     if not valid_results:
         return {
-            'summary': 'no valide reports',
+            'summary': 'no valid reports',
             'total_files': len(results),
             'valid_files': 0,
             'error_files': len(results)
@@ -229,69 +233,8 @@ def generate_summary_report(results: Dict[str, Any]) -> Dict[str, Any]:
             'error_files': len(results) - len(valid_results)
         }
 
-def print_summary_report(report: Dict[str, Any]) -> None:
-    """打印汇总报告到控制台"""
-    
-    print("\n" + "="*60)
-    print("Dungeon Map Quality Reports")
-    print("="*60)
-    
-    if 'summary' not in report or isinstance(report['summary'], str):
-        print(f"\n❌ 报告生成失败: {report.get('summary', '未知错误')}")
-        print("="*60)
-        return
-    
-    summary = report['summary']
-    print(f"\n Overall Summary:")
-    print(f"  Total Files: {summary['total_files']}")
-    print(f"  Valied Files: {summary['valid_files']}")
-    print(f"  Error Files: {summary['error_files']}")
-    print(f"  Average Score: {summary['average_score']:.3f}")
-    print(f"  Bast Score: {summary['max_score']:.3f}")
-    print(f"  Lowest Score: {summary['min_score']:.3f}")
-    
-    if 'best_map' in summary:
-        print(f"\n BEST MAP:")
-        best = summary['best_map']
-        print(f"  {best['name']}: {best['score']:.3f} ({best['grade']})")
-        
-        print(f"\n WORST MAP:")
-        worst = summary['worst_map']
-        print(f"  {worst['name']}: {worst['score']:.3f} ({worst['grade']})")
-    
-    if 'grade_distribution' in report:
-        print(f"\n GRADE DSITRIBUTION:")
-        for grade, count in report['grade_distribution'].items():
-            print(f"  {grade}: {count} 个")
-    
-    if 'metric_statistics' in report:
-        print(f"\nMETRIC STATISTICS:")
-        for metric, stats in report['metric_statistics'].items():
-            metric_name = {
-                'accessibility': 'Accessibility',
-                'degree_variance': 'Degree Variance',
-                'path_diversity': 'Path Diversity',
-                'loop_ratio': 'Loop Raito',
-                'door_distribution': 'Door Ditstribution',
-                'treasure_monster_distribution': 'Treasure Monster Distribution',
-                'geometric_balance': 'Geometric Balance'
-            }.get(metric, metric)
-            print(f"  {metric_name}: AVG {stats['average']:.3f}, MAX {stats['max']:.3f}, MIN {stats['min']:.3f}")
-    
-    if 'category_statistics' in report:
-        print(f"\n 类别评分统计:")
-        for category, stats in report['category_statistics'].items():
-            category_name = {
-                'structural': 'Structural',
-                'gameplay': 'Playability',
-                'aesthetic': 'Aestetic'
-            }.get(category, category)
-            print(f"  {category_name}: AVG {stats['average']:.3f}, MAX {stats['max']:.3f}, MIN {stats['min']:.3f}")
-    
-    print("="*60)
-
-def batch_assess_quality(input_dir: str, output_dir: str, enable_spatial_inference: bool = True, adjacency_threshold: float = 1.0, timeout_per_file: int = 30):
-    """批量评估地图质量 - CLI 调用的接口函数"""
+def batch_assess_quality(input_dir: str, output_dir: str, enable_spatial_inference: bool = True, adjacency_threshold: float = 1.0, timeout_per_file: int = 30) -> Dict[str, Any]:
+    """批量评估地图质量 - API 调用的接口函数"""
     try:
         logger.info(f"开始批量评估，输入目录: {input_dir}")
         logger.info(f"输出目录: {output_dir}")
@@ -317,8 +260,107 @@ def batch_assess_quality(input_dir: str, output_dir: str, enable_spatial_inferen
         logger.error(f"批量评估失败: {e}")
         raise
 
+def batch_assess_files(file_paths: List[str], output_dir: str, timeout_per_file: int = 30) -> Dict[str, Any]:
+    """批量评估指定的文件列表"""
+    try:
+        logger.info(f"开始批量评估 {len(file_paths)} 个文件")
+        
+        # 确保输出目录存在
+        os.makedirs(output_dir, exist_ok=True)
+        
+        results = {}
+        assessor = DungeonQualityAssessor()
+        
+        for i, file_path in enumerate(file_paths, 1):
+            try:
+                logger.info(f"评估文件 [{i}/{len(file_paths)}]: {os.path.basename(file_path)}")
+                
+                # 设置超时
+                signal.signal(signal.SIGALRM, timeout_handler)
+                signal.alarm(timeout_per_file)
+                
+                try:
+                    # 读取地图数据
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        data = json.load(f)
+                    
+                    # 评估质量
+                    start_time = time.time()
+                    metrics = assessor.assess_quality(data)
+                    end_time = time.time()
+                    
+                    # 取消超时
+                    signal.alarm(0)
+                    
+                    # 收集结果
+                    file_name = os.path.basename(file_path)
+                    results[file_name] = {
+                        'overall_score': metrics['overall_score'],
+                        'grade': metrics['grade'],
+                        'detailed_metrics': metrics['scores'],
+                        'category_scores': metrics['category_scores'],
+                        'recommendations': metrics['recommendations'],
+                        'processing_time': end_time - start_time,
+                        'status': 'success',
+                        'file_path': file_path
+                    }
+                    
+                    logger.info(f"✓ {file_name}: {metrics['overall_score']:.3f} ({metrics['grade']}) - {end_time - start_time:.2f}s")
+                    
+                except TimeoutError:
+                    signal.alarm(0)
+                    logger.error(f"评估 {file_name} 超时")
+                    results[file_name] = {
+                        'error': 'timeout',
+                        'overall_score': 0.0,
+                        'grade': '超时',
+                        'status': 'timeout',
+                        'file_path': file_path
+                    }
+                except Exception as e:
+                    signal.alarm(0)
+                    logger.error(f"评估 {file_name} 出错: {e}")
+                    results[file_name] = {
+                        'error': str(e),
+                        'overall_score': 0.0,
+                        'grade': 'error',
+                        'status': 'error',
+                        'file_path': file_path
+                    }
+                    
+            except Exception as e:
+                logger.error(f"处理 {file_path} 时发生意外错误: {e}")
+                file_name = os.path.basename(file_path)
+                results[file_name] = {
+                    'error': f'unexpected error: {str(e)}',
+                    'overall_score': 0.0,
+                    'grade': 'unexpected error',
+                    'status': 'error',
+                    'file_path': file_path
+                }
+        
+        # 生成汇总报告
+        summary_report = generate_summary_report(results)
+        
+        # 保存汇总报告
+        summary_file = os.path.join(output_dir, "batch_assessment_summary.json")
+        with open(summary_file, 'w', encoding='utf-8') as f:
+            json.dump(summary_report, f, ensure_ascii=False, indent=2)
+        
+        # 保存详细结果
+        results_file = os.path.join(output_dir, "batch_assessment_results.json")
+        with open(results_file, 'w', encoding='utf-8') as f:
+            json.dump(results, f, ensure_ascii=False, indent=2)
+        
+        logger.info(f"批量评估完成，结果已保存到: {output_dir}")
+        return results
+        
+    except Exception as e:
+        logger.error(f"批量评估失败: {e}")
+        raise
+
 def main():
-    """主函数"""
+    """主函数 - 保留用于直接运行脚本"""
     import argparse
     
     parser = argparse.ArgumentParser(description='批量评估地牢地图质量')

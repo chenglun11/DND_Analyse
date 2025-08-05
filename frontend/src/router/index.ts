@@ -15,6 +15,12 @@ const router = createRouter({
       component: () => import('../views/DetailView.vue'),
     },
     {
+      path: '/detail/:names',
+      name: 'detail-multi',
+      component: () => import('../views/DetailView.vue'),
+    },
+
+    {
       path: '/test',
       name: 'test',
       component: () => import('../views/TestView.vue'),

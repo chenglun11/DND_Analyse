@@ -1,43 +1,76 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { DungeonAPI } from '../services/api'
+import {
+  Dialog,
+  DialogPanel,
+  DialogTitle,
+  TransitionChild,
+  TransitionRoot
+} from '@headlessui/vue'
+import {
+  Listbox,
+  ListboxButton,
+  ListboxOptions,
+  ListboxOption
+} from '@headlessui/vue'
 
-interface AnalysisOptions {
-  accessibility: boolean
-  aestheticBalance: boolean
-  loopRatio: boolean
-  deadEndRatio: boolean
-  treasureDistribution: boolean
-  monsterDistribution: boolean
-}
+import {
+  Popover,
+  PopoverButton,
+  PopoverPanel
+} from '@headlessui/vue'
+import {
+  CheckIcon,
+  ChevronUpDownIcon,
+  XMarkIcon,
+  DocumentIcon,
+  ExclamationTriangleIcon,
+  InformationCircleIcon
+} from '@heroicons/vue/24/outline'
+import MetricSelector from '../components/MetricSelector.vue'
 
 interface AnalysisResult {
   id: string
   name: string
+  filename: string
   overallScore: number
+  grade: string
   detailedScores: Record<string, { score: number; detail?: any }>
   unifiedData?: any
-  fileId?: string // 新增 fileId 属性
+  fileId?: string
 }
 
 const router = useRouter()
 const { t } = useI18n()
+// TODO: Remove unused t constant later
 const fileInput = ref<HTMLInputElement>()
 const uploadedFiles = ref<File[]>([])
 const isAnalyzing = ref(false)
 const analysisResults = ref<AnalysisResult[]>([])
 
-// 移除analysisOptions，因为不再需要
-// const analysisOptions = reactive<AnalysisOptions>({
-//   accessibility: true,
-//   aestheticBalance: true,
-//   loopRatio: true,
-//   deadEndRatio: true,
-//   treasureDistribution: true,
-//   monsterDistribution: true
-// })
+// Headless UI 状态
+const showConfirmDialog = ref(false)
+const showErrorDialog = ref(false)
+const errorMessage = ref('')
+const selectedFiles = ref<File[]>([])
+const showFileList = ref(false)
+
+const selectedMetrics = ref<string[]>([
+  'dead_end_ratio',
+  'geometric_balance',
+  'treasure_monster_distribution',
+  'accessibility',
+  'path_diversity',
+  'loop_ratio',
+  'degree_variance',
+  'door_distribution',
+  'key_path_length'
+])
+const showMetricSelector = ref(false)
+const availableMetricsCount = 9 // 总可用指标数量
 
 const handleDrop = (event: DragEvent) => {
   event.preventDefault()
@@ -56,7 +89,14 @@ const handleFileSelect = (event: Event) => {
 
 const addFiles = (files: File[]) => {
   const jsonFiles = files.filter(file => file.name.endsWith('.json'))
-  uploadedFiles.value.push(...jsonFiles)
+  const newFiles = jsonFiles.filter(newFile =>
+    !uploadedFiles.value.some(existingFile => existingFile.name === newFile.name)
+  )
+  uploadedFiles.value.push(...newFiles)
+
+  if (newFiles.length !== jsonFiles.length) {
+    console.log(`跳过 ${jsonFiles.length - newFiles.length} 个重复文件`)
+  }
 }
 
 const removeFile = (index: number) => {
@@ -71,116 +111,165 @@ const formatFileSize = (bytes: number): string => {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
 }
 
-const startAnalysis = async () => {
+const analyzeAllFiles = async () => {
   if (uploadedFiles.value.length === 0) return
-  
+
   isAnalyzing.value = true
-  
+  analysisResults.value = []
+
   try {
-    // 转换选项格式
-    const apiOptions = {
-      accessibility: true, // 默认值，如果需要从选项中获取，则需要修改
-      geometric_balance: true, // 默认值
-      loop_ratio: true, // 默认值
-      dead_end_ratio: true, // 默认值
-      treasure_distribution: true, // 默认值
-      monster_distribution: true // 默认值
-    }
-    
-    if (uploadedFiles.value.length === 1) {
-      // 单个文件分析
-      const result = await DungeonAPI.analyzeDungeon(uploadedFiles.value[0], apiOptions)
-      
-      if (result.success) {
-        console.log('分析成功，结果:', result)
-        console.log('统一数据:', result.result.unified_data)
-        
-        analysisResults.value = [{
-          id: `result-0`,
-          name: uploadedFiles.value[0].name.replace('.json', ''),
-          overallScore: result.result.overall_score || 0,
-          detailedScores: result.result.scores || {},
-          unifiedData: result.result.unified_data || null,
-          fileId: result.file_id || undefined  // 保存文件ID
-        }]
-        
-        // 保存到localStorage以便详情页面使用
-        localStorage.setItem('analysisResults', JSON.stringify(analysisResults.value))
-        console.log('已保存到localStorage:', analysisResults.value)
-      } else {
-        console.error('分析失败:', result.error)
-      }
-    } else {
-      // 批量分析
-      const result = await DungeonAPI.analyzeBatch(uploadedFiles.value, apiOptions)
-      
-      if (result.success && result.results) {
-        console.log('批量分析成功，结果:', result)
-        analysisResults.value = result.results.map((result: any, index: number) => {
-          console.log(`结果 ${index}:`, result)
-          console.log(`统一数据 ${index}:`, result.unified_data)
-          return {
-            id: `result-${index}`,
-            name: uploadedFiles.value[index].name.replace('.json', ''),
-            overallScore: result.overall_score || 0,
-            detailedScores: result.scores || {},
-            unifiedData: result.unified_data || null,
-            fileId: result.file_id || undefined // 保存文件ID
+    console.log(`开始分析 ${uploadedFiles.value.length} 个文件`)
+
+    for (let i = 0; i < uploadedFiles.value.length; i++) {
+      const file = uploadedFiles.value[i]
+      console.log(`分析文件 ${i + 1}/${uploadedFiles.value.length}: ${file.name}`)
+
+      try {
+        const result = await DungeonAPI.analyzeDungeon(file)
+
+        if (result.success && result.result) {
+          const analysisResult = {
+            id: result.file_id || `file_${i}`,
+            name: file.name.replace('.json', ''),
+            filename: file.name,
+            overallScore: result.result.overall_score || 0,
+            grade: result.result.grade || '未知',
+            detailedScores: result.result.scores || {},
+            unifiedData: result.result.unified_data,
+            fileId: result.file_id
           }
-        })
-        
-        // 保存到localStorage以便详情页面使用
-        localStorage.setItem('analysisResults', JSON.stringify(analysisResults.value))
-        console.log('已保存到localStorage:', analysisResults.value)
-      } else {
-        console.error('批量分析失败:', result.error)
+
+          analysisResults.value.push(analysisResult)
+          console.log(`✅ ${file.name} 分析完成，评分: ${analysisResult.overallScore.toFixed(2)}`)
+        } else {
+          console.error(`❌ ${file.name} 分析失败:`, result.error)
+          errorMessage.value = `${file.name} 分析失败: ${result.error}`
+          showErrorDialog.value = true
+        }
+      } catch (error) {
+        console.error(`❌ ${file.name} 分析出错:`, error)
+        errorMessage.value = `${file.name} 分析出错: ${error}`
+        showErrorDialog.value = true
       }
     }
+
+    // 保存所有结果到localStorage
+    localStorage.setItem('analysisResults', JSON.stringify(analysisResults.value))
+    console.log(`✅ 批量分析完成，共处理 ${analysisResults.value.length} 个文件`)
   } catch (error) {
-    console.error('分析过程中出错:', error)
+    console.error('❌ 批量分析失败:', error)
+    errorMessage.value = `批量分析失败: ${error}`
+    showErrorDialog.value = true
   } finally {
     isAnalyzing.value = false
   }
 }
 
 const getScoreClass = (score: number): string => {
-  if (score >= 8) return 'excellent'
-  if (score >= 6) return 'good'
-  if (score >= 4) return 'average'
-  return 'poor'
+  if (score >= 0.8) return 'excellent'
+  if (score >= 0.65) return 'good'
+  if (score >= 0.5) return 'average'
+  if (score >= 0.35) return 'poor'
+  return 'very-poor'
 }
 
-const getMetricName = (metric: string): string => {
-  return t(`metrics.${metric}`) || metric
+const getGradeClass = (grade: string): string => {
+  const gradeMap: Record<string, string> = {
+    '优秀': 'excellent',
+    '良好': 'good',
+    '一般': 'average',
+    '较差': 'poor',
+    '未知': 'unknown'
+  }
+  return gradeMap[grade] || 'unknown'
+}
+
+const handleMetricChange = (metrics: string[]) => {
+  selectedMetrics.value = metrics
+  console.log('选中的指标:', metrics)
+  console.log('指标数量:', metrics.length)
+
+  // 保存选中的指标到localStorage
+  localStorage.setItem('selectedMetrics', JSON.stringify(metrics))
 }
 
 const viewDetails = (result: AnalysisResult) => {
   console.log('查看详情:', result)
-  // 导航到详情页面，传递文件名
-  router.push({ 
-    name: 'detail', 
-    params: { 
+
+  // 保存当前结果到localStorage
+  localStorage.setItem('currentAnalysisResult', JSON.stringify(result))
+
+  // 检查文件ID是否存在
+  if (!result.fileId) {
+    console.warn('文件ID不存在，尝试使用ID字段:', result.id)
+  }
+
+  // 导航到详情页面
+  router.push({
+    name: 'detail',
+    params: {
       name: result.name,
-      filename: uploadedFiles.value.find(f => f.name.replace('.json', '') === result.name)?.name || result.name + '.json',
-      fileId: result.fileId // 传递文件ID
-    } 
+      fileId: result.fileId || result.id,
+      filename: result.filename || result.name
+    }
+  }).then(() => {
+    console.log('路由跳转成功')
+  }).catch((error) => {
+    console.error('路由跳转失败:', error)
   })
+}
+
+const viewMultipleDetails = () => {
+  console.log('查看多个详情')
+  console.log('分析结果数量:', analysisResults.value.length)
+  console.log('分析结果:', analysisResults.value)
+
+  // 保存所有结果到localStorage
+  localStorage.setItem('analysisResults', JSON.stringify(analysisResults.value))
+
+  // 构建路由参数
+  const names = analysisResults.value.map(r => r.name).join(',')
+  console.log('路由参数 names:', names)
+
+  // 跳转到DetailView的多详情模式
+  router.push({
+    name: 'detail-multi',
+    params: {
+      names: names
+    }
+  }).then(() => {
+    console.log('路由跳转成功')
+  }).catch((error) => {
+    console.error('路由跳转失败:', error)
+  })
+}
+
+const clearResults = () => {
+  showConfirmDialog.value = true
+}
+
+const confirmClearResults = () => {
+  analysisResults.value = []
+  localStorage.removeItem('analysisResults')
+  console.log('已清除所有分析结果')
+  showConfirmDialog.value = false
 }
 
 const exportResult = (result: AnalysisResult) => {
   console.log('导出报告:', result)
-  
+
   // 创建详细的报告数据
   const reportData = {
     dungeon_name: result.name,
     analysis_date: new Date().toISOString(),
     overall_score: result.overallScore,
+    grade: result.grade,
     detailed_scores: result.detailedScores,
     unified_data: result.unifiedData,
     recommendations: generateRecommendations(result.detailedScores),
     summary: generateSummary(result)
   }
-  
+
   // 转换为JSON格式
   const data = JSON.stringify(reportData, null, 2)
   const blob = new Blob([data], { type: 'application/json' })
@@ -195,34 +284,72 @@ const exportResult = (result: AnalysisResult) => {
   console.log('已导出分析报告:', result.name)
 }
 
+const exportAllResults = () => {
+  console.log('导出所有分析结果')
+
+  // 创建批量报告数据
+  const batchReportData = {
+    analysis_date: new Date().toISOString(),
+    total_files: analysisResults.value.length,
+    results: analysisResults.value.map(result => ({
+      dungeon_name: result.name,
+      filename: result.filename,
+      overall_score: result.overallScore,
+      grade: result.grade,
+      detailed_scores: result.detailedScores,
+      recommendations: generateRecommendations(result.detailedScores),
+      summary: generateSummary(result)
+    })),
+    summary: {
+      average_score: analysisResults.value.reduce((sum, r) => sum + r.overallScore, 0) / analysisResults.value.length,
+      total_files: analysisResults.value.length,
+      excellent_count: analysisResults.value.filter(r => r.overallScore >= 0.8).length,
+      needs_improvement_count: analysisResults.value.filter(r => r.overallScore < 0.5).length
+    }
+  }
+
+  // 转换为JSON格式
+  const data = JSON.stringify(batchReportData, null, 2)
+  const blob = new Blob([data], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `batch_analysis_report_${new Date().toISOString().slice(0, 10)}.json`
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+  console.log('已导出批量分析报告')
+}
+
 // 生成改进建议
 const generateRecommendations = (scores: Record<string, { score: number; detail?: any }>) => {
   const recommendations: string[] = []
-  
+
   if (scores.dead_end_ratio?.score < 0.5) {
     recommendations.push('减少死胡同比例，增加环路连接以提高探索体验')
   }
-  
-        if (scores.geometric_balance?.score < 0.7) {
-          recommendations.push(t('suggestions.geometricBalance.description'))
+
+  if (scores.geometric_balance?.score < 0.7) {
+    recommendations.push('优化几何平衡，改善空间布局')
   }
-  
+
   if (scores.treasure_monster_distribution?.score < 0.5) {
     recommendations.push('优化宝藏和怪物分布，提供更好的游戏体验')
   }
-  
+
   if (scores.accessibility?.score < 0.7) {
     recommendations.push('改善可达性，优化路径设计')
   }
-  
+
   if (scores.path_diversity?.score < 0.5) {
     recommendations.push('增加路径多样性，提供不同的探索路径')
   }
-  
+
   if (scores.loop_ratio?.score < 0.3) {
     recommendations.push('增加环路比例，提高地图的探索性')
   }
-  
+
   return recommendations
 }
 
@@ -231,238 +358,587 @@ const generateSummary = (result: AnalysisResult) => {
   const score = result.overallScore
   let grade = 'F'
   let description = '需要大幅改进'
-  
-  if (score >= 8) {
+
+  if (score >= 0.8) {
     grade = 'A'
     description = '优秀的地下城设计'
-  } else if (score >= 6) {
+  } else if (score >= 0.65) {
     grade = 'B'
     description = '良好的地下城设计'
-  } else if (score >= 4) {
+  } else if (score >= 0.5) {
     grade = 'C'
     description = '一般的地下城设计'
-  } else if (score >= 2) {
+  } else if (score >= 0.35) {
     grade = 'D'
     description = '需要改进的地下城设计'
   }
-  
+
   return {
     grade,
     description,
-    overall_score: score,
-    analysis_date: new Date().toISOString()
+    overall_score: score
   }
-}
-
-const clearFiles = () => {
-  if (uploadedFiles.value.length === 0) {
-    alert('没有文件需要清除')
-    return
-  }
-  
-  if (confirm(`确定要清除 ${uploadedFiles.value.length} 个文件吗？`)) {
-    uploadedFiles.value = []
-    analysisResults.value = []
-    console.log('已清除所有文件和分析结果')
-  }
-}
-
-const clearResults = () => {
-  if (analysisResults.value.length === 0) {
-    alert('没有分析结果需要清除')
-    return
-  }
-  
-  if (confirm(`确定要清除 ${analysisResults.value.length} 个分析结果吗？`)) {
-    analysisResults.value = []
-    console.log('已清除所有分析结果')
-  }
-}
-
-
-
-const exportAllResults = () => {
-  if (analysisResults.value.length === 0) {
-    alert('没有分析结果可以导出')
-    return
-  }
-  
-  const data = JSON.stringify(analysisResults.value, null, 2)
-  const blob = new Blob([data], { type: 'application/json' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = `analysis_results_${new Date().toISOString().slice(0, 10)}.json`
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
-  URL.revokeObjectURL(url)
-  console.log('已导出所有分析结果')
-}
-
-const clearAll = () => {
-  if (confirm(`确定要清除所有文件和分析结果吗？`)) {
-    uploadedFiles.value = []
-    analysisResults.value = []
-    console.log('已清除所有文件和分析结果')
-  }
-}
-
-const showHelp = () => {
-  router.push('/help')
 }
 
 onMounted(async () => {
-  // 检查API连接
-  try {
-    await DungeonAPI.healthCheck()
-    console.log('API连接正常')
-  } catch (error) {
-    console.error('API连接失败:', error)
+  console.log('HomeView mounted')
+  console.log('Headless UI components loaded:', {
+    Dialog: !!Dialog,
+    Listbox: !!Listbox,
+    Popover: !!Popover
+  })
+
+  // 不自动恢复分析结果，只有在用户上传文件并分析后才显示
+  // 这样可以避免打开页面就看到旧的分析结果
+  console.log('不自动恢复分析结果，等待用户上传文件')
+
+  // 尝试从localStorage恢复选中的指标
+  const savedMetrics = localStorage.getItem('selectedMetrics')
+  if (savedMetrics) {
+    try {
+      const parsedMetrics = JSON.parse(savedMetrics)
+      if (parsedMetrics && parsedMetrics.length > 0) {
+        selectedMetrics.value = parsedMetrics
+        console.log(`从localStorage恢复了选中的指标:`, selectedMetrics.value)
+      }
+    } catch (error) {
+      console.error('恢复指标选择失败:', error)
+    }
   }
+
+  // 确保至少有默认指标被选中
+  if (selectedMetrics.value.length === 0) {
+    selectedMetrics.value = [
+      'dead_end_ratio',
+      'geometric_balance',
+      'treasure_monster_distribution',
+      'accessibility',
+      'path_diversity',
+      'loop_ratio',
+      'degree_variance',
+      'door_distribution',
+      'key_path_length'
+    ]
+    console.log('使用默认指标配置（全部9个）:', selectedMetrics.value)
+  } else {
+    console.log('使用已保存的指标配置:', selectedMetrics.value)
+  }
+
+  console.log('HomeView最终指标配置:', selectedMetrics.value)
+  console.log('HomeView最终指标数量:', selectedMetrics.value.length)
 })
 </script>
 
 <template>
-  <div class="home">
-    <div class="main-content" :class="{ 'has-results': analysisResults.length > 0 }">
-      <!-- 左侧栏：文件上传和操作 -->
-      <div class="left-panel">
-        <!-- 文件上传区域 -->
-        <div class="upload-section">
-          <h2>{{ t('home.uploadTitle') }}</h2>
-          <div class="upload-area" @drop="handleDrop" @dragover.prevent @dragenter.prevent>
-            <div class="upload-content">
-              <div class="upload-icon">📁</div>
-              <p>{{ t('home.uploadDescription') }}</p>
-              <p class="supported-formats">{{ t('home.supportedFormats') }}</p>
-              <input
-                ref="fileInput"
-                type="file"
-                accept=".json"
-                multiple
-                @change="handleFileSelect"
-                style="display: none"
-              />
-              <button class="upload-btn" @click="fileInput?.click()">
-                {{ t('home.selectFiles') }}
-              </button>
-            </div>
+  <div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 py-4 px-4">
+    <div class="w-full max-w-full mx-auto space-y-4">
+      <!-- 页面标题 - 增强视觉效果 -->
+      <div class="text-center mb-6">
+        <div class="inline-flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center shadow-lg">
+            <span class="text-white text-xl">🏰</span>
           </div>
-          
-          <div v-if="uploadedFiles.length > 0" class="file-list">
-            <h3>{{ t('home.uploadedFiles') }}</h3>
-            <div v-for="(file, index) in uploadedFiles" :key="index" class="file-item">
-              <span class="file-name">{{ file.name }}</span>
-              <span class="file-size">{{ formatFileSize(file.size) }}</span>
-              <button class="remove-btn" @click="removeFile(index)">{{ t('common.delete') }}</button>
-            </div>
-          </div>
+          <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+            {{ t('app.title') }}
+          </h1>
         </div>
-
-        <!-- 快速操作 -->
-        <div class="analysis-options">
-          <h2>{{ t('home.quickActions') }}</h2>
-          <div class="quick-actions">
-            <div class="action-card" @click="startAnalysis" :class="{ 'disabled': uploadedFiles.length === 0 || isAnalyzing }">
-              <div class="action-icon">⚡</div>
-              <h3>{{ isAnalyzing ? t('home.analyzing') : t('home.startAnalysis') }}</h3>
-              <p>{{ uploadedFiles.length === 0 ? t('home.noFilesToAnalyze') : t('home.startAnalysisDescription', { count: uploadedFiles.length }) }}</p>
-            </div>
-
-            <div class="action-card" @click="exportAllResults" :class="{ 'disabled': analysisResults.length === 0 }">
-              <div class="action-icon">📤</div>
-              <h3>{{ t('home.exportAllResults') }}</h3>
-              <p>{{ analysisResults.length === 0 ? t('home.noResultsToExport') : t('home.exportAllResultsDescription', { count: analysisResults.length }) }}</p>
-            </div>
-
-            <div class="action-card" @click="clearAll" :class="{ 'disabled': uploadedFiles.length === 0 && analysisResults.length === 0 }">
-              <div class="action-icon">🗑️</div>
-              <h3>{{ t('home.clearAll') }}</h3>
-              <p>{{ t('home.clearAllDescription') }}</p>
-            </div>
-
-            <div class="action-card" @click="showHelp">
-              <div class="action-icon">❓</div>
-              <h3>{{ t('home.help') }}</h3>
-              <p>{{ t('home.helpDescription') }}</p>
-            </div>
-
-            <div class="action-card" @click="router.push('/about')">
-              <div class="action-icon">ℹ️</div>
-              <h3>{{ t('home.about') }}</h3>
-              <p>{{ t('home.aboutDescription') }}</p>
-            </div>
-          </div>
-          
-          <div class="stats-section">
-            <h3>📈 {{ t('home.systemStats') }}</h3>
-            <div class="stats-grid">
-              <div class="stat-item">
-                <div class="stat-number">{{ uploadedFiles.length }}</div>
-                <div class="stat-label">{{ t('home.uploadedFilesCount') }}</div>
-              </div>
-              <div class="stat-item">
-                <div class="stat-number">{{ analysisResults.length }}</div>
-                <div class="stat-label">{{ t('home.analysisResultsCount') }}</div>
-              </div>
-              <div class="stat-item">
-                <div class="stat-number">9</div>
-                <div class="stat-label">{{ t('home.evaluationMetrics') }}</div>
-              </div>
-              <div class="stat-item">
-                <div class="stat-number">4</div>
-                <div class="stat-label">{{ t('home.supportedFormatsCount') }}</div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="usage-tips">
-            <h3>💡 {{ t('home.usageTips') }}</h3>
-            <ul>
-              <li>{{ t('home.usageTip1') }}</li>
-              <li>{{ t('home.usageTip2') }}</li>
-              <li>{{ t('home.usageTip3') }}</li>
-              <li>{{ t('home.usageTip4') }}</li>
-            </ul>
-          </div>
+        <p class="text-slate-600 text-base max-w-2xl mx-auto leading-relaxed">{{ t('app.subtitle') }}</p>
+        <div class="mt-4 flex flex-wrap justify-center gap-2">
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 whitespace-nowrap">
+            🔍 智能分析
+          </span>
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 whitespace-nowrap">
+            📊 可视化报告
+          </span>
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 whitespace-nowrap">
+            🎮 游戏优化
+          </span>
         </div>
       </div>
-
-      <!-- 右侧栏：分析结果 -->
-      <div v-if="analysisResults.length > 0" class="right-panel">
-        <div class="results-section">
-          <h2>{{ t('home.analysisResults') }}</h2>
-          <div class="results-container">
-            <div class="results-grid">
+      
+      <!-- 主要内容区域 - 动态布局 -->
+      <div v-if="analysisResults.length === 0" class="flex justify-center items-start">
+        <!-- 居中显示的文件上传区域 -->
+        <div class="w-full max-w-2xl space-y-4">
+          <!-- 文件上传区域 - 增强视觉效果 -->
+          <div class="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg border border-slate-200/60 p-4 hover:shadow-xl transition-all duration-300">
+            <div class="mb-3">
+              <h3 class="text-sm font-semibold text-slate-800 mb-2 flex items-center gap-2">
+                <span class="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
+                  <span class="text-white text-xs">📁</span>
+                </span>
+                文件上传
+              </h3>
               <div 
-                v-for="result in analysisResults" 
-                :key="result.id" 
-                class="result-card"
+                class="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center transition-all duration-300 bg-gradient-to-br from-slate-50 to-blue-50/30 hover:border-blue-400 hover:bg-gradient-to-br hover:from-blue-50 hover:to-indigo-50/40 relative group cursor-pointer"
+                @drop="handleDrop" 
+                @dragover.prevent 
+                @dragenter.prevent
+                @click="fileInput?.click()"
               >
-                <h3>{{ result.name }}</h3>
-                <div class="score-overview">
-                  <div class="overall-score">
-                    <span class="score-label">{{ t('home.overallScore') }}</span>
-                    <span class="score-value" :class="getScoreClass(result.overallScore)">
-                      {{ result.overallScore.toFixed(2) }}
-                    </span>
+                <div class="flex flex-col items-center gap-3">
+                  <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                    <span class="text-blue-600 text-2xl">📁</span>
+                  </div>
+                  <div>
+                    <p class="text-slate-700 text-sm font-medium">{{ t('home.dragAndDrop') }}</p>
+                    <p class="text-slate-500 text-xs mt-1">{{ t('home.supportedFormats') }}</p>
+                  </div>
+                  <div class="flex items-center gap-2 mt-2">
+                    <input
+                      ref="fileInput"
+                      type="file"
+                      accept=".json"
+                      multiple
+                      @change="handleFileSelect"
+                      class="hidden"
+                    />
+                    <button 
+                      class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:from-blue-700 hover:to-indigo-700 hover:shadow-lg transform hover:-translate-y-0.5"
+                      @click.stop="fileInput?.click()"
+                    >
+                      {{ t('home.selectFiles') }}
+                    </button>
+                    <Popover class="relative">
+                      <PopoverButton class="text-slate-400 hover:text-slate-600 p-1 rounded-full hover:bg-slate-100 transition-all duration-300">
+                        <InformationCircleIcon class="h-3 w-3" />
+                      </PopoverButton>
+                      <transition
+                        enter-active-class="transition ease-out duration-200"
+                        enter-from-class="opacity-0 translate-y-1"
+                        enter-to-class="opacity-100 translate-y-0"
+                        leave-active-class="transition ease-in duration-150"
+                        leave-from-class="opacity-100 translate-y-0"
+                        leave-to-class="opacity-0 translate-y-1"
+                      >
+                        <PopoverPanel class="absolute z-50 w-56 px-3 mt-1 transform -translate-x-1/2 left-1/2 sm:px-0">
+                          <div class="overflow-hidden rounded-lg shadow-lg ring-1 ring-slate-200 bg-white">
+                            <div class="relative p-2">
+                              <h3 class="text-xs font-semibold text-slate-900 mb-1">{{ t('help.fileUpload.title') }}</h3>
+                              <ul class="text-xs text-slate-600 space-y-0.5">
+                                <li class="flex items-center gap-1">• {{ t('help.fileUpload.content.0') }}</li>
+                                <li class="flex items-center gap-1">• {{ t('help.fileUpload.content.1') }}</li>
+                                <li class="flex items-center gap-1">• {{ t('help.fileUpload.content.2') }}</li>
+                                <li class="flex items-center gap-1">• {{ t('help.fileUpload.content.3') }}</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </PopoverPanel>
+                      </transition>
+                    </Popover>
                   </div>
                 </div>
-                <div class="detailed-scores">
-                  <div v-for="(scoreData, metric) in result.detailedScores" :key="metric" class="metric-score">
-                    <span class="metric-name">{{ getMetricName(metric) }}</span>
-                    <span class="metric-value" :class="getScoreClass(scoreData.score || 0)">
-                      {{ (scoreData.score || 0).toFixed(2) }}
-                    </span>
+              </div>
+              <div v-if="uploadedFiles.length === 0" class="text-center">
+                <p class="text-slate-500 text-xs">{{ t('home.uploadPrompt') }}</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 已上传文件列表 - 增强设计 -->
+          <div v-if="uploadedFiles.length > 0" class="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg border border-slate-200/60 p-4 hover:shadow-xl transition-all duration-300">
+            <div class="flex justify-between items-center mb-3">
+              <h3 class="text-sm font-semibold text-slate-800 flex items-center gap-2">
+                <span class="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
+                  <span class="text-white text-xs">✓</span>
+                </span>
+                {{ t('home.uploadedFiles') }}
+              </h3>
+              <div class="flex items-center gap-2">
+                <span class="bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 px-3 py-1 rounded-full text-xs font-medium border border-blue-200">
+                  {{ uploadedFiles.length }} {{ t('common.items') }}
+                </span>
+                <button 
+                  @click="uploadedFiles = []" 
+                  class="text-red-500 hover:text-red-700 text-xs font-medium transition-all duration-300 hover:bg-red-50 px-2 py-1 rounded-lg"
+                  :disabled="isAnalyzing"
+                >
+                  {{ t('common.clear') }}
+                </button>
+              </div>
+            </div>
+            <div class="max-h-40 overflow-y-auto space-y-2 scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100">
+              <div v-for="(file, index) in uploadedFiles" :key="file.name" 
+                   class="flex justify-between items-center p-3 bg-gradient-to-r from-slate-50 to-blue-50/30 rounded-lg border border-slate-200/50 transition-all duration-300 hover:from-blue-50 hover:to-indigo-50/40 hover:shadow-md hover:-translate-y-0.5">
+                <div class="flex items-center gap-3 flex-1 min-w-0">
+                  <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <DocumentIcon class="w-4 h-4 text-blue-600" />
+                  </div>
+                  <div class="flex flex-col gap-1 flex-1 min-w-0">
+                    <span class="font-medium text-slate-800 truncate text-sm">{{ file.name }}</span>
+                    <span class="text-slate-500 text-xs">{{ formatFileSize(file.size) }}</span>
                   </div>
                 </div>
-                <div class="result-actions">
-                  <button class="view-details-btn" @click="viewDetails(result)">
-                    {{ t('home.viewDetails') }}
+                <button 
+                  @click="removeFile(index)" 
+                  :disabled="isAnalyzing"
+                  class="w-7 h-7 bg-red-100 hover:bg-red-200 text-red-600 rounded-lg transition-all duration-300 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                >
+                  <XMarkIcon class="w-3 h-3" />
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 分析配置 - 增强设计 -->
+          <div v-if="uploadedFiles.length > 0" class="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg border border-slate-200/60 p-4 hover:shadow-xl transition-all duration-300">
+            <div class="flex justify-between items-center mb-3">
+              <h3 class="text-sm font-semibold text-slate-800 flex items-center gap-2">
+                <span class="w-4 h-4 bg-purple-500 rounded-full flex items-center justify-center">
+                  <span class="text-white text-xs">⚙️</span>
+                </span>
+                {{ t('home.analysisConfig') }}
+              </h3>
+              <span class="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded-full">
+                {{ t('home.analysisConfigDescription') }}
+              </span>
+            </div>
+            <!-- 指标选择器 -->
+            <div class="p-3 bg-gradient-to-r from-slate-50 to-purple-50/30 rounded-lg border border-slate-200/50 mb-4">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm font-medium text-slate-900">{{ t('metricSelector.title') }}</span>
+                <button 
+                  @click="showMetricSelector = !showMetricSelector"
+                  class="px-3 py-1 text-xs bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-all duration-300 hover:shadow-sm"
+                >
+                  {{ showMetricSelector ? t('common.close') : t('common.view') }}
+                </button>
+              </div>
+              <p class="text-xs text-slate-600 mb-2 flex items-center gap-2">
+                <span class="w-2 h-2 bg-purple-400 rounded-full"></span>
+                {{ t('metricSelector.selectedCount', { count: selectedMetrics.length, total: availableMetricsCount }) }}
+              </p>
+              <div v-if="showMetricSelector" class="mt-2">
+                <MetricSelector
+                  :initial-selection="selectedMetrics"
+                  @change="handleMetricChange"
+                />
+              </div>
+            </div>
+            <!-- 主要分析按钮 -->
+            <div class="text-center">
+              <button 
+                @click="analyzeAllFiles" 
+                :disabled="uploadedFiles.length === 0 || isAnalyzing"
+                class="relative bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 hover:from-green-700 hover:to-emerald-700 hover:shadow-lg hover:-translate-y-0.5 disabled:from-slate-400 disabled:to-slate-500 disabled:cursor-not-allowed disabled:transform-none w-full"
+              >
+                <div class="flex items-center justify-center gap-2">
+                  <span v-if="isAnalyzing" class="w-4 h-4 border-2 border-transparent border-t-white rounded-full animate-spin"></span>
+                  <span v-else class="text-lg">🔍</span>
+                  <span>{{ isAnalyzing ? t('home.analyzing', { current: analysisResults.length, total: uploadedFiles.length }) : t('home.startAnalysis', { count: uploadedFiles.length }) }}</span>
+                </div>
+              </button>
+              <!-- 分析进度条 -->
+              <div v-if="isAnalyzing" class="mt-3">
+                <div class="bg-slate-200 rounded-full h-2 overflow-hidden shadow-inner">
+                  <div 
+                    class="bg-gradient-to-r from-green-500 to-emerald-500 h-full transition-all duration-500 ease-out rounded-full"
+                    :style="{ width: `${(analysisResults.length / uploadedFiles.length) * 100}%` }"
+                  ></div>
+                </div>
+                <p class="text-sm text-slate-600 mt-2 font-medium">
+                  {{ t('home.progress', { completed: analysisResults.length, total: uploadedFiles.length, percentage: Math.round((analysisResults.length / uploadedFiles.length) * 100) }) }}
+                </p>
+              </div>
+              <p v-if="!isAnalyzing" class="text-slate-500 text-sm mt-2 flex items-center justify-center gap-2">
+                <span class="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></span>
+                {{ uploadedFiles.length > 0 ? t('home.clickToAnalyze') : t('home.pleaseUploadFirst') }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 有分析结果时的左右布局 -->
+      <div v-else class="grid grid-cols-1 xl:grid-cols-5 gap-6">
+        <!-- 左侧：文件上传和配置 - 增强设计 -->
+        <div class="xl:col-span-2 space-y-4">
+          <!-- 文件上传区域 - 增强视觉效果 -->
+          <div class="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg border border-slate-200/60 p-4 hover:shadow-xl transition-all duration-300">
+            <div class="mb-3">
+              <h3 class="text-sm font-semibold text-slate-800 mb-2 flex items-center gap-2">
+                <span class="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
+                  <span class="text-white text-xs">📁</span>
+                </span>
+                文件上传
+              </h3>
+              <div 
+                class="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center transition-all duration-300 bg-gradient-to-br from-slate-50 to-blue-50/30 hover:border-blue-400 hover:bg-gradient-to-br hover:from-blue-50 hover:to-indigo-50/40 relative group cursor-pointer"
+                @drop="handleDrop" 
+                @dragover.prevent 
+                @dragenter.prevent
+                @click="fileInput?.click()"
+              >
+                <div class="flex flex-col items-center gap-3">
+                  <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                    <span class="text-blue-600 text-2xl">📁</span>
+                  </div>
+                  <div>
+                    <p class="text-slate-700 text-sm font-medium">{{ t('home.dragAndDrop') }}</p>
+                    <p class="text-slate-500 text-xs mt-1">{{ t('home.supportedFormats') }}</p>
+                  </div>
+                  <div class="flex items-center gap-2 mt-2">
+                    <input
+                      ref="fileInput"
+                      type="file"
+                      accept=".json"
+                      multiple
+                      @change="handleFileSelect"
+                      class="hidden"
+                    />
+                    <button 
+                      class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:from-blue-700 hover:to-indigo-700 hover:shadow-lg transform hover:-translate-y-0.5"
+                      @click.stop="fileInput?.click()"
+                    >
+                      {{ t('home.selectFiles') }}
+                    </button>
+                    <Popover class="relative">
+                      <PopoverButton class="text-slate-400 hover:text-slate-600 p-1 rounded-full hover:bg-slate-100 transition-all duration-300">
+                        <InformationCircleIcon class="h-3 w-3" />
+                      </PopoverButton>
+                      <transition
+                        enter-active-class="transition ease-out duration-200"
+                        enter-from-class="opacity-0 translate-y-1"
+                        enter-to-class="opacity-100 translate-y-0"
+                        leave-active-class="transition ease-in duration-150"
+                        leave-from-class="opacity-100 translate-y-0"
+                        leave-to-class="opacity-0 translate-y-1"
+                      >
+                        <PopoverPanel class="absolute z-50 w-56 px-3 mt-1 transform -translate-x-1/2 left-1/2 sm:px-0">
+                          <div class="overflow-hidden rounded-lg shadow-lg ring-1 ring-slate-200 bg-white">
+                            <div class="relative p-2">
+                              <h3 class="text-xs font-semibold text-slate-900 mb-1">{{ t('help.fileUpload.title') }}</h3>
+                              <ul class="text-xs text-slate-600 space-y-0.5">
+                                <li class="flex items-center gap-1">• {{ t('help.fileUpload.content.0') }}</li>
+                                <li class="flex items-center gap-1">• {{ t('help.fileUpload.content.1') }}</li>
+                                <li class="flex items-center gap-1">• {{ t('help.fileUpload.content.2') }}</li>
+                                <li class="flex items-center gap-1">• {{ t('help.fileUpload.content.3') }}</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </PopoverPanel>
+                      </transition>
+                    </Popover>
+                  </div>
+                </div>
+              </div>
+              <div v-if="uploadedFiles.length === 0" class="text-center">
+                <p class="text-slate-500 text-xs">{{ t('home.uploadPrompt') }}</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 已上传文件列表 - 增强设计 -->
+          <div v-if="uploadedFiles.length > 0" class="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg border border-slate-200/60 p-4 hover:shadow-xl transition-all duration-300">
+            <div class="flex justify-between items-center mb-3">
+              <h3 class="text-sm font-semibold text-slate-800 flex items-center gap-2">
+                <span class="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
+                  <span class="text-white text-xs">✓</span>
+                </span>
+                {{ t('home.uploadedFiles') }}
+              </h3>
+              <div class="flex items-center gap-2">
+                <span class="bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 px-3 py-1 rounded-full text-xs font-medium border border-blue-200">
+                  {{ uploadedFiles.length }} {{ t('common.items') }}
+                </span>
+                <button 
+                  @click="uploadedFiles = []" 
+                  class="text-red-500 hover:text-red-700 text-xs font-medium transition-all duration-300 hover:bg-red-50 px-2 py-1 rounded-lg"
+                  :disabled="isAnalyzing"
+                >
+                  {{ t('common.clear') }}
+                </button>
+              </div>
+            </div>
+            <div class="max-h-40 overflow-y-auto space-y-2 scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100">
+              <div v-for="(file, index) in uploadedFiles" :key="file.name" 
+                   class="flex justify-between items-center p-3 bg-gradient-to-r from-slate-50 to-blue-50/30 rounded-lg border border-slate-200/50 transition-all duration-300 hover:from-blue-50 hover:to-indigo-50/40 hover:shadow-md hover:-translate-y-0.5">
+                <div class="flex items-center gap-3 flex-1 min-w-0">
+                  <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <DocumentIcon class="w-4 h-4 text-blue-600" />
+                  </div>
+                  <div class="flex flex-col gap-1 flex-1 min-w-0">
+                    <span class="font-medium text-slate-800 truncate text-sm">{{ file.name }}</span>
+                    <span class="text-slate-500 text-xs">{{ formatFileSize(file.size) }}</span>
+                  </div>
+                </div>
+                <button 
+                  @click="removeFile(index)" 
+                  :disabled="isAnalyzing"
+                  class="w-7 h-7 bg-red-100 hover:bg-red-200 text-red-600 rounded-lg transition-all duration-300 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                >
+                  <XMarkIcon class="w-3 h-3" />
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 分析配置 - 增强设计 -->
+          <div v-if="uploadedFiles.length > 0" class="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg border border-slate-200/60 p-4 hover:shadow-xl transition-all duration-300">
+            <div class="flex justify-between items-center mb-3">
+              <h3 class="text-sm font-semibold text-slate-800 flex items-center gap-2">
+                <span class="w-4 h-4 bg-purple-500 rounded-full flex items-center justify-center">
+                  <span class="text-white text-xs">⚙️</span>
+                </span>
+                {{ t('home.analysisConfig') }}
+              </h3>
+              <span class="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded-full">
+                {{ t('home.analysisConfigDescription') }}
+              </span>
+            </div>
+            <!-- 指标选择器 -->
+            <div class="p-3 bg-gradient-to-r from-slate-50 to-purple-50/30 rounded-lg border border-slate-200/50 mb-4">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm font-medium text-slate-900">{{ t('metricSelector.title') }}</span>
+                <button 
+                  @click="showMetricSelector = !showMetricSelector"
+                  class="px-3 py-1 text-xs bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-all duration-300 hover:shadow-sm"
+                >
+                  {{ showMetricSelector ? t('common.close') : t('common.view') }}
+                </button>
+              </div>
+              <p class="text-xs text-slate-600 mb-2 flex items-center gap-2">
+                <span class="w-2 h-2 bg-purple-400 rounded-full"></span>
+                {{ t('metricSelector.selectedCount', { count: selectedMetrics.length, total: availableMetricsCount }) }}
+              </p>
+              <div v-if="showMetricSelector" class="mt-2">
+                <MetricSelector
+                  :initial-selection="selectedMetrics"
+                  @change="handleMetricChange"
+                />
+              </div>
+            </div>
+            <!-- 主要分析按钮 -->
+            <div class="text-center">
+              <button 
+                @click="analyzeAllFiles" 
+                :disabled="uploadedFiles.length === 0 || isAnalyzing"
+                class="relative bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 hover:from-green-700 hover:to-emerald-700 hover:shadow-lg hover:-translate-y-0.5 disabled:from-slate-400 disabled:to-slate-500 disabled:cursor-not-allowed disabled:transform-none w-full"
+              >
+                <div class="flex items-center justify-center gap-2">
+                  <span v-if="isAnalyzing" class="w-4 h-4 border-2 border-transparent border-t-white rounded-full animate-spin"></span>
+                  <span v-else class="text-lg">🔍</span>
+                  <span>{{ isAnalyzing ? t('home.analyzing', { current: analysisResults.length, total: uploadedFiles.length }) : t('home.startAnalysis', { count: uploadedFiles.length }) }}</span>
+                </div>
+              </button>
+              <!-- 分析进度条 -->
+              <div v-if="isAnalyzing" class="mt-3">
+                <div class="bg-slate-200 rounded-full h-2 overflow-hidden shadow-inner">
+                  <div 
+                    class="bg-gradient-to-r from-green-500 to-emerald-500 h-full transition-all duration-500 ease-out rounded-full"
+                    :style="{ width: `${(analysisResults.length / uploadedFiles.length) * 100}%` }"
+                  ></div>
+                </div>
+                <p class="text-sm text-slate-600 mt-2 font-medium">
+                  {{ t('home.progress', { completed: analysisResults.length, total: uploadedFiles.length, percentage: Math.round((analysisResults.length / uploadedFiles.length) * 100) }) }}
+                </p>
+              </div>
+              <p v-if="!isAnalyzing" class="text-slate-500 text-sm mt-2 flex items-center justify-center gap-2">
+                <span class="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></span>
+                {{ uploadedFiles.length > 0 ? t('home.clickToAnalyze') : t('home.pleaseUploadFirst') }}
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 右侧：分析结果 - 增强设计 -->
+        <div class="xl:col-span-3">
+          <!-- 分析结果区域 -->
+          <div v-if="analysisResults.length > 0" class="bg-white/90 backdrop-blur-xl rounded-xl shadow-xl border border-white/30 p-6">
+            <div class="flex justify-between items-start mb-6">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center shadow-lg">
+                  <span class="text-white text-sm">📊</span>
+                </div>
+                <div>
+                  <h2 class="text-xl font-bold text-gray-800">
+                    {{ t('home.analysisResults') }}
+                  </h2>
+                  <p class="text-sm text-gray-600">共 {{ analysisResults.length }} 个分析结果</p>
+                </div>
+              </div>
+              <!-- 快速导航区域 - 现代化设计 -->
+              <div class="flex flex-wrap gap-3">
+                <button
+                  @click="viewMultipleDetails"
+                  class="group relative inline-flex items-center gap-3 px-5 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl hover:from-blue-600 hover:to-indigo-700 transition-all duration-300 text-sm font-semibold shadow-lg hover:shadow-xl hover:-translate-y-1 transform overflow-hidden"
+                >
+                  <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                  <span class="text-base relative z-10">👁️</span>
+                  <span class="relative z-10">查看细节</span>
+                </button>
+                <button
+                  @click="exportAllResults"
+                  class="group relative inline-flex items-center gap-3 px-5 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl hover:from-green-600 hover:to-emerald-700 transition-all duration-300 text-sm font-semibold shadow-lg hover:shadow-xl hover:-translate-y-1 transform overflow-hidden"
+                >
+                  <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                  <span class="text-base relative z-10">📄</span>
+                  <span class="relative z-10">导出报告</span>
+                </button>
+                <button
+                  @click="clearResults"
+                  class="group relative inline-flex items-center gap-3 px-5 py-3 bg-gradient-to-r from-red-500 to-pink-600 text-white rounded-xl hover:from-red-600 hover:to-pink-700 transition-all duration-300 text-sm font-semibold shadow-lg hover:shadow-xl hover:-translate-y-1 transform overflow-hidden"
+                >
+                  <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                  <span class="text-base relative z-10">🗑️</span>
+                  <span class="relative z-10">清空结果</span>
+                </button>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div v-for="(result, index) in analysisResults" :key="result.id" 
+                   class="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-gray-200/50 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 transform hover:bg-white/90 group">
+                <div class="flex justify-between items-start mb-3">
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-2">
+                      <div class="w-6 h-6 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <span class="text-blue-600 text-xs">📄</span>
+                      </div>
+                      <h3 class="text-gray-900 text-sm font-semibold truncate" :title="result.filename">
+                        {{ result.filename }}
+                      </h3>
+                    </div>
+                    <p class="text-gray-500 text-xs flex items-center gap-1">
+                      <span class="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
+                      {{ t('home.fileNumber', { current: index + 1, total: analysisResults.length }) }}
+                    </p>
+                  </div>
+                  <div class="flex items-end ml-3">
+                    <div class="text-center">
+                      <div 
+                        :class="[
+                          'text-lg font-bold py-2 px-3 rounded-xl text-white flex-shrink-0 min-w-12 text-center shadow-lg transform transition-all duration-300 group-hover:scale-105',
+                          getScoreClass(result.overallScore) === 'excellent' ? 'bg-gradient-to-r from-green-500 to-emerald-500' : '',
+                          getScoreClass(result.overallScore) === 'good' ? 'bg-gradient-to-r from-blue-500 to-indigo-500' : '',
+                          getScoreClass(result.overallScore) === 'average' ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white' : '',
+                          getScoreClass(result.overallScore) === 'poor' ? 'bg-gradient-to-r from-red-500 to-pink-500' : '',
+                          getScoreClass(result.overallScore) === 'very-poor' ? 'bg-gradient-to-r from-gray-500 to-slate-500' : ''
+                        ]"
+                      >
+                        {{ result.overallScore.toFixed(2) }}
+                      </div>
+                      <p class="text-xs text-gray-500 mt-1 font-medium">{{ result.grade }}</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- 快速操作按钮 -->
+                <div class="flex gap-2 mt-3 pt-3 border-t border-gray-100">
+                  <button
+                    @click="viewDetails(result)"
+                    class="flex-1 group/btn relative inline-flex items-center justify-center gap-2 px-3 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg hover:from-blue-600 hover:to-indigo-700 transition-all duration-300 text-xs font-medium shadow-md hover:shadow-lg hover:-translate-y-0.5 transform overflow-hidden"
+                  >
+                    <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-500"></div>
+                    <span class="text-xs relative z-10">👁️</span>
+                    <span class="relative z-10">详情</span>
                   </button>
-                  <button class="export-btn" @click="exportResult(result)">
-                    {{ t('home.exportReport') }}
+                  <button
+                    @click="exportResult(result)"
+                    class="flex-1 group/btn relative inline-flex items-center justify-center gap-2 px-3 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg hover:from-green-600 hover:to-emerald-700 transition-all duration-300 text-xs font-medium shadow-md hover:shadow-lg hover:-translate-y-0.5 transform overflow-hidden"
+                  >
+                    <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-500"></div>
+                    <span class="text-xs relative z-10">📄</span>
+                    <span class="relative z-10">导出</span>
                   </button>
                 </div>
               </div>
@@ -470,591 +946,392 @@ onMounted(async () => {
           </div>
         </div>
       </div>
+      
+      <!-- 弹窗部分保持不变 -->
+      <TransitionRoot as="template" :show="showConfirmDialog">
+        <Dialog as="div" class="relative z-50" @close="showConfirmDialog = false">
+          <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0" enter-to="opacity-100" leave="ease-in duration-200" leave-from="opacity-100" leave-to="opacity-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity backdrop-blur-sm" />
+          </TransitionChild>
+          <div class="fixed inset-0 z-10 overflow-y-auto">
+            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+              <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" enter-to="opacity-100 translate-y-0 sm:scale-100" leave="ease-in duration-200" leave-from="opacity-100 translate-y-0 sm:scale-100" leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+                <DialogPanel class="relative transform overflow-hidden rounded-2xl bg-white px-4 pb-4 pt-5 text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+                  <div class="sm:flex sm:items-start">
+                    <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                      <ExclamationTriangleIcon class="h-6 w-6 text-red-600" aria-hidden="true" />
+                    </div>
+                    <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                      <DialogTitle as="h3" class="text-base font-semibold leading-6 text-gray-900">
+                        {{ t('confirm.clearResults') }}
+                      </DialogTitle>
+                      <div class="mt-2">
+                        <p class="text-sm text-gray-500">
+                          {{ t('confirm.clearResultsConfirm', { count: analysisResults.length }) }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                    <button
+                      type="button"
+                      class="inline-flex w-full justify-center rounded-xl bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto transition-all duration-300"
+                      @click="confirmClearResults"
+                    >
+                      {{ t('confirm.clearResults') }}
+                    </button>
+                    <button
+                      type="button"
+                      class="mt-3 inline-flex w-full justify-center rounded-xl bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto transition-all duration-300"
+                      @click="showConfirmDialog = false"
+                    >
+                      {{ t('common.cancel') }}
+                    </button>
+                  </div>
+                </DialogPanel>
+              </TransitionChild>
+            </div>
+          </div>
+        </Dialog>
+      </TransitionRoot>
+      <TransitionRoot as="template" :show="showErrorDialog">
+        <Dialog as="div" class="relative z-50" @close="showErrorDialog = false">
+          <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0" enter-to="opacity-100" leave="ease-in duration-200" leave-from="opacity-100" leave-to="opacity-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity backdrop-blur-sm" />
+          </TransitionChild>
+          <div class="fixed inset-0 z-10 overflow-y-auto">
+            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+              <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" enter-to="opacity-100 translate-y-0 sm:scale-100" leave="ease-in duration-200" leave-from="opacity-100 translate-y-0 sm:scale-100" leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+                <DialogPanel class="relative transform overflow-hidden rounded-2xl bg-white px-4 pb-4 pt-5 text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+                  <div class="sm:flex sm:items-start">
+                    <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                      <ExclamationTriangleIcon class="h-6 w-6 text-red-600" aria-hidden="true" />
+                    </div>
+                    <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                      <DialogTitle as="h3" class="text-base font-semibold leading-6 text-gray-900">
+                        {{ t('errors.analysisError') }}
+                      </DialogTitle>
+                      <div class="mt-2">
+                        <p class="text-sm text-gray-500">
+                          {{ errorMessage }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                    <button
+                      type="button"
+                      class="inline-flex w-full justify-center rounded-xl bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto transition-all duration-300"
+                      @click="showErrorDialog = false"
+                    >
+                      确定
+                    </button>
+                  </div>
+                </DialogPanel>
+              </TransitionChild>
+            </div>
+          </div>
+        </Dialog>
+      </TransitionRoot>
     </div>
   </div>
 </template>
 
 <style scoped>
-.home {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  background: var(--color-background);
-  padding: 20px;
-  min-height: calc(100vh - 80px); /* 减去页头高度 */
+/* 自定义样式 */
+.bg-radial-gradient {
+  background: radial-gradient(circle at center, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
 }
 
-.main-content {
-  max-width: 1400px;
-  margin: 0 auto;
-  background: white;
-  border-radius: 20px;
-  padding: 40px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: start;
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+/* 动画效果 */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-.main-content.has-results {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
+.animate-spin {
+  animation: spin 1s linear infinite;
 }
 
-.left-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  max-width: 800px;
-  width: 100%;
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+/* 悬停效果 */
+.group:hover .group-hover\:scale-110 {
+  transform: scale(1.1);
 }
 
-.main-content.has-results .left-panel {
-  max-width: none;
+/* 渐变背景动画 */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
-.right-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  min-height: 600px;
-  animation: slideInFromRight 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+.bg-gradient-animated {
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
 }
 
-@keyframes slideInFromRight {
+/* 玻璃态效果 */
+.backdrop-blur-xl {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* 阴影效果 */
+.shadow-2xl {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* 响应式设计优化 */
+@media (max-width: 1280px) {
+  .grid.grid-cols-1.xl\:grid-cols-5 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  
+  .xl\:col-span-2 {
+    grid-column: span 1 / span 1;
+  }
+  
+  .xl\:col-span-3 {
+    grid-column: span 1 / span 1;
+  }
+  
+  .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1024px) {
+  .text-5xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+
+  .text-8xl {
+    font-size: 6rem;
+    line-height: 1;
+  }
+
+  .px-12 {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .py-5 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .py-4.px-4 {
+    padding: 0.75rem;
+  }
+  
+  .text-3xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+  
+  .text-base {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+  
+  .gap-6 {
+    gap: 1rem;
+  }
+  
+  .gap-4 {
+    gap: 0.75rem;
+  }
+  
+  .p-6 {
+    padding: 1rem;
+  }
+  
+  .p-4 {
+    padding: 0.75rem;
+  }
+  
+  .mb-6 {
+    margin-bottom: 1rem;
+  }
+  
+  .w-10.h-10 {
+    width: 2rem;
+    height: 2rem;
+  }
+  
+  .w-8.h-8 {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  
+  .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  
+  .max-h-40 {
+    max-height: 8rem;
+  }
+  
+  /* 最小高度在移动端的调整 */
+  .min-h-\[600px\] {
+    min-height: 400px;
+  }
+  
+  /* 文件上传区域在移动端的优化 */
+  .p-6.text-center {
+    padding: 1rem;
+  }
+  
+  /* 分析结果卡片在移动端的优化 */
+  .hover\:-translate-y-1:hover {
+    transform: translateY(0);
+  }
+  
+  .transform.hover\:-translate-y-0\.5:hover {
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 640px) {
+  .text-5xl {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+
+  .text-xl {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+
+  .px-6 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .p-6 {
+    padding: 1rem;
+  }
+
+  .gap-6 {
+    gap: 1rem;
+  }
+
+  .grid.grid-cols-1.md\:grid-cols-2 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
+
+/* 自定义滚动条 */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* 按钮悬停效果 */
+button:hover {
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* 卡片悬停效果 */
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* 渐变文字效果 */
+.gradient-text {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* 脉冲动画 */
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* 淡入动画 */
+@keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateX(100px);
+    transform: translateY(20px);
   }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* 滑动动画 */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
   to {
     opacity: 1;
     transform: translateX(0);
   }
 }
 
-.upload-section {
-  margin-bottom: 0;
-}
-
-.upload-section h2 {
-  color: #333;
-  margin-bottom: 20px;
-}
-
-.upload-area {
-  border: 3px dashed #ddd;
-  border-radius: 15px;
-  padding: 40px;
-  text-align: center;
-  transition: all 0.3s ease;
-  background: #fafafa;
-}
-
-.upload-area:hover {
-  border-color: #667eea;
-  background: #f0f4ff;
-}
-
-.upload-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-}
-
-.upload-icon {
-  font-size: 3rem;
-  margin-bottom: 10px;
-}
-
-.supported-formats {
-  color: #666;
-  font-size: 0.9rem;
-}
-
-.upload-btn {
-  background: #4a5568;
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background 0.3s ease;
-}
-
-.upload-btn:hover {
-  background: #2d3748;
-}
-
-.file-list {
-  margin-top: 20px;
-}
-
-.file-list h3 {
-  color: #333;
-  margin-bottom: 15px;
-}
-
-.file-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 15px;
-  background: #f8f9fa;
-  border-radius: 8px;
-  margin-bottom: 8px;
-}
-
-.file-name {
-  font-weight: 500;
-}
-
-.file-size {
-  color: #666;
-  font-size: 0.9rem;
-}
-
-.remove-btn {
-  background: #e53e3e;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.8rem;
-}
-
-.analysis-options {
-  margin-bottom: 0;
-}
-
-.analysis-options h2 {
-  color: #333;
-  margin-bottom: 20px;
-}
-
-.quick-actions {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.action-card {
-  background: #f8f9fa;
-  border-radius: 8px;
-  padding: 10px;
-  border: 1px solid #e9ecef;
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
-  user-select: none;
-}
-
-.action-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  background: #f0f4ff;
-  border-color: #667eea;
-}
-
-.action-card:active {
-  transform: translateY(0px);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.action-card:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.action-icon {
-  font-size: 1.5rem;
-  margin-bottom: 6px;
-}
-
-.action-card h3 {
-  color: #333;
-  margin-bottom: 4px;
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-
-.action-card p {
-  color: #666;
-  font-size: 0.7rem;
-  margin: 0;
-  line-height: 1.2;
-}
-
-.stats-section {
-  background: #f0f4ff;
-  border-radius: 12px;
-  padding: 15px;
-  margin-bottom: 20px;
-}
-
-.stats-section h3 {
-  color: #333;
-  margin-bottom: 12px;
-  font-size: 1rem;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 12px;
-}
-
-.stat-item {
-  text-align: center;
-}
-
-.stat-number {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #667eea;
-  margin-bottom: 4px;
-}
-
-.stat-label {
-  color: #555;
-  font-size: 0.8rem;
-}
-
-.usage-tips {
-  background: #f0f4ff;
-  border-radius: 12px;
-  padding: 15px;
-  margin-bottom: 20px;
-}
-
-.usage-tips h3 {
-  color: #333;
-  margin-bottom: 12px;
-  font-size: 1rem;
-}
-
-.usage-tips ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.usage-tips li {
-  color: #555;
-  font-size: 0.8rem;
-  margin-bottom: 6px;
-}
-
-.usage-tips li:last-child {
-  margin-bottom: 0;
-}
-
-.analyze-btn-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 30px;
-}
-
-.analyze-btn {
-  background: #38a169;
-  color: white;
-  border: none;
-  padding: 15px 30px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1.1rem;
-  font-weight: 500;
-  transition: background 0.3s ease;
-  min-width: 200px;
-}
-
-.analyze-btn:hover:not(:disabled) {
-  background: #2f855a;
-}
-
-.analyze-btn:disabled {
-  background: #6c757d;
-  cursor: not-allowed;
-}
-
-.results-section {
-  margin-top: 0;
-}
-
-.results-section h2 {
-  color: #333;
-  margin-bottom: 20px;
-  font-size: 1.5rem;
-}
-
-.results-container {
-  /* 移除flex: 1和overflow-y: auto，让内容自然流动 */
-  /* flex: 1; */
-  /* overflow-y: auto; */
-  padding-right: 10px;
-}
-
-/* 移除滚动条样式，因为不再需要 */
-/* .results-container::-webkit-scrollbar {
-  width: 8px;
-}
-
-.results-container::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-}
-
-.results-container::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 4px;
-}
-
-.results-container::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.5);
-} */
-
-.results-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.result-card {
-  background: #f8f9fa;
-  border-radius: 15px;
-  padding: 20px;
-  border: 1px solid #e9ecef;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.result-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-}
-
-.result-card h3 {
-  color: #333;
-  margin-bottom: 15px;
-  font-size: 1.3rem;
-}
-
-.score-overview {
-  margin-bottom: 20px;
-}
-
-.overall-score {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px;
-  background: white;
-  border-radius: 8px;
-  margin-bottom: 15px;
-}
-
-.score-label {
-  font-weight: 500;
-  color: #333;
-}
-
-.score-value {
-  font-size: 1.5rem;
-  font-weight: bold;
-  padding: 5px 10px;
-  border-radius: 6px;
-}
-
-.score-value.excellent {
-  background: #d4edda;
-  color: #155724;
-}
-
-.score-value.good {
-  background: #d1ecf1;
-  color: #0c5460;
-}
-
-.score-value.average {
-  background: #fff3cd;
-  color: #856404;
-}
-
-.score-value.poor {
-  background: #f8d7da;
-  color: #721c24;
-}
-
-.detailed-scores {
-  margin-bottom: 20px;
-}
-
-.metric-score {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 0;
-  border-bottom: 1px solid #e9ecef;
-}
-
-.metric-score:last-child {
-  border-bottom: none;
-}
-
-.metric-name {
-  color: #666;
-  font-size: 0.9rem;
-}
-
-.metric-value {
-  font-weight: 500;
-  padding: 3px 8px;
-  border-radius: 4px;
-  font-size: 0.9rem;
-}
-
-.result-actions {
-  display: flex;
-  gap: 10px;
-}
-
-.view-details-btn,
-.export-btn {
-  flex: 1;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background 0.3s ease;
-}
-
-.view-details-btn {
-  background: #3182ce;
-  color: white;
-}
-
-.view-details-btn:hover {
-  background: #2c5aa0;
-}
-
-.export-btn {
-  background: #718096;
-  color: white;
-}
-
-.export-btn:hover {
-  background: #4a5568;
-}
-
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 60px 20px;
-  background: #f8f9fa;
-  border-radius: 15px;
-  border: 2px dashed #dee2e6;
-  min-height: 400px;
-}
-
-.empty-icon {
-  font-size: 4rem;
-  margin-bottom: 20px;
-  opacity: 0.6;
-}
-
-.empty-state h3 {
-  color: #333;
-  margin-bottom: 10px;
-  font-size: 1.5rem;
-}
-
-.empty-state p {
-  color: #666;
-  font-size: 1rem;
-  margin: 0;
-}
-
-@media (max-width: 768px) {
-  .home {
-    padding: 10px;
-  }
-  
-  .main-content {
-    padding: 20px;
-  }
-  
-  .main-content.has-results {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-  
-  .left-panel {
-    gap: 20px;
-    max-width: none;
-  }
-  
-  .right-panel {
-    min-height: auto;
-  }
-  
-  .title {
-    font-size: 2rem;
-  }
-  
-  .quick-actions {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-  }
-  
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
-  
-  .action-card {
-    padding: 8px;
-  }
-  
-  .action-icon {
-    font-size: 1.2rem;
-    margin-bottom: 4px;
-  }
-  
-  .action-card h3 {
-    font-size: 0.8rem;
-    margin-bottom: 2px;
-  }
-  
-  .action-card p {
-    font-size: 0.6rem;
-  }
-  
-  .empty-state {
-    min-height: 300px;
-    padding: 40px 20px;
-  }
-  
-  .empty-icon {
-    font-size: 3rem;
-  }
-  
-  .empty-state h3 {
-    font-size: 1.2rem;
-  }
-  
-  .empty-state p {
-    font-size: 0.9rem;
-  }
+.slide-in {
+  animation: slideIn 0.5s ease-out;
 }
 </style>

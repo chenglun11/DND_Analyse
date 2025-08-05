@@ -1,37 +1,32 @@
 <template>
   <div class="not-found">
-    <div class="not-found-content">
-      <div class="error-code">404</div>
-      <h1>页面未找到</h1>
-      <p>抱歉，您访问的页面不存在或已被移除。</p>
-      <div class="actions">
-        <router-link to="/" class="home-btn">返回首页</router-link>
-        <button @click="goBack" class="back-btn">返回上一页</button>
-      </div>
-      <div class="suggestions">
-        <h3>您可能想要访问：</h3>
-        <ul>
-          <li><router-link to="/">首页</router-link></li>
-          <li><router-link to="/about">关于我们</router-link></li>
-          <li><router-link to="/help">帮助文档</router-link></li>
-          <li><router-link to="/test">测试页面</router-link></li>
-        </ul>
-      </div>
+    <h1>{{ t('errors.notFound') }}</h1>
+    <p>{{ t('errors.pageNotFound') }}</p>
+    <div class="actions">
+      <router-link to="/" class="home-btn">{{ t('nav.home') }}</router-link>
+      <button @click="goBack" class="back-btn">{{ t('common.back') }}</button>
+    </div>
+    <div class="suggestions">
+      <h3>{{ t('errors.suggestions') }}</h3>
+      <ul>
+        <li><router-link to="/">{{ t('nav.home') }}</router-link></li>
+        <li><router-link to="/about">{{ t('nav.about') }}</router-link></li>
+        <li><router-link to="/help">{{ t('nav.help') }}</router-link></li>
+        <li><router-link to="/test">{{ t('nav.test') }}</router-link></li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
 const router = useRouter()
+const { t } = useI18n()
 
 const goBack = () => {
-  if (window.history.length > 1) {
-    router.go(-1)
-  } else {
-    router.push('/')
-  }
+  router.go(-1)
 }
 </script>
 
