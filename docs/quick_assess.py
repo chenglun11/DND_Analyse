@@ -63,7 +63,7 @@ def quick_assess(dungeon_file, detailed=False, visualize=False):
                 'door_distribution': '门分布',
                 'path_diversity': '路径多样性',
                 'treasure_monster_distribution': '宝藏怪物分布',
-                'aesthetic_balance': '视觉平衡',
+                'geometric_balance': '几何平衡',
                 'dead_end_ratio': '死胡同比例',
                 'loop_ratio': '环路比例',
                 'degree_variance': '度方差'

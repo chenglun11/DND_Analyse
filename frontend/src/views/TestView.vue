@@ -40,7 +40,7 @@
           <div class="test-item">
             <h3>指标名称</h3>
             <p>{{ t('metrics.accessibility') }}</p>
-            <p>{{ t('metrics.aesthetic_balance') }}</p>
+            <p>{{ t('metrics.geometric_balance') }}</p>
             <p>{{ t('metrics.loop_ratio') }}</p>
           </div>
         </div>
@@ -61,7 +61,7 @@ const currentLocale = computed(() => locale.value)
 <style scoped>
 .test-view {
   padding: 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--color-background);
   min-height: calc(100vh - 80px);
 }
 
@@ -91,7 +91,7 @@ p {
 .test-section h2 {
   color: #333;
   margin-bottom: 20px;
-  border-bottom: 2px solid #667eea;
+  border-bottom: 2px solid #4a5568;
   padding-bottom: 10px;
 }
 
@@ -121,7 +121,7 @@ p {
 }
 
 .current-locale {
-  background: #667eea;
+  background: #4a5568;
   color: white;
   padding: 10px 20px;
   border-radius: 8px;

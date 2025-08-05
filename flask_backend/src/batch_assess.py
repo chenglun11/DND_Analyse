@@ -149,7 +149,7 @@ def generate_summary_report(results: Dict[str, Any]) -> Dict[str, Any]:
         # 计算各指标的统计
         metric_stats = {}
         metrics = ['accessibility', 'degree_variance', 'path_diversity', 
-                   'loop_ratio', 'door_distribution', 'treasure_monster_distribution', 'aesthetic_balance']
+                   'loop_ratio', 'door_distribution', 'treasure_monster_distribution', 'geometric_balance']
         
         for metric in metrics:
             values = []
@@ -265,7 +265,7 @@ def print_summary_report(report: Dict[str, Any]) -> None:
                 'loop_ratio': 'Loop Raito',
                 'door_distribution': 'Door Ditstribution',
                 'treasure_monster_distribution': 'Treasure Monster Distribution',
-                'aesthetic_balance': 'Aesthetic Balance'
+                'geometric_balance': 'Geometric Balance'
             }.get(metric, metric)
             print(f"  {metric_name}: AVG {stats['average']:.3f}, MAX {stats['max']:.3f}, MIN {stats['min']:.3f}")
     

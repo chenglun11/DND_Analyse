@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { computed } from 'vue'
 
 const router = useRouter()
 const { t } = useI18n()
@@ -43,23 +44,35 @@ const features = [
 ]
 
 const qualityMetrics = [
-  { name: '可达性评估', description: '评估地下城各区域的连通性和可达性' },
-  { name: '美学平衡', description: '分析房间布局的美观性和平衡性' },
-  { name: '环路比例', description: '计算地下城中的环路结构比例' },
-  { name: '死胡同比例', description: '评估死胡同和无效路径的比例' },
-  { name: '宝藏分布', description: '分析宝藏和战利品的分布合理性' },
-  { name: '怪物分布', description: '评估怪物和敌人的分布策略' },
-  { name: '关键路径长度', description: '分析主要路径的长度和复杂度' },
-  { name: '度数方差', description: '评估房间连接度的分布情况' },
-  { name: '空间推理', description: '分析空间布局的逻辑性和合理性' }
+  { name: t('about.qualityMetrics.0.name'), description: t('about.qualityMetrics.0.description') },
+  { name: t('about.qualityMetrics.1.name'), description: t('about.qualityMetrics.1.description') },
+  { name: t('about.qualityMetrics.2.name'), description: t('about.qualityMetrics.2.description') },
+  { name: t('about.qualityMetrics.3.name'), description: t('about.qualityMetrics.3.description') },
+  { name: t('about.qualityMetrics.4.name'), description: t('about.qualityMetrics.4.description') },
+  { name: t('about.qualityMetrics.5.name'), description: t('about.qualityMetrics.5.description') },
+  { name: t('about.qualityMetrics.6.name'), description: t('about.qualityMetrics.6.description') },
+  { name: t('about.qualityMetrics.7.name'), description: t('about.qualityMetrics.7.description') },
+  { name: t('about.qualityMetrics.8.name'), description: t('about.qualityMetrics.8.description') }
 ]
 
-const techStack = [
-  { category: '前端', items: ['Vue 3', 'TypeScript', 'Vite', 'Tailwind CSS'] },
-  { category: '后端', items: ['Python', 'Flask', 'NumPy', 'Pandas'] },
-  { category: '算法', items: ['A*路径算法', 'BFS搜索', '图论分析'] },
-  { category: '可视化', items: ['Canvas API', 'SVG', 'Chart.js'] }
-]
+const techStack = computed(() => [
+  { 
+    category: t('about.techStackCategories.0'), 
+    items: ['Vue 3', 'TypeScript', 'Vite', 'Tailwind CSS']
+  },
+  { 
+    category: t('about.techStackCategories.1'), 
+    items: ['Python', 'Flask', 'NumPy', 'Pandas']
+  },
+  { 
+    category: t('about.techStackCategories.2'), 
+    items: ['A* Path Algorithm', 'BFS Search', 'Graph Theory Analysis']
+  },
+  { 
+    category: t('about.techStackCategories.3'), 
+    items: ['Canvas API', 'SVG', 'Chart.js']
+  }
+])
 </script>
 
 <template>
@@ -100,7 +113,7 @@ const techStack = [
 
       <!-- 质量评估指标 -->
       <section class="section">
-        <h2>📊 质量评估指标</h2>
+        <h2>📊 {{ t('about.qualityMetricsTitle') }}</h2>
         <div class="metrics-grid">
           <div v-for="metric in qualityMetrics" :key="metric.name" class="metric-card">
             <h4>{{ metric.name }}</h4>
@@ -111,7 +124,7 @@ const techStack = [
 
       <!-- 技术栈 -->
       <section class="section">
-        <h2>🛠️ 技术栈</h2>
+        <h2>🛠️ {{ t('about.techStackTitle') }}</h2>
         <div class="tech-grid">
           <div v-for="tech in techStack" :key="tech.category" class="tech-category">
             <h4>{{ tech.category }}</h4>
@@ -126,22 +139,22 @@ const techStack = [
 
       <!-- 版本信息 -->
       <section class="section">
-        <h2>📋 版本信息</h2>
+        <h2>📋 {{ t('about.versionInfoTitle') }}</h2>
         <div class="version-info">
           <div class="info-item">
-            <strong>当前版本：</strong>
-            <span>v1.0.0</span>
+            <strong>{{ t('about.versionInfo.currentVersion') }}：</strong>
+            <span>v1.0.3</span>
           </div>
           <div class="info-item">
-            <strong>最后更新：</strong>
-            <span>2024年12月</span>
+            <strong>{{ t('about.versionInfo.lastUpdate') }}：</strong>
+            <span>{{ t('about.versionInfo.lastUpdateDate') }}</span>
           </div>
           <div class="info-item">
-            <strong>开发团队：</strong>
-            <span>地下城分析器开发组</span>
+            <strong>{{ t('about.versionInfo.developmentTeam') }}：</strong>
+            <span>{{ t('about.versionInfo.teamName') }}</span>
           </div>
           <div class="info-item">
-            <strong>许可证：</strong>
+            <strong>{{ t('about.versionInfo.license') }}：</strong>
             <span>MIT License</span>
           </div>
         </div>
@@ -149,16 +162,16 @@ const techStack = [
 
       <!-- 快速操作 -->
       <section class="section">
-        <h2>⚡ 快速操作</h2>
+        <h2>⚡ {{ t('about.quickActionsTitle') }}</h2>
         <div class="quick-actions">
           <button class="action-btn primary" @click="router.push('/')">
-            开始分析
+            {{ t('about.quickActions.startAnalysis') }}
           </button>
           <button class="action-btn" @click="router.push('/help')">
-            查看帮助
+            {{ t('about.quickActions.viewHelp') }}
           </button>
           <button class="action-btn" @click="router.push('/test')">
-            功能测试
+            {{ t('about.quickActions.featureTest') }}
           </button>
         </div>
       </section>
@@ -171,6 +184,8 @@ const techStack = [
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  background: var(--color-background);
+  min-height: calc(100vh - 80px);
 }
 
 .about-header {
@@ -184,7 +199,7 @@ const techStack = [
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.2);
+  background: #2d3748;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -195,7 +210,7 @@ const techStack = [
 }
 
 .back-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: #1a202c;
 }
 
 .about-header h1 {
@@ -327,7 +342,7 @@ const techStack = [
 }
 
 .tech-item {
-  background: #667eea;
+  background: #4a5568;
   color: white;
   padding: 5px 12px;
   border-radius: 20px;
@@ -375,11 +390,11 @@ const techStack = [
 }
 
 .action-btn.primary {
-  background: #667eea;
+  background: #4a5568;
 }
 
 .action-btn.primary:hover {
-  background: #5a6fd8;
+  background: #2d3748;
 }
 
 @media (max-width: 768px) {

@@ -12,6 +12,10 @@ class DegreeVarianceRule(BaseQualityRule):
       2. normalized_variance: 相对于理论最大方差归一化 (0-1)
 
     评分: score = 1 - normalized_variance，度数越均匀评分越高
+    
+    改进:
+    - 修正了小规模地图下理论最大方差计算过小的问题
+    - 使用更合理的归一化方法
     """
 
     @property
@@ -47,9 +51,19 @@ class DegreeVarianceRule(BaseQualityRule):
         mean_deg = sum(degrees) / n
         raw_variance = sum((d - mean_deg) ** 2 for d in degrees) / n
 
-        # 理论最大方差：当一半节点度数=0，另一半度数=n-1 时
-        # mean = (n-1)/2, var_max = ((n-1)/2)^2
-        max_var = ((n - 1) / 2) ** 2 if n > 1 else 0.0
+        # 改进的理论最大方差计算
+        # 考虑实际可能的度数分布情况
+        if n <= 2:
+            # 对于小规模地图，使用更合理的最大方差
+            max_var = max(1.0, raw_variance)  # 至少为1.0，或实际方差
+        else:
+            # 对于大规模地图，使用改进的理论最大方差
+            # 考虑实际可能的度数分布：从0到(n-1)
+            max_degree = n - 1
+            min_degree = 0
+            # 理论最大方差：当一半节点为最小度数，一半为最大度数时
+            theoretical_max_var = ((max_degree - min_degree) / 2) ** 2
+            max_var = max(theoretical_max_var, raw_variance)
 
         # 归一化
         normalized_variance = raw_variance / max_var if max_var > 0 else 0.0
@@ -63,4 +77,7 @@ class DegreeVarianceRule(BaseQualityRule):
             'normalized_variance': normalized_variance,
             'score': score,
             'degrees': degrees,
+            'max_variance': max_var,
+            'room_count': n,
+            'mean_degree': mean_deg
         } 

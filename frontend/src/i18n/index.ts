@@ -32,7 +32,9 @@ const zh = {
     quickStart: '快速开始',
     functionGuide: '功能指南',
     faq: '常见问题',
-    coreFeatures: '核心功能'
+    coreFeatures: '核心功能',
+    unknown: '未知地下城',
+    noData: '暂无数据'
   },
 
   // 导航
@@ -228,9 +230,9 @@ const zh = {
         title: '可达性评估 (Accessibility)',
         description: '评估地下城各区域的连通性和可达性，确保玩家能够到达所有重要区域。'
       },
-      aesthetic_balance: {
-        title: '美学平衡 (Aesthetic Balance)',
-        description: '分析房间布局的美观性和平衡性，评估视觉设计的合理性。'
+      geometric_balance: {
+        title: '几何平衡 (Geometric Balance)',
+        description: '分析房间布局的几何平衡性，评估空间设计的合理性。'
       },
       loop_ratio: {
         title: '环路比例 (Loop Ratio)',
@@ -301,7 +303,7 @@ const zh = {
     ],
     qualityMetrics: [
       { name: '可达性评估', description: '评估地下城各区域的连通性和可达性' },
-      { name: '美学平衡', description: '分析房间布局的美观性和平衡性' },
+      { name: '几何平衡', description: '分析房间布局的几何平衡性' },
       { name: '环路比例', description: '计算地下城中的环路结构比例' },
       { name: '死胡同比例', description: '评估死胡同和无效路径的比例' },
       { name: '宝藏分布', description: '分析宝藏和战利品的分布合理性' },
@@ -315,13 +317,19 @@ const zh = {
       { category: '后端', items: ['Python', 'Flask', 'NumPy', 'Pandas'] },
       { category: '算法', items: ['A*路径算法', 'BFS搜索', '图论分析'] },
       { category: '可视化', items: ['Canvas API', 'SVG', 'Chart.js'] }
-    ]
+    ],
+    techStackCategories: {
+      0: '前端',
+      1: '后端',
+      2: '算法',
+      3: '可视化'
+    }
   },
 
   // 质量指标
   metrics: {
     accessibility: '可达性',
-    aesthetic_balance: '美学平衡',
+    geometric_balance: '几何平衡',
     loop_ratio: '环路比例',
     dead_end_ratio: '死胡同比例',
     treasure_distribution: '宝藏分布',
@@ -331,6 +339,46 @@ const zh = {
     key_path_length: '关键路径长度',
     path_diversity: '路径多样性',
     treasure_monster_distribution: '宝藏怪物分布'
+  },
+
+  // 指标描述
+  metricDescriptions: {
+    accessibility: {
+      good: '玩家可以轻松到达各个区域',
+      poor: '某些区域难以到达，需要改善路径设计'
+    },
+    geometric_balance: {
+      good: '房间布局几何平衡良好',
+      poor: '房间布局的几何平衡需要改善'
+    },
+    loop_ratio: {
+      good: '环路设计合理，避免线性体验',
+      poor: '环路较少，可能导致线性体验'
+    },
+    dead_end_ratio: {
+      good: '死胡同比例适中',
+      poor: '死胡同过多，影响探索体验'
+    },
+    treasure_monster_distribution: {
+      good: '宝藏和怪物分布合理',
+      poor: '宝藏和怪物分布需要调整'
+    },
+    degree_variance: {
+      good: '房间连接度分布均匀',
+      poor: '房间连接度分布不均匀'
+    },
+    door_distribution: {
+      good: '门分布合理',
+      poor: '门分布需要优化'
+    },
+    key_path_length: {
+      good: '关键路径长度适中',
+      poor: '关键路径过长或过短'
+    },
+    path_diversity: {
+      good: '路径多样性良好',
+      poor: '路径多样性需要改善'
+    }
   },
 
   // 评分等级
@@ -350,7 +398,9 @@ const zh = {
     unknownError: '未知错误',
     fileNotSupported: '不支持的文件格式',
     fileTooLarge: '文件过大',
-    noFilesSelected: '未选择文件'
+    noFilesSelected: '未选择文件',
+    missingFilename: '缺少文件名参数',
+    exportFailed: '报告导出失败，请重试'
   },
 
   // 成功信息
@@ -358,7 +408,8 @@ const zh = {
     fileUploaded: '文件上传成功',
     analysisCompleted: '分析完成',
     dataExported: '数据导出成功',
-    settingsSaved: '设置保存成功'
+    settingsSaved: '设置保存成功',
+    reportExported: '报告导出成功！'
   },
 
   // 确认对话框
@@ -367,6 +418,30 @@ const zh = {
     clearAllFiles: '确定要清除所有文件吗？',
     clearAllResults: '确定要清除所有结果吗？',
     exportData: '确定要导出数据吗？'
+  },
+
+  // 改进建议
+  suggestions: {
+    deadEndRatio: {
+      title: '减少死胡同',
+      description: '当前死胡同比例较高，建议增加环路连接以提高探索体验。'
+    },
+    geometricBalance: {
+      title: '改善几何平衡',
+      description: '房间布局的几何平衡需要改善，考虑调整房间大小和位置分布。'
+    },
+    treasureMonsterDistribution: {
+      title: '优化宝藏和怪物分布',
+      description: '宝藏和怪物的分布需要调整，以提供更好的游戏体验。'
+    },
+    accessibility: {
+      title: '改善可达性',
+      description: '某些区域难以到达，建议优化路径设计。'
+    },
+    pathDiversity: {
+      title: '增加路径多样性',
+      description: '路径多样性较低，建议增加不同的探索路径。'
+    }
   }
 }
 
@@ -402,7 +477,9 @@ const en = {
     quickStart: 'Quick Start',
     functionGuide: 'Function Guide',
     faq: 'FAQ',
-    coreFeatures: 'Core Features'
+    coreFeatures: 'Core Features',
+    unknown: 'Unknown Dungeon',
+    noData: 'No Data'
   },
 
   // Navigation
@@ -418,7 +495,7 @@ const en = {
   app: {
     title: 'Dungeon Analyzer',
     subtitle: 'Professional D&D Dungeon Quality Assessment Tool',
-    description: 'A powerful dungeon quality analysis tool supporting multiple dungeon file formats'
+    description: 'A powerful dungeon quality analysis tool that supports multiple dungeon file formats'
   },
 
   // Home page
@@ -427,7 +504,7 @@ const en = {
     uploadDescription: 'Drag files here or click to select files',
     supportedFormats: 'Supported formats: JSON, Watabou, Donjon, DungeonDraft',
     selectFiles: 'Select Files',
-    uploadedFiles: 'Uploaded Files:',
+    uploadedFiles: 'Uploaded files:',
     noFilesToClear: 'No files to clear',
     noResultsToExport: 'No results to export',
     noResultsToClear: 'No results to clear',
@@ -451,8 +528,8 @@ const en = {
     supportedFormatsCount: 'Supported Formats',
     usageTips: 'Usage Tips',
     usageTip1: 'Supports multiple dungeon formats: Watabou, Donjon, DungeonDraft, etc.',
-    usageTip2: 'Drag files to upload area or click select file button',
-    usageTip3: 'View detailed visualization results after analysis',
+    usageTip2: 'Drag files to upload area or click select files button',
+    usageTip3: 'After analysis, you can view detailed visualization results',
     usageTip4: 'Recommended to use Chrome or Firefox browser for best experience',
     helpDescription: 'View detailed usage instructions and tutorials',
     aboutDescription: 'Learn about project information and technical features',
@@ -470,26 +547,22 @@ const en = {
     exportReport: '📄 Export Report',
     dungeonVisualization: 'Dungeon Visualization',
     canvasVisualization: 'Canvas Visualization',
-    generatedImage: 'Generated Visualization Image',
-    noVisualizationData: 'No visualization data',
-    analysisResults: 'Analysis Results',
-    overallScore: 'Overall Score',
-    detailedMetrics: 'Detailed Metrics',
+    generatedImage: 'Generated Image',
+    noVisualizationData: 'No visualization data available',
     improvementSuggestions: 'Improvement Suggestions',
-    noData: 'No data',
-    scoreDescription: {
-      excellent: 'Outstanding dungeon design with excellent gameplay experience',
-      good: 'Excellent dungeon design with great gameplay experience',
-      average: 'Good dungeon design with decent overall performance',
-      poor: 'Dungeon design needs significant improvement'
-    }
+    refreshButtonTitle: 'Refresh data',
+    exportReportTitle: 'Export analysis report'
   },
 
   // Help page
   help: {
     backButton: '← Back to Home',
-    title: 'Help',
-    subtitle: 'Detailed usage guide and FAQ',
+    title: 'Help & Documentation',
+    subtitle: 'Complete user guide and FAQ',
+    intro: {
+      title: '📚 Help Center',
+      description: 'Welcome to the Dungeon Analyzer help center. Here you can find detailed usage instructions, FAQ, and troubleshooting guides.'
+    },
     fileUpload: {
       title: '📁 File Upload',
       content: {
@@ -506,124 +579,54 @@ const en = {
         0: 'Automatically evaluate dungeon quality',
         1: 'Generate visualization images',
         2: 'Provide detailed analysis reports',
-        3: 'Calculate 9 core quality metrics',
-        4: 'Generate improvement suggestions'
+        3: 'Support multiple evaluation metrics',
+        4: 'Export analysis results'
       }
     },
-    results: {
-      title: '📈 View Results',
+    visualization: {
+      title: '🎨 Visualization Features',
       content: {
-        0: 'Click "View Details" to see complete report',
-        1: 'Support export analysis results',
-        2: 'Provide improvement suggestions',
-        3: 'Visualize path analysis',
-        4: 'Quality score details'
+        0: 'Interactive canvas visualization',
+        1: 'Generated static images',
+        2: 'Room and corridor highlighting',
+        3: 'Zoom and pan controls',
+        4: 'Export visualization images'
       }
     },
-    export: {
-      title: '💾 Data Export',
+    metrics: {
+      title: '📈 Evaluation Metrics',
       content: {
-        0: 'Export analysis results in JSON format',
-        1: 'Export visualization images',
-        2: 'Batch export multiple file results',
-        3: 'Custom export options',
-        4: 'Support multiple export formats'
+        0: 'Accessibility: Path length and reachability analysis',
+        1: 'Geometric Balance: Room distribution and symmetry',
+        2: 'Loop Ratio: Circular path analysis',
+        3: 'Dead End Ratio: Dead end room analysis',
+        4: 'Treasure/Monster Distribution: Game element balance'
       }
     },
-    quickSteps: [
-      {
-        step: 1,
-        title: 'Upload Files',
-        description: 'Drag or select dungeon JSON files',
-        icon: '📁'
-      },
-      {
-        step: 2,
-        title: 'Start Analysis',
-        description: 'Click "Start Analysis" button',
-        icon: '⚡'
-      },
-      {
-        step: 3,
-        title: 'View Results',
-        description: 'Wait for analysis to complete, view scores',
-        icon: '📊'
-      },
-      {
-        step: 4,
-        title: 'Export Report',
-        description: 'Export detailed analysis report',
-        icon: '💾'
-      }
-    ],
-    faqs: [
-      {
-        question: 'What dungeon file formats are supported?',
-        answer: 'Currently supports Watabou, Donjon, DungeonDraft and other JSON file formats. Each format has a dedicated adapter for conversion.'
-      },
-      {
-        question: 'How long does analysis take?',
-        answer: 'Single file analysis typically takes a few seconds to tens of seconds, depending on the complexity of the dungeon. Batch analysis time increases accordingly.'
-      },
-      {
-        question: 'How to understand quality scores?',
-        answer: 'Score range is 0-100, higher scores indicate better dungeon quality. The system evaluates from multiple dimensions including accessibility, aesthetic balance, loop ratio, etc.'
-      },
-      {
-        question: 'How large dungeons can be analyzed?',
-        answer: 'Theoretically no size limit, but it is recommended that a single dungeon has no more than 1000 rooms to ensure optimal performance.'
-      },
-      {
-        question: 'Are analysis results saved?',
-        answer: 'Current session analysis results are saved in the browser and will be lost after refreshing the page. It is recommended to export important results in time.'
-      },
-      {
-        question: 'How to get better analysis results?',
-        answer: 'Ensure the dungeon file format is correct and room and corridor information is complete. The system automatically handles common data issues.'
-      }
-    ],
-    usageTips: {
-      title: 'Usage Tips',
-      tip1: 'Recommended to use Chrome or Firefox browser for best experience',
-      tip2: 'Support batch analysis of multiple files to improve work efficiency',
-      tip3: 'Analysis results are automatically saved and will be lost after refreshing the page',
-      tip4: 'You can export analysis results at any time to avoid data loss',
-      tip5: 'The system automatically handles common data format issues',
-      tip6: 'Visualization images support zoom and interactive operations',
-      tip7: 'Quality scores are based on 9 core metrics for comprehensive dungeon quality assessment'
-    },
-    metricsExplanation: {
-      title: 'Quality Assessment Metrics Explanation',
-      accessibility: {
-        title: 'Accessibility Assessment (Accessibility)',
-        description: 'Evaluate the connectivity and accessibility of various areas of the dungeon to ensure players can reach all important areas.'
-      },
-      aesthetic_balance: {
-        title: 'Aesthetic Balance (Aesthetic Balance)',
-        description: 'Analyze the aesthetics and balance of room layout, evaluate the rationality of visual design.'
-      },
-      loop_ratio: {
-        title: 'Loop Ratio (Loop Ratio)',
-        description: 'Calculate the proportion of loop structures in the dungeon, appropriate loops can increase the fun of exploration.'
-      },
-      dead_end_ratio: {
-        title: 'Dead End Ratio (Dead End Ratio)',
-        description: 'Evaluate the proportion of dead ends and invalid paths, too many dead ends will affect the gaming experience.'
-      },
-      treasure_distribution: {
-        title: 'Treasure Distribution (Treasure Distribution)',
-        description: 'Analyze the rationality of treasure and loot distribution to ensure fairness of rewards.'
-      },
-      monster_distribution: {
-        title: 'Monster Distribution (Monster Distribution)',
-        description: 'Evaluate monster and enemy distribution strategies to balance challenge and playability.'
+    tips: {
+      title: '💡 Usage Tips',
+      content: {
+        0: 'Use supported file formats for best results',
+        1: 'Large files may take longer to process',
+        2: 'Check browser console for detailed error messages',
+        3: 'Refresh page if analysis seems stuck',
+        4: 'Export results for offline viewing'
       }
     },
-    quickActions: {
-      title: 'Quick Actions',
-      startAnalysis: 'Start Analysis',
-      about: 'About Us',
-      test: 'Feature Test'
+    faq: {
+      title: '❓ Frequently Asked Questions',
+      questions: {
+        q1: 'What file formats are supported?',
+        a1: 'Currently supports JSON files from Watabou, Donjon, DungeonDraft, and other compatible formats.',
+        q2: 'How long does analysis take?',
+        a2: 'Analysis time depends on file size and complexity, typically 1-10 seconds.',
+        q3: 'Can I analyze multiple files at once?',
+        a3: 'Yes, you can upload and analyze multiple files in batch.',
+        q4: 'How accurate are the evaluation metrics?',
+        a4: 'Metrics are based on established dungeon design principles and graph theory analysis.',
+        q5: 'Can I export my analysis results?',
+        a5: 'Yes, you can export detailed reports in JSON format.'
+      }
     }
   },
 
@@ -632,111 +635,84 @@ const en = {
     backButton: '← Back to Home',
     title: 'About Dungeon Analyzer',
     subtitle: 'Professional D&D Dungeon Quality Assessment Tool',
-    intro: {
-      title: '🎯 Project Introduction',
-      description1: 'Dungeon Analyzer is an intelligent tool specifically designed for D&D (Dungeons & Dragons) games, aimed at helping game designers and dungeon creators create high-quality dungeons.',
-      description2: 'Through advanced algorithms and 9 core evaluation metrics, we can automatically analyze dungeon structure, layout and gameplay, providing detailed quality assessment and improvement suggestions.'
-    },
-    features: [
-      {
-        icon: '🎯',
-        title: 'Intelligent Quality Assessment',
-        description: 'Dungeon quality assessment system based on 9 core metrics'
-      },
-      {
-        icon: '📊',
-        title: 'Visualization Analysis',
-        description: 'Generate detailed visualization charts and path analysis'
-      },
-      {
-        icon: '🔄',
-        title: 'Multi-format Support',
-        description: 'Support Watabou, Donjon, DungeonDraft and other formats'
-      },
-      {
-        icon: '⚡',
-        title: 'Batch Processing',
-        description: 'Support batch upload and analysis of multiple dungeon files'
-      },
-      {
-        icon: '📈',
-        title: 'Detailed Reports',
-        description: 'Generate detailed analysis reports with improvement suggestions'
-      },
-      {
-        icon: '💾',
-        title: 'Result Export',
-        description: 'Support export analysis results and visualization images'
+    description: 'A powerful tool for analyzing and evaluating dungeon designs using advanced algorithms and visualization techniques.',
+    features: {
+      title: '🚀 Key Features',
+      list: {
+        0: 'Multi-format dungeon file support',
+        1: 'Advanced quality evaluation algorithms',
+        2: 'Interactive visualization tools',
+        3: 'Comprehensive analysis reports',
+        4: 'Batch processing capabilities'
       }
-    ],
-    qualityMetrics: [
-      { name: 'Accessibility Assessment', description: 'Evaluate connectivity and accessibility of dungeon areas' },
-      { name: 'Aesthetic Balance', description: 'Analyze the aesthetics and balance of room layouts' },
-      { name: 'Loop Ratio', description: 'Calculate the proportion of loop structures in dungeons' },
-      { name: 'Dead End Ratio', description: 'Evaluate the proportion of dead ends and invalid paths' },
-      { name: 'Treasure Distribution', description: 'Analyze the rationality of treasure and loot distribution' },
-      { name: 'Monster Distribution', description: 'Evaluate monster and enemy distribution strategies' },
-      { name: 'Key Path Length', description: 'Analyze the length and complexity of main paths' },
-      { name: 'Degree Variance', description: 'Evaluate the distribution of room connectivity' },
-      { name: 'Spatial Reasoning', description: 'Analyze the logic and rationality of spatial layouts' }
-    ],
-    techStack: [
-      { category: 'Frontend', items: ['Vue 3', 'TypeScript', 'Vite', 'Tailwind CSS'] },
-      { category: 'Backend', items: ['Python', 'Flask', 'NumPy', 'Pandas'] },
-      { category: 'Algorithms', items: ['A* Path Algorithm', 'BFS Search', 'Graph Theory Analysis'] },
-      { category: 'Visualization', items: ['Canvas API', 'SVG', 'Chart.js'] }
-    ]
+    },
+    technology: {
+      title: '⚙️ Technology Stack',
+      frontend: 'Frontend: Vue.js 3, TypeScript, Vite',
+      backend: 'Backend: Python Flask, Graph Theory Algorithms',
+      visualization: 'Visualization: Canvas API, SVG',
+      analysis: 'Analysis: Custom Quality Metrics, Spatial Analysis'
+    },
+    metrics: {
+      title: '📊 Analysis Metrics',
+      accessibility: 'Accessibility: Path analysis and reachability',
+      geometric: 'Geometric Balance: Room distribution and symmetry',
+      loops: 'Loop Ratio: Circular path detection',
+      deadEnds: 'Dead End Ratio: Dead end room analysis',
+      distribution: 'Distribution: Treasure and monster placement'
+    },
+    development: {
+      title: '🛠️ Development',
+      version: 'Version: 1.0.0',
+      license: 'License: MIT',
+      repository: 'Repository: GitHub',
+      contact: 'Contact: Support available through GitHub Issues'
+    }
   },
 
-  // Quality metrics
+  // Test page
+  test: {
+    backButton: '← Back to Home',
+    title: 'Test Page',
+    subtitle: 'Development and testing features',
+    description: 'This page is used for testing new features and debugging.',
+    features: {
+      title: '🧪 Test Features',
+      api: 'API Testing',
+      visualization: 'Visualization Testing',
+      analysis: 'Analysis Testing',
+      performance: 'Performance Testing'
+    }
+  },
+
+  // Error pages
+  errors: {
+    notFound: 'Page not found',
+    serverError: 'Server error',
+    networkError: 'Network error',
+    fileError: 'File error',
+    analysisError: 'Analysis error',
+    uploadError: 'Upload error',
+    missingFilename: 'Missing filename parameter',
+    invalidFile: 'Invalid file format',
+    fileTooLarge: 'File too large',
+    unsupportedFormat: 'Unsupported file format',
+    analysisFailed: 'Analysis failed',
+    visualizationFailed: 'Visualization failed'
+  },
+
+  // Metrics
   metrics: {
     accessibility: 'Accessibility',
-    aesthetic_balance: 'Aesthetic Balance',
+    geometric_balance: 'Geometric Balance',
     loop_ratio: 'Loop Ratio',
     dead_end_ratio: 'Dead End Ratio',
     treasure_distribution: 'Treasure Distribution',
     monster_distribution: 'Monster Distribution',
-    degree_variance: 'Degree Variance',
-    door_distribution: 'Door Distribution',
     key_path_length: 'Key Path Length',
+    degree_variance: 'Degree Variance',
     path_diversity: 'Path Diversity',
-    treasure_monster_distribution: 'Treasure Monster Distribution'
-  },
-
-  // Score levels
-  scoreLevels: {
-    excellent: 'Excellent',
-    good: 'Good',
-    average: 'Average',
-    poor: 'Poor'
-  },
-
-  // Error messages
-  errors: {
-    fileUploadFailed: 'File upload failed',
-    analysisFailed: 'Analysis failed',
-    networkError: 'Network error',
-    serverError: 'Server error',
-    unknownError: 'Unknown error',
-    fileNotSupported: 'Unsupported file format',
-    fileTooLarge: 'File too large',
-    noFilesSelected: 'No files selected'
-  },
-
-  // Success messages
-  success: {
-    fileUploaded: 'File uploaded successfully',
-    analysisCompleted: 'Analysis completed',
-    dataExported: 'Data exported successfully',
-    settingsSaved: 'Settings saved successfully'
-  },
-
-  // Confirm dialogs
-  confirm: {
-    deleteFile: 'Are you sure you want to delete this file?',
-    clearAllFiles: 'Are you sure you want to clear all files?',
-    clearAllResults: 'Are you sure you want to clear all results?',
-    exportData: 'Are you sure you want to export data?'
+    door_distribution: 'Door Distribution'
   }
 }
 

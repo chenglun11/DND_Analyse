@@ -19,6 +19,7 @@ interface AnalysisResult {
   overallScore: number
   detailedScores: Record<string, { score: number; detail?: any }>
   unifiedData?: any
+  fileId?: string // 新增 fileId 属性
 }
 
 const router = useRouter()
@@ -79,7 +80,7 @@ const startAnalysis = async () => {
     // 转换选项格式
     const apiOptions = {
       accessibility: true, // 默认值，如果需要从选项中获取，则需要修改
-      aesthetic_balance: true, // 默认值
+      geometric_balance: true, // 默认值
       loop_ratio: true, // 默认值
       dead_end_ratio: true, // 默认值
       treasure_distribution: true, // 默认值
@@ -99,7 +100,8 @@ const startAnalysis = async () => {
           name: uploadedFiles.value[0].name.replace('.json', ''),
           overallScore: result.result.overall_score || 0,
           detailedScores: result.result.scores || {},
-          unifiedData: result.result.unified_data || null
+          unifiedData: result.result.unified_data || null,
+          fileId: result.file_id || undefined  // 保存文件ID
         }]
         
         // 保存到localStorage以便详情页面使用
@@ -122,7 +124,8 @@ const startAnalysis = async () => {
             name: uploadedFiles.value[index].name.replace('.json', ''),
             overallScore: result.overall_score || 0,
             detailedScores: result.scores || {},
-            unifiedData: result.unified_data || null
+            unifiedData: result.unified_data || null,
+            fileId: result.file_id || undefined // 保存文件ID
           }
         })
         
@@ -158,7 +161,8 @@ const viewDetails = (result: AnalysisResult) => {
     name: 'detail', 
     params: { 
       name: result.name,
-      filename: uploadedFiles.value.find(f => f.name.replace('.json', '') === result.name)?.name || result.name + '.json'
+      filename: uploadedFiles.value.find(f => f.name.replace('.json', '') === result.name)?.name || result.name + '.json',
+      fileId: result.fileId // 传递文件ID
     } 
   })
 }
@@ -199,8 +203,8 @@ const generateRecommendations = (scores: Record<string, { score: number; detail?
     recommendations.push('减少死胡同比例，增加环路连接以提高探索体验')
   }
   
-  if (scores.aesthetic_balance?.score < 0.7) {
-    recommendations.push('改善美学平衡，调整房间大小和位置分布')
+        if (scores.geometric_balance?.score < 0.7) {
+          recommendations.push(t('suggestions.geometricBalance.description'))
   }
   
   if (scores.treasure_monster_distribution?.score < 0.5) {
@@ -475,7 +479,7 @@ onMounted(async () => {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--color-background);
   padding: 20px;
   min-height: calc(100vh - 80px); /* 减去页头高度 */
 }
@@ -573,7 +577,7 @@ onMounted(async () => {
 }
 
 .upload-btn {
-  background: #667eea;
+  background: #4a5568;
   color: white;
   border: none;
   padding: 12px 24px;
@@ -584,7 +588,7 @@ onMounted(async () => {
 }
 
 .upload-btn:hover {
-  background: #5a6fd8;
+  background: #2d3748;
 }
 
 .file-list {
@@ -616,7 +620,7 @@ onMounted(async () => {
 }
 
 .remove-btn {
-  background: #dc3545;
+  background: #e53e3e;
   color: white;
   border: none;
   padding: 5px 10px;
@@ -760,7 +764,7 @@ onMounted(async () => {
 }
 
 .analyze-btn {
-  background: #28a745;
+  background: #38a169;
   color: white;
   border: none;
   padding: 15px 30px;
@@ -773,7 +777,7 @@ onMounted(async () => {
 }
 
 .analyze-btn:hover:not(:disabled) {
-  background: #218838;
+  background: #2f855a;
 }
 
 .analyze-btn:disabled {
@@ -933,21 +937,21 @@ onMounted(async () => {
 }
 
 .view-details-btn {
-  background: #007bff;
+  background: #3182ce;
   color: white;
 }
 
 .view-details-btn:hover {
-  background: #0056b3;
+  background: #2c5aa0;
 }
 
 .export-btn {
-  background: #6c757d;
+  background: #718096;
   color: white;
 }
 
 .export-btn:hover {
-  background: #545b62;
+  background: #4a5568;
 }
 
 .empty-state {

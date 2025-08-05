@@ -3,7 +3,7 @@ const API_BASE_URL = 'http://localhost:5001/api'
 
 export interface AnalysisOptions {
   accessibility?: boolean
-  aesthetic_balance?: boolean
+  geometric_balance?: boolean
   loop_ratio?: boolean
   dead_end_ratio?: boolean
   treasure_distribution?: boolean
@@ -15,6 +15,7 @@ export interface AnalysisResult {
   result?: any
   error?: string
   filename?: string
+  file_id?: string  // 添加文件ID支持
 }
 
 export interface BatchAnalysisResult {
@@ -36,6 +37,17 @@ export interface VisualizationResult {
   visualization_data?: any
   error?: string
   filename?: string
+  file_id?: string  // 添加文件ID支持
+}
+
+export interface CacheInfo {
+  total_files: number
+  files: Array<{
+    file_id: string
+    filename: string
+    age_minutes: number
+    size_bytes: number
+  }>
 }
 
 export class DungeonAPI {
@@ -69,6 +81,7 @@ export class DungeonAPI {
     return this.request('/analysis-options')
   }
 
+  // 新的基于内存缓存的API方法
   static async analyzeDungeon(file: File, options: AnalysisOptions = {}): Promise<AnalysisResult> {
     const formData = new FormData()
     formData.append('file', file)
@@ -86,6 +99,78 @@ export class DungeonAPI {
     return response.json()
   }
 
+  // 通过文件ID分析（新的内存缓存API）
+  static async analyzeDungeonById(fileId: string, options: AnalysisOptions = {}): Promise<AnalysisResult> {
+    const formData = new FormData()
+    formData.append('file_id', fileId)
+    formData.append('options', JSON.stringify(options))
+
+    const response = await fetch(`${API_BASE_URL}/analyze-by-id`, {
+      method: 'POST',
+      body: formData,
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    return response.json()
+  }
+
+  // 通过文件ID获取可视化数据（新的内存缓存API）
+  static async getVisualizationDataById(fileId: string): Promise<VisualizationResult> {
+    const formData = new FormData()
+    formData.append('file_id', fileId)
+
+    const response = await fetch(`${API_BASE_URL}/visualize-data-by-id`, {
+      method: 'POST',
+      body: formData,
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    return response.json()
+  }
+
+  // 通过文件ID生成可视化图像（新的内存缓存API）
+  static async visualizeDungeonById(fileId: string, options: VisualizationOptions = {}): Promise<VisualizationResult> {
+    const formData = new FormData()
+    formData.append('file_id', fileId)
+    formData.append('options', JSON.stringify(options))
+
+    const response = await fetch(`${API_BASE_URL}/visualize-by-id`, {
+      method: 'POST',
+      body: formData,
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    return response.json()
+  }
+
+  // 获取缓存信息
+  static async getCacheInfo(): Promise<CacheInfo> {
+    return this.request('/cache-info')
+  }
+
+  // 清理缓存
+  static async clearCache(): Promise<{ success: boolean; message: string }> {
+    const response = await fetch(`${API_BASE_URL}/clear-cache`, {
+      method: 'POST',
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    return response.json()
+  }
+
+  // 旧的基于文件名的API方法（保持向后兼容）
   static async analyzeDungeonByFilename(filename: string, options: AnalysisOptions = {}): Promise<AnalysisResult> {
     const formData = new FormData()
     formData.append('filename', filename)

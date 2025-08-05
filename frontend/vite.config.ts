@@ -18,5 +18,25 @@ export default defineConfig({
   server: {
     port: 5173,
     host: true,
+    // 移除 historyApiFallback，在Vite中不需要
+    // 添加更多配置来处理SPA路由
+    fs: {
+      allow: ['..']
+    }
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['vue', 'vue-router'],
+        },
+      },
+    },
+  },
+  // 添加预览配置
+  preview: {
+    port: 5173,
+    host: true,
+    // 移除 historyApiFallback，在Vite中不需要
+  }
 })

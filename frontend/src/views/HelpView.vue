@@ -155,9 +155,9 @@ const helpMetrics = computed(() => [
     description: t('help.metricsExplanation.accessibility.description')
   },
   {
-    name: 'aesthetic_balance',
-    title: t('help.metricsExplanation.aesthetic_balance.title'),
-    description: t('help.metricsExplanation.aesthetic_balance.description')
+            name: 'geometric_balance',
+        title: t('help.metricsExplanation.geometric_balance.title'),
+        description: t('help.metricsExplanation.geometric_balance.description')
   },
   {
     name: 'loop_ratio',
@@ -283,6 +283,8 @@ const helpMetrics = computed(() => [
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  background: var(--color-background);
+  min-height: calc(100vh - 80px);
 }
 
 .help-header {
@@ -296,7 +298,7 @@ const helpMetrics = computed(() => [
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.2);
+  background: #2d3748;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -307,7 +309,7 @@ const helpMetrics = computed(() => [
 }
 
 .back-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: #1a202c;
 }
 
 .help-header h1 {
@@ -366,7 +368,7 @@ const helpMetrics = computed(() => [
   top: -10px;
   left: 50%;
   transform: translateX(-50%);
-  background: #667eea;
+  background: #4a5568;
   color: white;
   width: 30px;
   height: 30px;
@@ -454,7 +456,7 @@ const helpMetrics = computed(() => [
 }
 
 .faq-question {
-  background: #667eea;
+  background: #4a5568;
   color: white;
   padding: 15px 20px;
 }
@@ -541,7 +543,7 @@ const helpMetrics = computed(() => [
 }
 
 .action-btn.primary {
-  background: #667eea;
+  background: #4a5568;
 }
 
 .action-btn.primary:hover {

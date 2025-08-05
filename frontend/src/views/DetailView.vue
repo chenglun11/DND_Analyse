@@ -169,7 +169,7 @@ const imageData = ref<string | null>(null);
 const selectedRoom = ref<Room | null>(null)
 
 const dungeonName = computed(() => {
-  return route.params.name as string || '未知地下城'
+      return route.params.name as string || t('common.unknown')
 })
 
 // 获取分析结果
@@ -180,77 +180,157 @@ const fetchAnalysisResult = async () => {
     
     const filename = route.params.filename as string
     const dungeonName = route.params.name as string
+    const fileId = route.params.fileId as string  // 获取文件ID
     
-    console.log('获取分析结果，文件名:', filename, '地下城名称:', dungeonName)
+    console.log('获取分析结果，文件名:', filename, '地下城名称:', dungeonName, '文件ID:', fileId)
     
-    // 如果没有文件名，显示错误
-    if (!filename) {
-      error.value = '缺少文件名参数'
-      return
-    }
-    
-    // 创建文件对象（这里需要实际的文件内容）
-    // 由于前端无法直接访问文件系统，我们需要从后端获取数据
-    const file = new File([''], filename, { type: 'application/json' })
-    
-    // 首先尝试生成图像
-    try {
-      const imageResult = await DungeonAPI.visualizeDungeonByFilename(filename, {
-        show_connections: true,
-        show_room_ids: true,
-        show_grid: true,
-        show_game_elements: true
-      })
+    // 优先使用文件ID，如果没有则使用文件名
+    if (fileId) {
+      // 使用新的内存缓存API
+      console.log('使用文件ID进行查询:', fileId)
       
-      if (imageResult.success && imageResult.image_data) {
-        imageData.value = imageResult.image_data
-        console.log('图像生成成功')
+      // 获取分析结果
+      try {
+        const analysisResult = await DungeonAPI.analyzeDungeonById(fileId)
+        console.log('分析结果:', analysisResult)
+        
+        if (analysisResult.success && analysisResult.result) {
+          const assessment = analysisResult.result
+          console.log('评估数据:', assessment)
+          
+          overallScore.value = assessment.overall_score || 0
+          console.log('整体分数:', overallScore.value)
+          
+          // 处理详细分数 - 从scores中提取分数
+          const scores = assessment.scores || {}
+          const processedScores: Record<string, number> = {}
+          
+          for (const [metric, scoreData] of Object.entries(scores)) {
+            if (typeof scoreData === 'object' && scoreData !== null && 'score' in scoreData) {
+              // 保持0-1的分数范围
+              processedScores[metric] = scoreData.score as number
+            }
+          }
+          
+          detailedScores.value = processedScores
+          console.log('处理后的分数:', processedScores)
+          
+          // 如果没有整体分数，计算平均分
+          if (!assessment.overall_score && Object.keys(processedScores).length > 0) {
+            const totalScore = Object.values(processedScores).reduce((sum, score) => sum + score, 0)
+            overallScore.value = (totalScore / Object.keys(processedScores).length) * 10
+            console.log('计算的整体分数:', overallScore.value)
+          }
+        }
+      } catch (analysisErr) {
+        console.error('通过文件ID获取分析结果失败:', analysisErr)
+        error.value = '获取分析结果失败'
+        return
       }
-    } catch (imageErr) {
-      console.warn('图像生成失败，回退到Canvas可视化:', imageErr)
-    }
-    
-    // 获取可视化数据（作为备用）
-    try {
-      const result = await DungeonAPI.getVisualizationDataByFilename(filename)
-      if (result.success && result.visualization_data) {
-        dungeonData.value = result.visualization_data
+      
+      // 获取可视化数据
+      try {
+        const result = await DungeonAPI.getVisualizationDataById(fileId)
+        if (result.success && result.visualization_data) {
+          dungeonData.value = result.visualization_data
+        }
+      } catch (dataErr) {
+        console.warn('通过文件ID获取可视化数据失败:', dataErr)
       }
-    } catch (dataErr) {
-      console.warn('可视化数据获取失败:', dataErr)
-    }
-    
-    // 获取分析结果
-    const analysisResult = await DungeonAPI.analyzeDungeonByFilename(filename)
-    console.log('分析结果:', analysisResult)
-    
-    if (analysisResult.success && analysisResult.result) {
-      const assessment = analysisResult.result
-      console.log('评估数据:', assessment)
       
-      overallScore.value = assessment.overall_score || 0
-      console.log('整体分数:', overallScore.value)
+      // 生成图像
+      try {
+        const imageResult = await DungeonAPI.visualizeDungeonById(fileId, {
+          show_connections: true,
+          show_room_ids: true,
+          show_grid: true,
+          show_game_elements: true
+        })
+        
+        if (imageResult.success && imageResult.image_data) {
+          imageData.value = imageResult.image_data
+          console.log('图像生成成功')
+        }
+      } catch (imageErr) {
+        console.warn('通过文件ID生成图像失败:', imageErr)
+      }
       
-      // 处理详细分数 - 从scores中提取分数
-      const scores = assessment.scores || {}
-      const processedScores: Record<string, number> = {}
+    } else if (filename) {
+      // 回退到使用文件名（向后兼容）
+      console.log('使用文件名进行查询:', filename)
       
-      for (const [metric, scoreData] of Object.entries(scores)) {
-        if (typeof scoreData === 'object' && scoreData !== null && 'score' in scoreData) {
-          // 保持0-1的分数范围
-          processedScores[metric] = scoreData.score as number
+      // 如果没有文件名，显示错误
+      if (!filename) {
+        error.value = t('errors.missingFilename')
+        return
+      }
+      
+      // 创建文件对象（这里需要实际的文件内容）
+      // 由于前端无法直接访问文件系统，我们需要从后端获取数据
+      const file = new File([''], filename, { type: 'application/json' })
+      
+      // 首先尝试生成图像
+      try {
+        const imageResult = await DungeonAPI.visualizeDungeonByFilename(filename, {
+          show_connections: true,
+          show_room_ids: true,
+          show_grid: true,
+          show_game_elements: true
+        })
+        
+        if (imageResult.success && imageResult.image_data) {
+          imageData.value = imageResult.image_data
+          console.log('图像生成成功')
+        }
+      } catch (imageErr) {
+        console.warn('图像生成失败，回退到Canvas可视化:', imageErr)
+      }
+      
+      // 获取可视化数据（作为备用）
+      try {
+        const result = await DungeonAPI.getVisualizationDataByFilename(filename)
+        if (result.success && result.visualization_data) {
+          dungeonData.value = result.visualization_data
+        }
+      } catch (dataErr) {
+        console.warn('可视化数据获取失败:', dataErr)
+      }
+      
+      // 获取分析结果
+      const analysisResult = await DungeonAPI.analyzeDungeonByFilename(filename)
+      console.log('分析结果:', analysisResult)
+      
+      if (analysisResult.success && analysisResult.result) {
+        const assessment = analysisResult.result
+        console.log('评估数据:', assessment)
+        
+        overallScore.value = assessment.overall_score || 0
+        console.log('整体分数:', overallScore.value)
+        
+        // 处理详细分数 - 从scores中提取分数
+        const scores = assessment.scores || {}
+        const processedScores: Record<string, number> = {}
+        
+        for (const [metric, scoreData] of Object.entries(scores)) {
+          if (typeof scoreData === 'object' && scoreData !== null && 'score' in scoreData) {
+            // 保持0-1的分数范围
+            processedScores[metric] = scoreData.score as number
+          }
+        }
+        
+        detailedScores.value = processedScores
+        console.log('处理后的分数:', processedScores)
+        
+        // 如果没有整体分数，计算平均分
+        if (!assessment.overall_score && Object.keys(processedScores).length > 0) {
+          const totalScore = Object.values(processedScores).reduce((sum, score) => sum + score, 0)
+          overallScore.value = (totalScore / Object.keys(processedScores).length) * 10
+          console.log('计算的整体分数:', overallScore.value)
         }
       }
-      
-      detailedScores.value = processedScores
-      console.log('处理后的分数:', processedScores)
-      
-      // 如果没有整体分数，计算平均分
-      if (!assessment.overall_score && Object.keys(processedScores).length > 0) {
-        const totalScore = Object.values(processedScores).reduce((sum, score) => sum + score, 0)
-        overallScore.value = (totalScore / Object.keys(processedScores).length) * 10
-        console.log('计算的整体分数:', overallScore.value)
-      }
+    } else {
+      error.value = '缺少文件名或文件ID'
+      return
     }
   } catch (err) {
     console.error('获取分析结果时出错:', err)
@@ -304,39 +384,39 @@ const improvementSuggestions = computed<ImprovementSuggestion[]>(() => {
   const suggestions: ImprovementSuggestion[] = []
   
   if (detailedScores.value.dead_end_ratio < 0.5) {
-    suggestions.push({
-      title: '减少死胡同',
-      description: '当前死胡同比例较高，建议增加环路连接以提高探索体验。'
-    })
-  }
-  
-  if (detailedScores.value.aesthetic_balance < 0.7) {
-    suggestions.push({
-      title: '改善美学平衡',
-      description: '房间布局可以更加平衡，考虑调整房间大小和位置分布。'
-    })
-  }
-  
-  if (detailedScores.value.treasure_monster_distribution < 0.5) {
-    suggestions.push({
-      title: '优化宝藏和怪物分布',
-      description: '宝藏和怪物的分布需要调整，以提供更好的游戏体验。'
-    })
-  }
-  
-  if (detailedScores.value.accessibility < 0.7) {
-    suggestions.push({
-      title: '改善可达性',
-      description: '某些区域难以到达，建议优化路径设计。'
-    })
-  }
-  
-  if (detailedScores.value.path_diversity < 0.5) {
-    suggestions.push({
-      title: '增加路径多样性',
-      description: '路径多样性较低，建议增加不同的探索路径。'
-    })
-  }
+          suggestions.push({
+        title: t('suggestions.deadEndRatio.title'),
+        description: t('suggestions.deadEndRatio.description')
+      })
+    }
+    
+    if (detailedScores.value.geometric_balance < 0.7) {
+      suggestions.push({
+        title: t('suggestions.geometricBalance.title'),
+        description: t('suggestions.geometricBalance.description')
+      })
+    }
+    
+    if (detailedScores.value.treasure_monster_distribution < 0.5) {
+      suggestions.push({
+        title: t('suggestions.treasureMonsterDistribution.title'),
+        description: t('suggestions.treasureMonsterDistribution.description')
+      })
+    }
+    
+    if (detailedScores.value.accessibility < 0.7) {
+      suggestions.push({
+        title: t('suggestions.accessibility.title'),
+        description: t('suggestions.accessibility.description')
+      })
+    }
+    
+    if (detailedScores.value.path_diversity < 0.5) {
+      suggestions.push({
+        title: t('suggestions.pathDiversity.title'),
+        description: t('suggestions.pathDiversity.description')
+      })
+    }
   
   return suggestions
 })
@@ -362,18 +442,8 @@ const getMetricName = (metric: string): string => {
 }
 
 const getMetricDescription = (metric: string, score: number): string => {
-  const descriptions: Record<string, string> = {
-    accessibility: score >= 0.7 ? '玩家可以轻松到达各个区域' : '某些区域难以到达，需要改善路径设计',
-    aesthetic_balance: score >= 0.7 ? '房间布局美观且平衡' : '房间布局可以更加美观和平衡',
-    loop_ratio: score >= 0.7 ? '环路设计合理，避免线性体验' : '环路较少，可能导致线性体验',
-    dead_end_ratio: score >= 0.5 ? '死胡同比例适中' : '死胡同过多，影响探索体验',
-    treasure_monster_distribution: score >= 0.5 ? '宝藏和怪物分布合理' : '宝藏和怪物分布需要调整',
-    degree_variance: score >= 0.5 ? '房间连接度分布均匀' : '房间连接度分布不均匀',
-    door_distribution: score >= 0.5 ? '门分布合理' : '门分布需要优化',
-    key_path_length: score >= 0.7 ? '关键路径长度适中' : '关键路径过长或过短',
-    path_diversity: score >= 0.5 ? '路径多样性良好' : '路径多样性需要改善'
-  }
-  return descriptions[metric] || '暂无描述'
+  const quality = score >= 0.7 ? 'good' : 'poor'
+  return t(`metricDescriptions.${metric}.${quality}`) || t('common.noData')
 }
 
 const handleRoomClick = (room: Room) => {
@@ -427,10 +497,10 @@ const exportReport = async () => {
     console.log('Report exported successfully:', dungeonName.value)
     
     // 显示成功消息
-    alert('报告导出成功！')
+    alert(t('success.reportExported'))
   } catch (error) {
     console.error('Error exporting report:', error)
-    alert('报告导出失败，请重试')
+    alert(t('errors.exportFailed'))
   }
 }
 
@@ -456,7 +526,7 @@ onMounted(async () => {
 
 <style scoped>
 .detail-view {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--color-background);
   padding: 20px;
   min-height: calc(100vh - 80px); /* 减去页头高度 */
   /* 确保页面可以正常滚动 */
@@ -503,7 +573,7 @@ onMounted(async () => {
 
 
 .back-btn {
-  background: rgba(255, 255, 255, 0.2);
+  background: #2d3748;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -519,11 +589,11 @@ onMounted(async () => {
 }
 
 .back-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: #1a202c;
 }
 
 .export-btn {
-  background: rgba(255, 255, 255, 0.2);
+  background: #3182ce;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -534,11 +604,11 @@ onMounted(async () => {
 }
 
 .export-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: #2c5aa0;
 }
 
 .refresh-btn {
-  background: rgba(255, 255, 255, 0.2);
+  background: #38a169;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -549,21 +619,22 @@ onMounted(async () => {
 }
 
 .refresh-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: #2f855a;
 }
 
 .page-info h1 {
   font-size: 2.5rem;
   font-weight: bold;
   margin: 0;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  color: #2d3748;
+  text-shadow: none;
 }
 
 .page-info p {
   font-size: 1rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: #4a5568;
   margin: 0;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  text-shadow: none;
 }
 
 .content {

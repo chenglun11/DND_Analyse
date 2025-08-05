@@ -3,9 +3,9 @@ import math
 from collections import defaultdict
 from typing import Dict, Any, Tuple, List
 
-class AestheticBalanceRule(BaseQualityRule):
+class GeometricBalanceRule(BaseQualityRule):
     """
-    Aesthetic balance assessment: 客观评估地牢布局的视觉平衡性
+    Geometric balance assessment: 客观评估地牢布局的几何平衡性
 
     子指标:
       1. symmetry_ratio: 左右/上下对称度 (0-1)
@@ -17,11 +17,11 @@ class AestheticBalanceRule(BaseQualityRule):
     
     @property
     def name(self) -> str:
-        return "aesthetic_balance"
+        return "geometric_balance"
 
     @property
     def description(self) -> str:
-        return "Objective assessment of aesthetic balance in dungeon layout"
+        return "Objective assessment of geometric balance in dungeon layout"
 
     def evaluate(self, dungeon_data: Dict[str, Any]) -> Tuple[float, Dict[str, Any]]:
         levels = dungeon_data.get('levels', [])

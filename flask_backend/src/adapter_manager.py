@@ -55,6 +55,11 @@ class AdapterManager:
     
     def detect_format(self, data: Dict[str, Any]) -> Optional[str]:
         """自动检测数据格式"""
+        # 首先检查是否已经是统一格式
+        if self._is_unified_format(data):
+            return "unified"
+        
+        # 然后检查其他格式
         for format_name, adapter in self.adapters.items():
             try:
                 if adapter.detect(data):
@@ -63,6 +68,17 @@ class AdapterManager:
                 logger.warning(f"Error detecting format {format_name}: {e}")
                 continue
         return None
+    
+    def _is_unified_format(self, data: Dict[str, Any]) -> bool:
+        """检查是否为统一格式"""
+        # 统一格式的特征：包含header和levels
+        if 'header' in data and 'levels' in data:
+            header = data['header']
+            if (isinstance(header, dict) and 
+                'schemaName' in header and 
+                header.get('schemaName') == 'dnd-dungeon-unified'):
+                return True
+        return False
     
     def convert(self, data: Dict[str, Any], format_name: Optional[str] = None, 
                 enable_spatial_inference: bool = True, adjacency_threshold: float = 1.0) -> Optional[Dict[str, Any]]:
@@ -85,15 +101,21 @@ class AdapterManager:
                 if format_name is None:
                     logger.error("Unable to detect data format")
                     return None
-            elif format_name not in self.adapters:
-                logger.error(f"Unsupported format: {format_name}")
-                return None
             
             # 2. 数据转换
-            adapter = self.adapters[format_name]
-            unified_data = adapter.convert(data)
-            if unified_data is None:
-                logger.error(f"Failed to convert format {format_name}")
+            if format_name == "unified":
+                # 如果已经是统一格式，直接使用
+                unified_data = data
+                logger.info("Data is already in unified format")
+            elif format_name in self.adapters:
+                # 使用适配器转换
+                adapter = self.adapters[format_name]
+                unified_data = adapter.convert(data)
+                if unified_data is None:
+                    logger.error(f"Failed to convert format {format_name}")
+                    return None
+            else:
+                logger.error(f"Unsupported format: {format_name}")
                 return None
             
             # 3. 空间推断（如果需要）

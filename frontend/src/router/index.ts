@@ -32,9 +32,29 @@ const router = createRouter({
     {
       path: '/:pathMatch(.*)*',
       name: 'not-found',
-      component: () => import('../views/HomeView.vue'),
+      component: () => import('../views/NotFoundView.vue'),
     },
   ],
+})
+
+// 添加路由守卫来处理404错误
+router.beforeEach((to, from, next) => {
+  // 检查路由是否存在
+  if (to.matched.length === 0) {
+    // 路由不存在，重定向到404页面
+    next({ name: 'not-found' })
+  } else {
+    next()
+  }
+})
+
+// 添加错误处理
+router.onError((error) => {
+  console.error('路由错误:', error)
+  // 如果是404错误，重定向到404页面
+  if (error.message.includes('404')) {
+    router.push({ name: 'not-found' })
+  }
 })
 
 export default router

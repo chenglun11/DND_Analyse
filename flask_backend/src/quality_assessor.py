@@ -42,14 +42,14 @@ class DungeonQualityAssessor:
             'treasure_monster_distribution': 1.0,
             
             # 视觉性指标 (Aesthetic) - 1个指标
-            'aesthetic_balance': 1.0
+            'geometric_balance': 1.0
         }
         
         # 重新定义规则类别
         self.rule_categories = {
             'structural': ['accessibility', 'degree_variance', 'door_distribution', 'dead_end_ratio', 'key_path_length', 'loop_ratio', 'path_diversity'],
             'gameplay': ['treasure_monster_distribution'],
-            'aesthetic': ['aesthetic_balance']
+            'aesthetic': ['geometric_balance']
         }
         
         # 类别权重（等权融合）
@@ -70,7 +70,7 @@ class DungeonQualityAssessor:
         from .quality_rules.loop_ratio import LoopRatioRule
         from .quality_rules.path_diversity import PathDiversityRule
         from .quality_rules.treasure_monster_distribution import TreasureMonsterDistributionRule
-        from .quality_rules.aesthetic_balance import AestheticBalanceRule
+        from .quality_rules.geometric_balance import GeometricBalanceRule
         
         # Direct instantiation of all specific rule classes
         rule_classes = [
@@ -82,7 +82,7 @@ class DungeonQualityAssessor:
             LoopRatioRule,
             PathDiversityRule,
             TreasureMonsterDistributionRule,
-            AestheticBalanceRule
+            GeometricBalanceRule
         ]
         
         for rule_class in rule_classes:
@@ -212,7 +212,7 @@ class DungeonQualityAssessor:
         treasure_monster_score = scores.get('treasure_monster_distribution', {}).get('score', 1.0)
         door_distribution_score = scores.get('door_distribution', {}).get('score', 1.0)
         dead_end_score = scores.get('dead_end_ratio', {}).get('score', 1.0)
-        aesthetic_score = scores.get('aesthetic_balance', {}).get('score', 1.0)
+        aesthetic_score = scores.get('geometric_balance', {}).get('score', 1.0)
         key_path_score = scores.get('key_path_length', {}).get('score', 1.0)
         
         # Category-based recommendations
@@ -246,8 +246,8 @@ class DungeonQualityAssessor:
         
         # 视觉性建议
         if aesthetic_score_category < 0.5:
-            recs.append("视觉性评分较低：需要考虑视觉平衡和主题元素")
+            recs.append("视觉性评分较低：需要考虑几何平衡和主题元素")
         if aesthetic_score < 0.5:
-            recs.append("视觉平衡不足：适度变化房间大小，确保良好的空间分布，并保持主题一致性")
+            recs.append("几何平衡不足：适度变化房间大小，确保良好的空间分布，并保持主题一致性")
         
         return recs 

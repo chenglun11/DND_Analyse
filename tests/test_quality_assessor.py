@@ -189,7 +189,7 @@ class TestDungeonQualityAssessor:
             'door_distribution': {'score': 0.3},
             'treasure_monster_distribution': {'score': 0.4},
             'dead_end_ratio': {'score': 0.3},
-            'aesthetic_balance': {'score': 0.5}
+            'geometric_balance': {'score': 0.5}
         }
         
         # 计算分类分数
