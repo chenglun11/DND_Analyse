@@ -145,3 +145,9 @@ pytest.ini
 cleanup.py
 temp_*.py
 demo_*.py
+
+# External markdown files (development notes and summaries)
+*.md
+!README.md
+!docs/README.md
+!frontend/README.md
