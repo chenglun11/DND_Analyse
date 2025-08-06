@@ -59,7 +59,7 @@
                     @click="handleClose"
                     class="rounded-md text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
-                    <span class="sr-only">Close</span>
+                    <span class="sr-only">{{t('common.close')}}</span>
                     <XMarkIcon class="h-6 w-6" />
                   </button>
                 </div>
@@ -123,6 +123,9 @@ import {
   TransitionRoot,
 } from '@headlessui/vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 type DialogSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full'
 type DialogType = 'info' | 'success' | 'warning' | 'error'

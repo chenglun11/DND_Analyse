@@ -1,9 +1,9 @@
 <template>
   <div class="dungeon-visualizer">
     <div class="controls">
-      <button @click="resetCamera" class="control-btn">重置视角</button>
-      <button @click="toggleGrid" class="control-btn">{{ showGrid ? '隐藏网格' : '显示网格' }}</button>
-      <button @click="toggleLabels" class="control-btn">{{ showLabels ? '隐藏标签' : '显示标签' }}</button>
+      <button @click="resetCamera" class="control-btn">{{t('dungeonVisualizer.resetCamera') }}</button>
+      <button @click="toggleGrid" class="control-btn">{{t('dungeonVisualizer.hideGrid') }}</button>
+      <button @click="toggleLabels" class="control-btn">{{t('dungeonVisualizer.hideLabels') }}</button>
       <div class="zoom-controls">
         <button @click="zoomIn" class="zoom-btn">+</button>
         <span class="zoom-level">{{ Math.round(zoom * 100) }}%</span>
@@ -26,6 +26,9 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import type { DungeonData, Room, Corridor } from '@/types/dungeon'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 interface Props {
   dungeonData?: DungeonData
@@ -35,7 +38,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   showGrid: true,
-  showLabels: true
+  showLabels: false
 })
 
 const emit = defineEmits<{
@@ -324,12 +327,8 @@ const renderRooms = (ctx: CanvasRenderingContext2D) => {
     ctx.font = `${iconSize / zoom.value}px Arial`
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
-    
-    // 根据房间类型绘制图标
-    const roomIcon = getRoomIcon(room.type)
-    if (roomIcon) {
-      ctx.fillText(roomIcon, centerX, centerY - iconSize / 4)
-    }
+  
+
     
     // 绘制标签
     if (showLabels.value) {
@@ -381,23 +380,6 @@ const toggleGrid = () => {
 const toggleLabels = () => {
   showLabels.value = !showLabels.value
   render()
-}
-
-// 获取房间图标
-const getRoomIcon = (roomType: string): string => {
-  const iconMap: Record<string, string> = {
-    room: 'R',
-    chamber: 'C',
-    boss: 'B',
-    treasure: 'T',
-    entrance: 'E',
-    exit: 'X',
-    corridor: '→',
-    hall: 'H',
-    bathroom: 'B',
-    storage: 'S'
-  }
-  return iconMap[roomType] || '?'
 }
 
 // 监听数据变化

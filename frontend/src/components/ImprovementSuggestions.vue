@@ -6,14 +6,14 @@
     <div v-if="!compact" class="flex items-center justify-between mb-6">
       <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
         <span class="w-2 h-2 bg-yellow-500 rounded-full"></span>
-        改进建议
+        {{ t('fullyreport.suggestions') }}
       </h3>
-      <span class="text-sm text-gray-500">{{ suggestions.length }} 条建议</span>
+      <span class="text-sm text-gray-500">{{ suggestions.length }} {{ t('fullyreport.suggestions') }}</span>
     </div>
 
     <div v-if="suggestions.length === 0" :class="compact ? 'text-center py-4' : 'text-center py-8'">
       <div v-if="!compact" class="text-6xl mb-4"></div>
-      <p :class="compact ? 'text-sm text-gray-600' : 'text-gray-600'">恭喜！暂无改进建议，地牢设计已经非常优秀！</p>
+      <p :class="compact ? 'text-sm text-gray-600' : 'text-gray-600'">{{ t('fullyreport.noSuggestions') }}</p>
     </div>
 
     <div v-else :class="compact ? 'space-y-2' : 'space-y-4'">
@@ -55,7 +55,7 @@
             
             <!-- 具体改进措施 -->
             <div v-if="!compact && suggestion.actions && suggestion.actions.length > 0" class="mb-3">
-              <p class="text-xs font-medium text-gray-800 mb-1">建议措施：</p>
+              <p class="text-xs font-medium text-gray-800 mb-1">{{ t('fullyreport.suggestionsActions') }}</p>
               <ul class="space-y-1">
                 <li v-for="(action, actionIndex) in suggestion.actions" :key="actionIndex" 
                     class="text-xs text-gray-600 flex items-start gap-1">
@@ -68,7 +68,7 @@
             <!-- 预期效果 -->
             <div v-if="suggestion.expectedImprovement" class="bg-green-50 border border-green-200 rounded p-2">
               <p class="text-xs text-green-800">
-                <span class="font-medium">预期效果：</span>
+                <span class="font-medium">{{ t('fullyreport.expectedImprovement') }}</span>
                 {{ suggestion.expectedImprovement }}
               </p>
             </div>
@@ -80,10 +80,9 @@
     <!-- 总结和额外建议 -->
     <div v-if="suggestions.length > 0" class="mt-6 pt-6 border-t border-gray-200">
       <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <h4 class="font-semibold text-blue-900 mb-2">总体建议</h4>
+        <h4 class="font-semibold text-blue-900 mb-2">{{ t('fullyreport.suggestionsSummaryOverall') }}</h4>
         <p class="text-blue-800 text-sm mb-2">
-          根据分析结果，该地牢在 {{ getTotalCategories() }} 个方面需要改进。
-          建议优先处理 <span class="font-semibold">{{ getHighPrioritySuggestions().length }}</span> 个高优先级问题。
+          {{ t('fullyreport.suggestionsSummary', { totalCategories: getTotalCategories(), highPrioritySuggestions: getHighPrioritySuggestions().length }) }}
         </p>
         <div class="flex flex-wrap gap-2 mt-3">
           <span v-for="category in getCategories()" :key="category" 
@@ -98,6 +97,9 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 interface ImprovementSuggestion {
   title: string
@@ -125,143 +127,157 @@ const suggestions = computed<ImprovementSuggestion[]>(() => {
   
   if (!props.scores) return suggestions
 
+  // 获取当前语言的 actions
+  const getActions = (metric: string): string[] => {
+    const actionsMap: { [key: string]: string[] } = {
+      dead_end_ratio: [
+        t('forSuggesstions.dead_end_ratio.actions.0'),
+        t('forSuggesstions.dead_end_ratio.actions.1'),
+        t('forSuggesstions.dead_end_ratio.actions.2'),
+        t('forSuggesstions.dead_end_ratio.actions.3')
+      ],
+      geometric_balance: [
+        t('forSuggesstions.geometric_balance.actions.0'),
+        t('forSuggesstions.geometric_balance.actions.1'),
+        t('forSuggesstions.geometric_balance.actions.2'),
+        t('forSuggesstions.geometric_balance.actions.3')
+      ],
+      treasure_monster_distribution: [
+        t('forSuggesstions.treasure_monster_distribution.actions.0'),
+        t('forSuggesstions.treasure_monster_distribution.actions.1'),
+        t('forSuggesstions.treasure_monster_distribution.actions.2'),
+        t('forSuggesstions.treasure_monster_distribution.actions.3')
+      ],
+      accessibility: [
+        t('forSuggesstions.accessibility.actions.0'),
+        t('forSuggesstions.accessibility.actions.1'),
+        t('forSuggesstions.accessibility.actions.2'),
+        t('forSuggesstions.accessibility.actions.3')
+      ],
+      path_diversity: [
+        t('forSuggesstions.path_diversity.actions.0'),
+        t('forSuggesstions.path_diversity.actions.1'),
+        t('forSuggesstions.path_diversity.actions.2'),
+        t('forSuggesstions.path_diversity.actions.3')
+      ],
+      loop_ratio: [
+        t('forSuggesstions.loop_ratio.actions.0'),
+        t('forSuggesstions.loop_ratio.actions.1'),
+        t('forSuggesstions.loop_ratio.actions.2'),
+        t('forSuggesstions.loop_ratio.actions.3')
+      ],
+      degree_variance: [
+        t('forSuggesstions.degree_variance.actions.0'),
+        t('forSuggesstions.degree_variance.actions.1'),
+        t('forSuggesstions.degree_variance.actions.2'),
+        t('forSuggesstions.degree_variance.actions.3')
+      ]
+    }
+    return actionsMap[metric] || []
+  }
+
   // 死胡同比例建议
   if (props.scores.dead_end_ratio?.score < 0.6) {
     suggestions.push({
-      title: '减少死胡同设计',
-      description: '当前地牢存在过多死胡同，可能导致玩家感到挫败或探索体验单调。',
+      title: t('forSuggesstions.dead_end_ratio.title'),
+      description: t('forSuggesstions.dead_end_ratio.description'),
       priority: props.scores.dead_end_ratio.score < 0.3 ? 'high' : 'medium',
-      category: '布局优化',
+      category: t('forSuggesstions.dead_end_ratio.category'),
       metric: 'dead_end_ratio',
       currentScore: props.scores.dead_end_ratio.score,
       targetScore: 0.7,
-      actions: [
-        '将部分死胡同连接到其他区域',
-        '在死胡同末端放置有价值的奖励',
-        '创建循环路径替代直线通道',
-        '增加隐藏通道或秘密房间'
-      ],
-      expectedImprovement: '提升探索流畅性，减少玩家挫败感'
+      actions: getActions('dead_end_ratio'),
+      expectedImprovement: t('forSuggesstions.dead_end_ratio.expected')
     })
   }
 
   // 几何平衡建议
   if (props.scores.geometric_balance?.score < 0.65) {
     suggestions.push({
-      title: '优化空间布局平衡',
-      description: '地牢的几何布局不够平衡，可能影响视觉美感和游戏体验。',
+      title: t('forSuggesstions.geometric_balance.title'),
+      description: t('forSuggesstions.geometric_balance.description'),
       priority: props.scores.geometric_balance.score < 0.4 ? 'high' : 'medium',
-      category: '视觉设计',
+      category: t('forSuggesstions.geometric_balance.category'),
       metric: 'geometric_balance',
       currentScore: props.scores.geometric_balance.score,
       targetScore: 0.75,
-      actions: [
-        '调整房间大小比例，避免过大或过小的房间',
-        '优化房间分布，创造更好的视觉平衡',
-        '确保主要区域的对称性或有序性',
-        '合理安排重要房间的位置'
-      ],
-      expectedImprovement: '提升地牢美观度和空间感'
+      actions: getActions('geometric_balance'),
+      expectedImprovement: t('forSuggesstions.geometric_balance.expected')
     })
   }
 
   // 宝藏怪物分布建议
   if (props.scores.treasure_monster_distribution?.score < 0.6) {
     suggestions.push({
-      title: '优化奖励分布策略',
-      description: '宝藏和怪物的分布可能不够合理，影响游戏平衡性和探索动机。',
+      title: t('forSuggesstions.treasure_monster_distribution.title'),
+      description: t('forSuggesstions.treasure_monster_distribution.description'),
       priority: 'high',
-      category: '游戏平衡',
+      category: t('forSuggesstions.treasure_monster_distribution.category'),
       metric: 'treasure_monster_distribution',
       currentScore: props.scores.treasure_monster_distribution.score,
       targetScore: 0.8,
-      actions: [
-        '确保高价值奖励伴随相应的挑战',
-        '在探索路径上合理分布小奖励',
-        '避免奖励过于集中或分散',
-        '根据地牢深度调整奖励价值'
-      ],
-      expectedImprovement: '提升游戏平衡性和探索动机'
+      actions: getActions('treasure_monster_distribution'),
+      expectedImprovement: t('forSuggesstions.treasure_monster_distribution.expected')
     })
   }
 
   // 可达性建议
   if (props.scores.accessibility?.score < 0.7) {
     suggestions.push({
-      title: '改善区域连通性',
-      description: '部分区域的可达性存在问题，可能导致玩家无法到达某些重要位置。',
+      title: t('forSuggesstions.accessibility.title'),
+      description: t('forSuggesstions.accessibility.description'),
       priority: 'high',
-      category: '连通性',
+      category: t('forSuggesstions.accessibility.category'),
       metric: 'accessibility',
       currentScore: props.scores.accessibility.score,
       targetScore: 0.85,
-      actions: [
-        '检查并修复断开的连接',
-        '增加备用路径到达重要区域',
-        '确保所有房间都可以从入口到达',
-        '考虑添加快捷通道或传送点'
-      ],
-      expectedImprovement: '确保完整的探索体验'
+      actions: getActions('accessibility'),
+      expectedImprovement: t('forSuggesstions.accessibility.expected')
     })
   }
 
   // 路径多样性建议
   if (props.scores.path_diversity?.score < 0.5) {
     suggestions.push({
-      title: '增加路径选择多样性',
-      description: '当前地牢的路径选择较为单一，缺乏探索的策略性和趣味性。',
+      title: t('forSuggesstions.path_diversity.title'),
+      description: t('forSuggesstions.path_diversity.description'),
       priority: 'medium',
-      category: '探索体验',
+      category: t('forSuggesstions.path_diversity.category'),
       metric: 'path_diversity',
       currentScore: props.scores.path_diversity.score,
       targetScore: 0.7,
-      actions: [
-        '创建多条通往目标的路径',
-        '设计分支路径和可选区域',
-        '增加需要特殊钥匙或技能的路径',
-        '平衡不同路径的风险和奖励'
-      ],
-      expectedImprovement: '提升探索策略性和重玩价值'
+      actions: getActions('path_diversity'),
+      expectedImprovement: t('forSuggesstions.path_diversity.expected')
     })
   }
 
   // 环路比例建议
   if (props.scores.loop_ratio?.score < 0.4) {
     suggestions.push({
-      title: '增加循环路径设计',
-      description: '地牢缺乏足够的环路设计，可能导致线性化的探索体验。',
+      title: t('forSuggesstions.loop_ratio.title'),
+      description: t('forSuggesstions.loop_ratio.description'),
       priority: 'medium',
-      category: '布局优化',
+      category: t('forSuggesstions.loop_ratio.category'),
       metric: 'loop_ratio',
       currentScore: props.scores.loop_ratio.score,
       targetScore: 0.6,
-      actions: [
-        '连接现有的死胡同形成环路',
-        '设计大型循环区域',
-        '创建多层次的环路结构',
-        '确保环路有明确的游戏目的'
-      ],
-      expectedImprovement: '提升探索流畅性和导航便利性'
+      actions: getActions('loop_ratio'),
+      expectedImprovement: t('forSuggesstions.loop_ratio.expected')
     })
   }
 
   // 度方差建议
   if (props.scores.degree_variance?.score < 0.6) {
     suggestions.push({
-      title: '优化连接度分布',
-      description: '房间连接度的变化不够丰富，可能影响地牢的复杂性和探索体验。',
+      title: t('forSuggesstions.degree_variance.title'),
+      description: t('forSuggesstions.degree_variance.description'),
       priority: 'low',
-      category: '结构优化',
+      category: t('forSuggesstions.degree_variance.category'),
       metric: 'degree_variance',
       currentScore: props.scores.degree_variance.score,
       targetScore: 0.7,
-      actions: [
-        '创建具有不同连接数的房间',
-        '设计中心枢纽房间',
-        '平衡简单通道和复杂交叉点',
-        '确保重要房间有多个入口'
-      ],
-      expectedImprovement: '增加地牢结构的复杂性和趣味性'
+      actions: getActions('degree_variance'),
+      expectedImprovement: t('forSuggesstions.degree_variance.expected')
     })
   }
 
@@ -292,9 +308,9 @@ const getPriorityBadgeClass = (priority: string): string => {
 
 const getPriorityText = (priority: string): string => {
   const texts: { [key: string]: string } = {
-    high: '高优先级',
-    medium: '中优先级',
-    low: '低优先级'
+    high: t('forSuggesstions.high'),
+    medium: t('forSuggesstions.medium'),
+    low: t('forSuggesstions.low')
   }
   return texts[priority] || '未知'
 }

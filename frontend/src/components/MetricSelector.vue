@@ -47,19 +47,18 @@
                 {{ metric.category }}
               </span>
               <span v-if="isMetricDisabled(metric.key)" class="px-2 py-0.5 text-xs bg-red-100 text-red-600 rounded-full">
-                已禁用
+                {{ t('metricSelector.disabled') }}
               </span>
             </div>
             <p class="text-xs text-gray-600 mt-1" :class="{ 'text-gray-400': isMetricDisabled(metric.key) }">{{ metric.description }}</p>
-            <p v-if="!isMetricDisabled(metric.key)" class="text-xs text-gray-500 mt-1">Ctrl+点击禁用</p>
           </div>
           <!-- 选中状态指示器 -->
-          <div v-if="selectedMetrics.includes(metric.key) && !isMetricDisabled(metric.key)" 
+          <!-- <div v-if="selectedMetrics.includes(metric.key) && !isMetricDisabled(metric.key)" 
                class="absolute top-2 right-2 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center animate-scale-in">
             <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
             </svg>
-          </div>
+          </div> -->
           <!-- 禁用状态指示器 -->
           <div v-if="isMetricDisabled(metric.key)" 
                class="absolute top-2 right-2 w-6 h-6 bg-gray-400 rounded-full flex items-center justify-center">
@@ -71,11 +70,6 @@
       </div>
     </div>
     
-    <div class="flex items-center justify-between pt-2 border-t border-gray-200">
-      <span class="text-sm text-gray-600">
-        {{ t('metricSelector.selectedCount', { count: selectedMetrics.length, total: availableMetrics.length }) }}
-      </span>
-    </div>
   </div>
 </template>
 

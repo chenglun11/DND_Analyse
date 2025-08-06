@@ -6,7 +6,7 @@
       <div class="lg:col-span-2 bg-white rounded-lg border border-gray-200 p-3 sm:p-4 min-h-[400px]">
         <div class="flex justify-between items-center mb-4">
           <h3 class="text-base font-semibold text-gray-900">
-            地下城可视化
+            {{ t('dungeonVisualizer.title') }}
           </h3>
           <div class="flex items-center space-x-2">
             <div class="flex bg-gray-100 rounded-md p-1">
@@ -17,7 +17,7 @@
                     ? 'bg-blue-600 text-white' 
                     : 'text-gray-600 hover:text-gray-800']"
               >
-                交互
+                {{ t('dungeonVisualizer.canvas') }}
               </button>
               <button 
                 @click="visualizationMode = 'image'"
@@ -26,7 +26,7 @@
                     ? 'bg-blue-600 text-white' 
                     : 'text-gray-600 hover:text-gray-800']"
               >
-                图片
+                {{ t('dungeonVisualizer.image') }}
               </button>
             </div>
             <button 
@@ -34,7 +34,7 @@
               @click="downloadImage"
               class="px-2 py-1 text-xs font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded transition-colors"
             >
-              下载
+              {{ t('dungeonVisualizer.download') }}
             </button>
           </div>
         </div>
@@ -49,14 +49,14 @@
         <div v-else-if="error" class="text-center py-12 bg-gray-50 rounded-lg">
           <div class="text-gray-600 mb-4">
             <div class="text-red-500 text-2xl mb-2">⚠</div>
-            <h3 class="text-sm font-medium mb-1">加载失败</h3>
+            <h3 class="text-sm font-medium mb-1">{{ t('common.loadingFailed') }}</h3>
             <p class="text-xs text-gray-500">{{ error }}</p>
           </div>
           <button 
             @click="fetchAnalysisResult"
             class="px-4 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
           >
-            重试
+            {{ t('common.retry') }}
           </button>
         </div>
         
@@ -85,7 +85,7 @@
                   @click="openImageFullscreen"
                   class="bg-white/90 text-gray-800 px-3 py-2 rounded text-sm hover:bg-white transition-colors"
                 >
-                  查看大图
+                  {{ t('dungeonVisualizer.viewFullscreen') }}
                 </button>
               </div>
             </div>
@@ -116,7 +116,7 @@
                   @click="openImageFullscreen"
                   class="bg-white/90 text-gray-800 px-3 py-2 rounded text-sm hover:bg-white transition-colors"
                 >
-                  查看大图
+                  {{ t('dungeonVisualizer.viewFullscreen') }}
                 </button>
               </div>
             </div>
@@ -127,7 +127,7 @@
           <div class="text-center">
             <div class="text-gray-400 text-xl mb-2">⏳</div>
             <p class="text-sm text-gray-600 mb-1">{{ t('detail.noVisualizationData') }}</p>
-            <p class="text-xs text-gray-500">正在生成可视化数据...</p>
+            <p class="text-xs text-gray-500">{{t('common.loading')}}...</p>
           </div>
         </div>
         
@@ -199,7 +199,7 @@
                           ? 'text-blue-600 border-blue-600' 
                           : 'text-gray-500 border-transparent hover:text-gray-700'
                       ]">
-                指标详情
+                {{ t('fullyreport.detailed') }}
               </button>
               <button @click="activeTab = 'suggestions'" 
                       :class="[
@@ -208,7 +208,7 @@
                           ? 'text-blue-600 border-blue-600' 
                           : 'text-gray-500 border-transparent hover:text-gray-700'
                       ]">
-                改进建议
+                {{ t('fullyreport.suggestions') }}
               </button>
             </nav>
           </div>
@@ -219,7 +219,7 @@
               <AnalysisReport 
                 :scores="detailedScores"
                 :overall-score="overallScore"
-                :grade="grade || '未知'"
+                :grade="grade || t('common.noData')"
                 :dungeon-name="dungeonName"
                 :compact="false"
               />

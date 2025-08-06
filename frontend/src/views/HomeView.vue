@@ -159,11 +159,10 @@ const analyzeAllFiles = async () => {
           
           // 根据新分数确定等级
           let grade = '未知'
-          if (overallScore >= 0.8) grade = '优秀'
-          else if (overallScore >= 0.65) grade = '良好'
-          else if (overallScore >= 0.5) grade = '一般'
-          else if (overallScore >= 0.35) grade = '较差'
-          else grade = '很差'
+          if (overallScore >= 0.8) grade = t('scoreLevels.excellent')
+          else if (overallScore >= 0.65) grade = t('scoreLevels.good')
+          else if (overallScore >= 0.5) grade = t('scoreLevels.average')
+          else if (overallScore >= 0.35) grade = t('scoreLevels.poor') 
 
           const analysisResult = {
             id: result.file_id || `file_${i}`,
@@ -175,31 +174,22 @@ const analyzeAllFiles = async () => {
             unifiedData: result.result.unified_data,
             fileId: result.file_id
           }
-
           analysisResults.value.push(analysisResult)
-          console.log(`${file.name} 分析完成，评分: ${formatScore(analysisResult.overallScore)}`)
-          console.log(`使用的指标: ${Object.keys(filteredScores).join(', ')}`)
         } else {
-          console.error(`${file.name} 分析失败:`, result.error)
-          errorMessage.value = `${file.name} 分析失败: ${result.error}`
           showErrorDialog.value = true
         }
       } catch (error) {
-        console.error(`${file.name} 分析出错:`, error)
-        errorMessage.value = `${file.name} 分析出错: ${error}`
         showErrorDialog.value = true
       }
     }
 
     // 保存所有结果到localStorage
     localStorage.setItem('analysisResults', JSON.stringify(analysisResults.value))
-    console.log(`批量分析完成，共处理 ${analysisResults.value.length} 个文件`)
     
     // 分析完成后滚动到顶部并添加动画
     await nextTick()
     scrollToTopWithAnimation()
   } catch (error) {
-    console.error('批量分析失败:', error)
     errorMessage.value = `批量分析失败: ${error}`
     showErrorDialog.value = true
   } finally {
@@ -670,7 +660,7 @@ onMounted(async () => {
               <!-- 轻量保存提示(不影响布局) -->
               <div v-if="metricSelectorState.showSuccessMessage" 
                    class="absolute top-2 right-2 px-2 py-1 bg-green-500 text-white text-xs rounded-md shadow-lg animate-fade-in z-10">
-                ✓ 已保存
+                {{ t('metricSelector.saved') }}
               </div>
               
               <div v-if="showMetricSelector" class="mt-2 sm:mt-3">
@@ -812,7 +802,7 @@ onMounted(async () => {
                   <h2 class="text-base sm:text-lg lg:text-xl font-bold text-gray-800">
                     {{ t('home.analysisResults') }}
                   </h2>
-                  <p class="text-xs sm:text-sm lg:text-base text-gray-600">共 {{ analysisResults.length }} 个分析结果</p>
+                  <p class="text-xs sm:text-sm lg:text-base text-gray-600">{{t('home.analysisResultsCount',{count:analysisResults.length})}}</p>
                 </div>
               </div>
               <!-- 快速导航区域 - 响应式布局 -->
@@ -822,21 +812,21 @@ onMounted(async () => {
                   class="group relative inline-flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-6 py-1.5 sm:py-2 lg:py-3 bg-gradient-to-r from-[#2892D7] to-[#1D70A2] text-white rounded-md sm:rounded-lg lg:rounded-xl hover:from-[#1D70A2] hover:to-[#173753] transition-all duration-300 text-xs sm:text-sm lg:text-base font-semibold shadow-md hover:shadow-lg hover:-translate-y-0.5 transform overflow-hidden"
                 >
                   <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-                  <span class="relative z-10">查看细节</span>
+                  <span class="relative z-10">{{t('home.viewAllDetails')}}</span>
                 </button>
                 <button
                   @click="exportAllResults"
                   class="group relative inline-flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-6 py-1.5 sm:py-2 lg:py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-md sm:rounded-lg lg:rounded-xl hover:from-green-600 hover:to-emerald-700 transition-all duration-300 text-xs sm:text-sm lg:text-base font-semibold shadow-md hover:shadow-lg hover:-translate-y-0.5 transform overflow-hidden"
                 >
                   <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-                  <span class="relative z-10">导出报告</span>
+                  <span class="relative z-10">{{t('home.exportResults')}}</span>
                 </button>
                 <button
                   @click="clearResults"
                   class="group relative inline-flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-6 py-1.5 sm:py-2 lg:py-3 bg-gradient-to-r from-[#2892D7] to-[#1D70A2] text-white rounded-md sm:rounded-lg lg:rounded-xl hover:from-[#1D70A2] hover:to-[#173753] transition-all duration-300 text-xs sm:text-sm lg:text-base font-semibold shadow-md hover:shadow-lg hover:-translate-y-0.5 transform overflow-hidden"
                 >
                   <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-                  <span class="relative z-10">清空结果</span>
+                  <span class="relative z-10">{{t('home.clearResults')}}</span>
                 </button>
               </div>
             </div>
@@ -876,9 +866,6 @@ onMounted(async () => {
                   <div class="flex items-center gap-2 text-xs sm:text-sm text-gray-500">
                     <span class="w-1.5 h-1.5 bg-[#6DAEDB] rounded-full"></span>
                     {{ t('home.fileNumber', { current: index + 1, total: analysisResults.length }) }}
-                  </div>
-                  <div class="text-xs text-gray-400 mt-1">
-                    使用上方“查看细节”按钮来查看所有结果
                   </div>
                 </div>
               </div>

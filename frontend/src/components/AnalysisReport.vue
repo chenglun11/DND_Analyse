@@ -6,14 +6,14 @@
     <div v-if="!compact" class="flex items-center justify-between mb-6">
       <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
         <span class="w-2 h-2 bg-[#2892D7] rounded-full"></span>
-        详细分析报告
+        {{ t('fullyreport.detailed') }}
       </h3>
       <div class="flex items-center gap-2">
         <button @click="exportReport" class="px-3 py-1 bg-[#2892D7] text-white rounded text-sm hover:bg-[#1D70A2] transition-colors">
-          导出报告
+          {{ t('common.export') }}
         </button>
         <button @click="toggleView" class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm hover:bg-gray-200 transition-colors">
-          {{ viewMode === 'detailed' ? '简化视图' : '详细视图' }}
+          {{ viewMode === 'detailed' ? t('fullyreport.simple') : t('fullyreport.detailed') }}
         </button>
       </div>
     </div>
@@ -39,7 +39,7 @@
               'font-semibold text-gray-900',
               compact ? 'text-xs' : 'text-base'
             ]">{{ metric.name }}</h5>
-            <span v-if="!isMetricSelected(metric.key)" class="text-xs text-gray-400 bg-gray-100 px-1 py-0.5 rounded">禁用</span>
+            <span v-if="!isMetricSelected(metric.key)" class="text-xs text-gray-400 bg-gray-100 px-1 py-0.5 rounded">{{t('common.disabled')}}</span>
           </div>
           <div class="text-right">
             <div :class="[
@@ -47,7 +47,7 @@
               compact ? 'text-sm' : 'text-xl',
               isMetricSelected(metric.key) ? getScoreColor(getMetricScore(metric.key)) : 'text-gray-400'
             ]">
-              {{ isMetricSelected(metric.key) ? formatScore(getMetricScore(metric.key)) : 'N/A' }}
+              {{ isMetricSelected(metric.key) ? formatScore(getMetricScore(metric.key)) : t('common.notAvailable') }}
             </div>
           </div>
         </div>
@@ -74,7 +74,7 @@
 
         <!-- 详细视图 -->
         <div v-if="!compact && viewMode === 'detailed' && isMetricSelected(metric.key) && getMetricDetail(metric.key)" class="detailed-info bg-white border border-gray-100 rounded p-4 mt-4">
-          <h6 class="text-sm font-semibold text-gray-800 mb-3">详细信息</h6>
+          <h6 class="text-sm font-semibold text-gray-800 mb-3">{{t('fullyreport.detailedInfo')}}</h6>
           <div class="text-sm text-gray-600 space-y-3">
             <div v-for="(value, key) in getDetailInfo(getMetricDetail(metric.key))" :key="key" class="break-words">
               <div class="flex flex-col sm:flex-row sm:justify-between gap-2">
@@ -90,17 +90,16 @@
           'flex items-center justify-between',
           compact ? 'mt-1' : 'mt-3'
         ]">
-          <span :class="[
-            'px-2 py-1 rounded-full text-xs font-medium',
-            isMetricSelected(metric.key) ? getScoreBadgeClass(getMetricScore(metric.key)) : 'bg-gray-100 text-gray-400'
-          ]">
-            {{ isMetricSelected(metric.key) ? getScoreGrade(getMetricScore(metric.key)) : '未启用' }}
+            <span :class="[
+              'px-2 py-1 rounded-full text-xs font-medium',
+              isMetricSelected(metric.key) ? getScoreBadgeClass(getMetricScore(metric.key)) : 'bg-gray-100 text-gray-400'
+            ]">
+            {{ isMetricSelected(metric.key) ? getScoreGrade(getMetricScore(metric.key)) : t('common.disabled') }}
           </span>
-          <span v-if="!compact" :class="[
+          <span v-if="!compact && viewMode !== 'detailed'" :class="[
             'text-xs',
             isMetricSelected(metric.key) ? 'text-gray-500' : 'text-gray-400'
           ]">
-            {{ isMetricSelected(metric.key) ? getImprovementTip(metric.key, getMetricScore(metric.key)) : '指标未启用' }}
           </span>
         </div>
       </div>
@@ -110,7 +109,7 @@
     <div v-if="!compact && viewMode === 'detailed'" class="radar-chart-container mb-8">
       <h4 class="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
         <span>📈</span>
-        指标雷达图
+        {{ t('fullyreport.radarChart') }}
       </h4>
       <div class="bg-gray-50 border border-gray-200 rounded-lg p-6">
         <canvas ref="radarCanvas" width="500" height="400"></canvas>
@@ -118,12 +117,12 @@
     </div>
 
     <!-- 分析总结 -->
-    <div v-if="!compact" class="analysis-summary bg-gradient-to-r from-green-50 to-[#f0f8ff] border border-green-200 rounded-lg p-6">
-      <h4 class="text-xl font-semibold text-gray-800 mb-4">分析总结</h4>
+    <div v-if="!compact" class="analysis-summary bg-gradient-to-r from-white to-gray-50 border  rounded-lg p-6">
+      <h4 class="text-xl font-semibold text-gray-800 mb-4">{{t('fullyreport.analysisSummary')}}</h4>
       
       <div class="space-y-4">
         <div>
-          <h5 class="text-base font-semibold text-green-800 mb-3">优势领域</h5>
+          <h5 class="text-base font-semibold text-green-800 mb-3">{{t('fullyreport.strength')}}</h5>
           <div class="space-y-2">
                          <div 
                v-for="strength in getStrengths()" 
@@ -135,8 +134,8 @@
           </div>
         </div>
         
-        <div>
-          <h5 class="text-base font-semibold text-orange-800 mb-3">改进空间</h5>
+        <div v-if="viewMode !== 'detailed'">
+          <h5 class="text-base font-semibold text-orange-800 mb-3">{{t('fullyreport.improvement')}}</h5>
           <div class="space-y-2">
                          <div 
                v-for="weakness in getWeaknesses()" 
@@ -149,7 +148,7 @@
         </div>
         
         <div>
-          <h5 class="text-base font-semibold text-[#173753] mb-3">总体评价</h5>
+          <h5 class="text-base font-semibold text-[#173753] mb-3">{{t('fullyreport.overallAssessment')}}</h5>
           <p class="text-base text-[#1D70A2] leading-relaxed">{{ getOverallAssessment() }}</p>
         </div>
       </div>
@@ -159,6 +158,9 @@
 
 <script setup lang="ts">
 import { ref, onMounted, nextTick } from 'vue'
+import { useI18n } from 'vue-i18n'  
+
+const { t } = useI18n()
 
 interface Props {
   scores: Record<string, { score: number; detail?: any }>
@@ -239,15 +241,15 @@ const getMetricDetail = (metric: string): any => {
 
 // 定义所有指标
 const allMetrics = [
-  { key: 'dead_end_ratio', name: '死胡同比例', description: '评估地牢中死胡同的比例，影响探索流畅性' },
-  { key: 'geometric_balance', name: '几何平衡', description: '分析空间布局的几何平衡性和美观度' },
-  { key: 'treasure_monster_distribution', name: '奖励分布', description: '评估奖励和挑战的分布合理性' },
-  { key: 'accessibility', name: '可达性', description: '检查所有区域的可达性和连通性' },
-  { key: 'path_diversity', name: '路径多样性', description: '分析到达目标的路径多样性' },
-  { key: 'loop_ratio', name: '环路比例', description: '评估环路设计对探索体验的影响' },
-  { key: 'degree_variance', name: '连接度方差', description: '分析房间连接度的变化和复杂性' },
-  { key: 'door_distribution', name: '门分布', description: '评估门的位置分布合理性' },
-  { key: 'key_path_length', name: '关键路径长度', description: '分析关键路径的长度和设计' }
+  { key: 'dead_end_ratio', name: t('metrics.dead_end_ratio'), description: t('metricDescriptions.dead_end_ratio.description') },
+  { key: 'geometric_balance', name: t('metrics.geometric_balance'), description: t('metricDescriptions.geometric_balance.description') },
+  { key: 'treasure_monster_distribution', name: t('metrics.treasure_monster_distribution'), description: t('metricDescriptions.treasure_monster_distribution.description') },
+  { key: 'accessibility', name: t('metrics.accessibility'), description: t('metricDescriptions.accessibility.description') },
+  { key: 'path_diversity', name: t('metrics.path_diversity'), description: t('metricDescriptions.path_diversity.description') },
+  { key: 'loop_ratio', name: t('metrics.loop_ratio'), description: t('metricDescriptions.loop_ratio.description') },
+  { key: 'degree_variance', name: t('metrics.degree_variance'), description: t('metricDescriptions.degree_variance.description') },
+  { key: 'door_distribution', name: t('metrics.door_distribution'), description: t('metricDescriptions.door_distribution.description') },
+  { key: 'key_path_length', name: t('metrics.key_path_length'), description: t('metricDescriptions.key_path_length.description') }
 ]
 
 const toggleView = () => {
@@ -264,33 +266,11 @@ const getMetricIcon = (metric: string): string => {
 }
 
 const getMetricName = (metric: string): string => {
-  const names = {
-    dead_end_ratio: '死胡同比例',
-    geometric_balance: '几何平衡',
-    treasure_monster_distribution: '奖励分布',
-    accessibility: '可达性',
-    path_diversity: '路径多样性',
-    loop_ratio: '环路比例',
-    degree_variance: '连接度方差',
-    door_distribution: '门分布',
-    key_path_length: '关键路径长度'
-  }
-  return names[metric as keyof typeof names] || metric
+  return t(`metrics.${metric}`) || metric
 }
 
 const getMetricDescription = (metric: string): string => {
-  const descriptions = {
-    dead_end_ratio: '评估地牢中死胡同的比例，影响探索流畅性',
-    geometric_balance: '分析空间布局的几何平衡性和美观度',
-    treasure_monster_distribution: '评估奖励和挑战的分布合理性',
-    accessibility: '检查所有区域的可达性和连通性',
-    path_diversity: '分析到达目标的路径多样性',
-    loop_ratio: '评估环路设计对探索体验的影响',
-    degree_variance: '分析房间连接度的变化和复杂性',
-    door_distribution: '评估门的位置分布合理性',
-    key_path_length: '分析关键路径的长度和设计'
-  }
-  return descriptions[metric as keyof typeof descriptions] || '暂无描述'
+  return t(`metricDescriptions.${metric}.description`) || '暂无描述'
 }
 
 const getScoreColor = (score: number): string => {
@@ -322,21 +302,21 @@ const getScoreBadgeClass = (score: number): string => {
 
 const getGradeBadgeClass = (grade: string): string => {
   const classes = {
-    '优秀': 'bg-[#ecfdf5] text-[#059669]',  /* 优秀 - 绿色 */
-    '良好': 'bg-[#ecfeff] text-[#0891b2]', /* 良好 - 青色 */
-    '一般': 'bg-[#fffbeb] text-[#d97706]',  /* 一般 - 橙色 */
-    '较差': 'bg-[#fef2f2] text-[#dc2626]', /* 较差 - 红色 */
+    [t('scoreLevels.excellent')]: 'bg-[#ecfdf5] text-[#059669]',  /* 优秀 - 绿色 */
+    [t('scoreLevels.good')]: 'bg-[#ecfeff] text-[#0891b2]', /* 良好 - 青色 */
+    [t('scoreLevels.average')]: 'bg-[#fffbeb] text-[#d97706]',  /* 一般 - 橙色 */
+    [t('scoreLevels.poor')]: 'bg-[#fef2f2] text-[#dc2626]', /* 较差 - 红色 */
     '未知': 'bg-gray-100 text-gray-800'
   }
   return classes[grade as keyof typeof classes] || 'bg-gray-100 text-gray-800'
 }
 
 const getScoreGrade = (score: number): string => {
-  if (score >= 0.8) return '优秀'
-  if (score >= 0.65) return '良好'
-  if (score >= 0.5) return '一般'
-  if (score >= 0.35) return '较差'
-  return '需改进'
+  if (score >= 0.8) return t('scoreLevels.excellent')
+  if (score >= 0.65) return t('scoreLevels.good')
+  if (score >= 0.5) return t('scoreLevels.average')
+  if (score >= 0.35) return t('scoreLevels.poor')
+  return t('fullyreport.improvement')
 }
 
 const getDetailInfo = (detail: any): Record<string, any> => {
@@ -481,20 +461,20 @@ const getDetailInfo = (detail: any): Record<string, any> => {
 }
 
 const getImprovementTip = (metric: string, score: number): string => {
-  if (score >= 0.8) return '表现优秀'
+  if (score >= 0.8) return t('suggestions.continuousOptimization.description')
   
   const tips = {
-    dead_end_ratio: '考虑增加环路连接',
-    geometric_balance: '调整房间布局比例',
-    treasure_monster_distribution: '平衡奖励与挑战',
-    accessibility: '检查连通性问题',
-    path_diversity: '增加替代路径',
-    loop_ratio: '添加循环设计',
-    degree_variance: '丰富连接模式',
-    door_distribution: '优化门的位置',
-    key_path_length: '调整关键路径'
+    dead_end_ratio: t('suggestions.deadEndRatio.description'),
+    geometric_balance: t('suggestions.geometricBalance.description'),
+    treasure_monster_distribution: t('suggestions.treasureMonsterDistribution.description'),
+    accessibility: t('suggestions.accessibility.description'),
+    path_diversity: t('suggestions.pathDiversity.description'),
+    loop_ratio: t('suggestions.loopRatio.description'),
+    degree_variance: t('suggestions.degreeVariance.description'),
+    door_distribution: t('suggestions.doorDistribution.description'),
+    key_path_length: t('suggestions.keyPathLength.description')
   }
-  return tips[metric as keyof typeof tips] || '需要改进'
+  return tips[metric as keyof typeof tips] || t('common.noData')
 }
 
 const getStrengths = (): string[] => {
@@ -512,15 +492,15 @@ const getWeaknesses = (): string[] => {
 const getOverallAssessment = (): string => {
   const score = props.overallScore
   if (score >= 0.8) {
-    return '该地牢设计优秀，各项指标表现良好，能够提供优质的游戏体验。'
+    return t('fullyreport.OverallAssessment.excellent')
   } else if (score >= 0.65) {
-    return '该地牢设计良好，大部分指标达标，稍作调整即可进一步提升。'
+    return t('fullyreport.OverallAssessment.good')
   } else if (score >= 0.5) {
-    return '该地牢设计中等，存在一些需要改进的地方，建议重点关注低分指标。'
+    return t('fullyreport.OverallAssessment.average')
   } else if (score >= 0.35) {
-    return '该地牢设计有较大改进空间，建议优先解决关键问题。'
+    return t('fullyreport.OverallAssessment.poor')
   } else {
-    return '该地牢设计需要大幅调整，建议重新考虑整体布局和设计方案。'
+    return t('fullyreport.OverallAssessment.poor')
   }
 }
 

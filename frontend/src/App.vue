@@ -43,17 +43,18 @@ onMounted(() => {
         
         <div class="header-center">
           <nav class="nav-menu">
-            <router-link to="/" class="nav-link" active-class="nav-link-active">
-              {{ t('nav.home') }}
-            </router-link>
-            <router-link to="/test" class="nav-link" active-class="nav-link-active">
+
+            <!-- <router-link to="/test" class="nav-link" active-class="nav-link-active">
               {{ t('nav.test') }}
-            </router-link>
+            </router-link> -->
           </nav>
         </div>
         
         <div class="header-right">
           <div class="header-actions">
+            <router-link to="/" class="nav-link" active-class="nav-link-active">
+              {{ t('nav.home') }}
+            </router-link>
             <BaseButton 
               variant="ghost" 
               size="sm" 

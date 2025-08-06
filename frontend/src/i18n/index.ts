@@ -1,3 +1,5 @@
+import { HomeIcon } from '@heroicons/vue/24/outline'
+import { getEmitHelpers } from 'typescript'
 import { createI18n } from 'vue-i18n'
 
 // 中文语言包
@@ -35,7 +37,11 @@ const zh = {
     faq: '常见问题',
     coreFeatures: '核心功能',
     unknown: '未知地下城',
-    noData: '暂无数据'
+    noData: '暂无数据',
+    notAvailable: 'N/A',
+    download: '下载',
+    loadingFailed: '加载失败',
+    retry: '重试'
   },
 
   // 导航
@@ -47,7 +53,7 @@ const zh = {
     detail: '详情'
   },
 
-  // 应用信息
+  // 应用信息 
   app: {
     title: '地下城分析器',
     subtitle: '专业的D&D地下城质量评估工具',
@@ -56,6 +62,7 @@ const zh = {
 
   // 首页
   home: {
+    analysisResultsCount: '共评估 ({count}) 个文件',
     title: '地下城质量评估系统',
     subtitle: '上传地下城地图文件，获取详细的质量分析报告',
     uploadFiles: '上传文件',
@@ -82,10 +89,20 @@ const zh = {
 
   // 详情页
   detail: {
+    sortBy: '排序方式',
+    sortByName: '按名称排序',
+    sortByScore: '按评分排序',
+    sortByIndex: '按顺序排序',
+    averageScore: '平均评分',
+    highestScore: '最高评分',
+    dungeonCount: '地下城数量',
+    batchOverview: '批量分析概览',
+    hideOverview: '隐藏概览',
+    showOverview: '批量概览',
     backButton: '返回',
     backButtonTitle: '返回上一页',
-    refreshButton: '🔄 刷新',
-    exportReport: '📄 导出报告',
+    refreshButton: '刷新',
+    exportReport: '导出报告',
     analysisResults: '分析结果',
     dungeonVisualization: '地下城可视化',
     canvasVisualization: 'Canvas可视化',
@@ -110,7 +127,23 @@ const zh = {
     noScoreData: '没有可用的评分数据',
     overallScoreDisabled: '已禁用总体评分',
     viewDetailedScores: '可查看详细指标分数',
-    scoreInfo: '分数信息'
+    scoreInfo: '分数信息',
+    scoreFilter: '评分筛选',
+    allScore: '全部评分',
+    highScore: '高分 0.8+',
+    mediumScore: '中等 0.5-0.8',
+    lowScore: '低分 <0.5',
+    current: '当前',
+    noMatchDungeon: '没有找到匹配的地下城',
+    tryAdjustFilter: '请尝试调整筛选条件',
+    homeButton: '首页',
+    singleAnalysis: '单个分析',
+    batchAnalysis: '批量分析 ({count} 个文件)',
+    filteredCount: '已筛选: {count} / {total}',
+    currentPage: '当前查看: {current} / {total}',
+    loadingAnalysisResults: '正在加载分析结果...',
+    pleaseWait: '请稍候',
+    backToHome: '返回首页'
   },
 
   // 帮助页
@@ -390,7 +423,8 @@ const zh = {
     deselectAll: '全不选',
     selectedCount: '已选择 {count} / {total} 项',
     apply: '应用选择',
-    reset: '重置'
+    reset: '重置',
+    saved: '已保存'
   },
 
   // 评分等级
@@ -427,6 +461,94 @@ const zh = {
     notFound: '页面未找到',
     pageNotFound: '抱歉，您访问的页面不存在或已被移除。',
     suggestions: '您可能想要访问：'
+  },
+
+  // 改进建议
+  suggestions: {
+    deadEndRatio: {
+      title: '减少死胡同',
+      description: '当前死胡同比例较高，建议增加环路连接以改善探索体验。'
+    },
+    deadEndRatioOptimize: {
+      title: '优化死胡同分布',
+      description: '死胡同比例适中但仍有优化空间。建议将死胡同放置在次要路径上，保持主要路径畅通。'
+    },
+    geometricBalance: {
+      title: '改善几何平衡',
+      description: '房间布局的几何平衡需要改善，建议调整房间大小和位置分布。'
+    },
+    treasureMonsterDistribution: {
+      title: '优化宝藏和怪物分布',
+      description: '宝藏和怪物分布需要调整，以提供更好的游戏体验。'
+    },
+    treasureMonsterDistributionBalance: {
+      title: '平衡宝藏-怪物比例',
+      description: '宝藏和怪物分布基本合理，但可以进一步优化比例，确保挑战与奖励的平衡。'
+    },
+    accessibility: {
+      title: '改善可达性',
+      description: '某些区域难以到达，建议优化路径设计。'
+    },
+    pathDiversity: {
+      title: '增加路径多样性',
+      description: '路径多样性较低，建议添加不同的探索路径。'
+    },
+    pathDiversityOptimize: {
+      title: '优化路径设计',
+      description: '路径多样性适中，考虑添加一些隐藏路径或分支路线来增加探索乐趣。'
+    },
+    loopRatio: {
+      title: '增加环路设计',
+      description: '环路比例较低，建议添加循环路径让玩家能够回到之前的区域，改善地图探索。'
+    },
+    loopRatioOptimize: {
+      title: '优化环路分布',
+      description: '环路设计基本合理，考虑在关键区域添加小环路来增强探索体验。'
+    },
+    degreeVariance: {
+      title: '优化连接度分布',
+      description: '房间连接度方差过大，建议平衡每个房间的连接数量，避免某些房间过于孤立或过于拥挤。'
+    },
+    doorDistribution: {
+      title: '改善门分布',
+      description: '门分布不合理，建议在关键路径上适当添加门，减少次要路径上的门使用。'
+    },
+    keyPathLength: {
+      title: '优化关键路径长度',
+      description: '关键路径过短或过长，建议设计适中的关键路径长度，既不会让玩家感到无聊也不会过于复杂。'
+    },
+    roomCount: {
+      title: '增加房间数量',
+      description: '目前只有{count}个房间，建议增加到10-20个房间以提供更丰富的探索空间。'
+    },
+    roomCountOptimize: {
+      title: '精简房间设计',
+      description: '房间数量较多({count}个房间)，建议合并一些功能相似的房间以避免过度复杂。'
+    },
+    corridorDensity: {
+      title: '增加连接走廊',
+      description: '房间连接较少，建议增加走廊数量以改善房间连通性。'
+    },
+    corridorDensityOptimize: {
+      title: '优化走廊设计',
+      description: '走廊过多可能使迷宫过于复杂，建议精简一些不必要的走廊。'
+    },
+    overallScoreRedesign: {
+      title: '全面重新设计',
+      description: '总体评分较低，建议从多个维度重新设计地下城，重点关注可达性、路径设计和游戏元素分布。'
+    },
+    overallScoreOptimize: {
+      title: '关键优化',
+      description: '设计基本合理但仍有改进空间。建议针对评分较低的指标进行针对性优化。'
+    },
+    overallScoreExcellent: {
+      title: '保持优秀设计',
+      description: '当前设计表现优秀！建议保持这种设计风格作为其他地下城设计的参考模板。'
+    },
+    continuousOptimization: {
+      title: '持续优化',
+      description: '当前设计表现良好，建议继续关注细节优化，如房间装饰和氛围营造。'
+    }
   },
 
   // 成功信息
@@ -522,6 +644,128 @@ const zh = {
     exportAll: '导出所有',
     refreshAll: '刷新所有',
     noResults: '没有符合条件的结果'
+  },
+  dungeonVisualizer: {
+    title: '地下城可视化',
+    canvas: 'Canvas',
+    image: 'Image',
+    resetCamera: '重置视角',
+    hideGrid: '隐藏网格',
+    showGrid: '显示网格',
+    hideLabels: '隐藏标签',
+    showLabels: '显示标签',
+    viewFullscreen: '查看大图'
+  },
+  fullyreport: {
+    detailed: '详细分析',
+    simple: '简化分析',
+    detailedInfo: '指标详情',
+    radarChart: '雷达图',
+    analysisSummary: '总结',
+    strength: '良好',
+    improvement: '需改进',
+    overallAssessment: '总体评价',
+    OverallAssessment: {
+      excellent: '该地牢设计优秀，各项指标表现良好，能够提供优质的游戏体验。',
+      good: '该地牢设计良好，大部分指标达标，稍作调整即可进一步提升。',
+      average: '该地牢设计中等，存在一些需要改进的地方，建议重点关注低分指标。',
+      poor: '该地牢设计有较大改进空间，建议优先解决关键问题。'
+    },
+    suggestions: '改进建议',
+    suggestionsSummaryOverall: '总体建议',
+    noSuggestions: '恭喜！暂无改进建议，地牢设计已经非常优秀！',
+    suggestionsSummary: '根据分析结果，该地牢在 {totalCategories} 个方面需要改进。建议优先处理 {highPrioritySuggestions} 个高优先级问题。',
+    suggestionsActions: '建议措施：',
+    expectedImprovement: '预期效果：'
+  },
+  forSuggesstions: {
+    high: '高',
+    medium: '中',
+    low: '低',
+    dead_end_ratio: {
+      title: '减少死胡同设计',
+      description: '当前地牢存在过多死胡同，可能导致玩家感到挫败或探索体验单调。',
+      expected: '提升探索流畅性，减少玩家挫败感',
+      category: '布局优化',
+      actions: {
+        0: '将部分死胡同连接到其他区域',
+        1: '在死胡同末端放置有价值的奖励',
+        2: '创建循环路径替代直线通道',
+        3: '增加隐藏通道或秘密房间'
+      }
+    },
+    geometric_balance: {
+      title: '改善几何平衡',
+      description: '房间布局的几何平衡需要改善，建议调整房间大小和位置分布。',
+      expected: '改善地牢的视觉平衡性',
+      category: '视觉设计',
+      actions: {
+        0: '调整房间大小和位置分布',
+        1: '创建更对称的房间布局',
+        2: '平衡不同区域的房间密度',
+        3: '优化房间间的空间关系'
+      }
+    },
+    treasure_monster_distribution: {
+      title: '优化奖励分布策略',
+      description: '宝藏和怪物的分布可能不够合理，影响游戏平衡性和探索动机。',
+      actions: {
+        0: '确保高价值奖励伴随相应的挑战',
+        1: '在探索路径上合理分布小奖励',
+        2: '避免奖励过于集中或分散',
+        3: '根据地牢深度调整奖励价值'
+      },
+      expected: '改善宝藏和怪物分布的平衡性',
+      category: '游戏平衡'
+    },
+    accessibility: {
+      title: '改善区域连通性',
+      description: '部分区域的可达性存在问题，可能导致玩家无法到达某些重要位置。',
+      actions: {
+        0: '检查并修复断开的连接',
+        1: '增加备用路径到达重要区域',
+        2: '确保所有房间都可以从入口到达',
+        3: '考虑添加快捷通道或传送点'
+      },
+      expected: '确保完整的探索体验',
+      category: '连通性'
+    },
+    path_diversity: {
+      title: '增加路径选择多样性',
+      description: '当前地牢的路径选择较为单一，缺乏探索的策略性和趣味性。',
+      actions: {
+        0: '创建多条通往目标的路径',
+        1: '设计分支路径和可选区域',
+        2: '增加需要特殊钥匙或技能的路径',
+        3: '平衡不同路径的风险和奖励'
+      },
+      expected: '提升探索策略性和重玩价值',
+      category: '探索体验'
+    },
+    loop_ratio: {
+      title: '增加循环路径设计',
+      description: '地牢缺乏足够的环路设计，可能导致线性化的探索体验。',
+      actions: {
+        0: '连接现有的死胡同形成环路',
+        1: '设计大型循环区域',
+        2: '创建多层次的环路结构',
+        3: '确保环路有明确的游戏目的'
+      },
+      expected: '提升探索流畅性和导航便利性',
+      category: '布局优化'
+    },
+    degree_variance: {
+      title: '优化连接度分布',
+      description: '房间连接度的变化不够丰富，可能影响地牢的复杂性和探索体验。',
+      actions: {
+        0: '创建具有不同连接数的房间',
+        1: '设计中心枢纽房间',
+        2: '平衡简单通道和复杂交叉点',
+        3: '确保重要房间有多个入口'
+      },
+      expected: '增加地牢结构的复杂性和趣味性',
+      category: '结构优化'
+    }
   }
 }
 
@@ -559,8 +803,11 @@ const en = {
     functionGuide: 'Function Guide',
     faq: 'FAQ',
     coreFeatures: 'Core Features',
-    unknown: 'Unknown Dungeon',
-    noData: 'No Data'
+    unknown: 'Unknown Duneon',
+    noData: 'No Data',
+    notAvailable: 'N/A',
+    loadingFailed: 'Loading Failed',
+    retry: 'Retry',
   },
 
   // Navigation
@@ -581,6 +828,8 @@ const en = {
 
   // Home page
   home: {
+    analysisResultsCount: 'Analysised {count} files',
+    dragAndDrop: 'Drag and drop files here or click to select files',
     uploadTitle: 'Upload Dungeon Files',
     uploadDescription: 'Drag files here or click to select files',
     supportedFormats: 'Supported formats: JSON, Watabou, Donjon, DungeonDraft',
@@ -615,7 +864,6 @@ const en = {
     about: 'About',
     systemStats: 'System Statistics',
     uploadedFilesCount: 'Uploaded Files',
-    analysisResultsCount: 'Analysis Results',
     evaluationMetrics: 'Evaluation Metrics',
     supportedFormatsCount: 'Supported Formats',
     usageTips: 'Usage Tips',
@@ -631,198 +879,67 @@ const en = {
     viewBatchDetails: 'Batch Details',
     viewBatchDetailsDescription: 'View detailed comparison of {count} dungeons',
     batchTest: 'Batch Test',
-    batchTestDescription: 'Batch evaluate multiple dungeon files'
+    batchTestDescription: 'Batch evaluate multiple dungeon files',
   },
 
   // Detail page
   detail: {
-    backButton: '← Back',
+    sortBy: 'Sort By',
+    sortByName: 'Sort By Name',
+    sortByScore: 'Sort By Score',
+    sortByIndex: 'Sort By Index',
+    averageScore: 'Average Score',
+    highestScore: 'Highest Score',
+    dungeonCount: 'Dungeon Count',
+    batchOverview: 'Batch Overview',
+    hideOverview: 'Hide Overview',
+    showOverview: 'Show Overview',
+    exportReport: 'Export Report',
+    backButton: 'Back',
     backButtonTitle: 'Back (ESC)',
-    refreshButton: '🔄 Refresh',
-    exportReport: '📄 Export Report',
+    refreshButton: 'Refresh',
+    scoreFilter: 'Score Filter',
+    allScore: 'All Score',
+    highScore: 'High Score',
+    mediumScore: 'Medium Score',
+    lowScore: 'Low Score',
+    current: 'Current',
+    noMatchDungeon: 'No Match Dungeon',
+    tryAdjustFilter: 'Please try adjusting the filter conditions',
+    improvementSuggestions: 'Improvement Suggestions',
+    metricDetails: 'Metric Details',
+    noSuggestions: 'Current design performs excellently, no improvement suggestions',
+    noDetailAvailable: 'No detail data available',
+    pageInfo: 'Page {current} of {total}',
+    noScoreData: 'No scoring data available',
+    viewDetailedScores: 'View detailed metric scores',
+    scoreInfo: 'Score Information',
+    analysisDisabled: 'Analysis parameters disabled',
+    overallScoreDisabled: 'Overall score disabled',
     analysisResults: 'Analysis Results',
     dungeonVisualization: 'Dungeon Visualization',
     canvasVisualization: 'Canvas Visualization',
     generatedImage: 'Generated Image',
     noVisualizationData: 'No visualization data available',
     overallScore: 'Overall Score',
-    improvementSuggestions: 'Improvement Suggestions',
-    metricDetails: 'Metric Details',
     disabled: '(Disabled)',
-    noSuggestions: 'Current design performs excellently, no improvement suggestions',
-    noData: 'No Data',
-    multipleDetails: 'Multiple Details',
-    showing: 'Showing',
-    of: 'of',
-    items: 'items',
-    previous: 'Previous',
+    homeButton: 'Home',
+    singleAnalysis: 'Single Analysis',
+    batchAnalysis: 'Batch Analysis ({count} files)',
     next: 'Next',
-    page: 'Page',
-    noDetailAvailable: 'No detail data available',
-    pageInfo: 'Page {current} of {total}',
-    analysisDisabled: 'Analysis parameters disabled',
-    noScoreData: 'No scoring data available',
-    overallScoreDisabled: 'Overall score disabled',
-    viewDetailedScores: 'View detailed metric scores',
-    scoreInfo: 'Score Information'
+    first: 'First',
+    currentPage: 'Current Page {current} of {total}',
+    loadingAnalysisResults: 'Loading analysis results...',
+    pleaseWait: 'Please wait',
+    backToHome: 'Back to Home',
+    
   },
 
   // Help page
-  help: {
-    backButton: '← Back to Home',
-    title: 'Help & Documentation',
-    subtitle: 'Complete user guide and FAQ',
-    intro: {
-      title: '📚 Help Center',
-      description: 'Welcome to the Dungeon Analyzer help center. Here you can find detailed usage instructions, FAQ, and troubleshooting guides.'
-    },
-    fileUpload: {
-      title: 'File Upload',
-      content: {
-        0: 'Support drag and drop files to upload area',
-        1: 'Support click select file button',
-        2: 'Support multiple JSON format dungeon files',
-        3: 'Support batch upload multiple files',
-        4: 'Supported formats: Watabou, Donjon, DungeonDraft, etc.'
-      }
-    },
-    analysis: {
-      title: 'Analysis Features',
-      content: {
-        0: 'Automatically evaluate dungeon quality',
-        1: 'Generate visualization images',
-        2: 'Provide detailed analysis reports',
-        3: 'Support multiple evaluation metrics',
-        4: 'Export analysis results'
-      }
-    },
-    visualization: {
-      title: '🎨 Visualization Features',
-      content: {
-        0: 'Interactive canvas visualization',
-        1: 'Generated static images',
-        2: 'Room and corridor highlighting',
-        3: 'Zoom and pan controls',
-        4: 'Export visualization images'
-      }
-    },
-    metrics: {
-      title: '📈 Evaluation Metrics',
-      content: {
-        0: 'Accessibility: Path length and reachability analysis',
-        1: 'Geometric Balance: Room distribution and symmetry',
-        2: 'Loop Ratio: Circular path analysis',
-        3: 'Dead End Ratio: Dead end room analysis',
-        4: 'Treasure/Monster Distribution: Game element balance'
-      }
-    },
-    tips: {
-      title: '💡 Usage Tips',
-      content: {
-        0: 'Use supported file formats for best results',
-        1: 'Large files may take longer to process',
-        2: 'Check browser console for detailed error messages',
-        3: 'Refresh page if analysis seems stuck',
-        4: 'Export results for offline viewing'
-      }
-    },
-    faq: {
-      title: '❓ Frequently Asked Questions',
-      questions: {
-        q1: 'What file formats are supported?',
-        a1: 'Currently supports JSON files from Watabou, Donjon, DungeonDraft, and other compatible formats.',
-        q2: 'How long does analysis take?',
-        a2: 'Analysis time depends on file size and complexity, typically 1-10 seconds.',
-        q3: 'Can I analyze multiple files at once?',
-        a3: 'Yes, you can upload and analyze multiple files in batch.',
-        q4: 'How accurate are the evaluation metrics?',
-        a4: 'Metrics are based on established dungeon design principles and graph theory analysis.',
-        q5: 'Can I export my analysis results?',
-        a5: 'Yes, you can export detailed reports in JSON format.'
-      }
-    },
-    faqs: [
-      {
-        question: 'What dungeon file formats are supported?',
-        answer: 'Currently supports JSON files from Watabou, Donjon, DungeonDraft and other formats. Each format has a dedicated adapter for conversion.'
-      },
-      {
-        question: 'How long does analysis take?',
-        answer: 'Single file analysis typically takes a few seconds to tens of seconds, depending on dungeon complexity. Batch analysis time increases accordingly.'
-      },
-      {
-        question: 'How to understand quality scores?',
-        answer: 'Score range is 0-100, higher scores indicate better dungeon quality. The system evaluates from multiple dimensions including accessibility, aesthetic balance, loop ratio, etc.'
-      },
-      {
-        question: 'How large dungeons can be analyzed?',
-        answer: 'Theoretically no size limit, but recommend single dungeon room count not exceeding 1000 for optimal performance.'
-      },
-      {
-        question: 'Are analysis results saved?',
-        answer: 'Current session analysis results are saved in browser, will be lost after page refresh. Recommend exporting important results promptly.'
-      },
-      {
-        question: 'How to get better analysis results?',
-        answer: 'Ensure dungeon file format is correct, room and corridor information is complete. System automatically handles common data issues.'
-      }
-    ]
-  },
 
   // About page
-  about: {
-    backButton: '← Back to Home',
-    title: 'About Dungeon Analyzer',
-    subtitle: 'Professional D&D Dungeon Quality Assessment Tool',
-    description: 'A powerful tool for analyzing and evaluating dungeon designs using advanced algorithms and visualization techniques.',
-    features: {
-      title: '🚀 Key Features',
-      list: {
-        0: 'Multi-format dungeon file support',
-        1: 'Advanced quality evaluation algorithms',
-        2: 'Interactive visualization tools',
-        3: 'Comprehensive analysis reports',
-        4: 'Batch processing capabilities'
-      }
-    },
-    technology: {
-      title: '⚙️ Technology Stack',
-      frontend: 'Frontend: Vue.js 3, TypeScript, Vite',
-      backend: 'Backend: Python Flask, Graph Theory Algorithms',
-      visualization: 'Visualization: Canvas API, SVG',
-      analysis: 'Analysis: Custom Quality Metrics, Spatial Analysis'
-    },
-    metrics: {
-      title: 'Analysis Metrics',
-      accessibility: 'Accessibility: Path analysis and reachability',
-      geometric: 'Geometric Balance: Room distribution and symmetry',
-      loops: 'Loop Ratio: Circular path detection',
-      deadEnds: 'Dead End Ratio: Dead end room analysis',
-      distribution: 'Distribution: Treasure and monster placement'
-    },
-    development: {
-      title: '🛠️ Development',
-      version: 'Version: 1.0.0',
-      license: 'License: MIT',
-      repository: 'Repository: GitHub',
-      contact: 'Contact: Support available through GitHub Issues'
-    }
-  },
 
   // Test page
-  test: {
-    backButton: '← Back to Home',
-    title: 'Test Page',
-    subtitle: 'Development and testing features',
-    description: 'This page is used for testing new features and debugging.',
-    features: {
-      title: '🧪 Test Features',
-      api: 'API Testing',
-      visualization: 'Visualization Testing',
-      analysis: 'Analysis Testing',
-      performance: 'Performance Testing'
-    }
-  },
 
   // Error pages
   errors: {
@@ -928,13 +1045,15 @@ const en = {
     deselectAll: 'Deselect All',
     selectedCount: 'Selected {count} / {total} items',
     apply: 'Apply Selection',
-    reset: 'Reset'
+    reset: 'Reset',
+    disabled: 'Disabled',
+    saved: 'Saved'
   },
 
   // 多详情模态框
   multipleDetailsModal: {
     title: 'Multiple Dungeon Details',
-    subtitle: '共 {count} 个地下城',
+    subtitle: 'Total {count} dungeons',
     summary: 'Batch Statistics',
     totalDungeons: 'Total Dungeons',
     averageScore: 'Average Score',
@@ -1050,6 +1169,135 @@ const en = {
     continuousOptimization: {
       title: 'Continuous Optimization',
       description: 'Current design performs well, suggest continuing to focus on detail optimization such as room decoration and atmosphere creation.'
+    }
+  },
+  scoreLevels: {
+    excellent: 'Excellent',
+    good: 'Good',
+    average: 'Medium',
+    poor: 'Poor'
+  },
+  dungeonVisualizer: {
+    title: 'Dungeon Visualizer',
+    resetCamera: 'Reset Camera',
+    hideGrid: 'Hide Grid',
+    showGrid: 'Show Grid',
+    hideLabels: 'Hide Labels',
+    showLabels: 'Show Labels',
+    image: 'Image',
+    canvas: 'Canvas',
+    download: 'Download',
+    viewFullscreen: 'View Fullscreen'
+  },
+  fullyreport: {
+    detailed: 'Detailed',
+    suggestions: 'Suggestions',
+    simple: 'Simple',
+    detailedInfo: 'Detailed Information',
+    radarChart: 'Radar Chart',
+    analysisSummary: 'Analysis Summary',
+    strength: 'Good',
+    improvement: 'Poor',
+    overallAssessment: 'Overall Assessment',
+    OverallAssessment: {
+      excellent: 'Excellent Design, all metrics are above 0.7',
+      good: 'Good Design, most metrics are above 0.5',
+      average: 'Average Design, some metrics are below 0.5',
+      poor: 'Poor Design'
+    },
+    suggestionsSummaryOverall: 'Overall Suggestions',
+    suggestionsSummary: 'According to the analysis results, the dungeon needs to be improved in {totalCategories} aspects. It is recommended to prioritize the processing of {highPrioritySuggestions} high-priority issues.',
+    suggestionsActions: 'Suggestions Actions:',
+    expectedImprovement: 'Expected Improvement:',
+    noSuggestions: 'Congratulations! No improvement suggestions, the dungeon design is already excellent!'
+  },
+  forSuggesstions: {
+    high: 'high priority',
+    medium: 'medium priority',
+    low: 'low priority',
+    dead_end_ratio: {
+      title: 'Reduce Dead End Design',
+      description: 'Current dungeon has too many dead ends, which may cause player frustration or monotonous exploration experience.',
+      expected: 'Improve exploration fluency, reduce player frustration',
+      category: 'Layout Optimization',
+      actions: {
+        0: 'Connect some dead ends to other areas',
+        1: 'Place valuable rewards at the end of dead ends',
+        2: 'Create loop paths to replace linear corridors',
+        3: 'Add hidden passages or secret rooms'
+      }
+    },
+    geometric_balance: {
+      title: 'Improve Geometric Balance',
+      description: 'Room layout geometric balance needs improvement, consider adjusting room size and position distribution.',
+      expected: 'Improve the visual balance of the dungeon',
+      category: 'Visual Design',
+      actions: {
+        0: 'Adjust room size and position distribution',
+        1: 'Create more symmetrical room layouts',
+        2: 'Balance room density in different areas',
+        3: 'Optimize spatial relationships between rooms'
+      }
+    },
+    treasure_monster_distribution: {
+      title: 'Optimize Reward Distribution Strategy',
+      description: 'Treasure and monster distribution may not be reasonable, affecting game balance and exploration motivation.',
+      actions: {
+        0: 'Ensure high-value rewards come with corresponding challenges',
+        1: 'Distribute small rewards reasonably along exploration paths',
+        2: 'Avoid rewards being too concentrated or scattered',
+        3: 'Adjust reward value based on dungeon depth'
+      },
+      expected: 'Improve the balance of treasure and monster distribution',
+      category: 'Game Balance'
+    },
+    accessibility: {
+      title: 'Improve Area Connectivity',
+      description: 'Some areas have accessibility issues, which may prevent players from reaching certain important locations.',
+      actions: {
+        0: 'Check and fix broken connections',
+        1: 'Add backup paths to reach important areas',
+        2: 'Ensure all rooms are accessible from the entrance',
+        3: 'Consider adding shortcuts or teleportation points'
+      },
+      expected: 'Ensure complete exploration experience',
+      category: 'Connectivity'
+    },
+    path_diversity: {
+      title: 'Increase Path Choice Diversity',
+      description: 'Current dungeon path choices are relatively single, lacking strategic and interesting exploration.',
+      actions: {
+        0: 'Create multiple paths to the target',
+        1: 'Design branch paths and optional areas',
+        2: 'Add paths requiring special keys or skills',
+        3: 'Balance risks and rewards of different paths'
+      },
+      expected: 'Enhance exploration strategy and replay value',
+      category: 'Exploration Experience'
+    },
+    loop_ratio: {
+      title: 'Increase Loop Path Design',
+      description: 'Dungeon lacks sufficient loop design, which may lead to linear exploration experience.',
+      actions: {
+        0: 'Connect existing dead ends to form loops',
+        1: 'Design large circular areas',
+        2: 'Create multi-level loop structures',
+        3: 'Ensure loops have clear gameplay purposes'
+      },
+      expected: 'Improve exploration fluency and navigation convenience',
+      category: 'Layout Optimization'
+    },
+    degree_variance: {
+      title: 'Optimize Connectivity Distribution',
+      description: 'Room connectivity variation is not rich enough, which may affect dungeon complexity and exploration experience.',
+      actions: {
+        0: 'Create rooms with different connection numbers',
+        1: 'Design central hub rooms',
+        2: 'Balance simple corridors and complex intersections',
+        3: 'Ensure important rooms have multiple entrances'
+      },
+      expected: 'Increase dungeon structure complexity and interest',
+      category: 'Structure Optimization'
     }
   }
 }

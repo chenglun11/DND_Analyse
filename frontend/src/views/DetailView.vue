@@ -8,14 +8,14 @@
       <nav class="mb-4" aria-label="面包屑">
         <div class="flex items-center space-x-2 text-sm text-gray-600">
           <button @click="goBack" class="hover:text-gray-900 transition-colors">
-            🏠 首页
+            {{t('detail.homeButton')}}
           </button>
           <span>›</span>
           <span v-if="isMultiDetail && detailList.length > 1" class="text-gray-900">
-            批量分析 ({{ detailList.length }} 个文件)
+            {{t('detail.batchAnalysis',{count:detailList.length})}}
           </span>
           <span v-else-if="isMultiDetail && detailList.length === 1" class="text-gray-900">
-            单个分析
+            {{t('detail.singleAnalysis')}}
           </span>
           <span v-else class="text-gray-900">
             {{ dungeonName || '地下城分析' }}
@@ -37,20 +37,6 @@
                 {{ currentDetail?.name || dungeonName || t('common.unknown') }}
               </h2>
             </div>
-            <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600">
-              <span v-if="isMultiDetail" class="flex items-center gap-1">
-                📄 {{ t('detail.pageInfo', { current: currentPage, total: totalPages }) }}
-              </span>
-              <span v-else class="flex items-center gap-1">
-                🏰 地下城详细分析报告
-              </span>
-              <span v-if="currentDetail?.overallScore" class="flex items-center gap-1">
-                🎆 评分: <strong class="text-blue-600">{{ formatScore(currentDetail.overallScore) }}</strong>
-              </span>
-              <span v-if="selectedMetrics?.length" class="flex items-center gap-1">
-                📊 {{ selectedMetrics.length }} 个指标
-              </span>
-            </div>
           </div>
           
           <!-- 三个大按钮 -->
@@ -63,7 +49,7 @@
               <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
               </svg>
-              刷新分析
+              {{t('detail.refreshButton')}}
             </button>
             
             <!-- 批量概览按钮(仅批量模式) -->
@@ -75,7 +61,7 @@
               <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
               </svg>
-              {{ showBatchOverview ? '隐藏概览' : '批量概览' }}
+              {{ showBatchOverview ? t('detail.hideOverview') : t('detail.showOverview') }}
             </button>
             
             <!-- 导出按钮(单独模式或批量模式下当前项) -->
@@ -87,7 +73,7 @@
               <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
               </svg>
-              导出报告
+              {{t('detail.exportReport')}}
             </button>
             
             <!-- 导航按钮 -->
@@ -99,7 +85,7 @@
               <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
               </svg>
-              {{ currentPage < totalPages ? '下一个' : '第一个' }}
+              {{ currentPage < totalPages ? t('detail.next') : t('detail.first') }}
             </button>
             
             <!-- 返回按钮 -->
@@ -110,7 +96,7 @@
               <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
               </svg>
-              返回首页
+              {{t('detail.backButton')}}
             </button>
           </div>
         </div>
@@ -119,53 +105,53 @@
       <!-- 批量分析概览面板(仅批量模式且多个文件时显示) -->
       <div v-if="isMultiDetail && detailList.length > 1 && showBatchOverview" class="bg-white rounded-lg border border-gray-200 p-6 mb-6">
         <div class="mb-6">
-          <h2 class="text-xl font-semibold text-gray-900">批量分析概览</h2>
+          <h2 class="text-xl font-semibold text-gray-900">{{t('detail.batchOverview')}}</h2>
         </div>
             
         <!-- 优化的响应式统计卡片 -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-6">
           <div class="bg-white border border-gray-200 rounded-lg p-3 sm:p-4 min-w-0">
             <div class="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-900 truncate">{{ isNaN(averageScore) ? '0.00' : formatScore(averageScore) }}</div>
-            <div class="text-xs sm:text-sm text-gray-600">平均评分</div>
+            <div class="text-xs sm:text-sm text-gray-600">{{t('detail.averageScore')}}</div>
           </div>
           <div class="bg-white border border-gray-200 rounded-lg p-3 sm:p-4 min-w-0">
             <div class="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-900 truncate">{{ isNaN(bestScore) ? '0.00' : formatScore(bestScore) }}</div>
-            <div class="text-xs sm:text-sm text-gray-600">最高评分</div>
+            <div class="text-xs sm:text-sm text-gray-600">{{t('detail.highestScore')}}</div>
           </div>
           <div class="bg-white border border-gray-200 rounded-lg p-3 sm:p-4 min-w-0 sm:col-span-2 lg:col-span-1">
             <div class="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-900 truncate">{{ detailList.length }}</div>
-            <div class="text-xs sm:text-sm text-gray-600">地下城数量</div>
+            <div class="text-xs sm:text-sm text-gray-600">{{t('detail.dungeonCount')}}</div>
           </div>
         </div>
             
         <!-- 优化的响应式过滤和排序 -->
         <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6">
           <div class="flex-1 min-w-0">
-            <label class="block text-xs font-medium text-gray-700 mb-1">排序方式</label>
+            <label class="block text-xs font-medium text-gray-700 mb-1">{{t('detail.sortBy')}}</label>
             <select 
               v-model="sortBy" 
               class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 truncate"
             >
-              <option value="name">🔤 按名称排序</option>
-              <option value="score">🏆 按评分排序</option>
-              <option value="index">🔢 按顺序排序</option>
+              <option value="name">{{t('detail.sortByName')}}</option>
+              <option value="score">{{t('detail.sortByScore')}}</option>
+              <option value="index">{{t('detail.sortByIndex')}}</option>
             </select>
           </div>
           <div class="flex-1 min-w-0">
-            <label class="block text-xs font-medium text-gray-700 mb-1">评分筛选</label>
+            <label class="block text-xs font-medium text-gray-700 mb-1">{{t('detail.scoreFilter')}}</label>
             <select 
               v-model="scoreFilter" 
               class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 truncate"
             >
-              <option value="all">🌍 全部评分</option>
-              <option value="high">🌟 高分 (0.8+)</option>
-              <option value="medium">🟡 中等 (0.5-0.8)</option>
-              <option value="low">🔴 低分 (<0.5)</option>
+              <option value="all">{{t('detail.allScore')}}</option>
+              <option value="high">{{t('detail.highScore')}}</option>
+              <option value="medium">{{t('detail.mediumScore')}}</option>
+              <option value="low">{{t('detail.lowScore')}}</option>
             </select>
           </div>
           <div class="flex-shrink-0 flex items-end">
             <div class="text-xs text-gray-500 px-2 py-2">
-              已筛选: <strong>{{ filteredAndSortedDetails.length }}</strong> / {{ detailList.length }}
+              {{t('detail.filteredCount',{count:filteredAndSortedDetails.length,total:detailList.length})}}
             </div>
           </div>
         </div>
@@ -201,7 +187,7 @@
                   {{ getGradeLabel(detail.overallScore) }}
                 </span>
                 <span class="text-xs text-gray-400 ml-2">
-                  #{{ index + 1 }}{{ currentPage === index + 1 ? ' (当前)' : '' }}
+                  #{{ index + 1 }}{{ currentPage === index + 1 ? ' ('+t('detail.current')+')' : '' }}
                 </span>
               </div>
             </div>
@@ -210,8 +196,8 @@
             
         <!-- 空状态 -->
         <div v-if="filteredAndSortedDetails.length === 0" class="text-center py-12">
-          <div class="text-gray-400 text-lg mb-2">没有找到匹配的地下城</div>
-          <div class="text-sm text-gray-500">请尝试调整筛选条件</div>
+          <div class="text-gray-400 text-lg mb-2">{{t('detail.noMatchDungeon')}}</div>
+          <div class="text-sm text-gray-500">{{t('detail.tryAdjustFilter')}}</div>
         </div>
       </div>
 
@@ -222,10 +208,7 @@
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
               <div class="text-sm text-blue-700 font-medium">
-                当前查看: {{ currentPage }} / {{ totalPages }}
-              </div>
-              <div class="text-xs text-blue-600">
-                使用←→键可快速切换
+                {{t('detail.currentPage',{current:currentPage,total:totalPages})}}
               </div>
             </div>
             <div class="flex items-center gap-1">
@@ -261,20 +244,20 @@
         <!-- 加载状态 -->
         <div v-else-if="isMultiDetail && detailList.length === 0" class="text-center py-12">
           <div class="w-8 h-8 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin mx-auto mb-3"></div>
-          <div class="text-gray-600 mb-2">正在加载分析结果...</div>
-          <div class="text-sm text-gray-500">请稍候</div>
+          <div class="text-gray-600 mb-2">{{t('detail.loadingAnalysisResults')}}</div>
+          <div class="text-sm text-gray-500">{{t('detail.pleaseWait')}}</div>
         </div>
         
         <!-- 无数据状态 -->
         <div v-else class="text-center py-12">
           <div class="text-6xl mb-4">📁</div>
           <div class="text-gray-400 text-lg mb-2">{{ t('detail.noDetailAvailable') }}</div>
-          <div class="text-sm text-gray-500 mb-4">未找到对应的分析数据</div>
+          <div class="text-sm text-gray-500 mb-4">{{t('detail.noDetailAvailable')}}</div>
           <button 
             @click="goBack"
             class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
-            返回首页
+            {{t('detail.backToHome')}}
           </button>
         </div>
       </div>
