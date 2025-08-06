@@ -1,0 +1,6 @@
+export { default as FileIcon } from './FileIcon.vue'
+export { default as ChartIcon } from './ChartIcon.vue'
+export { default as LightningIcon } from './LightningIcon.vue'
+export { default as SaveIcon } from './SaveIcon.vue'
+export { default as TargetIcon } from './TargetIcon.vue'
+export { default as RefreshIcon } from './RefreshIcon.vue' 

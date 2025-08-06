@@ -134,22 +134,19 @@ const troubleshooting = [
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-[#f0f8ff]">
     <!-- 页头 -->
-    <header class="bg-white shadow-sm border-b border-gray-200">
+    <header class="bg-white shadow-sm border-b border-[#6DAEDB]">
       <div class="max-w-7xl mx-auto px-6 py-4">
         <div class="flex items-center gap-6">
           <button 
             @click="goBack" 
-            class="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200 text-gray-700 font-medium"
+            class="flex items-center gap-2 px-4 py-2 bg-[#f0f8ff] hover:bg-[#e6f3ff] rounded-lg transition-colors duration-200 text-[#173753] font-medium"
           >
             <ArrowLeftIcon class="w-5 h-5" />
             {{ t('help.backButton') }}
           </button>
-          <div class="flex-1">
-            <h1 class="text-2xl font-bold text-gray-800">{{ t('help.title') }}</h1>
-            <p class="text-gray-600 text-sm">{{ t('help.subtitle') }}</p>
-          </div>
+          <h1 class="text-2xl font-bold text-[#173753]">{{ t('help.title') }}</h1>
         </div>
       </div>
     </header>
@@ -159,17 +156,17 @@ const troubleshooting = [
         <!-- 快速开始 -->
         <section class="mb-12">
           <div class="flex items-center gap-3 mb-6">
-            <InformationCircleIcon class="w-8 h-8 text-blue-600" />
+            <InformationCircleIcon class="w-8 h-8 text-[#2892D7]" />
             <h2 class="text-2xl font-bold text-gray-800">{{ t('help.quickStart.title') }}</h2>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div 
-              v-for="step in quickSteps" 
-              :key="step.step"
-              class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+              v-for="(step, index) in quickSteps" 
+              :key="index"
+              class="bg-gradient-to-br from-[#f0f8ff] to-[#e6f3ff] rounded-xl p-6 border border-[#6DAEDB] hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
             >
               <div class="flex items-center gap-3 mb-4">
-                <div class="w-10 h-10 bg-blue-500 text-white rounded-full flex items-center justify-center text-lg font-bold">
+                <div class="w-10 h-10 bg-[#2892D7] text-white rounded-full flex items-center justify-center text-lg font-bold">
                   {{ step.step }}
                 </div>
                 <div class="text-2xl">{{ step.icon }}</div>
@@ -183,7 +180,7 @@ const troubleshooting = [
         <!-- 详细说明 -->
         <section class="mb-12">
           <div class="flex items-center gap-3 mb-6">
-            <DocumentTextIcon class="w-8 h-8 text-green-600" />
+            <DocumentTextIcon class="w-8 h-8 text-[#2892D7]" />
             <h2 class="text-2xl font-bold text-gray-800">{{ t('help.detailedGuide.title') }}</h2>
           </div>
           <div class="space-y-4">
@@ -191,9 +188,9 @@ const troubleshooting = [
               v-for="(section, index) in helpSections" 
               :key="index"
               as="div" 
-              class="bg-white border border-gray-200 rounded-lg"
+              class="bg-white border border-[#6DAEDB] rounded-lg"
             >
-              <DisclosureButton class="flex w-full justify-between rounded-lg bg-gray-50 px-6 py-4 text-left text-lg font-medium text-gray-900 hover:bg-gray-100 focus:outline-none focus-visible:ring focus-visible:ring-green-500 focus-visible:ring-opacity-75">
+              <DisclosureButton class="flex w-full justify-between rounded-lg bg-[#f0f8ff] px-6 py-4 text-left text-lg font-medium text-gray-900 hover:bg-[#e6f3ff] focus:outline-none focus-visible:ring focus-visible:ring-[#2892D7] focus-visible:ring-opacity-75">
                 <div class="flex items-center gap-3">
                   <span class="text-2xl">{{ section.icon }}</span>
                   <span>{{ section.title }}</span>
@@ -207,7 +204,7 @@ const troubleshooting = [
                     :key="itemIndex"
                     class="flex items-start gap-3 text-gray-600"
                   >
-                    <div class="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <div class="w-2 h-2 bg-[#2892D7] rounded-full mt-2 flex-shrink-0"></div>
                     <span>{{ item }}</span>
                   </li>
                 </ul>
@@ -219,7 +216,7 @@ const troubleshooting = [
         <!-- 常见问题 -->
         <section class="mb-12">
           <div class="flex items-center gap-3 mb-6">
-            <QuestionMarkCircleIcon class="w-8 h-8 text-purple-600" />
+            <QuestionMarkCircleIcon class="w-8 h-8 text-[#2892D7]" />
             <h2 class="text-2xl font-bold text-gray-800">{{ t('help.faq.title') }}</h2>
           </div>
           <div class="space-y-4">
@@ -227,9 +224,9 @@ const troubleshooting = [
               v-for="(faq, index) in faqs" 
               :key="index"
               as="div" 
-              class="bg-white border border-gray-200 rounded-lg"
+              class="bg-white border border-[#6DAEDB] rounded-lg"
             >
-              <DisclosureButton class="flex w-full justify-between rounded-lg bg-gray-50 px-6 py-4 text-left text-lg font-medium text-gray-900 hover:bg-gray-100 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+              <DisclosureButton class="flex w-full justify-between rounded-lg bg-[#f0f8ff] px-6 py-4 text-left text-lg font-medium text-gray-900 hover:bg-[#e6f3ff] focus:outline-none focus-visible:ring focus-visible:ring-[#2892D7] focus-visible:ring-opacity-75">
                 <span>{{ faq.question }}</span>
                 <ChevronUpIcon class="h-6 w-6 text-gray-500 ui-open:rotate-180 ui-open:transform" />
               </DisclosureButton>
@@ -243,14 +240,14 @@ const troubleshooting = [
         <!-- 故障排除 -->
         <section class="mb-12">
           <div class="flex items-center gap-3 mb-6">
-            <CogIcon class="w-8 h-8 text-orange-600" />
+            <CogIcon class="w-8 h-8 text-[#2892D7]" />
             <h2 class="text-2xl font-bold text-gray-800">{{ t('help.troubleshooting.title') }}</h2>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div 
               v-for="(item, index) in troubleshooting" 
               :key="index"
-              class="bg-gradient-to-br from-orange-50 to-red-50 rounded-xl p-6 border border-orange-200"
+              class="bg-gradient-to-br from-[#f0f8ff] to-[#e6f3ff] rounded-xl p-6 border border-[#6DAEDB]"
             >
               <h3 class="text-lg font-semibold text-gray-800 mb-3">{{ item.problem }}</h3>
               <p class="text-gray-600 leading-relaxed">{{ item.solution }}</p>
@@ -261,23 +258,23 @@ const troubleshooting = [
         <!-- 联系支持 -->
         <section>
           <div class="flex items-center gap-3 mb-6">
-            <InformationCircleIcon class="w-8 h-8 text-teal-600" />
+            <InformationCircleIcon class="w-8 h-8 text-[#2892D7]" />
             <h2 class="text-2xl font-bold text-gray-800">{{ t('help.support.title') }}</h2>
           </div>
-          <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-6 border border-teal-200">
+          <div class="bg-gradient-to-br from-[#f0f8ff] to-[#e6f3ff] rounded-xl p-6 border border-[#6DAEDB]">
             <p class="text-gray-700 leading-relaxed mb-4">
               {{ t('help.support.description') }}
             </p>
             <div class="flex gap-4">
               <button 
                 @click="router.push('/')"
-                class="bg-teal-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-teal-700 transition-colors duration-200"
+                class="bg-[#2892D7] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#1D70A2] transition-colors duration-200"
               >
                 {{ t('help.support.startAnalysis') }}
               </button>
               <button 
                 @click="router.push('/about')"
-                class="bg-gray-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-700 transition-colors duration-200"
+                class="bg-[#1D70A2] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#173753] transition-colors duration-200"
               >
                 {{ t('help.support.learnMore') }}
               </button>
@@ -288,7 +285,7 @@ const troubleshooting = [
     </div>
 
     <!-- 页脚 -->
-    <footer class="bg-white border-t border-gray-200 mt-12">
+    <footer class="bg-white border-t border-[#6DAEDB] mt-12">
       <div class="max-w-7xl mx-auto px-6 py-4">
         <p class="text-center text-gray-500 text-sm">&copy; 2024 地下城适配器</p>
       </div>

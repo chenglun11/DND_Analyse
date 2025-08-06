@@ -1,44 +1,60 @@
 <template>
-  <div class="improvement-suggestions bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-    <div class="flex items-center justify-between mb-6">
+  <div :class="[
+    'improvement-suggestions bg-white rounded-xl border border-gray-200',
+    compact ? 'p-2 shadow-sm' : 'p-6 shadow-lg'
+  ]">
+    <div v-if="!compact" class="flex items-center justify-between mb-6">
       <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
         <span class="w-2 h-2 bg-yellow-500 rounded-full"></span>
-        💡 改进建议
+        改进建议
       </h3>
       <span class="text-sm text-gray-500">{{ suggestions.length }} 条建议</span>
     </div>
 
-    <div v-if="suggestions.length === 0" class="text-center py-8">
-      <div class="text-6xl mb-4">🎉</div>
-      <p class="text-gray-600">恭喜！暂无改进建议，地牢设计已经非常优秀！</p>
+    <div v-if="suggestions.length === 0" :class="compact ? 'text-center py-4' : 'text-center py-8'">
+      <div v-if="!compact" class="text-6xl mb-4"></div>
+      <p :class="compact ? 'text-sm text-gray-600' : 'text-gray-600'">恭喜！暂无改进建议，地牢设计已经非常优秀！</p>
     </div>
 
-    <div v-else class="space-y-4">
+    <div v-else :class="compact ? 'space-y-2' : 'space-y-4'">
       <div v-for="(suggestion, index) in suggestions" :key="index" 
-           class="improvement-item bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-lg p-4 transition-all duration-300 hover:shadow-md">
-        <div class="flex items-start gap-3">
+           :class="[
+             'improvement-item bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-lg transition-all duration-300 hover:shadow-md',
+             compact ? 'p-2' : 'p-4'
+           ]">
+        <div :class="compact ? 'flex items-start gap-2' : 'flex items-start gap-3'">
           <div class="flex-shrink-0">
             <div :class="[
-              'w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm',
+              'rounded-full flex items-center justify-center text-white font-bold',
+              compact ? 'w-6 h-6 text-xs' : 'w-8 h-8 text-sm',
               getPriorityColor(suggestion.priority)
             ]">
               {{ index + 1 }}
             </div>
           </div>
           <div class="flex-1">
-            <div class="flex items-center justify-between mb-2">
-              <h4 class="font-semibold text-gray-900">{{ suggestion.title }}</h4>
-              <span :class="[
+            <div :class="[
+              'flex items-center justify-between',
+              compact ? 'mb-1' : 'mb-2'
+            ]">
+              <h4 :class="[
+                'font-semibold text-gray-900',
+                compact ? 'text-sm' : 'text-base'
+              ]">{{ suggestion.title }}</h4>
+              <span v-if="!compact" :class="[
                 'px-2 py-1 rounded-full text-xs font-medium',
                 getPriorityBadgeClass(suggestion.priority)
               ]">
                 {{ getPriorityText(suggestion.priority) }}
               </span>
             </div>
-            <p class="text-gray-700 text-sm mb-3">{{ suggestion.description }}</p>
+            <p :class="[
+              'text-gray-700',
+              compact ? 'text-xs mb-1' : 'text-sm mb-3'
+            ]">{{ suggestion.description }}</p>
             
             <!-- 具体改进措施 -->
-            <div v-if="suggestion.actions && suggestion.actions.length > 0" class="mb-3">
+            <div v-if="!compact && suggestion.actions && suggestion.actions.length > 0" class="mb-3">
               <p class="text-xs font-medium text-gray-800 mb-1">建议措施：</p>
               <ul class="space-y-1">
                 <li v-for="(action, actionIndex) in suggestion.actions" :key="actionIndex" 
@@ -64,7 +80,7 @@
     <!-- 总结和额外建议 -->
     <div v-if="suggestions.length > 0" class="mt-6 pt-6 border-t border-gray-200">
       <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <h4 class="font-semibold text-blue-900 mb-2">📊 总体建议</h4>
+        <h4 class="font-semibold text-blue-900 mb-2">总体建议</h4>
         <p class="text-blue-800 text-sm mb-2">
           根据分析结果，该地牢在 {{ getTotalCategories() }} 个方面需要改进。
           建议优先处理 <span class="font-semibold">{{ getHighPrioritySuggestions().length }}</span> 个高优先级问题。
@@ -98,6 +114,7 @@ interface ImprovementSuggestion {
 interface Props {
   scores: Record<string, { score: number; detail?: any }>
   overallScore?: number
+  compact?: boolean
 }
 
 const props = defineProps<Props>()
@@ -256,7 +273,7 @@ const suggestions = computed<ImprovementSuggestion[]>(() => {
 })
 
 const getPriorityColor = (priority: string): string => {
-  const colors = {
+  const colors: { [key: string]: string } = {
     high: 'bg-red-500',
     medium: 'bg-yellow-500', 
     low: 'bg-blue-500'
@@ -265,7 +282,7 @@ const getPriorityColor = (priority: string): string => {
 }
 
 const getPriorityBadgeClass = (priority: string): string => {
-  const classes = {
+  const classes: { [key: string]: string } = {
     high: 'bg-red-100 text-red-800',
     medium: 'bg-yellow-100 text-yellow-800',
     low: 'bg-blue-100 text-blue-800'
@@ -274,7 +291,7 @@ const getPriorityBadgeClass = (priority: string): string => {
 }
 
 const getPriorityText = (priority: string): string => {
-  const texts = {
+  const texts: { [key: string]: string } = {
     high: '高优先级',
     medium: '中优先级',
     low: '低优先级'

@@ -93,10 +93,9 @@ export class DungeonAPI {
   }
 
   // 新的基于内存缓存的API方法
-  static async analyzeDungeon(file: File, options: AnalysisOptions = {}): Promise<AnalysisResult> {
+  static async analyzeDungeon(file: File): Promise<AnalysisResult> {
     const formData = new FormData()
     formData.append('file', file)
-    formData.append('options', JSON.stringify(options))
 
     const response = await fetch(`${API_BASE_URL}/analyze`, {
       method: 'POST',
@@ -111,10 +110,9 @@ export class DungeonAPI {
   }
 
   // 通过文件ID分析（新的内存缓存API）
-  static async analyzeDungeonById(fileId: string, options: AnalysisOptions = {}): Promise<AnalysisResult> {
+  static async analyzeDungeonById(fileId: string): Promise<AnalysisResult> {
     const formData = new FormData()
     formData.append('file_id', fileId)
-    formData.append('options', JSON.stringify(options))
 
     const response = await fetch(`${API_BASE_URL}/analyze-by-id`, {
       method: 'POST',

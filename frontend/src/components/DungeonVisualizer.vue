@@ -57,18 +57,18 @@ const lastMouseY = ref(0)
 const showGrid = ref(props.showGrid)
 const showLabels = ref(props.showLabels)
 
-// 颜色映射
+// 颜色映射 - 使用专业蓝色色彩集
 const roomColors = {
-  room: '#3498db',
-  chamber: '#e74c3c', 
-  boss: '#f39c12',
-  treasure: '#f1c40f',
-  entrance: '#2ecc71',
-  exit: '#e67e22',
-  corridor: '#95a5a6',
-  hall: '#9b59b6',
-  bathroom: '#1abc9c',
-  storage: '#34495e'
+  room: '#2892D7',      // Celestial Blue - 普通房间
+  chamber: '#1D70A2',   // Bice blue - 大厅
+  boss: '#173753',      // Prussian blue - Boss房间
+  treasure: '#6DAEDB',  // Carolina blue - 宝藏房间
+  entrance: '#6DAEDB',  // Carolina blue - 入口
+  exit: '#173753',      // Prussian blue - 出口
+  corridor: '#1B4353',  // Charcoal - 走廊
+  hall: '#1D70A2',      // Bice blue - 大厅
+  bathroom: '#6DAEDB',  // Carolina blue - 浴室
+  storage: '#1B4353'    // Charcoal - 储藏室
 }
 
 // 鼠标事件处理
@@ -184,23 +184,16 @@ const pointToLineDistance = (px: number, py: number, x1: number, y1: number, x2:
 
 // 渲染函数
 const render = () => {
-  console.log('Rendering dungeon...')
-  if (!canvas.value || !props.dungeonData) {
-    console.log('Canvas or dungeon data not available')
-    return
-  }
+  if (!canvas.value) return
   
-  console.log('Dungeon data:', props.dungeonData)
-  console.log('Canvas size:', canvas.value.width, 'x', canvas.value.height)
+  const ctx = canvas.value.getContext('2d')
+  if (!ctx) return
   
-  const ctx = canvas.value.getContext('2d')!
   const { width, height } = canvas.value
-  
-  // 清除画布
   ctx.clearRect(0, 0, width, height)
   
-  // 设置背景
-  ctx.fillStyle = '#2c3e50'
+  // 设置背景 - 使用专业蓝色色彩集
+  ctx.fillStyle = '#f8fafc'
   ctx.fillRect(0, 0, width, height)
   
   // 应用变换
@@ -227,7 +220,7 @@ const renderGrid = (ctx: CanvasRenderingContext2D) => {
   const gridSize = 50
   const { width, height } = canvas.value!
   
-  ctx.strokeStyle = '#34495e'
+  ctx.strokeStyle = '#e2e8f0'
   ctx.lineWidth = 1 / zoom.value
   ctx.globalAlpha = 0.3
   
@@ -270,12 +263,12 @@ const renderCorridors = (ctx: CanvasRenderingContext2D) => {
     // 根据通道类型设置不同的样式
     if (corridor.connection_type === 'room_to_room') {
       // 房间之间的连接线
-      ctx.strokeStyle = '#e74c3c'
+      ctx.strokeStyle = '#6DAEDB'  // Carolina blue
       ctx.lineWidth = 4 / zoom.value
       ctx.setLineDash([5, 5])
     } else {
       // 物理通道
-      ctx.strokeStyle = '#8b4513'
+      ctx.strokeStyle = '#1D70A2'  // Bice blue
       ctx.lineWidth = (corridor.width || 6) / zoom.value
       ctx.setLineDash([])
     }
@@ -314,11 +307,11 @@ const renderRooms = (ctx: CanvasRenderingContext2D) => {
     console.log('Rendering room:', room.id, 'at', room.x, room.y, 'size', room.width, 'x', room.height)
     
     // 绘制房间背景
-    ctx.fillStyle = roomColors[room.type] || '#3498db'
+    ctx.fillStyle = roomColors[room.type] || '#3b82f6'
     ctx.fillRect(room.x, room.y, room.width, room.height)
     
-    // 绘制房间边框
-    ctx.strokeStyle = '#ffffff'
+    // 绘制房间边框 - 使用专业蓝色色彩集
+    ctx.strokeStyle = '#173753'  // Prussian blue
     ctx.lineWidth = 2 / zoom.value
     ctx.strokeRect(room.x, room.y, room.width, room.height)
     
@@ -340,7 +333,7 @@ const renderRooms = (ctx: CanvasRenderingContext2D) => {
     
     // 绘制标签
     if (showLabels.value) {
-      ctx.fillStyle = '#ffffff'
+      ctx.fillStyle = '#173753'  // Prussian blue
       ctx.font = `${10 / zoom.value}px Arial`
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
@@ -348,15 +341,15 @@ const renderRooms = (ctx: CanvasRenderingContext2D) => {
       // 房间ID标签
       ctx.fillText(
         `#${room.id}`,
-        room.x + room.width / 2,
-        room.y + room.height + 15 / zoom.value
+        centerX,
+        centerY + room.height / 2 - 15 / zoom.value
       )
       
-      // 房间类型标签  
+      // 房间类型标签
       ctx.fillText(
         room.type,
-        room.x + room.width / 2,
-        room.y + room.height / 2 + iconSize / 2
+        centerX,
+        centerY + room.height / 2 + 5 / zoom.value
       )
     }
   }
@@ -393,18 +386,18 @@ const toggleLabels = () => {
 // 获取房间图标
 const getRoomIcon = (roomType: string): string => {
   const iconMap: Record<string, string> = {
-    room: '🏠',
-    chamber: '🏛️',
-    boss: '👑',
-    treasure: '💰',
-    entrance: '🚪',
-    exit: '🚫',
-    corridor: '➡️',
-    hall: '🏰',
-    bathroom: '🚿',
-    storage: '📦'
+    room: 'R',
+    chamber: 'C',
+    boss: 'B',
+    treasure: 'T',
+    entrance: 'E',
+    exit: 'X',
+    corridor: '→',
+    hall: 'H',
+    bathroom: 'B',
+    storage: 'S'
   }
-  return iconMap[roomType] || '❓'
+  return iconMap[roomType] || '?'
 }
 
 // 监听数据变化
@@ -483,21 +476,22 @@ onUnmounted(() => {
   flex-direction: column;
   height: 100%;
   width: 100%;
-  background: #2c3e50;
+  background: #f8fafc;
   border-radius: 8px;
   overflow: hidden;
+  border: 1px solid #e2e8f0;
 }
 
 .controls {
   display: flex;
   gap: 8px;
   padding: 10px;
-  background: #34495e;
-  border-bottom: 1px solid #2c3e50;
+  background: #f1f5f9;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .control-btn {
-  background: #3498db;
+  background: #3b82f6;
   color: white;
   border: none;
   padding: 6px 12px;
@@ -508,7 +502,7 @@ onUnmounted(() => {
 }
 
 .control-btn:hover {
-  background: #2980b9;
+  background: #2563eb;
 }
 
 .zoom-controls {
@@ -519,7 +513,7 @@ onUnmounted(() => {
 }
 
 .zoom-btn {
-  background: #e74c3c;
+  background: #64748b;
   color: white;
   border: none;
   width: 24px;
@@ -531,11 +525,11 @@ onUnmounted(() => {
 }
 
 .zoom-btn:hover {
-  background: #c0392b;
+  background: #475569;
 }
 
 .zoom-level {
-  color: white;
+  color: #334155;
   font-size: 14px;
   min-width: 50px;
   text-align: center;
@@ -547,8 +541,8 @@ onUnmounted(() => {
   overflow: hidden;
   min-height: 600px;
   height: 600px;
-  background: #2c3e50;
-  border: 1px solid #34495e;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
 }
 
 canvas {
@@ -556,7 +550,7 @@ canvas {
   cursor: grab;
   width: 100%;
   height: 100%;
-  background: #2c3e50;
+  background: #ffffff;
 }
 
 canvas:active {

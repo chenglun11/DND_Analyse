@@ -75,12 +75,12 @@ const currentLocale = computed(() => locale.value)
 }
 
 h1 {
-  color: #333;
+  color: #334155;
   margin-bottom: 10px;
 }
 
 p {
-  color: #666;
+  color: #64748b;
   margin-bottom: 20px;
 }
 
@@ -89,9 +89,9 @@ p {
 }
 
 .test-section h2 {
-  color: #333;
+  color: #334155;
   margin-bottom: 20px;
-  border-bottom: 2px solid #4a5568;
+  border-bottom: 2px solid #64748b;
   padding-bottom: 10px;
 }
 
@@ -102,26 +102,26 @@ p {
 }
 
 .test-item {
-  background: #f8f9fa;
+  background: #f8fafc;
   border-radius: 10px;
   padding: 20px;
-  border: 1px solid #e9ecef;
+  border: 1px solid #e2e8f0;
 }
 
 .test-item h3 {
-  color: #333;
+  color: #334155;
   margin-bottom: 15px;
   font-size: 1.1rem;
 }
 
 .test-item p {
-  color: #555;
+  color: #64748b;
   margin-bottom: 8px;
   font-size: 0.9rem;
 }
 
 .current-locale {
-  background: #4a5568;
+  background: #64748b;
   color: white;
   padding: 10px 20px;
   border-radius: 8px;

@@ -1,12 +1,15 @@
 <template>
-  <div class="analysis-report bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-    <div class="flex items-center justify-between mb-6">
+  <div :class="[
+    'analysis-report bg-white rounded-xl border border-gray-200',
+    compact ? 'p-2 shadow-sm' : 'p-8 shadow-lg'
+  ]">
+    <div v-if="!compact" class="flex items-center justify-between mb-6">
       <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
-        <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
-        📊 详细分析报告
+        <span class="w-2 h-2 bg-[#2892D7] rounded-full"></span>
+        详细分析报告
       </h3>
       <div class="flex items-center gap-2">
-        <button @click="exportReport" class="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 transition-colors">
+        <button @click="exportReport" class="px-3 py-1 bg-[#2892D7] text-white rounded text-sm hover:bg-[#1D70A2] transition-colors">
           导出报告
         </button>
         <button @click="toggleView" class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm hover:bg-gray-200 transition-colors">
@@ -15,89 +18,85 @@
       </div>
     </div>
 
-    <!-- 总体评分卡片 -->
-    <div class="overall-score-card mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4">
-      <div class="flex items-center justify-between">
-        <div>
-          <h4 class="text-lg font-semibold text-gray-900 mb-1">总体评分</h4>
-          <p class="text-sm text-gray-600">基于 {{ Object.keys(scores).length }} 项指标的综合评估</p>
-        </div>
-        <div class="text-right">
-          <div :class="[
-            'text-3xl font-bold mb-1',
-            getScoreColor(overallScore)
-          ]">
-            {{ (overallScore * 100).toFixed(1) }}
-          </div>
-          <div :class="[
-            'px-3 py-1 rounded-full text-sm font-medium',
-            getGradeBadgeClass(grade)
-          ]">
-            {{ grade }}
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- 指标详情 -->
-    <div class="metrics-grid grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-      <div v-for="metric in allMetrics" :key="metric.key" 
+    <div :class="[
+      'metrics-grid gap-3',
+      compact ? 'grid grid-cols-1 mb-3' : 'grid grid-cols-2 gap-4 lg:gap-6 mb-8'
+    ]">
+      <div v-for="metric in allMetrics.filter(m => isMetricSelected(m.key))" :key="metric.key" 
            :class="[
-             'metric-card border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow',
-             isMetricSelected(metric.key) ? 'bg-gray-50' : 'bg-gray-50/50 opacity-60'
+             'metric-card border border-gray-200 rounded-lg hover:shadow-md transition-shadow bg-gray-50',
+             compact ? 'p-2' : 'p-6'
            ]">
-        <div class="flex items-center justify-between mb-3">
-          <div class="flex items-center gap-2">
-            <span class="text-lg">{{ getMetricIcon(metric.key) }}</span>
-            <h5 class="font-semibold text-gray-900">{{ metric.name }}</h5>
-            <span v-if="!isMetricSelected(metric.key)" class="text-xs text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded">禁用</span>
+        <div :class="[
+          'flex items-center justify-between',
+          compact ? 'mb-1' : 'mb-3'
+        ]">
+          <div class="flex items-center gap-1">
+            <span :class="compact ? 'text-sm' : 'text-lg'">{{ getMetricIcon(metric.key) }}</span>
+            <h5 :class="[
+              'font-semibold text-gray-900',
+              compact ? 'text-xs' : 'text-base'
+            ]">{{ metric.name }}</h5>
+            <span v-if="!isMetricSelected(metric.key)" class="text-xs text-gray-400 bg-gray-100 px-1 py-0.5 rounded">禁用</span>
           </div>
           <div class="text-right">
             <div :class="[
-              'text-xl font-bold',
+              'font-bold',
+              compact ? 'text-sm' : 'text-xl',
               isMetricSelected(metric.key) ? getScoreColor(getMetricScore(metric.key)) : 'text-gray-400'
             ]">
-              {{ isMetricSelected(metric.key) ? (getMetricScore(metric.key) * 100).toFixed(0) + '%' : 'N/A' }}
+              {{ isMetricSelected(metric.key) ? formatScore(getMetricScore(metric.key)) : 'N/A' }}
             </div>
           </div>
         </div>
         
         <!-- 进度条 -->
-        <div class="mb-3">
-          <div class="w-full bg-gray-200 rounded-full h-2">
+        <div :class="compact ? 'mb-1' : 'mb-3'">
+          <div :class="[
+            'w-full bg-gray-200 rounded-full',
+            compact ? 'h-1' : 'h-2'
+          ]">
             <div :class="[
-              'h-2 rounded-full transition-all duration-500',
+              'rounded-full transition-all duration-500',
+              compact ? 'h-1' : 'h-2',
               isMetricSelected(metric.key) ? getProgressBarColor(getMetricScore(metric.key)) : 'bg-gray-400'
             ]"
             :style="{ width: isMetricSelected(metric.key) ? `${getMetricScore(metric.key) * 100}%` : '0%' }"></div>
           </div>
         </div>
 
-        <p :class="[
+        <p v-if="!compact" :class="[
           'text-sm mb-2',
           isMetricSelected(metric.key) ? 'text-gray-600' : 'text-gray-400'
         ]">{{ metric.description }}</p>
 
         <!-- 详细视图 -->
-        <div v-if="viewMode === 'detailed' && isMetricSelected(metric.key) && getMetricDetail(metric.key)" class="detailed-info bg-white border border-gray-100 rounded p-3 mt-3">
-          <h6 class="text-xs font-semibold text-gray-800 mb-2">详细信息</h6>
-          <div class="text-xs text-gray-600 space-y-1">
-            <div v-for="(value, key) in getDetailInfo(getMetricDetail(metric.key))" :key="key" class="flex justify-between">
-              <span>{{ key }}:</span>
-              <span class="font-medium">{{ value }}</span>
+        <div v-if="!compact && viewMode === 'detailed' && isMetricSelected(metric.key) && getMetricDetail(metric.key)" class="detailed-info bg-white border border-gray-100 rounded p-4 mt-4">
+          <h6 class="text-sm font-semibold text-gray-800 mb-3">详细信息</h6>
+          <div class="text-sm text-gray-600 space-y-3">
+            <div v-for="(value, key) in getDetailInfo(getMetricDetail(metric.key))" :key="key" class="break-words">
+              <div class="flex flex-col sm:flex-row sm:justify-between gap-2">
+                <span class="text-gray-700 font-medium min-w-0 flex-shrink-0 text-sm">{{ key }}:</span>
+                <span class="text-gray-900 font-mono break-all text-sm">{{ value }}</span>
+              </div>
             </div>
           </div>
         </div>
 
         <!-- 评估等级 -->
-        <div class="mt-3 flex items-center justify-between">
+        <div :class="[
+          'flex items-center justify-between',
+          compact ? 'mt-1' : 'mt-3'
+        ]">
           <span :class="[
             'px-2 py-1 rounded-full text-xs font-medium',
             isMetricSelected(metric.key) ? getScoreBadgeClass(getMetricScore(metric.key)) : 'bg-gray-100 text-gray-400'
           ]">
             {{ isMetricSelected(metric.key) ? getScoreGrade(getMetricScore(metric.key)) : '未启用' }}
           </span>
-          <span :class="[
+          <span v-if="!compact" :class="[
             'text-xs',
             isMetricSelected(metric.key) ? 'text-gray-500' : 'text-gray-400'
           ]">
@@ -108,46 +107,50 @@
     </div>
 
     <!-- 雷达图 -->
-    <div v-if="viewMode === 'detailed'" class="radar-chart-container mb-6">
-      <h4 class="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+    <div v-if="!compact && viewMode === 'detailed'" class="radar-chart-container mb-8">
+      <h4 class="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
         <span>📈</span>
         指标雷达图
       </h4>
-      <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
-        <canvas ref="radarCanvas" width="400" height="300"></canvas>
+      <div class="bg-gray-50 border border-gray-200 rounded-lg p-6">
+        <canvas ref="radarCanvas" width="500" height="400"></canvas>
       </div>
     </div>
 
     <!-- 分析总结 -->
-    <div class="analysis-summary bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-lg p-4">
-      <h4 class="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-        <span>📝</span>
-        分析总结
-      </h4>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="strength-areas">
-          <h5 class="text-sm font-semibold text-green-800 mb-2">优势领域</h5>
-          <ul class="space-y-1">
-            <li v-for="strength in getStrengths()" :key="strength" 
-                class="text-sm text-green-700 flex items-center gap-1">
-              <span class="text-green-500">✓</span>
-              {{ strength }}
-            </li>
-          </ul>
+    <div v-if="!compact" class="analysis-summary bg-gradient-to-r from-green-50 to-[#f0f8ff] border border-green-200 rounded-lg p-6">
+      <h4 class="text-xl font-semibold text-gray-800 mb-4">分析总结</h4>
+      
+      <div class="space-y-4">
+        <div>
+          <h5 class="text-base font-semibold text-green-800 mb-3">优势领域</h5>
+          <div class="space-y-2">
+                         <div 
+               v-for="strength in getStrengths()" 
+               :key="strength"
+               class="text-base text-green-700 flex items-center gap-2">
+               <span class="text-green-500">✓</span>
+               {{ strength }}
+             </div>
+          </div>
         </div>
-        <div class="improvement-areas">
-          <h5 class="text-sm font-semibold text-orange-800 mb-2">改进空间</h5>
-          <ul class="space-y-1">
-            <li v-for="weakness in getWeaknesses()" :key="weakness" 
-                class="text-sm text-orange-700 flex items-center gap-1">
-              <span class="text-orange-500">⚠</span>
-              {{ weakness }}
-            </li>
-          </ul>
+        
+        <div>
+          <h5 class="text-base font-semibold text-orange-800 mb-3">改进空间</h5>
+          <div class="space-y-2">
+                         <div 
+               v-for="weakness in getWeaknesses()" 
+               :key="weakness"
+               class="text-base text-orange-700 flex items-center gap-2">
+               <span class="text-orange-500">⚠</span>
+               {{ weakness }}
+             </div>
+          </div>
         </div>
-        <div class="overall-assessment">
-          <h5 class="text-sm font-semibold text-blue-800 mb-2">总体评价</h5>
-          <p class="text-sm text-blue-700">{{ getOverallAssessment() }}</p>
+        
+        <div>
+          <h5 class="text-base font-semibold text-[#173753] mb-3">总体评价</h5>
+          <p class="text-base text-[#1D70A2] leading-relaxed">{{ getOverallAssessment() }}</p>
         </div>
       </div>
     </div>
@@ -162,6 +165,8 @@ interface Props {
   overallScore: number
   grade: string
   dungeonName?: string
+  selectedMetrics?: string[]
+  compact?: boolean
 }
 
 const props = defineProps<Props>()
@@ -200,18 +205,31 @@ const loadSelectedMetrics = () => {
 
 // 检查指标是否被选中
 const isMetricSelected = (metric: string): boolean => {
-  if (selectedMetrics.value.length === 0) {
+  // 使用传入的selectedMetrics，如果没有传入则使用内部的selectedMetrics
+  const metrics = props.selectedMetrics || selectedMetrics.value
+  
+  if (metrics.length === 0) {
     return true // 如果没有选择任何指标，默认显示所有指标为启用状态
   }
-  if (selectedMetrics.value.length === 9) {
+  if (metrics.length === 9) {
     return true // 如果选择了所有9个指标，也显示为启用状态
   }
-  return selectedMetrics.value.includes(metric)
+  return metrics.includes(metric)
 }
 
 // 获取指标分数
 const getMetricScore = (metric: string): number => {
-  return props.scores[metric]?.score || 0
+  const score = props.scores[metric]?.score || 0
+  return Number(score)
+}
+
+// 格式化显示分数
+const formatScore = (score: number): string => {
+  if (score === 0) return '0.00'
+  if (score < 0.01) return '< 0.01'
+  if (score >= 1) return '1.00'
+  // 限制小数位数为3位，避免超长小数
+  return Number(score.toFixed(3)).toString() // 使用Number转换去除末尾0
 }
 
 // 获取指标详细信息
@@ -242,18 +260,7 @@ const toggleView = () => {
 }
 
 const getMetricIcon = (metric: string): string => {
-  const icons = {
-    dead_end_ratio: '🛑',
-    geometric_balance: '⚖️',
-    treasure_monster_distribution: '💰',
-    accessibility: '🚪',
-    path_diversity: '🗺️',
-    loop_ratio: '🔄',
-    degree_variance: '🔗',
-    door_distribution: '🚪',
-    key_path_length: '🗝️'
-  }
-  return icons[metric as keyof typeof icons] || '📊'
+  return ''
 }
 
 const getMetricName = (metric: string): string => {
@@ -287,35 +294,38 @@ const getMetricDescription = (metric: string): string => {
 }
 
 const getScoreColor = (score: number): string => {
-  if (score >= 0.8) return 'text-green-600'
-  if (score >= 0.65) return 'text-blue-600'
-  if (score >= 0.5) return 'text-yellow-600'
-  if (score >= 0.35) return 'text-orange-600'
-  return 'text-red-600'
+  if (score >= 0.8) return 'text-[#059669]'  /* 优秀 - 绿色 */
+  if (score >= 0.65) return 'text-[#0891b2]' /* 良好 - 青色 */
+  if (score >= 0.5) return 'text-[#d97706]'  /* 一般 - 橙色 */
+  if (score >= 0.35) return 'text-[#dc2626]' /* 差 - 红色 */
+  if (score > 0) return 'text-[#dc2626]'     /* 很差 - 红色 */
+  return 'text-[#dc2626]'  /* 0分 - 红色，表示严重问题 */
 }
 
 const getProgressBarColor = (score: number): string => {
-  if (score >= 0.8) return 'bg-green-500'
-  if (score >= 0.65) return 'bg-blue-500'
-  if (score >= 0.5) return 'bg-yellow-500'
-  if (score >= 0.35) return 'bg-orange-500'
-  return 'bg-red-500'
+  if (score >= 0.8) return 'bg-[#059669]'  /* 优秀 - 绿色 */
+  if (score >= 0.65) return 'bg-[#0891b2]' /* 良好 - 青色 */
+  if (score >= 0.5) return 'bg-[#d97706]'  /* 一般 - 橙色 */
+  if (score >= 0.35) return 'bg-[#dc2626]' /* 差 - 红色 */
+  if (score > 0) return 'bg-[#dc2626]'     /* 很差 - 红色 */
+  return 'bg-[#dc2626]'  /* 0分 - 红色，表示严重问题 */
 }
 
 const getScoreBadgeClass = (score: number): string => {
-  if (score >= 0.8) return 'bg-green-100 text-green-800'
-  if (score >= 0.65) return 'bg-blue-100 text-blue-800'
-  if (score >= 0.5) return 'bg-yellow-100 text-yellow-800'
-  if (score >= 0.35) return 'bg-orange-100 text-orange-800'
-  return 'bg-red-100 text-red-800'
+  if (score >= 0.8) return 'bg-[#ecfdf5] text-[#059669]'  /* 优秀 - 绿色背景 */
+  if (score >= 0.65) return 'bg-[#ecfeff] text-[#0891b2]' /* 良好 - 青色背景 */
+  if (score >= 0.5) return 'bg-[#fffbeb] text-[#d97706]'  /* 一般 - 橙色背景 */
+  if (score >= 0.35) return 'bg-[#fef2f2] text-[#dc2626]' /* 差 - 红色背景 */
+  if (score > 0) return 'bg-[#fef2f2] text-[#dc2626]'     /* 很差 - 红色背景 */
+  return 'bg-[#fef2f2] text-[#dc2626]'  /* 0分 - 红色背景，表示严重问题 */
 }
 
 const getGradeBadgeClass = (grade: string): string => {
   const classes = {
-    '优秀': 'bg-green-100 text-green-800',
-    '良好': 'bg-blue-100 text-blue-800',
-    '一般': 'bg-yellow-100 text-yellow-800',
-    '较差': 'bg-orange-100 text-orange-800',
+    '优秀': 'bg-[#ecfdf5] text-[#059669]',  /* 优秀 - 绿色 */
+    '良好': 'bg-[#ecfeff] text-[#0891b2]', /* 良好 - 青色 */
+    '一般': 'bg-[#fffbeb] text-[#d97706]',  /* 一般 - 橙色 */
+    '较差': 'bg-[#fef2f2] text-[#dc2626]', /* 较差 - 红色 */
     '未知': 'bg-gray-100 text-gray-800'
   }
   return classes[grade as keyof typeof classes] || 'bg-gray-100 text-gray-800'
@@ -333,15 +343,140 @@ const getDetailInfo = (detail: any): Record<string, any> => {
   if (!detail || typeof detail !== 'object') return {}
   
   const info: Record<string, any> = {}
+  
+  // 定义有意义的字段名称映射 - 保留英文显示
+  const fieldMap: Record<string, string> = {
+    'total_rooms': 'Total Rooms',
+    'dead_end_rooms': 'Dead End Rooms',
+    'dead_end_ratio': 'Dead End Ratio',
+    'average_distance': 'Average Distance',
+    'max_distance': 'Max Distance',
+    'connected_components': 'Connected Components',
+    'loops_count': 'Loops Count',
+    'total_connections': 'Total Connections',
+    'treasure_count': 'Treasure Count',
+    'monster_count': 'Monster Count',
+    'door_count': 'Door Count',
+    'key_count': 'Key Count',
+    'avg_path_diversity': 'Avg Path Diversity',
+    'std_path_diversity': 'Std Path Diversity',
+    'max_path_diversity': 'Max Path Diversity',
+    'min_path_diversity': 'Min Path Diversity',
+    'total_pairs_analyzed': 'Total Pairs Analyzed',
+    'rounds_completed': 'Rounds Completed',
+    'algorithm': 'Algorithm',
+    'fusion_method': 'Fusion Method',
+    'normalization': 'Normalization',
+    'sampling': 'Sampling',
+    'cyclomatic_number': 'Cyclomatic Number',
+    'loop_ratio': 'Loop Ratio',
+    'sigmoid_loop_ratio': 'Sigmoid Loop Ratio',
+    'total_edges': 'Total Edges',
+    'note': 'Note',
+    'reachability_ratio': 'Reachability Ratio',
+    'path_variance': 'Path Variance',
+    'avg_path_length': 'Avg Path Length',
+    'raw_variance': 'Raw Variance',
+    'normalized_variance': 'Normalized Variance',
+    'degrees': 'Degrees',
+    'max_variance': 'Max Variance',
+    'room_count': 'Room Count',
+    'mean_degree': 'Mean Degree',
+    'cv': 'CV',
+    'avg_entropy': 'Avg Entropy',
+    'weights': 'Weights',
+    'normalized': 'Normalized',
+    'dead_end_count': 'Dead End Count',
+    'reason': 'Reason',
+    'score_breakdown': 'Score Breakdown',
+    'raw_loop_ratio': 'Raw Loop Ratio',
+    'final_score': 'Final Score',
+    'detailed_analysis': 'Detailed Analysis',
+    'round_0': 'Round 0',
+    'round_1': 'Round 1',
+    'round_2': 'Round 2',
+    'round_3': 'Round 3',
+    'round_4': 'Round 4',
+    'round_5': 'Round 5',
+    'round_6': 'Round 6',
+    'round_7': 'Round 7',
+    'round_8': 'Round 8',
+    'round_9': 'Round 9',
+    'round_10': 'Round 10',
+    'round_11': 'Round 11',
+    'round_12': 'Round 12',
+    'round_13': 'Round 13',
+    'round_14': 'Round 14',
+    'round_15': 'Round 15',
+    'round_16': 'Round 16',
+    'round_17': 'Round 17',
+    'round_18': 'Round 18',
+    'round_19': 'Round 19',
+    'round_20': 'Round 20',
+    'samplingMulti-round strategy': 'Multi-round Strategy'
+  }
+  
+  // 过滤和清理数据
   for (const [key, value] of Object.entries(detail)) {
+    // 过滤无意义的字段和技术性太强的字段
+    if (key === 'score' || key === 'detail' || key === 'metric_type' || 
+        key === 'debug' || key === 'detailed_analysis' || key === 'score_breakdown' ||
+        key.startsWith('round_') || key === 'algorithm' || key === 'note' ||
+        value === null || value === undefined || value === '' ||
+        (typeof value === 'number' && isNaN(value))) {
+      continue
+    }
+    
+    // 优化字段名称显示 - 使用英文并保持简洁
+    let displayName = fieldMap[key] || key.replace(/_/g, ' ')
+    
+    // 如果字段名太长，进行缩写
+    if (displayName.length > 20) {
+      displayName = displayName.replace(/Average/g, 'Avg')
+      displayName = displayName.replace(/Maximum/g, 'Max')
+      displayName = displayName.replace(/Minimum/g, 'Min')
+      displayName = displayName.replace(/Standard/g, 'Std')
+      displayName = displayName.replace(/Normalized/g, 'Norm')
+    }
+    
     if (typeof value === 'number') {
-      info[key] = Number(value).toFixed(2)
+      // 数字格式化 - 限制小数位数，避免超长小数
+      if (value < 0.01 && value > 0) {
+        info[displayName] = '< 0.01'
+      } else if (value > 1000) {
+        info[displayName] = Math.round(value).toLocaleString()
+      } else if (value % 1 === 0) {
+        info[displayName] = value.toString()
+      } else {
+        // 限制小数位数为3位，避免超长小数
+        const formattedValue = Number(value.toFixed(3)).toString()
+        info[displayName] = formattedValue
+      }
     } else if (typeof value === 'boolean') {
-      info[key] = value ? '是' : '否'
-    } else {
-      info[key] = String(value)
+      info[displayName] = value ? '是' : '否'
+    } else if (typeof value === 'string' && value.length < 100) {
+      info[displayName] = value
+    } else if (Array.isArray(value) && value.length < 20) {
+      // 对数组中的数字进行格式化
+      const formattedArray = value.map(item => {
+        if (typeof item === 'number') {
+          if (item < 0.01 && item > 0) {
+            return '< 0.01'
+          } else if (item > 1000) {
+            return Math.round(item).toLocaleString()
+          } else if (item % 1 === 0) {
+            return item.toString()
+          } else {
+            // 限制小数位数为3位，避免超长小数
+            return Number(item.toFixed(3)).toString()
+          }
+        }
+        return item
+      })
+      info[displayName] = formattedArray.join(', ')
     }
   }
+  
   return info
 }
 
@@ -557,4 +692,5 @@ onMounted(() => {
 .analysis-report::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 0, 0, 0.5);
 }
+
 </style>

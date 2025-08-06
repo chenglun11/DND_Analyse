@@ -67,10 +67,6 @@ def analyze_dungeon():
         if file.filename == '':
             return jsonify({'error': '没有选择文件'}), 400
         
-        # 获取分析选项
-        analysis_options = request.form.get('options', '{}')
-        options = json.loads(analysis_options) if analysis_options else {}
-        
         # 读取文件内容并生成文件ID
         file_content = file.read().decode('utf-8')
         file_id = hashlib.md5(file_content.encode()).hexdigest()
@@ -133,10 +129,6 @@ def analyze_dungeon_by_id():
         if datetime.now() - file_data['timestamp'] > timedelta(hours=24):
             del file_cache[file_id]
             return jsonify({'error': '文件已过期，请重新上传'}), 410
-        
-        # 获取分析选项
-        analysis_options = request.form.get('options', '{}')
-        options = json.loads(analysis_options) if analysis_options else {}
         
         try:
             # 处理文件

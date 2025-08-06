@@ -2,55 +2,91 @@
 @tailwind components;
 @tailwind utilities;
 
-/* color palette from <https://github.com/vuejs/theme> */
+/* 基于色彩科学的专业色彩系统 */
 :root {
-  --vt-c-white: #ffffff;
-  --vt-c-white-soft: #f8f8f8;
-  --vt-c-white-mute: #f2f2f2;
+  /* 主色调 - 基于色彩科学优化的蓝色系 */
+  --color-primary: #2563eb;        /* 更饱和的蓝色，提高对比度 */
+  --color-primary-light: #3b82f6;  /* 中等亮度的蓝色 */
+  --color-primary-dark: #1d4ed8;   /* 深蓝色，保持可读性 */
+  --color-primary-darker: #1e40af; /* 更深的蓝色 */
+  --color-primary-darkest: #1e3a8a; /* 最深的蓝色 */
+  
+  /* 优化的蓝色色阶 - 基于色彩科学 */
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-200: #bfdbfe;
+  --color-primary-300: #93c5fd;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #3b82f6;    /* 主蓝色 */
+  --color-primary-600: #2563eb;    /* 深蓝色 */
+  --color-primary-700: #1d4ed8;    /* 更深的蓝色 */
+  --color-primary-800: #1e40af;    /* 深蓝 */
+  --color-primary-900: #1e3a8a;    /* 最深的蓝色 */
 
-  --vt-c-black: #181818;
-  --vt-c-black-soft: #222222;
-  --vt-c-black-mute: #282828;
+  /* 语义化色彩 - 基于色彩心理学 */
+  --color-success: #059669;        /* 绿色 - 成功状态 */
+  --color-warning: #d97706;        /* 橙色 - 警告状态 */
+  --color-danger: #dc2626;         /* 红色 - 危险状态 */
+  --color-info: #0891b2;           /* 青色 - 信息状态 */
 
-  --vt-c-indigo: #2c3e50;
+  /* 背景色系 - 优化对比度 */
+  --color-background: #ffffff;
+  --color-background-soft: #f8fafc;
+  --color-background-mute: #f1f5f9;
+  --color-background-card: #ffffff;
+  --color-background-header: #1e40af;  /* 深蓝色头部 */
+  --color-background-footer: #1e3a8a;  /* 最深蓝色底部 */
 
-  --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
-  --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
-  --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
-  --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
+  /* 文字色系 - 确保足够的对比度 */
+  --color-text-primary: #0f172a;   /* 深色文字，高对比度 */
+  --color-text-secondary: #334155;  /* 中等深色 */
+  --color-text-muted: #64748b;     /* 浅色文字 */
+  --color-text-inverse: #ffffff;   /* 白色文字 */
+  --color-text-link: #2563eb;      /* 链接蓝色 */
 
-  --vt-c-text-light-1: var(--vt-c-indigo);
-  --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
-  --vt-c-text-dark-1: var(--vt-c-white);
-  --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
-}
+  /* 边框色系 - 优化视觉层次 */
+  --color-border: #e2e8f0;
+  --color-border-hover: #cbd5e1;
+  --color-border-focus: #2563eb;   /* 聚焦时的蓝色 */
+  --color-border-error: #dc2626;   /* 错误时的红色 */
 
-/* semantic color variables for this project */
-:root {
-  --color-background: #f5f5f5;
-  --color-background-soft: #e8e8e8;
-  --color-background-mute: #dcdcdc;
-
-  --color-border: var(--vt-c-divider-light-2);
-  --color-border-hover: var(--vt-c-divider-light-1);
-
-  --color-heading: var(--vt-c-text-light-1);
-  --color-text: var(--vt-c-text-light-1);
+  /* 进度条色彩 - 基于语义化设计 */
+  --color-progress-excellent: #059669;  /* 优秀 - 绿色 */
+  --color-progress-good: #0891b2;       /* 良好 - 青色 */
+  --color-progress-average: #d97706;    /* 一般 - 橙色 */
+  --color-progress-poor: #dc2626;       /* 差 - 红色 */
 
   --section-gap: 160px;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-background: #2a2a2a;
-    --color-background-soft: #333333;
-    --color-background-mute: #404040;
+    /* 深色模式 - 保持对比度和可读性 */
+    --color-background: #0f172a;
+    --color-background-soft: #1e293b;
+    --color-background-mute: #334155;
+    --color-background-card: #1e293b;
+    --color-background-header: #0f172a;
+    --color-background-footer: #020617;
 
-    --color-border: var(--vt-c-divider-dark-2);
-    --color-border-hover: var(--vt-c-divider-dark-1);
+    /* 深色模式文字 - 确保对比度 */
+    --color-text-primary: #f8fafc;   /* 浅色文字 */
+    --color-text-secondary: #e2e8f0;  /* 中等浅色 */
+    --color-text-muted: #cbd5e1;      /* 浅色文字 */
+    --color-text-inverse: #0f172a;    /* 深色文字 */
+    --color-text-link: #60a5fa;       /* 亮蓝色链接 */
 
-    --color-heading: var(--vt-c-text-dark-1);
-    --color-text: var(--vt-c-text-dark-2);
+    /* 深色模式边框 */
+    --color-border: #475569;
+    --color-border-hover: #64748b;
+    --color-border-focus: #60a5fa;     /* 亮蓝色聚焦 */
+    --color-border-error: #f87171;     /* 亮红色错误 */
+
+    /* 深色模式进度条 */
+    --color-progress-excellent: #10b981;  /* 亮绿色 */
+    --color-progress-good: #06b6d4;       /* 亮青色 */
+    --color-progress-average: #f59e0b;    /* 亮橙色 */
+    --color-progress-poor: #ef4444;       /* 亮红色 */
   }
 }
 
@@ -64,7 +100,7 @@
 
 body {
   min-height: 100vh;
-  color: var(--color-text);
+  color: var(--color-text-primary);
   background: var(--color-background);
   transition:
     color 0.5s,

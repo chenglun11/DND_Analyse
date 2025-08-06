@@ -52,20 +52,20 @@ const goBack = () => {
 .error-code {
   font-size: 8rem;
   font-weight: bold;
-  color: #e53e3e;
+  color: #3b82f6;
   margin-bottom: 20px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .not-found-content h1 {
   font-size: 2.5rem;
-  color: #333;
+  color: #334155;
   margin-bottom: 15px;
 }
 
 .not-found-content p {
   font-size: 1.2rem;
-  color: #666;
+  color: #64748b;
   margin-bottom: 40px;
   line-height: 1.6;
 }
@@ -89,22 +89,22 @@ const goBack = () => {
 }
 
 .home-btn {
-  background: #3182ce;
+  background: #3b82f6;
   color: white;
 }
 
 .home-btn:hover {
-  background: #2c5aa0;
+  background: #2563eb;
   transform: translateY(-2px);
 }
 
 .back-btn {
-  background: #718096;
+  background: #64748b;
   color: white;
 }
 
 .back-btn:hover {
-  background: #4a5568;
+  background: #475569;
   transform: translateY(-2px);
 }
 
@@ -115,7 +115,7 @@ const goBack = () => {
 }
 
 .suggestions h3 {
-  color: #333;
+  color: #334155;
   margin-bottom: 15px;
   font-size: 1.2rem;
 }
@@ -130,14 +130,14 @@ const goBack = () => {
 }
 
 .suggestions a {
-  color: #3182ce;
+  color: #3b82f6;
   text-decoration: none;
   font-size: 1rem;
   transition: color 0.3s ease;
 }
 
 .suggestions a:hover {
-  color: #2c5aa0;
+  color: #2563eb;
   text-decoration: underline;
 }
 

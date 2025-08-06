@@ -68,14 +68,14 @@ const baseClasses = 'relative inline-flex items-center justify-center font-mediu
 // Variant classes
 const variantClasses = computed(() => {
   const variants = {
-    primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 active:bg-blue-800',
-    secondary: 'bg-gray-600 text-white hover:bg-gray-700 focus:ring-gray-500 active:bg-gray-800',
-    success: 'bg-green-600 text-white hover:bg-green-700 focus:ring-green-500 active:bg-green-800',
-    danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 active:bg-red-800',
-    warning: 'bg-yellow-600 text-white hover:bg-yellow-700 focus:ring-yellow-500 active:bg-yellow-800',
-    info: 'bg-cyan-600 text-white hover:bg-cyan-700 focus:ring-cyan-500 active:bg-cyan-800',
-    ghost: 'text-gray-700 hover:bg-gray-100 focus:ring-gray-500 active:bg-gray-200',
-    outline: 'border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 focus:ring-gray-500 active:bg-gray-100'
+    primary: 'bg-[#2892D7] text-white hover:bg-[#1D70A2] focus:ring-[#2892D7] active:bg-[#173753]',
+    secondary: 'bg-[#1D70A2] text-white hover:bg-[#173753] focus:ring-[#1D70A2] active:bg-[#1B4353]',
+    success: 'bg-[#2892D7] text-white hover:bg-[#1D70A2] focus:ring-[#2892D7] active:bg-[#173753]',
+    danger: 'bg-[#173753] text-white hover:bg-[#1B4353] focus:ring-[#173753] active:bg-[#0f2a3a]',
+    warning: 'bg-[#1D70A2] text-white hover:bg-[#173753] focus:ring-[#1D70A2] active:bg-[#1B4353]',
+    info: 'bg-[#6DAEDB] text-white hover:bg-[#2892D7] focus:ring-[#6DAEDB] active:bg-[#1D70A2]',
+    ghost: 'text-[#173753] hover:bg-[#f0f8ff] focus:ring-[#2892D7] active:bg-[#e6f3ff]',
+    outline: 'border border-[#6DAEDB] text-[#173753] bg-white hover:bg-[#f0f8ff] focus:ring-[#2892D7] active:bg-[#e6f3ff]'
   }
   return variants[props.variant]
 })

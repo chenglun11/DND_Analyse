@@ -105,7 +105,12 @@ const zh = {
     next: '下一页',
     page: '第',
     noDetailAvailable: '没有可用的详情数据',
-    pageInfo: '第 {current} 页，共 {total} 页'
+    pageInfo: '第 {current} 页，共 {total} 页',
+    analysisDisabled: '分析参数已禁用',
+    noScoreData: '没有可用的评分数据',
+    overallScoreDisabled: '已禁用总体评分',
+    viewDetailedScores: '可查看详细指标分数',
+    scoreInfo: '分数信息'
   },
 
   // 帮助页
@@ -114,7 +119,7 @@ const zh = {
     title: '使用帮助',
     subtitle: '详细的使用指南和常见问题',
     fileUpload: {
-      title: '📁 文件上传',
+      title: '文件上传',
       content: {
         0: '支持拖拽文件到上传区域',
         1: '支持点击选择文件按钮',
@@ -124,7 +129,7 @@ const zh = {
       }
     },
     analysis: {
-      title: '📊 分析功能',
+      title: '分析功能',
       content: {
         0: '自动评估地下城质量',
         1: '生成可视化图像',
@@ -144,7 +149,7 @@ const zh = {
       }
     },
     export: {
-      title: '💾 数据导出',
+      title: '数据导出',
       content: {
         0: '导出JSON格式的分析结果',
         1: '导出可视化图像',
@@ -248,7 +253,7 @@ const zh = {
     title: '关于地下城分析器',
     subtitle: '专业的D&D地下城质量评估工具',
     intro: {
-      title: '🎯 项目简介',
+      title: '项目简介',
       description1: '地下城分析器是一个专门为D&D（龙与地下城）游戏设计的智能工具，旨在帮助游戏设计师和地下城制作者创建高质量的地下城。',
       description2: '通过先进的算法和9个核心评估指标，我们能够自动分析地下城的结构、布局和游戏性，提供详细的质量评估和改进建议。'
     },
@@ -654,7 +659,12 @@ const en = {
     next: 'Next',
     page: 'Page',
     noDetailAvailable: 'No detail data available',
-    pageInfo: 'Page {current} of {total}'
+    pageInfo: 'Page {current} of {total}',
+    analysisDisabled: 'Analysis parameters disabled',
+    noScoreData: 'No scoring data available',
+    overallScoreDisabled: 'Overall score disabled',
+    viewDetailedScores: 'View detailed metric scores',
+    scoreInfo: 'Score Information'
   },
 
   // Help page
@@ -667,7 +677,7 @@ const en = {
       description: 'Welcome to the Dungeon Analyzer help center. Here you can find detailed usage instructions, FAQ, and troubleshooting guides.'
     },
     fileUpload: {
-      title: '📁 File Upload',
+      title: 'File Upload',
       content: {
         0: 'Support drag and drop files to upload area',
         1: 'Support click select file button',
@@ -677,7 +687,7 @@ const en = {
       }
     },
     analysis: {
-      title: '📊 Analysis Features',
+      title: 'Analysis Features',
       content: {
         0: 'Automatically evaluate dungeon quality',
         1: 'Generate visualization images',
@@ -783,7 +793,7 @@ const en = {
       analysis: 'Analysis: Custom Quality Metrics, Spatial Analysis'
     },
     metrics: {
-      title: '📊 Analysis Metrics',
+      title: 'Analysis Metrics',
       accessibility: 'Accessibility: Path analysis and reachability',
       geometric: 'Geometric Balance: Room distribution and symmetry',
       loops: 'Loop Ratio: Circular path detection',
