@@ -57,6 +57,14 @@ const isDragging = ref(false)
 const lastMouseX = ref(0)
 const lastMouseY = ref(0)
 
+// 地图边界
+const mapBounds = ref({
+  minX: 0,
+  maxX: 0,
+  minY: 0,
+  maxY: 0
+})
+
 const showGrid = ref(props.showGrid)
 const showLabels = ref(props.showLabels)
 
@@ -299,6 +307,83 @@ const renderCorridors = (ctx: CanvasRenderingContext2D) => {
   }
 }
 
+// 计算地图边界
+const calculateMapBounds = () => {
+  if (!props.dungeonData) return
+  
+  let minX = Infinity
+  let maxX = -Infinity
+  let minY = Infinity
+  let maxY = -Infinity
+  
+  // 计算房间边界
+  for (const room of props.dungeonData.rooms) {
+    minX = Math.min(minX, room.x)
+    maxX = Math.max(maxX, room.x + room.width)
+    minY = Math.min(minY, room.y)
+    maxY = Math.max(maxY, room.y + room.height)
+  }
+  
+  // 计算通道边界
+  for (const corridor of props.dungeonData.corridors) {
+    minX = Math.min(minX, corridor.start.x, corridor.end.x)
+    maxX = Math.max(maxX, corridor.start.x, corridor.end.x)
+    minY = Math.min(minY, corridor.start.y, corridor.end.y)
+    maxY = Math.max(maxY, corridor.start.y, corridor.end.y)
+  }
+  
+  // 确保有有效的边界
+  if (minX === Infinity) {
+    minX = 0
+    maxX = 100
+    minY = 0
+    maxY = 100
+  }
+  
+  mapBounds.value = { minX, maxX, minY, maxY }
+  console.log('Map bounds calculated:', mapBounds.value)
+}
+
+// 自动居中地图
+const centerMap = () => {
+  if (!canvas.value || !mapBounds.value) return
+  
+  const canvasWidth = canvas.value.width
+  const canvasHeight = canvas.value.height
+  
+  const mapWidth = mapBounds.value.maxX - mapBounds.value.minX
+  const mapHeight = mapBounds.value.maxY - mapBounds.value.minY
+  
+  // 确保地图有有效尺寸
+  if (mapWidth <= 0 || mapHeight <= 0) {
+    console.warn('Invalid map dimensions:', mapWidth, mapHeight)
+    return
+  }
+  
+  // 计算合适的缩放比例，留出20%的边距
+  const scaleX = (canvasWidth * 0.8) / mapWidth
+  const scaleY = (canvasHeight * 0.8) / mapHeight
+  const scale = Math.min(scaleX, scaleY)
+  
+  zoom.value = Math.max(0.1, Math.min(3, scale))
+  
+  // 计算地图在缩放后的尺寸
+  const scaledMapWidth = mapWidth * zoom.value
+  const scaledMapHeight = mapHeight * zoom.value
+  
+  // 计算居中偏移 - 修正计算逻辑
+  offsetX.value = (canvasWidth - scaledMapWidth) / 2 - (mapBounds.value.minX * zoom.value)
+  offsetY.value = (canvasHeight - scaledMapHeight) / 2 - (mapBounds.value.minY * zoom.value)
+  
+  console.log('Map centered:', {
+    canvasSize: `${canvasWidth}x${canvasHeight}`,
+    mapSize: `${mapWidth}x${mapHeight}`,
+    scaledSize: `${scaledMapWidth}x${scaledMapHeight}`,
+    zoom: zoom.value,
+    offset: { x: offsetX.value, y: offsetY.value }
+  })
+}
+
 const renderRooms = (ctx: CanvasRenderingContext2D) => {
   if (!props.dungeonData) {
     console.log('No dungeon data for rendering rooms')
@@ -356,9 +441,9 @@ const renderRooms = (ctx: CanvasRenderingContext2D) => {
 
 // 控制函数
 const resetCamera = () => {
-  zoom.value = 1
-  offsetX.value = 0
-  offsetY.value = 0
+  // 重新计算边界并居中
+  calculateMapBounds()
+  centerMap()
   render()
 }
 
@@ -419,7 +504,22 @@ watch(() => props.dungeonData, (newData) => {
     }
     
     nextTick(() => {
+      // 计算地图边界并自动居中
+      calculateMapBounds()
+      centerMap()
       render()
+      
+      // 确保canvas尺寸正确
+      if (canvas.value && canvasContainer.value) {
+        const containerWidth = canvasContainer.value.clientWidth
+        const containerHeight = canvasContainer.value.clientHeight
+        if (canvas.value.width !== containerWidth || canvas.value.height !== containerHeight) {
+          canvas.value.width = containerWidth
+          canvas.value.height = containerHeight
+          console.log('Canvas resized to:', containerWidth, 'x', containerHeight)
+          render()
+        }
+      }
     })
   }
 }, { deep: true })
@@ -428,6 +528,27 @@ watch([showGrid, showLabels], () => {
   console.log('Grid or labels changed, re-rendering...')
   render()
 })
+
+// 窗口大小变化处理函数
+const handleResize = () => {
+  if (canvas.value && canvasContainer.value) {
+    const containerWidth = canvasContainer.value.clientWidth
+    const containerHeight = canvasContainer.value.clientHeight
+    
+    if (canvas.value.width !== containerWidth || canvas.value.height !== containerHeight) {
+      canvas.value.width = containerWidth
+      canvas.value.height = containerHeight
+      console.log('Canvas resized to:', containerWidth, 'x', containerHeight)
+      
+      // 重新居中并渲染
+      if (props.dungeonData) {
+        calculateMapBounds()
+        centerMap()
+      }
+      render()
+    }
+  }
+}
 
 // 生命周期
 onMounted(() => {
@@ -441,7 +562,16 @@ onMounted(() => {
     canvas.value.height = containerHeight
     console.log('Canvas size set to:', canvas.value.width, 'x', canvas.value.height)
     
+    // 如果有数据，立即计算边界并居中
+    if (props.dungeonData) {
+      calculateMapBounds()
+      centerMap()
+    }
+    
     render()
+    
+    // 添加窗口大小变化监听器
+    window.addEventListener('resize', handleResize)
   } else {
     console.error('Canvas or container not found')
   }
@@ -449,6 +579,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   // 清理资源
+  window.removeEventListener('resize', handleResize)
 })
 </script>
 
@@ -521,8 +652,8 @@ onUnmounted(() => {
   flex: 1;
   position: relative;
   overflow: hidden;
-  min-height: 600px;
-  height: 600px;
+  min-height: 400px;
+  height: 100%;
   background: #ffffff;
   border: 1px solid #e2e8f0;
 }

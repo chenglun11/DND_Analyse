@@ -62,7 +62,7 @@
         
         <!-- 交互式可视化 -->
         <div v-else-if="visualizationMode === 'canvas' && dungeonData" class="space-y-3">
-          <div class="border border-gray-200 rounded-lg overflow-hidden bg-white min-h-[400px]">
+          <div class="border border-gray-200 rounded-lg overflow-hidden bg-white min-h-[400px] h-[500px]">
             <DungeonVisualizer 
               :dungeon-data="dungeonData"
               @room-click="handleRoomClick"
@@ -94,7 +94,7 @@
         
         <!-- 自动切换到有效的可视化模式 -->
         <div v-else-if="dungeonData && !imageData" class="space-y-3">
-          <div class="border border-gray-200 rounded-lg overflow-hidden bg-white min-h-[400px]">
+          <div class="border border-gray-200 rounded-lg overflow-hidden bg-white min-h-[400px] h-[500px]">
             <DungeonVisualizer 
               :dungeon-data="dungeonData"
               @room-click="handleRoomClick"
@@ -449,8 +449,8 @@ const fetchAnalysisResult = async () => {
         console.warn('图像生成失败:', imageErr)
       }
     } else {
-      error.value = '缺少文件ID或文件名'
-      emit('error', '缺少文件ID或文件名')
+      error.value = t('dungeonVisualizer.noDataError')
+      emit('error', t('dungeonVisualizer.noDataError'))
       return
     }
     

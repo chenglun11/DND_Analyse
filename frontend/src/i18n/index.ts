@@ -86,6 +86,18 @@ const zh = {
     analyzeAll: '分析所有文件',
     analysisResults: '分析结果'
   },
+  dungeonVisualizer: {
+    title: '地下城可视化',
+    canvas: 'Canvas',
+    image: '图像',
+    resetCamera: '重置视角',
+    hideGrid: '隐藏网格',
+    showGrid: '显示网格',
+    hideLabels: '隐藏标签',
+    showLabels: '显示标签',
+    viewFullscreen: '查看大图', 
+    noDataError: '缺少文件ID或文件名'
+  },
 
   // 详情页
   detail: {
@@ -146,206 +158,6 @@ const zh = {
     backToHome: '返回首页'
   },
 
-  // 帮助页
-  help: {
-    backButton: '← 返回首页',
-    title: '使用帮助',
-    subtitle: '详细的使用指南和常见问题',
-    fileUpload: {
-      title: '文件上传',
-      content: {
-        0: '支持拖拽文件到上传区域',
-        1: '支持点击选择文件按钮',
-        2: '支持多种JSON格式的地下城文件',
-        3: '支持批量上传多个文件',
-        4: '支持的文件格式：Watabou、Donjon、DungeonDraft等'
-      }
-    },
-    analysis: {
-      title: '分析功能',
-      content: {
-        0: '自动评估地下城质量',
-        1: '生成可视化图像',
-        2: '提供详细的分析报告',
-        3: '计算9个核心质量指标',
-        4: '生成改进建议'
-      }
-    },
-    results: {
-      title: '📈 结果查看',
-      content: {
-        0: '点击"查看详情"查看完整报告',
-        1: '支持导出分析结果',
-        2: '提供改进建议',
-        3: '可视化路径分析',
-        4: '质量评分详情'
-      }
-    },
-    export: {
-      title: '数据导出',
-      content: {
-        0: '导出JSON格式的分析结果',
-        1: '导出可视化图像',
-        2: '批量导出多个文件结果',
-        3: '自定义导出选项',
-        4: '支持多种导出格式'
-      }
-    },
-    quickSteps: [
-      {
-        step: 1,
-        title: '上传文件',
-        description: '拖拽或选择地下城JSON文件',
-        icon: '📁'
-      },
-      {
-        step: 2,
-        title: '开始分析',
-        description: '点击"开始分析"按钮',
-        icon: '⚡'
-      },
-      {
-        step: 3,
-        title: '查看结果',
-        description: '等待分析完成，查看评分',
-        icon: '📊'
-      },
-      {
-        step: 4,
-        title: '导出报告',
-        description: '导出详细的分析报告',
-        icon: '💾'
-      }
-    ],
-    faqs: [
-      {
-        question: '支持哪些地下城文件格式？',
-        answer: '目前支持Watabou、Donjon、DungeonDraft等多种格式的JSON文件。每种格式都有专门的适配器进行转换。'
-      },
-      {
-        question: '分析需要多长时间？',
-        answer: '单个文件分析通常在几秒到几十秒之间，取决于地下城的复杂程度。批量分析时间会相应增加。'
-      },
-      {
-        question: '如何理解质量评分？',
-        answer: '评分范围是0-100，分数越高表示地下城质量越好。系统会从可达性、美学平衡、环路比例等多个维度进行评估。'
-      },
-      {
-        question: '可以分析多大的地下城？',
-        answer: '理论上没有大小限制，但建议单个地下城房间数量不超过1000个，以确保最佳性能。'
-      },
-      {
-        question: '分析结果会保存吗？',
-        answer: '当前会话的分析结果会保存在浏览器中，刷新页面后会丢失。建议及时导出重要结果。'
-      },
-      {
-        question: '如何获得更好的分析结果？',
-        answer: '确保地下城文件格式正确，房间和走廊信息完整。系统会自动处理常见的数据问题。'
-      }
-    ],
-    usageTips: {
-      title: '使用提示',
-      tip1: '建议使用Chrome或Firefox浏览器获得最佳体验',
-      tip2: '支持批量分析多个文件，提高工作效率',
-      tip3: '分析结果会自动保存，刷新页面后会丢失',
-      tip4: '可以随时导出分析结果，避免数据丢失',
-      tip5: '系统会自动处理常见的数据格式问题',
-      tip6: '可视化图像支持缩放和交互操作',
-      tip7: '质量评分基于9个核心指标，全面评估地下城质量'
-    },
-    metricsExplanation: {
-      title: '质量评估指标说明',
-      accessibility: {
-        title: '可达性评估 (Accessibility)',
-        description: '评估地下城各区域的连通性和可达性，确保玩家能够到达所有重要区域。'
-      },
-      geometric_balance: {
-        title: '几何平衡 (Geometric Balance)',
-        description: '分析房间布局的几何平衡性，评估空间设计的合理性。'
-      },
-      loop_ratio: {
-        title: '环路比例 (Loop Ratio)',
-        description: '计算地下城中的环路结构比例，适当的环路可以增加探索的趣味性。'
-      },
-      dead_end_ratio: {
-        title: '死胡同比例 (Dead End Ratio)',
-        description: '评估死胡同和无效路径的比例，过多的死胡同会影响游戏体验。'
-      }
-    },
-    quickActions: {
-      title: '快速操作',
-      startAnalysis: '开始分析',
-      about: '关于我们',
-      test: '功能测试'
-    }
-  },
-
-  // 关于页
-  about: {
-    backButton: '← 返回首页',
-    title: '关于地下城分析器',
-    subtitle: '专业的D&D地下城质量评估工具',
-    intro: {
-      title: '项目简介',
-      description1: '地下城分析器是一个专门为D&D（龙与地下城）游戏设计的智能工具，旨在帮助游戏设计师和地下城制作者创建高质量的地下城。',
-      description2: '通过先进的算法和9个核心评估指标，我们能够自动分析地下城的结构、布局和游戏性，提供详细的质量评估和改进建议。'
-    },
-    features: [
-      {
-        icon: '🎯',
-        title: '智能质量评估',
-        description: '基于9个核心指标的地下城质量评估系统'
-      },
-      {
-        icon: '📊',
-        title: '可视化分析',
-        description: '生成详细的可视化图表和路径分析'
-      },
-      {
-        icon: '🔄',
-        title: '多格式支持',
-        description: '支持Watabou、Donjon、DungeonDraft等多种格式'
-      },
-      {
-        icon: '⚡',
-        title: '批量处理',
-        description: '支持批量上传和分析多个地下城文件'
-      },
-      {
-        icon: '📈',
-        title: '详细报告',
-        description: '生成包含改进建议的详细分析报告'
-      },
-      {
-        icon: '💾',
-        title: '结果导出',
-        description: '支持导出分析结果和可视化图像'
-      }
-    ],
-    qualityMetrics: [
-      { name: '可达性评估', description: '评估地下城各区域的连通性和可达性' },
-      { name: '几何平衡', description: '分析房间布局的几何平衡性' },
-      { name: '环路比例', description: '计算地下城中的环路结构比例' },
-      { name: '死胡同比例', description: '评估死胡同和无效路径的比例' },
-      { name: '宝藏分布', description: '分析宝藏和战利品的分布合理性' },
-      { name: '怪物分布', description: '评估怪物和敌人的分布策略' },
-      { name: '关键路径长度', description: '分析主要路径的长度和复杂度' },
-      { name: '度数方差', description: '评估房间连接度的分布情况' },
-      { name: '空间推理', description: '分析空间布局的逻辑性和合理性' }
-    ],
-    techStack: [
-      { category: '前端', items: ['Vue 3', 'TypeScript', 'Vite', 'Tailwind CSS'] },
-      { category: '后端', items: ['Python', 'Flask', 'NumPy', 'Pandas'] },
-      { category: '算法', items: ['A*路径算法', 'BFS搜索', '图论分析'] },
-      { category: '可视化', items: ['Canvas API', 'SVG', 'Chart.js'] }
-    ],
-    techStackCategories: {
-      0: '前端',
-      1: '后端',
-      2: '算法',
-      3: '可视化'
-    }
-  },
 
   // 质量指标
   metrics: {
@@ -644,17 +456,6 @@ const zh = {
     exportAll: '导出所有',
     refreshAll: '刷新所有',
     noResults: '没有符合条件的结果'
-  },
-  dungeonVisualizer: {
-    title: '地下城可视化',
-    canvas: 'Canvas',
-    image: 'Image',
-    resetCamera: '重置视角',
-    hideGrid: '隐藏网格',
-    showGrid: '显示网格',
-    hideLabels: '隐藏标签',
-    showLabels: '显示标签',
-    viewFullscreen: '查看大图'
   },
   fullyreport: {
     detailed: '详细分析',
@@ -1187,7 +988,8 @@ const en = {
     image: 'Image',
     canvas: 'Canvas',
     download: 'Download',
-    viewFullscreen: 'View Fullscreen'
+    viewFullscreen: 'View Fullscreen',
+    noDataError: 'Missing file ID or filename'
   },
   fullyreport: {
     detailed: 'Detailed',
