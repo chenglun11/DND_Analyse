@@ -99,6 +99,15 @@ Desktop.ini
 
 # Project specific
 output/reports/
+output/test/
+output/watabou_test/
+output/watabou_reports/
+output/watabou_reports2/
+output/watabou_report3/
+output/chat_ana/
+output/edger/
+temp_reports/
+temp_uploads/
 *.png
 *.jpg
 *.jpeg
@@ -125,3 +134,14 @@ dungeon_quality_stats.csv
 statistical_test.py
 enhanced_statistical_test.py
 demo_improvement_evaluation.py
+
+# Test and temporary files
+test_*.md
+*_test.md
+*_TEST.md
+run_tests.py
+pytest.ini
+*_visualizer_cli.py
+cleanup.py
+temp_*.py
+demo_*.py
