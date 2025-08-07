@@ -126,8 +126,12 @@ class PathDiversityRule(BaseQualityRule):
                 }
         
         if not all_round_results:
+            # 降级方案：使用基于中心性的简化多样性评估
+            fallback_result = self._evaluate_fallback_diversity(graph, room_ids)
+            if fallback_result is not None:
+                return fallback_result
             return 0.0, {
-                "reason": "No valid path pairs found",
+                "reason": "No valid path pairs found and fallback diversity evaluation failed",
                 "detailed_analysis": detailed_analysis,
                 "timeout": time.time() - start_time > timeout_seconds
             }
@@ -253,41 +257,54 @@ class PathDiversityRule(BaseQualityRule):
                               params: Dict[str, Any], pairs_per_round: int, round_idx: int,
                               start_time: float, timeout_seconds: int) -> List[Dict[str, Any]]:
         """
-        单轮采样 - 使用分层抽样策略确保覆盖均匀
-        """
-        # 生成所有可能的房间对
-        all_pairs = [(room_ids[i], room_ids[j]) 
-                    for i in range(len(room_ids)) 
-                    for j in range(i+1, len(room_ids))]
+        单轮采样 - 使用基于最中心路径的策略确保覆盖核心路径
         
-        # 分层抽样：按房间度数的不同范围分层
-        # 这样可以确保不同复杂度的房间对都被采样到
-        high_degree_rooms = [room for room in room_ids if len(graph[room]) > 4]
-        medium_degree_rooms = [room for room in room_ids if 2 <= len(graph[room]) <= 4]
-        low_degree_rooms = [room for room in room_ids if len(graph[room]) <= 1]
+        改进策略：
+        1. 识别图的中心节点和外围节点
+        2. 优先采样中心-外围路径（主干路径）
+        3. 采样中心-中心路径（核心连接）
+        4. 采样外围-外围路径（边缘多样性）
+        5. 补充随机采样确保覆盖完整性
+        """
+        # 计算图的中心性信息
+        centrality_info = self._calculate_graph_centrality(graph, room_ids)
         
         selected_pairs = []
         
-        # 从不同层中按比例选择房间对
-        if high_degree_rooms and medium_degree_rooms:
-            # 高-中连接
-            high_medium_pairs = [(h, m) for h in high_degree_rooms for m in medium_degree_rooms if h != m]
-            if high_medium_pairs:
-                self.rng.shuffle(high_medium_pairs)
-                selected_pairs.extend(high_medium_pairs[:pairs_per_round // 3])
+        # 1. 优先采样主干路径：中心到外围 (40% 的采样)
+        center_periphery_pairs = self._get_center_periphery_pairs(centrality_info)
+        if center_periphery_pairs:
+            self.rng.shuffle(center_periphery_pairs)
+            main_path_samples = min(len(center_periphery_pairs), max(1, pairs_per_round * 2 // 5))
+            selected_pairs.extend(center_periphery_pairs[:main_path_samples])
         
-        if medium_degree_rooms and low_degree_rooms:
-            # 中-低连接
-            medium_low_pairs = [(m, l) for m in medium_degree_rooms for l in low_degree_rooms if m != l]
-            if medium_low_pairs:
-                self.rng.shuffle(medium_low_pairs)
-                selected_pairs.extend(medium_low_pairs[:pairs_per_round // 3])
+        # 2. 采样核心连接：中心到中心 (30% 的采样)
+        center_center_pairs = self._get_center_center_pairs(centrality_info)
+        if center_center_pairs:
+            self.rng.shuffle(center_center_pairs)
+            core_samples = min(len(center_center_pairs), max(1, pairs_per_round * 3 // 10))
+            selected_pairs.extend(center_center_pairs[:core_samples])
         
-        # 补充随机采样
+        # 3. 采样边缘多样性：外围到外围 (20% 的采样)
+        periphery_periphery_pairs = self._get_periphery_periphery_pairs(centrality_info)
+        if periphery_periphery_pairs:
+            self.rng.shuffle(periphery_periphery_pairs)
+            edge_samples = min(len(periphery_periphery_pairs), max(1, pairs_per_round // 5))
+            selected_pairs.extend(periphery_periphery_pairs[:edge_samples])
+        
+        # 4. 补充随机采样确保覆盖完整性 (10% 的采样)
         remaining_pairs = pairs_per_round - len(selected_pairs)
         if remaining_pairs > 0:
-            self.rng.shuffle(all_pairs)
-            selected_pairs.extend(all_pairs[:remaining_pairs])
+            all_pairs = [(room_ids[i], room_ids[j]) 
+                        for i in range(len(room_ids)) 
+                        for j in range(i+1, len(room_ids))]
+            # 排除已选择的房间对
+            existing_pairs_set = set(selected_pairs)
+            remaining_candidates = [pair for pair in all_pairs if pair not in existing_pairs_set]
+            
+            if remaining_candidates:
+                self.rng.shuffle(remaining_candidates)
+                selected_pairs.extend(remaining_candidates[:remaining_pairs])
         
         round_results = []
         
@@ -374,6 +391,293 @@ class PathDiversityRule(BaseQualityRule):
             visited.add(next_node)
         
         return path if current == target else None
+    
+    def _calculate_graph_centrality(self, graph: Dict[str, List[str]], room_ids: List[str]) -> Dict[str, Any]:
+        """
+        计算图的中心性信息
+        
+        基于偏心率 (eccentricity) 的中心性分析：
+        1. 偏心率 = 从该节点到其他所有节点的最大最短距离
+        2. 中心节点 = 偏心率最小的节点
+        3. 外围节点 = 偏心率最大的节点
+        4. 中等节点 = 介于中心和外围之间的节点
+        
+        理论基础：Freeman, 1978; Harary, 1969
+        """
+        if not room_ids or len(room_ids) < 2:
+            return {
+                'center_nodes': room_ids[:1] if room_ids else [],
+                'periphery_nodes': [],
+                'medium_nodes': [],
+                'eccentricities': {}
+            }
+        
+        # 1. 计算每个节点的偏心率
+        eccentricities = {}
+        all_distances = {}
+        
+        for node in room_ids:
+            distances = self._bfs_all_distances_from_node(graph, node)
+            if not distances or len(distances) < 2:
+                # 孤立节点或只连接到自己，设置默认偏心率
+                eccentricities[node] = float('inf')
+                all_distances[node] = {node: 0}
+            else:
+                all_distances[node] = distances
+                eccentricities[node] = max(distances.values())
+        
+        # 过滤掉无限偏心率的节点（孤立节点）
+        valid_eccentricities = {node: ecc for node, ecc in eccentricities.items() if ecc != float('inf')}
+        
+        if not valid_eccentricities:
+            # 所有节点都是孤立的，返回默认结果
+            return {
+                'center_nodes': room_ids[:1] if room_ids else [],
+                'periphery_nodes': [],
+                'medium_nodes': room_ids[1:] if len(room_ids) > 1 else [],
+                'eccentricities': eccentricities
+            }
+        
+        # 2. 分类节点
+        min_eccentricity = min(valid_eccentricities.values())
+        max_eccentricity = max(valid_eccentricities.values())
+        
+        # 中心节点：偏心率最小
+        center_nodes = [node for node, ecc in valid_eccentricities.items() if ecc == min_eccentricity]
+        
+        # 外围节点：偏心率最大
+        periphery_nodes = [node for node, ecc in valid_eccentricities.items() if ecc == max_eccentricity]
+        
+        # 中等节点：介于中心和外围之间
+        medium_nodes = [node for node, ecc in valid_eccentricities.items() 
+                       if min_eccentricity < ecc < max_eccentricity]
+        
+        return {
+            'center_nodes': center_nodes,
+            'periphery_nodes': periphery_nodes,
+            'medium_nodes': medium_nodes,
+            'eccentricities': eccentricities,
+            'graph_radius': min_eccentricity,  # 图的半径
+            'graph_diameter': max_eccentricity  # 图的直径
+        }
+    
+    def _bfs_all_distances_from_node(self, graph: Dict[str, List[str]], source: str) -> Dict[str, int]:
+        """
+        从指定节点计算到所有其他节点的最短距离
+        
+        Args:
+            graph: 无向图
+            source: 起始节点
+            
+        Returns:
+            从source到所有可达节点的距离映射
+        """
+        if source not in graph:
+            return {}
+            
+        visited = {source}
+        queue = deque([(source, 0)])
+        distances = {source: 0}
+        
+        while queue:
+            node, dist = queue.popleft()
+            for neighbor in graph[node]:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    distances[neighbor] = dist + 1
+                    queue.append((neighbor, dist + 1))
+        
+        return distances
+    
+    def _get_center_periphery_pairs(self, centrality_info: Dict[str, Any]) -> List[Tuple[str, str]]:
+        """获取中心-外围节点对（主干路径）"""
+        center_nodes = centrality_info['center_nodes']
+        periphery_nodes = centrality_info['periphery_nodes']
+        
+        pairs = []
+        for center in center_nodes:
+            for periphery in periphery_nodes:
+                if center != periphery:
+                    pairs.append((center, periphery))
+        
+        return pairs
+    
+    def _get_center_center_pairs(self, centrality_info: Dict[str, Any]) -> List[Tuple[str, str]]:
+        """获取中心-中心节点对（核心连接）"""
+        center_nodes = centrality_info['center_nodes']
+        medium_nodes = centrality_info['medium_nodes']
+        
+        pairs = []
+        # 中心节点之间的连接
+        for i, center1 in enumerate(center_nodes):
+            for center2 in center_nodes[i+1:]:
+                pairs.append((center1, center2))
+        
+        # 中心节点到中等节点的连接
+        for center in center_nodes:
+            for medium in medium_nodes:
+                pairs.append((center, medium))
+        
+        return pairs
+    
+    def _get_periphery_periphery_pairs(self, centrality_info: Dict[str, Any]) -> List[Tuple[str, str]]:
+        """获取外围-外围节点对（边缘多样性）"""
+        periphery_nodes = centrality_info['periphery_nodes']
+        medium_nodes = centrality_info['medium_nodes']
+        
+        pairs = []
+        # 外围节点之间的连接
+        for i, periphery1 in enumerate(periphery_nodes):
+            for periphery2 in periphery_nodes[i+1:]:
+                pairs.append((periphery1, periphery2))
+        
+        # 中等节点之间的连接
+        for i, medium1 in enumerate(medium_nodes):
+            for medium2 in medium_nodes[i+1:]:
+                pairs.append((medium1, medium2))
+        
+        # 外围节点到中等节点的连接
+        for periphery in periphery_nodes:
+            for medium in medium_nodes:
+                pairs.append((periphery, medium))
+        
+        return pairs
+    
+    def _evaluate_fallback_diversity(self, graph: Dict[str, List[str]], room_ids: List[str]) -> Tuple[float, Dict[str, Any]] | None:
+        """
+        降级方案：基于图结构特征的简化多样性评估
+        
+        当无法进行有效的路径采样时，使用图的结构特征来估算多样性：
+        1. 连通性多样性：基于连通分量的分布
+        2. 度分布多样性：基于节点度数的分布熵
+        3. 距离分布多样性：基于节点间距离的变异系数
+        
+        这种方法不需要具体的路径采样，纯粹基于图的拓扑性质
+        """
+        if not graph or not room_ids or len(room_ids) < 2:
+            return None
+            
+        try:
+            # 1. 连通性多样性：分析连通分量
+            connectivity_diversity = self._calculate_connectivity_diversity(graph, room_ids)
+            
+            # 2. 度分布多样性：分析节点度数分布
+            degree_diversity = self._calculate_degree_diversity(graph, room_ids)
+            
+            # 3. 距离分布多样性：分析节点间距离分布
+            distance_diversity = self._calculate_distance_diversity(graph, room_ids)
+            
+            # 几何平均融合（与正常情况保持一致）
+            diversity_factors = [f for f in [connectivity_diversity, degree_diversity, distance_diversity] if f > 0]
+            
+            if diversity_factors:
+                fallback_score = np.exp(np.mean(np.log(diversity_factors)))
+            else:
+                fallback_score = 0.0
+            
+            return fallback_score, {
+                'connectivity_diversity': connectivity_diversity,
+                'degree_diversity': degree_diversity, 
+                'distance_diversity': distance_diversity,
+                'fallback_score': fallback_score,
+                'fallback_method': 'structural_diversity',
+                'note': 'Used structural diversity fallback due to insufficient valid path samples',
+                'algorithm': 'Structural_graph_analysis',
+                'sampling_strategy': 'Fallback_topological_analysis'
+            }
+            
+        except Exception as e:
+            return None
+    
+    def _calculate_connectivity_diversity(self, graph: Dict[str, List[str]], room_ids: List[str]) -> float:
+        """计算连通性多样性：基于连通分量的分布"""
+        # 找到所有连通分量
+        visited = set()
+        components = []
+        
+        for room_id in room_ids:
+            if room_id not in visited:
+                # BFS找连通分量
+                component = set()
+                queue = deque([room_id])
+                visited.add(room_id)
+                component.add(room_id)
+                
+                while queue:
+                    current = queue.popleft()
+                    for neighbor in graph.get(current, []):
+                        if neighbor not in visited and neighbor in room_ids:
+                            visited.add(neighbor)
+                            component.add(neighbor)
+                            queue.append(neighbor)
+                
+                if component:
+                    components.append(len(component))
+        
+        if not components or len(components) == 1:
+            return 1.0 if len(components) == 1 else 0.0
+        
+        # 计算连通分量大小分布的熵
+        total_nodes = sum(components)
+        proportions = [size / total_nodes for size in components]
+        entropy = -sum(p * np.log2(p + 1e-9) for p in proportions)
+        max_entropy = np.log2(len(components))
+        
+        return entropy / max_entropy if max_entropy > 0 else 0.0
+    
+    def _calculate_degree_diversity(self, graph: Dict[str, List[str]], room_ids: List[str]) -> float:
+        """计算度分布多样性：基于节点度数分布的熵"""
+        degrees = [len(graph.get(room_id, [])) for room_id in room_ids]
+        
+        if not degrees:
+            return 0.0
+        
+        # 计算度数分布
+        from collections import Counter
+        degree_counts = Counter(degrees)
+        total_nodes = len(degrees)
+        
+        # 计算度分布的熵
+        proportions = [count / total_nodes for count in degree_counts.values()]
+        entropy = -sum(p * np.log2(p + 1e-9) for p in proportions)
+        max_entropy = np.log2(len(degree_counts))
+        
+        return entropy / max_entropy if max_entropy > 0 else 0.0
+    
+    def _calculate_distance_diversity(self, graph: Dict[str, List[str]], room_ids: List[str]) -> float:
+        """计算距离分布多样性：基于节点间距离的变异系数"""
+        if len(room_ids) < 2:
+            return 0.0
+        
+        # 采样一些节点对计算距离分布
+        sample_size = min(len(room_ids) * 2, 50)  # 限制采样大小避免过度计算
+        distances = []
+        
+        sampled_pairs = 0
+        for i, room1 in enumerate(room_ids):
+            if sampled_pairs >= sample_size:
+                break
+            for room2 in room_ids[i+1:]:
+                if sampled_pairs >= sample_size:
+                    break
+                distance = self._bfs_shortest_path_length(graph, room1, room2)
+                if distance is not None:
+                    distances.append(distance)
+                    sampled_pairs += 1
+        
+        if len(distances) < 2:
+            return 0.0
+        
+        # 计算变异系数
+        mean_distance = np.mean(distances)
+        std_distance = np.std(distances)
+        
+        if mean_distance > 0:
+            cv = std_distance / mean_distance
+            # 归一化变异系数到 [0,1] 范围
+            return min(1.0, cv / 2.0)  # 除以2是经验性的归一化
+        else:
+            return 0.0
     
     def _calculate_path_diversity(self, path_samples: List[List[str]]) -> Dict[str, float]:
         """计算路径多样性指标 - 主函数"""

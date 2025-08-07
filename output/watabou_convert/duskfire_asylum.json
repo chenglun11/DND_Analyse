@@ -1,0 +1,472 @@
+{
+  "header": {
+    "schemaName": "dnd-dungeon-unified",
+    "schemaVersion": "1.0.0",
+    "name": "Duskfire Asylum",
+    "author": "Watabou Generator",
+    "description": "The asylum is situated deep in the desert, protected by the dangerous local fauna and harsh weather. Recently a fearsome blood-sucking wolf has made its lair here. Word is that Patrinn, a legendary tablet, is hidden here.",
+    "grid": {
+      "type": "square",
+      "size": 5,
+      "unit": "ft"
+    }
+  },
+  "levels": [
+    {
+      "id": "level_1",
+      "name": "Main Level",
+      "map": {
+        "width": 21,
+        "height": 19
+      },
+      "rooms": [
+        {
+          "id": "rect_0",
+          "shape": "rectangle",
+          "position": {
+            "x": 1,
+            "y": -1
+          },
+          "size": {
+            "width": 5,
+            "height": 3
+          },
+          "name": "room_1",
+          "description": "A round iron double door to the north.",
+          "is_entrance": true,
+          "is_exit": false
+        },
+        {
+          "id": "rect_2",
+          "shape": "rectangle",
+          "position": {
+            "x": 0,
+            "y": 3
+          },
+          "size": {
+            "width": 7,
+            "height": 7
+          },
+          "name": "room_2",
+          "description": "A reinforced chest with a silver necklace in it.",
+          "is_entrance": false,
+          "is_exit": true
+        },
+        {
+          "id": "rect_4",
+          "shape": "rectangle",
+          "position": {
+            "x": -7,
+            "y": -8
+          },
+          "size": {
+            "width": 6,
+            "height": 3
+          },
+          "name": "room_3",
+          "description": "A dying halfling, some gold among his belongings."
+        }
+      ],
+      "doors": [
+        {
+          "id": "door_0",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "dir": {
+              "x": 1,
+              "y": 0
+            },
+            "type": 3
+          }
+        },
+        {
+          "id": "door_1",
+          "position": {
+            "x": 3,
+            "y": -2,
+            "dir": {
+              "x": 0,
+              "y": -1
+            },
+            "type": 5
+          }
+        },
+        {
+          "id": "door_2",
+          "position": {
+            "x": 3,
+            "y": 2,
+            "dir": {
+              "x": 0,
+              "y": 1
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_3",
+          "position": {
+            "x": 7,
+            "y": -7,
+            "dir": {
+              "x": 1,
+              "y": 0
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_4",
+          "position": {
+            "x": -1,
+            "y": -7,
+            "dir": {
+              "x": -1,
+              "y": 0
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_5",
+          "position": {
+            "x": 7,
+            "y": 7,
+            "dir": {
+              "x": 1,
+              "y": 0
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_6",
+          "position": {
+            "x": -1,
+            "y": 7,
+            "dir": {
+              "x": -1,
+              "y": 0
+            },
+            "type": 1
+          }
+        }
+      ],
+      "corridors": [
+        {
+          "id": "rect_1",
+          "shape": "rectangle",
+          "position": {
+            "x": 0,
+            "y": -9
+          },
+          "size": {
+            "width": 7,
+            "height": 7
+          },
+          "name": "Corridor 1"
+        },
+        {
+          "id": "rect_3",
+          "shape": "rectangle",
+          "position": {
+            "x": 8,
+            "y": -8
+          },
+          "size": {
+            "width": 6,
+            "height": 3
+          },
+          "name": "Corridor 3"
+        },
+        {
+          "id": "rect_5",
+          "shape": "rectangle",
+          "position": {
+            "x": 8,
+            "y": 6
+          },
+          "size": {
+            "width": 6,
+            "height": 3
+          },
+          "name": "Corridor 5"
+        },
+        {
+          "id": "rect_6",
+          "shape": "rectangle",
+          "position": {
+            "x": -7,
+            "y": 6
+          },
+          "size": {
+            "width": 6,
+            "height": 3
+          },
+          "name": "Corridor 6"
+        },
+        {
+          "id": "rect_7",
+          "shape": "rectangle",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 7"
+        },
+        {
+          "id": "rect_8",
+          "shape": "rectangle",
+          "position": {
+            "x": 3,
+            "y": -2
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 8"
+        },
+        {
+          "id": "rect_9",
+          "shape": "rectangle",
+          "position": {
+            "x": 3,
+            "y": 2
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 9"
+        },
+        {
+          "id": "rect_10",
+          "shape": "rectangle",
+          "position": {
+            "x": 7,
+            "y": -7
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 10"
+        },
+        {
+          "id": "rect_11",
+          "shape": "rectangle",
+          "position": {
+            "x": -1,
+            "y": -7
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 11"
+        },
+        {
+          "id": "rect_12",
+          "shape": "rectangle",
+          "position": {
+            "x": 7,
+            "y": 7
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 12"
+        },
+        {
+          "id": "rect_13",
+          "shape": "rectangle",
+          "position": {
+            "x": -1,
+            "y": 7
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "name": "Corridor 13"
+        }
+      ],
+      "connections": [
+        {
+          "from_room": "rect_8",
+          "to_room": "rect_1",
+          "door_id": "door_1"
+        },
+        {
+          "from_room": "rect_9",
+          "to_room": "rect_0",
+          "door_id": "door_2"
+        },
+        {
+          "from_room": "rect_10",
+          "to_room": "rect_1",
+          "door_id": "door_3"
+        },
+        {
+          "from_room": "rect_11",
+          "to_room": "rect_4",
+          "door_id": "door_4"
+        },
+        {
+          "from_room": "rect_2",
+          "to_room": "rect_12",
+          "door_id": "door_5"
+        },
+        {
+          "from_room": "rect_6",
+          "to_room": "rect_13",
+          "door_id": "door_6"
+        },
+        {
+          "from_room": "rect_0",
+          "to_room": "rect_2",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_0",
+          "to_room": "rect_1",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_0",
+          "to_room": "rect_7",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_0",
+          "to_room": "rect_8",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_2",
+          "to_room": "rect_5",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_2",
+          "to_room": "rect_6",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_2",
+          "to_room": "rect_9",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_2",
+          "to_room": "rect_13",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_4",
+          "to_room": "rect_1",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_1",
+          "to_room": "rect_3",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_1",
+          "to_room": "rect_11",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_3",
+          "to_room": "rect_10",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "rect_5",
+          "to_room": "rect_12",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        }
+      ],
+      "game_elements": [
+        {
+          "id": "boss_0",
+          "name": "Boss",
+          "type": "boss",
+          "position": {
+            "x": 3.5,
+            "y": 0.5
+          },
+          "description": "Powerful enemy"
+        },
+        {
+          "id": "special_1",
+          "name": "Gate",
+          "type": "special",
+          "position": {
+            "x": 3.5,
+            "y": 0.5
+          },
+          "description": "A round iron double door to the north.",
+          "ref": "1"
+        },
+        {
+          "id": "treasure_2",
+          "name": "Treasure",
+          "type": "treasure",
+          "position": {
+            "x": 3.5,
+            "y": 6.5
+          },
+          "description": "A reinforced chest with a silver necklace in it.",
+          "ref": "2"
+        },
+        {
+          "id": "treasure_3",
+          "name": "Treasure",
+          "type": "treasure",
+          "position": {
+            "x": -4,
+            "y": -6.5
+          },
+          "description": "A dying halfling, some gold among his belongings.",
+          "ref": "3"
+        }
+      ],
+      "connections_inferred": true
+    }
+  ]
+}

@@ -59,7 +59,11 @@ class KeyPathLengthRule(BaseQualityRule):
         exit_room = next((r['id'] for r in processed_rooms if r.get('is_exit')), None)
         
         if not entrance or not exit_room:
-            return 0.0, {"reason": "Could not identify entrance and exit"}
+            # 降级方案：使用最中心路径 (Center Path Fallback)
+            center_path_result = self._evaluate_center_path(graph, processed_rooms)
+            if center_path_result is not None:
+                return center_path_result
+            return 0.0, {"reason": "Could not identify entrance and exit, and center path fallback failed"}
 
         # 1. 计算从入口到出口的最短路径长度
         path, distances = self._bfs_shortest_path(graph, entrance, exit_room)
@@ -141,4 +145,120 @@ class KeyPathLengthRule(BaseQualityRule):
                 if nbr not in visited:
                     visited.add(nbr)
                     distances[nbr] = d + 1
-                    queue.append((nbr, d + 1)) 
+                    queue.append((nbr, d + 1))
+
+    def _evaluate_center_path(self, graph: Dict[str, List[str]], rooms: List[Dict[str, Any]]) -> Tuple[float, Dict[str, Any]] | None:
+        """
+        降级方案：使用最中心路径评估
+        
+        策略：
+        1. 计算图的中心节点（最小化到其他所有节点的最大距离）
+        2. 找到图的外围节点（距离中心最远的节点）
+        3. 计算从中心到外围的最长路径作为"关键路径"
+        
+        理论基础：
+        - 中心性 (Centrality): Freeman, 1978
+        - 图的半径和直径: Harary, 1969
+        """
+        if not graph or not rooms:
+            return None
+            
+        room_ids = [r['id'] for r in rooms if r['id'] in graph]
+        if len(room_ids) < 2:
+            return None
+            
+        try:
+            # 1. 计算每个节点的偏心率 (eccentricity)
+            # 偏心率 = 从该节点到其他所有节点的最大最短距离
+            eccentricities = {}
+            all_distances = {}
+            
+            for node in room_ids:
+                distances = self._bfs_all_distances_from_node(graph, node)
+                if not distances or len(distances) < 2:
+                    continue
+                    
+                all_distances[node] = distances
+                # 偏心率 = 最大距离
+                eccentricities[node] = max(distances.values())
+            
+            if not eccentricities:
+                return None
+                
+            # 2. 找到中心节点（最小偏心率）
+            min_eccentricity = min(eccentricities.values())
+            center_nodes = [node for node, ecc in eccentricities.items() if ecc == min_eccentricity]
+            center_node = center_nodes[0]  # 如果有多个中心，选择第一个
+            
+            # 3. 找到外围节点（距离中心最远的节点）
+            center_distances = all_distances[center_node]
+            max_distance_from_center = max(center_distances.values())
+            periphery_nodes = [node for node, dist in center_distances.items() 
+                             if dist == max_distance_from_center and node != center_node]
+            
+            if not periphery_nodes:
+                return None
+                
+            periphery_node = periphery_nodes[0]  # 选择第一个外围节点
+            
+            # 4. 计算中心路径
+            path, distances = self._bfs_shortest_path(graph, center_node, periphery_node)
+            if path is None:
+                return None
+                
+            raw_length = len(path) - 1
+            
+            # 5. 计算图的真实直径（所有节点对之间的最大最短距离）
+            diameter = max(eccentricities.values())
+            
+            # 6. 归一化长度
+            normalized_length = raw_length / diameter if diameter > 0 else 0.0
+            
+            # 7. 评分（使用与主路径相同的评分函数）
+            score = math.exp(-2.0 * normalized_length)
+            
+            return score, {
+                'raw_length': raw_length,
+                'diameter': diameter,
+                'normalized_length': normalized_length,
+                'score': score,
+                'path': path,
+                'center_node': center_node,
+                'periphery_node': periphery_node,
+                'center_eccentricity': min_eccentricity,
+                'graph_radius': min_eccentricity,  # 图的半径 = 最小偏心率
+                'fallback_method': 'center_path',
+                'note': 'Used center path fallback due to unidentifiable entrance/exit'
+            }
+            
+        except Exception as e:
+            # 如果中心路径计算失败，返回None让主函数返回0分
+            return None
+    
+    def _bfs_all_distances_from_node(self, graph: Dict[str, List[str]], source: str) -> Dict[str, int]:
+        """
+        从指定节点计算到所有其他节点的最短距离
+        
+        Args:
+            graph: 无向图
+            source: 起始节点
+            
+        Returns:
+            从source到所有可达节点的距离映射
+        """
+        if source not in graph:
+            return {}
+            
+        visited = {source}
+        queue = deque([(source, 0)])
+        distances = {source: 0}
+        
+        while queue:
+            node, dist = queue.popleft()
+            for neighbor in graph[node]:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    distances[neighbor] = dist + 1
+                    queue.append((neighbor, dist + 1))
+        
+        return distances 
