@@ -129,6 +129,42 @@ def identify_entrance_exit(dungeon_data: Dict[str, Any]) -> Dict[str, Any]:
         elif room.get('is_exit', False):
             exit_room = room['id']
     
+    # 1.5. 检查game_elements中的入口出口
+    game_elements = level.get('game_elements', [])
+    if not entrance_room or not exit_room:
+        entrance_elements = [elem for elem in game_elements if elem.get('type') == 'entrance']
+        exit_elements = [elem for elem in game_elements if elem.get('type') == 'exit']
+        
+        if entrance_elements and not entrance_room:
+            # 找到离入口元素最近的房间
+            entrance_elem = entrance_elements[0]
+            entrance_pos = entrance_elem.get('position', {})
+            if entrance_pos:
+                ex, ey = entrance_pos.get('x', 0), entrance_pos.get('y', 0)
+                def get_room_center(room):
+                    pos = room.get('position', {})
+                    size = room.get('size', {})
+                    return pos.get('x', 0) + size.get('width', 0) / 2, pos.get('y', 0) + size.get('height', 0) / 2
+                
+                nearest_room = min(rooms, key=lambda r: 
+                    ((get_room_center(r)[0] - ex) ** 2 + (get_room_center(r)[1] - ey) ** 2) ** 0.5)
+                entrance_room = nearest_room['id']
+        
+        if exit_elements and not exit_room:
+            # 找到离出口元素最近的房间
+            exit_elem = exit_elements[0]
+            exit_pos = exit_elem.get('position', {})
+            if exit_pos:
+                ex, ey = exit_pos.get('x', 0), exit_pos.get('y', 0)
+                def get_room_center(room):
+                    pos = room.get('position', {})
+                    size = room.get('size', {})
+                    return pos.get('x', 0) + size.get('width', 0) / 2, pos.get('y', 0) + size.get('height', 0) / 2
+                
+                nearest_room = min(rooms, key=lambda r: 
+                    ((get_room_center(r)[0] - ex) ** 2 + (get_room_center(r)[1] - ey) ** 2) ** 0.5)
+                exit_room = nearest_room['id']
+    
     # 2. 拓扑分析识别（改进版）
     if not entrance_room or not exit_room:
         # 只考虑有连接的房间

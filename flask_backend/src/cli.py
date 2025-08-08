@@ -383,7 +383,71 @@ def main():
             sys.exit(1)
 
     elif args.command == 'batch-assess':
-        batch_assess(args.input_dir, args.output_dir, not args.no_spatial_inference, args.adjacency_threshold, args.timeout)
+        try:
+            results = batch_assess(args.input_dir, args.output_dir, not args.no_spatial_inference, args.adjacency_threshold, args.timeout)
+            
+            # 显示总体统计
+            print("\n" + "=" * 60)
+            print("BATCH ASSESSMENT SUMMARY")
+            print("=" * 60)
+            
+            # 计算总体统计
+            valid_results = {k: v for k, v in results.items() if v.get('status') == 'success'}
+            if valid_results:
+                scores = [r['overall_score'] for r in valid_results.values()]
+                avg_score = sum(scores) / len(scores)
+                max_score = max(scores)
+                min_score = min(scores)
+                
+                best_map = max(valid_results.items(), key=lambda x: x[1]['overall_score'])
+                worst_map = min(valid_results.items(), key=lambda x: x[1]['overall_score'])
+                
+                # 等级分布
+                grade_counts = {}
+                for result in valid_results.values():
+                    grade = result['grade']
+                    grade_counts[grade] = grade_counts.get(grade, 0) + 1
+                
+                print(f"Total Maps: {len(results)}")
+                print(f"Valid Maps: {len(valid_results)}")
+                print(f"Failed Maps: {len(results) - len(valid_results)}")
+                print(f"\nOverall Statistics:")
+                print(f"  Average Score: {avg_score:.3f}")
+                print(f"  Max Score: {max_score:.3f} ({best_map[0]})")
+                print(f"  Min Score: {min_score:.3f} ({worst_map[0]})")
+                
+                print(f"\nGrade Distribution:")
+                for grade, count in sorted(grade_counts.items(), reverse=True):
+                    percentage = (count / len(valid_results)) * 100
+                    print(f"  {grade}: {count} maps ({percentage:.1f}%)")
+                
+                # 指标统计
+                metrics = ['accessibility', 'degree_variance', 'door_distribution', 'dead_end_ratio', 
+                          'key_path_length', 'loop_ratio', 'path_diversity', 'treasure_monster_distribution', 
+                          'geometric_balance']
+                
+                print(f"\nMetric Averages:")
+                for metric in metrics:
+                    values = []
+                    for r in valid_results.values():
+                        metric_result = r.get('detailed_metrics', {}).get(metric, {})
+                        if isinstance(metric_result, dict):
+                            score = metric_result.get('score', 0.0)
+                        else:
+                            score = metric_result
+                        values.append(score)
+                    
+                    if values:
+                        avg = sum(values) / len(values)
+                        print(f"  {metric}: {avg:.3f}")
+            
+            print("=" * 60)
+            print("Detailed reports saved to output directory")
+            print("=" * 60)
+            
+        except Exception as e:
+            logger.error(f"Error during batch assessment: {e}")
+            sys.exit(1)
 
 if __name__ == '__main__':
     main() 

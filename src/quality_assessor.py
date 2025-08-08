@@ -15,6 +15,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from .spatial_inference import auto_infer_connections
+from .adapter_manager import AdapterManager
 
 logger = logging.getLogger(__name__)
 sys.path.append(os.path.dirname(__file__))
@@ -26,6 +27,7 @@ class DungeonQualityAssessor:
         self.rules = self._load_rules()
         self.enable_spatial_inference = enable_spatial_inference
         self.adjacency_threshold = adjacency_threshold
+        self.adapter_manager = AdapterManager()
         
         # 重新设计权重系统：按类别分组，每个类别内部等权
         self.rule_weights = rule_weights or {
@@ -98,6 +100,19 @@ class DungeonQualityAssessor:
 
     def assess_quality(self, dungeon_data: Dict[str, Any]) -> Dict[str, Any]:
         """Assess dungeon map quality, return scores and aggregated results"""
+        # Auto-convert to unified format if needed
+        if not self._is_unified_format(dungeon_data):
+            logger.info("Converting to unified format")
+            converted_data = self.adapter_manager.convert(
+                dungeon_data, 
+                enable_spatial_inference=self.enable_spatial_inference,
+                adjacency_threshold=self.adjacency_threshold
+            )
+            if converted_data is None:
+                logger.error("Failed to convert data to unified format")
+                return self._create_empty_result("Format conversion failed")
+            dungeon_data = converted_data
+        
         # Preprocessing: if spatial inference is enabled and no connection info, auto-complete
         if self.enable_spatial_inference:
             enhanced_data = auto_infer_connections(dungeon_data, self.adjacency_threshold)
@@ -134,6 +149,32 @@ class DungeonQualityAssessor:
             # for test, recommendations is blocked.
             'recommendations': self._get_recommendations(results, category_scores),
             'spatial_inference_used': self.enable_spatial_inference and any(level.get('connections_inferred', False) for level in dungeon_data.get('levels', []))
+        }
+    
+    def _is_unified_format(self, data: Dict[str, Any]) -> bool:
+        """Check if data is already in unified format"""
+        if 'header' in data and 'levels' in data:
+            header = data['header']
+            if (isinstance(header, dict) and 
+                'schemaName' in header and 
+                header.get('schemaName') == 'dnd-dungeon-unified'):
+                return True
+        return False
+    
+    def _create_empty_result(self, reason: str) -> Dict[str, Any]:
+        """Create empty result for failed conversions"""
+        empty_scores = {}
+        for rule in self.rules:
+            empty_scores[rule.name] = {'score': 0.0, 'detail': {'reason': reason}}
+        
+        return {
+            'scores': empty_scores,
+            'category_scores': {'structural': 0.0, 'gameplay': 0.0, 'aesthetic': 0.0},
+            'overall_score': 0.0,
+            'grade': 'F',
+            'details': {},
+            'recommendations': [f"转换失败: {reason}"],
+            'spatial_inference_used': False
         }
 
     def _calculate_category_scores(self, results: Dict[str, Any]) -> Dict[str, float]:

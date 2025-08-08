@@ -295,6 +295,7 @@ const grade = ref<string>('未知')
 // 获取分析结果
 const fetchAnalysisResult = async () => {
   try {
+    console.log('=== fetchAnalysisResult 开始执行 ===')
     loading.value = true
     error.value = null
     
@@ -747,8 +748,10 @@ const closeRoomModal = () => {
 }
 
 const refresh = () => {
-  console.log('Refreshing dungeon detail...')
+  console.log('DungeonDetail refresh函数被调用')
+  console.log('Props:', { dungeonName: props.dungeonName, fileId: props.fileId, filename: props.filename })
   emit('refresh')
+  console.log('开始执行fetchAnalysisResult')
   fetchAnalysisResult()
 }
 

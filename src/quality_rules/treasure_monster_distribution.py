@@ -38,9 +38,20 @@ class TreasureMonsterDistributionRule(BaseQualityRule):
         if not rooms or not game_elements:
             return 0.0, {"reason": "Insufficient rooms or entities"}
 
-        # 从game_elements中提取treasures和monsters（包括boss）
-        treasures = [elem for elem in game_elements if elem.get('type') == 'treasure']
-        monsters = [elem for elem in game_elements if elem.get('type') in ['monster', 'boss']]
+        # 从rooms中提取treasures和monsters
+        room_treasures = []
+        room_monsters = []
+        for room in rooms:
+            room_treasures.extend(room.get('treasures', []))
+            room_monsters.extend(room.get('monsters', []))
+        
+        # 从game_elements中提取treasures和monsters（包括boss、npc）
+        element_treasures = [elem for elem in game_elements if elem.get('type') == 'treasure']
+        element_monsters = [elem for elem in game_elements if elem.get('type') in ['monster', 'boss', 'npc']]
+        
+        # 合并房间内和game_elements中的数据
+        treasures = room_treasures + element_treasures
+        monsters = room_monsters + element_monsters
         
         if not treasures:
             return 0.0, {"reason": "No treasures found"}
@@ -77,11 +88,13 @@ class TreasureMonsterDistributionRule(BaseQualityRule):
             t_counts.setdefault(rid, 0)
             m_counts.setdefault(rid, 0)
 
-        # 2. 计算变异系数 CV
+        # 2. 计算变异系数 CV (with Laplace smoothing)
         def compute_cv(counts: List[int]) -> float:
-            mean = sum(counts) / len(counts)
-            var = sum((x - mean)**2 for x in counts) / len(counts)
-            return math.sqrt(var) / mean if mean>0 else 0.0
+            # 轻微的Laplace smoothing: 每个计数加0.1
+            smoothed_counts = [x + 0.1 for x in counts]
+            mean = sum(smoothed_counts) / len(smoothed_counts)
+            var = sum((x - mean)**2 for x in smoothed_counts) / len(smoothed_counts)
+            return math.sqrt(var) / mean if mean > 0 else 0.0
 
         t_vals = [t_counts[rid] for rid in room_ids]
         cv_t = compute_cv(t_vals)
@@ -115,9 +128,14 @@ class TreasureMonsterDistributionRule(BaseQualityRule):
             avg_dist = sum(dists)/len(dists) if dists else D_map
             prox_score = max(0.0, 1.0 - min(avg_dist/D_map, 1.0))
 
-        # 4. 几何平均融合
-        factors = [f for f in [uni_t, uni_m, prox_score] if f>0]
-        score = math.exp(sum(math.log(f) for f in factors)/len(factors)) if factors else 0.0
+        # 4. 几何平均融合 (with floor constraint)
+        factors = [f for f in [uni_t, uni_m, prox_score] if f > 0]
+        if factors:
+            geometric_mean = math.exp(sum(math.log(f) for f in factors) / len(factors))
+            # 应用评分下限约束: 最低0.05，但如果真的没有宝藏或怪物还是给0
+            score = max(0.05, geometric_mean) if len(factors) > 0 else 0.0
+        else:
+            score = 0.0
 
         detail: Dict[str, Any] = {
             'cv_treasure': cv_t,

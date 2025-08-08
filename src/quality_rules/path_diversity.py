@@ -93,10 +93,12 @@ class PathDiversityRule(BaseQualityRule):
         avg_degree = sum(len(graph[node]) for node in graph) / len(graph) if graph else 0
         graph_complexity = len(room_ids) * avg_degree * graph_diameter
         
-        # 采样数：基于图的客观属性，不使用任何主观常数
-        # 理论依据：采样数应该与图的边数成正比，确保足够的覆盖率
+        # 采样数：基于统计学理论确定最小样本量
+        # 理论依据：对于大图，需要足够的采样保证统计显著性
+        # 使用 Cochran's formula: n = Z²pq/e²，简化为节点数平方根的常数倍
         total_edges = sum(len(graph[node]) for node in graph) // 2
-        target_samples = min(total_pairs, max(1, total_edges))
+        min_samples_for_significance = max(50, int(len(room_ids) ** 0.5 * 10))
+        target_samples = min(total_pairs, max(min_samples_for_significance, total_edges // 2))
         
         # 确定采样轮数：基于图的客观属性
         # 理论依据：轮数应该与图的直径成正比，确保路径覆盖

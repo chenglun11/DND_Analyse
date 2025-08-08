@@ -39,16 +39,22 @@ class KeyPathLengthRule(BaseQualityRule):
         level = levels[0]
 
         rooms = level.get('rooms', [])
+        corridors = level.get('corridors', [])
         connections = level.get('connections', [])
         if not rooms or not connections:
             return 0.0, {"reason": "No rooms or connections"}
 
-        # 构建无向图
+        # 构建无向图（包含房间和走廊，排除游戏元素）
+        # 将房间和走廊都视为图中的节点，因为它们都是可以穿越的空间
+        all_spaces = rooms + corridors
+        space_ids = {space['id'] for space in all_spaces}
         graph = defaultdict(list)
         for c in connections:
-            u, v = c['from_room'], c['to_room']
-            graph[u].append(v)
-            graph[v].append(u)
+            u, v = c.get('from_room'), c.get('to_room')
+            # 添加空间（房间+走廊）间的连接，排除游戏元素
+            if u in space_ids and v in space_ids:
+                graph[u].append(v)
+                graph[v].append(u)
 
         # 统一入口出口识别：使用identify_entrance_exit函数
         processed_data = identify_entrance_exit(dungeon_data)
@@ -60,7 +66,7 @@ class KeyPathLengthRule(BaseQualityRule):
         
         if not entrance or not exit_room:
             # 降级方案：使用最中心路径 (Center Path Fallback)
-            center_path_result = self._evaluate_center_path(graph, processed_rooms)
+            center_path_result = self._evaluate_center_path(graph, all_spaces)
             if center_path_result is not None:
                 return center_path_result
             return 0.0, {"reason": "Could not identify entrance and exit, and center path fallback failed"}
@@ -147,7 +153,7 @@ class KeyPathLengthRule(BaseQualityRule):
                     distances[nbr] = d + 1
                     queue.append((nbr, d + 1))
 
-    def _evaluate_center_path(self, graph: Dict[str, List[str]], rooms: List[Dict[str, Any]]) -> Tuple[float, Dict[str, Any]] | None:
+    def _evaluate_center_path(self, graph: Dict[str, List[str]], all_spaces: List[Dict[str, Any]]) -> Tuple[float, Dict[str, Any]] | None:
         """
         降级方案：使用最中心路径评估
         
@@ -160,11 +166,11 @@ class KeyPathLengthRule(BaseQualityRule):
         - 中心性 (Centrality): Freeman, 1978
         - 图的半径和直径: Harary, 1969
         """
-        if not graph or not rooms:
+        if not graph or not all_spaces:
             return None
             
-        room_ids = [r['id'] for r in rooms if r['id'] in graph]
-        if len(room_ids) < 2:
+        space_ids = [s['id'] for s in all_spaces if s['id'] in graph]
+        if len(space_ids) < 2:
             return None
             
         try:
@@ -173,7 +179,7 @@ class KeyPathLengthRule(BaseQualityRule):
             eccentricities = {}
             all_distances = {}
             
-            for node in room_ids:
+            for node in space_ids:
                 distances = self._bfs_all_distances_from_node(graph, node)
                 if not distances or len(distances) < 2:
                     continue

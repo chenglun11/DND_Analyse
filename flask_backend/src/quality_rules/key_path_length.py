@@ -39,16 +39,22 @@ class KeyPathLengthRule(BaseQualityRule):
         level = levels[0]
 
         rooms = level.get('rooms', [])
+        corridors = level.get('corridors', [])
         connections = level.get('connections', [])
         if not rooms or not connections:
             return 0.0, {"reason": "No rooms or connections"}
 
-        # 构建无向图
+        # 构建无向图（包含房间和走廊，排除游戏元素）
+        # 将房间和走廊都视为图中的节点，因为它们都是可以穿越的空间
+        all_spaces = rooms + corridors
+        space_ids = {space['id'] for space in all_spaces}
         graph = defaultdict(list)
         for c in connections:
-            u, v = c['from_room'], c['to_room']
-            graph[u].append(v)
-            graph[v].append(u)
+            u, v = c.get('from_room'), c.get('to_room')
+            # 添加空间（房间+走廊）间的连接，排除游戏元素
+            if u in space_ids and v in space_ids:
+                graph[u].append(v)
+                graph[v].append(u)
 
         # 统一入口出口识别：使用identify_entrance_exit函数
         processed_data = identify_entrance_exit(dungeon_data)
@@ -60,7 +66,7 @@ class KeyPathLengthRule(BaseQualityRule):
         
         if not entrance or not exit_room:
             # 降级方案：使用最中心路径 (Center Path Fallback)
-            center_path_result = self._evaluate_center_path(graph, processed_rooms)
+            center_path_result = self._evaluate_center_path(graph, all_spaces)
             if center_path_result is not None:
                 return center_path_result
             return 0.0, {"reason": "Could not identify entrance and exit, and center path fallback failed"}
@@ -140,88 +146,135 @@ class KeyPathLengthRule(BaseQualityRule):
                     distances[nbr] = d + 1
                     queue.append((nbr, d + 1))
 
-    def _evaluate_center_path(self, graph: Dict[str, List[str]], rooms: List[Dict[str, Any]]) -> Tuple[float, Dict[str, Any]] | None:
+    def _evaluate_center_path(self, graph: Dict[str, List[str]], all_spaces: List[Dict[str, Any]]) -> Tuple[float, Dict[str, Any]] | None:
         """
-        降级方案：使用最中心路径评估
+        降级方案：多中心径向路径聚合评估 (Multi-Center Radial Path Aggregation)
         
-        策略：
-        1. 计算图的中心节点（最小化到其他所有节点的最大距离）
-        2. 找到图的外围节点（距离中心最远的节点）
-        3. 计算从中心到外围的最长路径作为"关键路径"
+        优化策略：
+        1. 基于度中心性的快速中心候选筛选
+        2. 多中心-外围路径组合评估
+        3. 自适应采样降低大图计算复杂度
+        4. 加权聚合多路径结果
         
         理论基础：
-        - 中心性 (Centrality): Freeman, 1978
+        - 度中心性 (Degree Centrality): Freeman, 1978
         - 图的半径和直径: Harary, 1969
+        - 多路径聚合: Bollobás, 1998
         """
-        if not graph or not rooms:
+        if not graph or not all_spaces:
             return None
             
-        room_ids = [r['id'] for r in rooms if r['id'] in graph]
-        if len(room_ids) < 2:
+        space_ids = [s['id'] for s in all_spaces if s['id'] in graph]
+        if len(space_ids) < 2:
             return None
             
         try:
-            # 1. 计算每个节点的偏心率 (eccentricity)
-            # 偏心率 = 从该节点到其他所有节点的最大最短距离
+            # 自适应采样：大图使用采样策略降低复杂度
+            num_nodes = len(space_ids)
+            use_sampling = num_nodes > 50  # 超过50个节点使用采样
+            
+            if use_sampling:
+                # 基于度中心性的快速中心候选筛选
+                degree_centralities = {node: len(graph[node]) for node in space_ids}
+                sorted_by_degree = sorted(degree_centralities.items(), key=lambda x: x[1], reverse=True)
+                # 选择度最高的前30%节点作为候选中心
+                num_candidates = max(3, min(15, num_nodes // 3))
+                center_candidates = [node for node, _ in sorted_by_degree[:num_candidates]]
+            else:
+                center_candidates = space_ids
+            
+            # 1. 计算候选节点的偏心率
             eccentricities = {}
             all_distances = {}
             
-            for node in room_ids:
+            for node in center_candidates:
                 distances = self._bfs_all_distances_from_node(graph, node)
                 if not distances or len(distances) < 2:
                     continue
                     
                 all_distances[node] = distances
-                # 偏心率 = 最大距离
                 eccentricities[node] = max(distances.values())
             
             if not eccentricities:
                 return None
-                
-            # 2. 找到中心节点（最小偏心率）
+            
+            # 2. 找到多个中心节点（选择前3个最佳中心）
             min_eccentricity = min(eccentricities.values())
             center_nodes = [node for node, ecc in eccentricities.items() if ecc == min_eccentricity]
-            center_node = center_nodes[0]  # 如果有多个中心，选择第一个
             
-            # 3. 找到外围节点（距离中心最远的节点）
-            center_distances = all_distances[center_node]
-            max_distance_from_center = max(center_distances.values())
-            periphery_nodes = [node for node, dist in center_distances.items() 
-                             if dist == max_distance_from_center and node != center_node]
+            # 如果只有一个真正的中心，添加次佳候选
+            if len(center_nodes) == 1:
+                sorted_centers = sorted(eccentricities.items(), key=lambda x: x[1])
+                for node, ecc in sorted_centers[1:4]:  # 最多添加3个次佳中心
+                    if ecc <= min_eccentricity + 1:  # 偏心率相差不超过1
+                        center_nodes.append(node)
             
-            if not periphery_nodes:
-                return None
+            # 限制中心节点数量
+            center_nodes = center_nodes[:3]
+            
+            # 3. 多中心-外围路径评估
+            path_results = []
+            
+            for center_node in center_nodes:
+                center_distances = all_distances.get(center_node, {})
+                if not center_distances:
+                    continue
+                    
+                max_distance_from_center = max(center_distances.values())
+                periphery_nodes = [node for node, dist in center_distances.items() 
+                                 if dist == max_distance_from_center and node != center_node]
                 
-            periphery_node = periphery_nodes[0]  # 选择第一个外围节点
+                # 评估多个外围节点（最多3个）
+                for periphery_node in periphery_nodes[:3]:
+                    path, distances = self._bfs_shortest_path(graph, center_node, periphery_node)
+                    if path is not None:
+                        path_length = len(path) - 1
+                        weight = 1.0 / (eccentricities[center_node] + 0.1)  # 中心性越好权重越高
+                        path_results.append({
+                            'length': path_length,
+                            'weight': weight,
+                            'path': path,
+                            'center': center_node,
+                            'periphery': periphery_node
+                        })
             
-            # 4. 计算中心路径
-            path, distances = self._bfs_shortest_path(graph, center_node, periphery_node)
-            if path is None:
+            if not path_results:
                 return None
-                
-            raw_length = len(path) - 1
             
-            # 5. 计算图的真实直径（所有节点对之间的最大最短距离）
-            diameter = max(eccentricities.values())
+            # 4. 加权聚合多路径结果
+            total_weight = sum(result['weight'] for result in path_results)
+            weighted_avg_length = sum(result['length'] * result['weight'] for result in path_results) / total_weight
             
-            # 6. 归一化长度
-            normalized_length = raw_length / diameter if diameter > 0 else 0.0
+            # 选择最具代表性的路径（长度最接近加权平均的路径）
+            best_result = min(path_results, key=lambda x: abs(x['length'] - weighted_avg_length))
             
-            # 7. 评分（使用与主路径相同的评分函数）
+            # 5. 计算图直径（使用已计算的偏心率）
+            if use_sampling:
+                # 对于大图，估算直径：使用已知的最大偏心率
+                diameter = max(eccentricities.values())
+            else:
+                # 对于小图，计算真实直径
+                diameter = max(eccentricities.values()) if eccentricities else weighted_avg_length
+            
+            # 6. 归一化和评分
+            normalized_length = weighted_avg_length / diameter if diameter > 0 else 0.0
             score = math.exp(-2.0 * normalized_length)
             
             return score, {
-                'raw_length': raw_length,
+                'raw_length': weighted_avg_length,
                 'diameter': diameter,
                 'normalized_length': normalized_length,
                 'score': score,
-                'path': path,
-                'center_node': center_node,
-                'periphery_node': periphery_node,
+                'path': best_result['path'],
+                'center_node': best_result['center'],
+                'periphery_node': best_result['periphery'],
                 'center_eccentricity': min_eccentricity,
-                'graph_radius': min_eccentricity,  # 图的半径 = 最小偏心率
-                'fallback_method': 'center_path',
-                'note': 'Used center path fallback due to unidentifiable entrance/exit'
+                'graph_radius': min_eccentricity,
+                'fallback_method': 'multi_center_radial',
+                'algorithm_variant': 'sampling' if use_sampling else 'full_computation',
+                'num_centers_evaluated': len(center_nodes),
+                'num_paths_evaluated': len(path_results),
+                'note': f'Multi-center radial path aggregation ({len(path_results)} paths evaluated)'
             }
             
         except Exception as e:
@@ -254,4 +307,4 @@ class KeyPathLengthRule(BaseQualityRule):
                     distances[neighbor] = dist + 1
                     queue.append((neighbor, dist + 1))
         
-        return distances 
+        return distances

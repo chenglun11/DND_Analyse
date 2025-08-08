@@ -231,6 +231,7 @@
         </div>
         
         <DungeonDetail 
+          ref="dungeonDetailRef"
           v-if="currentDetail || (!isMultiDetail && dungeonName)"
           :dungeon-name="currentDetail?.name || dungeonName"
           :file-id="currentDetail?.fileId || fileId"
@@ -642,6 +643,7 @@ const formatScore = (score: number): string => {
 // 添加selectedMetrics属性
 const selectedMetrics = ref<string[]>([])
 const visualizationMode = ref('radar')
+const dungeonDetailRef = ref()
 
 // 加载选中的指标
 const loadSelectedMetrics = () => {
@@ -665,10 +667,23 @@ const loadSelectedMetrics = () => {
 
 // 新的统一按钮方法
 const refreshAnalysis = () => {
-  console.log('刷新分析')
+  console.log('刷新分析按钮被点击')
+  console.log('isMultiDetail:', isMultiDetail.value)
+  console.log('dungeonDetailRef:', dungeonDetailRef.value)
+  
   // 重新获取当前详情数据
   if (isMultiDetail.value) {
+    console.log('执行批量模式刷新')
     initMultiDetails()
+  } else {
+    console.log('执行单文件模式刷新')
+    // 单文件模式：刷新DungeonDetail组件
+    if (dungeonDetailRef.value && dungeonDetailRef.value.refresh) {
+      console.log('调用DungeonDetail组件的refresh方法')
+      dungeonDetailRef.value.refresh()
+    } else {
+      console.log('DungeonDetail组件或refresh方法不可用')
+    }
   }
 }
 

@@ -56,11 +56,11 @@ class LoopRatioRule(BaseQualityRule):
         if raw_loop_ratio == 0:
             raw_loop_ratio = 0.1
         
-        # 使用sigmoid函数将loop ratio映射到0-1区间
-        # sigmoid(x) = 1 / (1 + e^(-x))
-        # 为了更好的映射效果，我们使用 sigmoid(loop_ratio - 1)
-        # 这样当loop_ratio=1时，sigmoid(0)=0.5，这是一个合理的中间值
-        sigmoid_loop_ratio = self._sigmoid(raw_loop_ratio - 1)
+        # 使用改进的sigmoid映射，基于空间认知理论
+        # 理论依据：适度环路(0.8-1.5)对导航最优，过少过多都不理想
+        # 修正函数：sigmoid(2*(loop_ratio - 0.2)) 让0.8-1.5范围获得更高分
+        adjusted_ratio = 2.0 * (raw_loop_ratio - 0.2)
+        sigmoid_loop_ratio = self._sigmoid(adjusted_ratio)
         
         # 添加调试信息
         detail_info = {

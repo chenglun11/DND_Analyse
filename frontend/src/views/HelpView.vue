@@ -1,136 +1,71 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { computed } from 'vue'
-import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
-import { ArrowLeftIcon, ChevronUpIcon, QuestionMarkCircleIcon, InformationCircleIcon, DocumentTextIcon, CogIcon } from '@heroicons/vue/24/outline'
+import { DocumentTextIcon, ArrowLeftIcon } from '@heroicons/vue/24/outline'
 
 const router = useRouter()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const goBack = () => {
   router.push('/')
 }
 
-const helpSections = computed(() => [
-  {
-    title: t('help.fileUpload.title'),
-    icon: '📁',
-    content: [
-      t('help.fileUpload.content.0'),
-      t('help.fileUpload.content.1'),
-      t('help.fileUpload.content.2'),
-      t('help.fileUpload.content.3'),
-      t('help.fileUpload.content.4')
-    ]
-  },
-  {
-    title: t('help.analysis.title'),
-    icon: '📊',
-    content: [
-      t('help.analysis.content.0'),
-      t('help.analysis.content.1'),
-      t('help.analysis.content.2'),
-      t('help.analysis.content.3'),
-      t('help.analysis.content.4')
-    ]
-  },
-  {
-    title: t('help.results.title'),
-    icon: '📈',
-    content: [
-      t('help.results.content.0'),
-      t('help.results.content.1'),
-      t('help.results.content.2'),
-      t('help.results.content.3'),
-      t('help.results.content.4')
-    ]
-  },
-  {
-    title: t('help.export.title'),
-    icon: '💾',
-    content: [
-      t('help.export.content.0'),
-      t('help.export.content.1'),
-      t('help.export.content.2'),
-      t('help.export.content.3'),
-      t('help.export.content.4')
-    ]
-  }
-])
+// 获取当前语言
+const getCurrentLanguage = () => {
+  return locale.value as 'zh' | 'en'
+}
 
-const faqs = [
-  {
-    question: t('help.faqs.0.question'),
-    answer: t('help.faqs.0.answer')
+// 多语言schema内容
+const schemaContent = {
+  title: {
+    zh: '统一格式Schema',
+    en: 'Unified Format Schema'
   },
-  {
-    question: t('help.faqs.1.question'),
-    answer: t('help.faqs.1.answer')
+  description: {
+    zh: 'dnd-dungeon-unified 格式说明',
+    en: 'dnd-dungeon-unified Format Documentation'
   },
-  {
-    question: t('help.faqs.2.question'),
-    answer: t('help.faqs.2.answer')
+  overview: {
+    zh: [
+      '系统使用 "dnd-dungeon-unified" 格式作为分析的标准数据结构',
+      '所有上传的文件都会自动转换为这种统一格式后再进行处理',
+      '格式包含头部元数据（名称、作者、描述）和关卡数据（房间、走廊、连接）',
+      '房间对象包含位置、大小、形状和可选的游戏元素（怪物、宝藏）',
+      '连接定义了房间和走廊之间的通道，用于精确的布局分析',
+      '这种统一方法确保了不同地牢格式之间一致且可靠的质量评估'
+    ],
+    en: [
+      'System uses the "dnd-dungeon-unified" format as a standard data structure for analysis',
+      'All uploaded files are automatically converted to this unified format before processing',
+      'The format includes header metadata (name, author, description) and level data (rooms, corridors, connections)',
+      'Room objects contain position, size, shape, and optional game elements (monsters, treasures)',
+      'Connections define pathways between rooms and corridors for accurate layout analysis',
+      'This unified approach ensures consistent and reliable quality assessment across different dungeon formats'
+    ]
   },
-  {
-    question: t('help.faqs.3.question'),
-    answer: t('help.faqs.3.answer')
-  },
-  {
-    question: t('help.faqs.4.question'),
-    answer: t('help.faqs.4.answer')
-  },
-  {
-    question: t('help.faqs.5.question'),
-    answer: t('help.faqs.5.answer')
+  keyComponents: {
+    title: {
+      zh: '关键组件',
+      en: 'Key Components'
+    },
+    items: {
+      zh: [
+        'header: 包含元数据和网格信息',
+        'levels: 包含房间、连接和元素的关卡数据数组',
+        'rooms: 具有位置、大小和属性的房间定义',
+        'connections: 房间和走廊之间的通道',
+        'game_elements: 怪物、宝藏和其他交互对象'
+      ],
+      en: [
+        'header: Contains metadata and grid information',
+        'levels: Array of level data with rooms, connections, and elements',
+        'rooms: Room definitions with position, size, and properties',
+        'connections: Pathways between rooms and corridors',
+        'game_elements: Monsters, treasures, and other interactive objects'
+      ]
+    }
   }
-]
-
-const quickSteps = computed(() => [
-  {
-    step: 1,
-    title: t('help.quickSteps.0.title'),
-    description: t('help.quickSteps.0.description'),
-    icon: '📁'
-  },
-  {
-    step: 2,
-    title: t('help.quickSteps.1.title'),
-    description: t('help.quickSteps.1.description'),
-    icon: '⚡'
-  },
-  {
-    step: 3,
-    title: t('help.quickSteps.2.title'),
-    description: t('help.quickSteps.2.description'),
-    icon: '📊'
-  },
-  {
-    step: 4,
-    title: t('help.quickSteps.3.title'),
-    description: t('help.quickSteps.3.description'),
-    icon: '💾'
-  }
-])
-
-const troubleshooting = [
-  {
-    problem: '文件上传失败',
-    solution: '检查文件格式是否为JSON，文件大小是否超过限制。确保文件没有损坏。'
-  },
-  {
-    problem: '分析过程中断',
-    solution: '刷新页面重新上传文件。如果问题持续，请检查网络连接。'
-  },
-  {
-    problem: '结果不准确',
-    solution: '确保地下城数据完整，包含房间和走廊信息。检查文件格式是否正确。'
-  },
-  {
-    problem: '页面加载缓慢',
-    solution: '清除浏览器缓存，关闭其他占用资源的程序。'
-  }
-]
+}
 </script>
 
 <template>
@@ -144,150 +79,121 @@ const troubleshooting = [
             class="flex items-center gap-2 px-4 py-2 bg-[#f0f8ff] hover:bg-[#e6f3ff] rounded-lg transition-colors duration-200 text-[#173753] font-medium"
           >
             <ArrowLeftIcon class="w-5 h-5" />
-            {{ t('help.backButton') }}
+            {{ getCurrentLanguage() === 'zh' ? '返回' : 'Back' }}
           </button>
-          <h1 class="text-2xl font-bold text-[#173753]">{{ t('help.title') }}</h1>
+          <h1 class="text-2xl font-bold text-[#173753]">
+            {{ schemaContent.title[getCurrentLanguage()] || schemaContent.title.en }}
+          </h1>
         </div>
       </div>
     </header>
 
     <div class="max-w-7xl mx-auto p-6">
       <div class="bg-white rounded-2xl shadow-xl p-8">
-        <!-- 快速开始 -->
-        <section class="mb-12">
-          <div class="flex items-center gap-3 mb-6">
-            <InformationCircleIcon class="w-8 h-8 text-[#2892D7]" />
-            <h2 class="text-2xl font-bold text-gray-800">{{ t('help.quickStart.title') }}</h2>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div 
-              v-for="(step, index) in quickSteps" 
-              :key="index"
-              class="bg-gradient-to-br from-[#f0f8ff] to-[#e6f3ff] rounded-xl p-6 border border-[#6DAEDB] hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
-            >
-              <div class="flex items-center gap-3 mb-4">
-                <div class="w-10 h-10 bg-[#2892D7] text-white rounded-full flex items-center justify-center text-lg font-bold">
-                  {{ step.step }}
-                </div>
-                <div class="text-2xl">{{ step.icon }}</div>
-              </div>
-              <h3 class="text-lg font-semibold text-gray-800 mb-3">{{ step.title }}</h3>
-              <p class="text-gray-600 leading-relaxed">{{ step.description }}</p>
-            </div>
-          </div>
-        </section>
-
-        <!-- 详细说明 -->
+        
+        <!-- Schema概览 -->
         <section class="mb-12">
           <div class="flex items-center gap-3 mb-6">
             <DocumentTextIcon class="w-8 h-8 text-[#2892D7]" />
-            <h2 class="text-2xl font-bold text-gray-800">{{ t('help.detailedGuide.title') }}</h2>
+            <h2 class="text-2xl font-bold text-gray-800">
+              {{ schemaContent.description[getCurrentLanguage()] || schemaContent.description.en }}
+            </h2>
           </div>
-          <div class="space-y-4">
-            <Disclosure 
-              v-for="(section, index) in helpSections" 
-              :key="index"
-              as="div" 
-              class="bg-white border border-[#6DAEDB] rounded-lg"
-            >
-              <DisclosureButton class="flex w-full justify-between rounded-lg bg-[#f0f8ff] px-6 py-4 text-left text-lg font-medium text-gray-900 hover:bg-[#e6f3ff] focus:outline-none focus-visible:ring focus-visible:ring-[#2892D7] focus-visible:ring-opacity-75">
-                <div class="flex items-center gap-3">
-                  <span class="text-2xl">{{ section.icon }}</span>
-                  <span>{{ section.title }}</span>
-                </div>
-                <ChevronUpIcon class="h-6 w-6 text-gray-500 ui-open:rotate-180 ui-open:transform" />
-              </DisclosureButton>
-              <DisclosurePanel class="px-6 pb-6 pt-4">
-                <ul class="space-y-3">
-                  <li 
-                    v-for="(item, itemIndex) in section.content" 
-                    :key="itemIndex"
-                    class="flex items-start gap-3 text-gray-600"
-                  >
-                    <div class="w-2 h-2 bg-[#2892D7] rounded-full mt-2 flex-shrink-0"></div>
-                    <span>{{ item }}</span>
-                  </li>
-                </ul>
-              </DisclosurePanel>
-            </Disclosure>
-          </div>
-        </section>
-
-        <!-- 常见问题 -->
-        <section class="mb-12">
-          <div class="flex items-center gap-3 mb-6">
-            <QuestionMarkCircleIcon class="w-8 h-8 text-[#2892D7]" />
-            <h2 class="text-2xl font-bold text-gray-800">{{ t('help.faq.title') }}</h2>
-          </div>
-          <div class="space-y-4">
-            <Disclosure 
-              v-for="(faq, index) in faqs" 
-              :key="index"
-              as="div" 
-              class="bg-white border border-[#6DAEDB] rounded-lg"
-            >
-              <DisclosureButton class="flex w-full justify-between rounded-lg bg-[#f0f8ff] px-6 py-4 text-left text-lg font-medium text-gray-900 hover:bg-[#e6f3ff] focus:outline-none focus-visible:ring focus-visible:ring-[#2892D7] focus-visible:ring-opacity-75">
-                <span>{{ faq.question }}</span>
-                <ChevronUpIcon class="h-6 w-6 text-gray-500 ui-open:rotate-180 ui-open:transform" />
-              </DisclosureButton>
-              <DisclosurePanel class="px-6 pb-6 pt-4 text-gray-600 leading-relaxed">
-                {{ faq.answer }}
-              </DisclosurePanel>
-            </Disclosure>
-          </div>
-        </section>
-
-        <!-- 故障排除 -->
-        <section class="mb-12">
-          <div class="flex items-center gap-3 mb-6">
-            <CogIcon class="w-8 h-8 text-[#2892D7]" />
-            <h2 class="text-2xl font-bold text-gray-800">{{ t('help.troubleshooting.title') }}</h2>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-4 text-gray-700 leading-relaxed">
             <div 
-              v-for="(item, index) in troubleshooting" 
+              v-for="(item, index) in schemaContent.overview[getCurrentLanguage()] || schemaContent.overview.en" 
               :key="index"
-              class="bg-gradient-to-br from-[#f0f8ff] to-[#e6f3ff] rounded-xl p-6 border border-[#6DAEDB]"
+              class="flex items-start gap-3"
             >
-              <h3 class="text-lg font-semibold text-gray-800 mb-3">{{ item.problem }}</h3>
-              <p class="text-gray-600 leading-relaxed">{{ item.solution }}</p>
+              <div class="w-2 h-2 bg-[#2892D7] rounded-full mt-2 flex-shrink-0"></div>
+              <span>{{ item }}</span>
             </div>
           </div>
         </section>
 
-        <!-- 联系支持 -->
-        <section>
+        <!-- Schema示例 -->
+        <section class="mb-12">
           <div class="flex items-center gap-3 mb-6">
-            <InformationCircleIcon class="w-8 h-8 text-[#2892D7]" />
-            <h2 class="text-2xl font-bold text-gray-800">{{ t('help.support.title') }}</h2>
+            <DocumentTextIcon class="w-8 h-8 text-[#2892D7]" />
+            <h2 class="text-2xl font-bold text-gray-800">
+              {{ getCurrentLanguage() === 'zh' ? '格式示例' : 'Format Example' }}
+            </h2>
           </div>
-          <div class="bg-gradient-to-br from-[#f0f8ff] to-[#e6f3ff] rounded-xl p-6 border border-[#6DAEDB]">
-            <p class="text-gray-700 leading-relaxed mb-4">
-              {{ t('help.support.description') }}
-            </p>
-            <div class="flex gap-4">
-              <button 
-                @click="router.push('/')"
-                class="bg-[#2892D7] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#1D70A2] transition-colors duration-200"
+          <div class="bg-gray-900 rounded-lg p-6 text-gray-100">
+            <pre class="text-sm overflow-x-auto"><code>{
+  "header": {
+    "schemaName": "dnd-dungeon-unified",
+    "schemaVersion": "1.0.0",
+    "name": "Example Dungeon",
+    "author": "System Converter",
+    "description": "A converted dungeon layout",
+    "grid": {
+      "type": "square",
+      "size": 5,
+      "unit": "ft"
+    }
+  },
+  "levels": [
+    {
+      "id": "level_1",
+      "name": "Main Level",
+      "map": { "width": 50, "height": 40 },
+      "rooms": [
+        {
+          "id": "room_1",
+          "shape": "rectangle",
+          "position": { "x": 0, "y": 0 },
+          "size": { "width": 10, "height": 8 },
+          "name": "Entrance Hall",
+          "description": "A large entrance chamber",
+          "is_entrance": true,
+          "monsters": [],
+          "treasures": []
+        }
+      ],
+      "corridors": [],
+      "connections": [
+        {
+          "id": "conn_1",
+          "from_room": "room_1",
+          "to_room": "room_2",
+          "door_type": "normal"
+        }
+      ],
+      "doors": [],
+      "game_elements": []
+    }
+  ]
+}</code></pre>
+          </div>
+          
+          <!-- 关键组件说明 -->
+          <div class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <h4 class="text-lg font-semibold text-blue-800 mb-2">
+              {{ schemaContent.keyComponents.title[getCurrentLanguage()] || schemaContent.keyComponents.title.en }}
+            </h4>
+            <ul class="space-y-2 text-blue-700">
+              <li 
+                v-for="(item, index) in schemaContent.keyComponents.items[getCurrentLanguage()] || schemaContent.keyComponents.items.en" 
+                :key="index"
+                class="flex items-start gap-2"
               >
-                {{ t('help.support.startAnalysis') }}
-              </button>
-              <button 
-                @click="router.push('/about')"
-                class="bg-[#1D70A2] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#173753] transition-colors duration-200"
-              >
-                {{ t('help.support.learnMore') }}
-              </button>
-            </div>
+                <span class="text-blue-500 font-bold">•</span>
+                <span>{{ item }}</span>
+              </li>
+            </ul>
           </div>
         </section>
+
       </div>
     </div>
 
     <!-- 页脚 -->
     <footer class="bg-white border-t border-[#6DAEDB] mt-12">
       <div class="max-w-7xl mx-auto px-6 py-4">
-        <p class="text-center text-gray-500 text-sm">&copy; 2024 地下城适配器</p>
+        <p class="text-center text-gray-500 text-sm">
+          &copy; 2024 {{ getCurrentLanguage() === 'zh' ? '地下城适配器' : 'Dungeon Adapter' }}
+        </p>
       </div>
     </footer>
   </div>
@@ -315,13 +221,17 @@ const troubleshooting = [
   .gap-6 {
     @apply gap-4;
   }
-  
-  .grid {
-    @apply grid-cols-1;
-  }
-  
-  .flex {
-    @apply flex-col;
+}
+
+/* 代码块样式优化 */
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+@media (max-width: 640px) {
+  pre {
+    font-size: 0.75rem;
   }
 }
 </style> 

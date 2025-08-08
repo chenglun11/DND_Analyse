@@ -39,12 +39,19 @@ class DoorDistributionRule(BaseQualityRule):
         if not all_rooms or not connections:
             return 0.0, {"reason": "Insufficient geometry or connections"}
 
-        # 1. CV of door counts
+        # 1. CV of door counts (only count connections between actual rooms)
+        room_ids = {room['id'] for room in all_rooms}
         room_counts = defaultdict(int)
         for c in connections:
-            room_counts[c['from_room']] += 1
-            room_counts[c['to_room']] += 1
+            from_room = c.get('from_room')
+            to_room = c.get('to_room')
+            # Only count connections between actual rooms, not game elements
+            if from_room in room_ids and to_room in room_ids:
+                room_counts[from_room] += 1
+                room_counts[to_room] += 1
         counts = list(room_counts.values())
+        if not counts or sum(counts) == 0:
+            return 0.0, {"reason": "No valid room connections found", "room_counts": dict(room_counts)}
         mean_c = sum(counts) / len(counts)
         var_c = sum((x - mean_c)**2 for x in counts) / len(counts)
         cv = math.sqrt(var_c) / mean_c if mean_c > 0 else 0.0
@@ -55,17 +62,32 @@ class DoorDistributionRule(BaseQualityRule):
         # 3. Avg room-angle entropy
         avg_entropy = self._calculate_avg_room_entropy(all_rooms, connections)
 
-        # 4. 归一化常数 (客观)
+        # 4. 归一化常数 (基于图论理论)
         MAX_CV = 2.0  # CV的理论最大值
-        # 计算地图对角线距离作为距离归一化基准
-        map_width = max(r['position']['x'] + r['size']['width'] for r in all_rooms) - min(r['position']['x'] for r in all_rooms)
-        map_height = max(r['position']['y'] + r['size']['height'] for r in all_rooms) - min(r['position']['y'] for r in all_rooms)
-        D_map = math.hypot(map_width, map_height)
+        
+        # 距离归一化：使用平均房间间距离作为基准
+        # 理论依据：Delaunay三角剖分中的平均边长
+        room_positions = [(r['position']['x'] + r['size']['width']/2, 
+                          r['position']['y'] + r['size']['height']/2) for r in all_rooms]
+        if len(room_positions) >= 2:
+            # 计算所有房间对的距离，取平均值作为特征距离
+            total_dist = 0
+            pair_count = 0
+            for i in range(len(room_positions)):
+                for j in range(i+1, min(i+11, len(room_positions))):  # 每个房间最多考虑10个邻居
+                    x1, y1 = room_positions[i]
+                    x2, y2 = room_positions[j]
+                    total_dist += math.hypot(x2-x1, y2-y1)
+                    pair_count += 1
+            D_char = total_dist / pair_count if pair_count > 0 else avg_dist + 1
+        else:
+            D_char = avg_dist + 1  # 防止除零
+            
         MAX_ENT = math.log(4)  # 4象限的最大熵
 
         # 5. 归一化
         norm_cv = max(0.0, min(1.0, 1 - cv / MAX_CV))
-        norm_dist = min(avg_dist / D_map, 1.0)
+        norm_dist = min(avg_dist / D_char, 1.0)
         norm_ent = min(avg_entropy / MAX_ENT, 1.0)
 
         # 6. 权重同等
@@ -117,9 +139,16 @@ class DoorDistributionRule(BaseQualityRule):
     def _calculate_avg_room_entropy(self, rooms: List[Dict], connections: List[Dict]) -> float:
         room_doors = defaultdict(list)
         room_pos = {r['id']:(r['position']['x'], r['position']['y']) for r in rooms}
+        room_ids = set(room_pos.keys())
+        
+        # Only process connections between actual rooms, not game elements
         for c in connections:
-            room_doors[c['from_room']].append(c['to_room'])
-            room_doors[c['to_room']].append(c['from_room'])
+            from_room = c.get('from_room')
+            to_room = c.get('to_room')
+            if from_room in room_ids and to_room in room_ids:
+                room_doors[from_room].append(to_room)
+                room_doors[to_room].append(from_room)
+        
         ent_list = []
         for rid, nbrs in room_doors.items():
             if len(nbrs) < 2: 
