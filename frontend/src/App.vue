@@ -43,7 +43,12 @@ onMounted(() => {
         
         <div class="header-center">
           <nav class="nav-menu">
-
+            <router-link to="/" class="nav-link" active-class="nav-link-active">
+              {{ t('nav.home') }}
+            </router-link>
+            <router-link to="/analytics" class="nav-link" active-class="nav-link-active">
+              {{ t('nav.analytics') }}
+            </router-link>
             <!-- <router-link to="/test" class="nav-link" active-class="nav-link-active">
               {{ t('nav.test') }}
             </router-link> -->
@@ -52,17 +57,14 @@ onMounted(() => {
         
         <div class="header-right">
           <div class="header-actions">
-            <router-link to="/" class="nav-link" active-class="nav-link-active">
-              {{ t('nav.home') }}
-            </router-link>
-            <BaseButton 
+            <!-- <BaseButton 
               variant="ghost" 
               size="sm" 
               @click="goToAbout"
               class="header-btn"
             >
               {{ t('nav.about') }}
-            </BaseButton>
+            </BaseButton> -->
             <BaseButton 
               variant="ghost" 
               size="sm" 
@@ -87,7 +89,7 @@ onMounted(() => {
       <div class="footer-bottom">
         <div class="footer-bottom-content">
           <div class="footer-bottom-left">
-            <p>&copy; 2024 Dungeon Analyzer. 保留所有权利。</p>
+            <p>&copy; 2025 Dungeon Analyzer. All Right Reserved. </p>
           </div>
         </div>
       </div>

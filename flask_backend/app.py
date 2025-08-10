@@ -4,6 +4,7 @@ import json
 import os
 import sys
 import hashlib
+import logging
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -17,6 +18,10 @@ project_root = Path(__file__).parent.parent
 
 app = Flask(__name__)
 CORS(app)  # 启用跨域支持
+
+# 配置日志
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
 # 初始化适配器管理器和质量评估器
 adapter_manager = AdapterManager()
@@ -1213,6 +1218,415 @@ def generate_metric_suggestion(metric, score, detail):
         return suggestion
     
     return None
+
+@app.route('/api/correlation-data', methods=['GET'])
+def get_correlation_data():
+    """获取相关性分析数据"""
+    try:
+        import subprocess
+        import pandas as pd
+        
+        # 检查分析结果文件是否存在
+        correlation_report = project_root / 'output' / 'correlation_analysis_detailed_report.json'
+        pearson_matrix_file = project_root / 'output' / 'correlation_pearson_matrix.csv'
+        
+        # 如果文件不存在或太旧，重新运行分析
+        if (not correlation_report.exists() or 
+            not pearson_matrix_file.exists() or
+            (datetime.now() - datetime.fromtimestamp(correlation_report.stat().st_mtime)).total_seconds() > 3600):
+            
+            try:
+                # 运行相关性分析
+                result = subprocess.run(
+                    ['python', str(project_root / 'correlation_analysis_v2.py')],
+                    cwd=project_root,
+                    env={**os.environ, 'PYTHONPATH': str(project_root)},
+                    capture_output=True,
+                    text=True,
+                    timeout=300
+                )
+                
+                if result.returncode != 0:
+                    return jsonify({
+                        'error': f'相关性分析失败: {result.stderr}'
+                    }), 500
+                    
+            except subprocess.TimeoutExpired:
+                return jsonify({
+                    'error': '相关性分析超时，请稍后重试'
+                }), 408
+            except Exception as e:
+                return jsonify({
+                    'error': f'运行相关性分析时出错: {str(e)}'
+                }), 500
+        
+        # 读取分析结果
+        with open(correlation_report, 'r', encoding='utf-8') as f:
+            report_data = json.load(f)
+        
+        # 读取相关系数矩阵
+        try:
+            pearson_df = pd.read_csv(pearson_matrix_file, index_col=0)
+            correlation_matrix = pearson_df.values.tolist()
+            metrics = list(pearson_df.columns)
+        except Exception as e:
+            return jsonify({
+                'error': f'读取相关系数矩阵失败: {str(e)}'
+            }), 500
+        
+        # 提取强相关和中等相关关系
+        strong_pairs = []
+        moderate_pairs = []
+        
+        if 'pearson_correlation_analysis' in report_data:
+            pca = report_data['pearson_correlation_analysis']
+            
+            for corr in pca.get('strong_correlations', []):
+                strong_pairs.append({
+                    'pair': f"{corr['metric1']} ↔ {corr['metric2']}",
+                    'value': corr['correlation']
+                })
+            
+            for corr in pca.get('moderate_correlations', []):
+                moderate_pairs.append({
+                    'pair': f"{corr['metric1']} ↔ {corr['metric2']}",
+                    'value': corr['correlation']
+                })
+        
+        # 计算指标统计
+        metric_stats = {}
+        for i, metric in enumerate(metrics):
+            correlations = [abs(correlation_matrix[i][j]) for j in range(len(metrics)) if i != j]
+            if correlations:
+                metric_stats[metric] = {
+                    'avg_correlation': sum(correlations) / len(correlations),
+                    'max_correlation': max(correlations),
+                    'min_correlation': min(correlations) if correlations else 0
+                }
+        
+        # 构建返回数据
+        response_data = {
+            'totalDungeons': report_data.get('summary', {}).get('total_dungeons', 105),
+            'totalMetrics': report_data.get('summary', {}).get('total_metrics', 9),
+            'strongCorrelations': len(strong_pairs),
+            'metrics': metrics,
+            'correlationMatrix': correlation_matrix,
+            'strongPairs': strong_pairs,
+            'moderatePairs': moderate_pairs,
+            'metricStats': metric_stats,
+            'lastUpdate': datetime.now().isoformat()
+        }
+        
+        return jsonify(response_data)
+        
+    except Exception as e:
+        return jsonify({
+            'error': f'获取相关性数据失败: {str(e)}'
+        }), 500
+
+@app.route('/api/refresh-correlation', methods=['POST'])
+def refresh_correlation():
+    """刷新相关性分析数据"""
+    try:
+        import subprocess
+        
+        # 强制重新运行相关性分析
+        result = subprocess.run(
+            ['python', str(project_root / 'correlation_analysis_v2.py')],
+            cwd=project_root,
+            env={**os.environ, 'PYTHONPATH': str(project_root)},
+            capture_output=True,
+            text=True,
+            timeout=300
+        )
+        
+        if result.returncode != 0:
+            return jsonify({
+                'success': False,
+                'error': f'相关性分析失败: {result.stderr}'
+            }), 500
+        
+        return jsonify({
+            'success': True,
+            'message': '相关性分析已刷新',
+            'timestamp': datetime.now().isoformat()
+        })
+        
+    except subprocess.TimeoutExpired:
+        return jsonify({
+            'success': False,
+            'error': '相关性分析超时'
+        }), 408
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+@app.route('/api/correlation-charts', methods=['GET'])
+def get_correlation_charts():
+    """获取相关性分析的matplotlib图表"""
+    try:
+        from src.chart_generator import ChartGenerator
+        import json
+        import subprocess
+        import pandas as pd
+        
+        # 检查相关性数据文件
+        correlation_report = project_root / 'output' / 'correlation_analysis_detailed_report.json'
+        pearson_matrix_file = project_root / 'output' / 'correlation_pearson_matrix.csv'
+        
+        # 如果文件不存在或太旧，运行相关性分析
+        if (not correlation_report.exists() or 
+            not pearson_matrix_file.exists() or
+            (datetime.now() - datetime.fromtimestamp(correlation_report.stat().st_mtime)).total_seconds() > 3600):
+            
+            try:
+                # 运行相关性分析
+                result = subprocess.run(
+                    ['python', str(project_root / 'correlation_analysis_v2.py')],
+                    cwd=project_root,
+                    env={**os.environ, 'PYTHONPATH': str(project_root)},
+                    capture_output=True,
+                    text=True,
+                    timeout=300
+                )
+                
+                if result.returncode != 0:
+                    return jsonify({
+                        'success': False,
+                        'error': f'相关性分析失败: {result.stderr}'
+                    }), 500
+                    
+            except subprocess.TimeoutExpired:
+                return jsonify({
+                    'success': False,
+                    'error': '相关性分析超时'
+                }), 408
+                
+        # 读取分析结果
+        try:
+            with open(correlation_report, 'r', encoding='utf-8') as f:
+                report_data = json.load(f)
+            
+            # 读取相关系数矩阵
+            pearson_df = pd.read_csv(pearson_matrix_file, index_col=0)
+            correlation_matrix = pearson_df.values.tolist()
+            metrics = list(pearson_df.columns)
+            
+        except Exception as e:
+            return jsonify({
+                'success': False,
+                'error': f'读取相关性数据失败: {str(e)}'
+            }), 500
+        
+        # 构造图表数据格式
+        correlation_results = {
+            'correlationMatrix': correlation_matrix,
+            'metrics': metrics,
+            'strongPairs': [],
+            'moderatePairs': []
+        }
+        
+        # 从报告中提取相关性对
+        if 'pearson_correlation_analysis' in report_data:
+            pca = report_data['pearson_correlation_analysis']
+            
+            for corr in pca.get('strong_correlations', []):
+                correlation_results['strongPairs'].append({
+                    'pair': f"{corr['metric1']} ↔ {corr['metric2']}",
+                    'value': corr['correlation']
+                })
+            
+            for corr in pca.get('moderate_correlations', []):
+                correlation_results['moderatePairs'].append({
+                    'pair': f"{corr['metric1']} ↔ {corr['metric2']}",
+                    'value': corr['correlation']
+                })
+        
+        # 创建图表生成器
+        chart_gen = ChartGenerator()
+        
+        # 读取P值相关数据
+        try:
+            pvalue_matrix_file = project_root / 'output' / 'correlation_p_values_matrix.csv'
+            bonferroni_matrix_file = project_root / 'output' / 'correlation_bonferroni_p_matrix.csv'
+            fdr_matrix_file = project_root / 'output' / 'correlation_fdr_p_matrix.csv'
+            
+            pvalue_matrix = None
+            bonferroni_matrix = None
+            fdr_matrix = None
+            
+            if pvalue_matrix_file.exists():
+                pvalue_df = pd.read_csv(pvalue_matrix_file, index_col=0)
+                pvalue_matrix = pvalue_df.values.tolist()
+            
+            if bonferroni_matrix_file.exists():
+                bonf_df = pd.read_csv(bonferroni_matrix_file, index_col=0)
+                bonferroni_matrix = bonf_df.values.tolist()
+            
+            if fdr_matrix_file.exists():
+                fdr_df = pd.read_csv(fdr_matrix_file, index_col=0)
+                fdr_matrix = fdr_df.values.tolist()
+                
+        except Exception as e:
+            logger.warning(f"无法读取P值数据: {e}")
+            pvalue_matrix = None
+            bonferroni_matrix = None
+            fdr_matrix = None
+        
+        # 生成各种图表
+        charts = {}
+        
+        # 热力图
+        try:
+            charts['heatmap'] = chart_gen.generate_correlation_heatmap(
+                correlation_results['correlationMatrix'],
+                correlation_results['metrics']
+            )
+        except Exception as e:
+            logger.error(f"热力图生成失败: {e}")
+            charts['heatmap'] = None
+        
+        # 散点图
+        try:
+            charts['scatter'] = chart_gen.generate_scatter_plot(
+                correlation_results['correlationMatrix'],
+                correlation_results['metrics']
+            )
+        except Exception as e:
+            logger.error(f"散点图生成失败: {e}")
+            charts['scatter'] = None
+        
+        # 网络图/雷达图
+        try:
+            charts['network'] = chart_gen.generate_network_graph(
+                correlation_results['correlationMatrix'],
+                correlation_results['metrics']
+            )
+        except Exception as e:
+            logger.error(f"网络图生成失败: {e}")
+            charts['network'] = None
+        
+        # 强相关柱状图
+        try:
+            charts['strong_correlations'] = chart_gen.generate_bar_chart(
+                correlation_results.get('strongPairs', []),
+                'Strong Correlations Analysis'
+            )
+        except Exception as e:
+            logger.error(f"强相关柱状图生成失败: {e}")
+            charts['strong_correlations'] = None
+        
+        # 中等相关柱状图
+        try:
+            charts['moderate_correlations'] = chart_gen.generate_bar_chart(
+                correlation_results.get('moderatePairs', []),
+                'Moderate Correlations Analysis'
+            )
+        except Exception as e:
+            logger.error(f"中等相关柱状图生成失败: {e}")
+            charts['moderate_correlations'] = None
+        
+        # P值热力图
+        if pvalue_matrix is not None:
+            try:
+                from src.chart_generator_pvalue import PValueChartGenerator
+                pvalue_chart_gen = PValueChartGenerator()
+                
+                charts['pvalue_heatmap'] = pvalue_chart_gen.generate_pvalue_heatmap(
+                    pvalue_matrix, metrics, "Statistical Significance Analysis"
+                )
+            except Exception as e:
+                logger.error(f"P值热力图生成失败: {e}")
+                charts['pvalue_heatmap'] = None
+        
+        # 多重校正比较图
+        if pvalue_matrix and bonferroni_matrix and fdr_matrix:
+            try:
+                if 'pvalue_chart_gen' not in locals():
+                    from src.chart_generator_pvalue import PValueChartGenerator
+                    pvalue_chart_gen = PValueChartGenerator()
+                    
+                charts['significance_comparison'] = pvalue_chart_gen.generate_significance_comparison(
+                    pvalue_matrix, bonferroni_matrix, fdr_matrix, metrics
+                )
+            except Exception as e:
+                logger.error(f"多重校正比较图生成失败: {e}")
+                charts['significance_comparison'] = None
+        
+        # 一致性分析图
+        if pvalue_matrix is not None:
+            try:
+                if 'pvalue_chart_gen' not in locals():
+                    from src.chart_generator_pvalue import PValueChartGenerator
+                    pvalue_chart_gen = PValueChartGenerator()
+                    
+                charts['consistency_analysis'] = pvalue_chart_gen.generate_consistency_analysis(
+                    correlation_matrix, pvalue_matrix, metrics
+                )
+            except Exception as e:
+                logger.error(f"一致性分析图生成失败: {e}")
+                charts['consistency_analysis'] = None
+        
+        # 高级分析：VIF、PCA、聚类
+        try:
+            from src.advanced_analytics import AdvancedAnalytics
+            import numpy as np
+            advanced_analytics = AdvancedAnalytics()
+            
+            # 读取原始数据用于PCA分析
+            data_file = project_root / 'output' / 'correlation_dungeon_metrics_data.csv'
+            if data_file.exists():
+                import pandas as pd
+                data_df = pd.read_csv(data_file)
+                numeric_cols = ['accessibility', 'degree_variance', 'door_distribution', 'dead_end_ratio', 
+                               'key_path_length', 'loop_ratio', 'path_diversity', 'treasure_monster_distribution', 'geometric_balance']
+                
+                if all(col in data_df.columns for col in numeric_cols):
+                    data_matrix = data_df[numeric_cols].values
+                    
+                    # VIF分析
+                    vif_results = advanced_analytics.calculate_vif(np.array(correlation_matrix), metrics)
+                    charts['vif_analysis'] = advanced_analytics.generate_vif_chart(vif_results)
+                    
+                    # PCA分析
+                    pca_results = advanced_analytics.perform_pca(data_matrix, metrics)
+                    charts['pca_analysis'] = advanced_analytics.generate_pca_chart(pca_results)
+                    
+                    # 聚类分析
+                    clustering_results = advanced_analytics.perform_clustering(np.array(correlation_matrix), metrics)
+                    charts['clustering_analysis'] = advanced_analytics.generate_clustering_chart(clustering_results)
+                    
+                else:
+                    logger.warning("数据文件中缺少必要的列")
+            else:
+                logger.warning("未找到原始数据文件，跳过高级分析")
+                
+        except Exception as e:
+            logger.error(f"高级分析生成失败: {e}")
+            charts['vif_analysis'] = None
+            charts['pca_analysis'] = None
+            charts['clustering_analysis'] = None
+        
+        return jsonify({
+            'success': True,
+            'charts': charts,
+            'data': correlation_results,
+            'timestamp': datetime.now().isoformat()
+        })
+        
+    except subprocess.TimeoutExpired:
+        return jsonify({
+            'success': False,
+            'error': '图表生成超时'
+        }), 408
+    except Exception as e:
+        logger.error(f"图表生成错误: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5001) 

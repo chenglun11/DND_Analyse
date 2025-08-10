@@ -50,7 +50,8 @@ const zh = {
     test: '测试',
     about: '关于',
     help: '帮助',
-    detail: '详情'
+    detail: '详情',
+    analytics: '统计分析中心'
   },
 
   // 应用信息 
@@ -62,6 +63,7 @@ const zh = {
 
   // 首页
   home: {
+    restart: '重新开始',
     analysisResultsCount: '共评估 ({count}) 个文件',
     title: '地下城质量评估系统',
     subtitle: '上传地下城地图文件，获取详细的质量分析报告',
@@ -617,7 +619,8 @@ const en = {
     test: 'Test',
     about: 'About',
     help: 'Help',
-    detail: 'Detail'
+    detail: 'Detail',
+    analytics: 'Statistical Analytics'
   },
 
   // App info
@@ -629,9 +632,10 @@ const en = {
 
   // Home page
   home: {
+    restart:' Restart Analysis',
     analysisResultsCount: 'Analysised {count} files',
     dragAndDrop: 'Drag and drop files here or click to select files',
-    uploadTitle: 'Upload Dungeon Files',
+    uploadFiles: 'Upload Dungeon Files',
     uploadDescription: 'Drag files here or click to select files',
     supportedFormats: 'Supported formats: JSON, Watabou, Donjon, DungeonDraft',
     selectFiles: 'Select Files',
