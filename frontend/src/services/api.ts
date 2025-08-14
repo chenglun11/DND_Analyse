@@ -50,6 +50,29 @@ export interface CacheInfo {
   }>
 }
 
+export interface CorrelationPair {
+  pair: string
+  value: number
+}
+
+export interface MetricStats {
+  avg_correlation: number
+  max_correlation: number
+  min_correlation: number
+}
+
+export interface CorrelationData {
+  totalDungeons: number
+  totalMetrics: number
+  strongCorrelations: number
+  metrics: string[]
+  correlationMatrix: number[][]
+  strongPairs: CorrelationPair[]
+  moderatePairs: CorrelationPair[]
+  metricStats: Record<string, MetricStats>
+  lastUpdate: string
+}
+
 export interface BatchTestResult {
   success: boolean
   message?: string
@@ -338,5 +361,25 @@ export class DungeonAPI {
 
   static async getBatchTestStatus(): Promise<any> {
     return this.request('/batch-test-status')
+  }
+
+  // 相关性分析相关方法
+  static async getCorrelationData(): Promise<CorrelationData> {
+    return this.request('/correlation-data')
+  }
+
+  static async refreshCorrelation(): Promise<{ success: boolean; message: string }> {
+    return this.request('/refresh-correlation', {
+      method: 'POST'
+    })
+  }
+
+  static async getCorrelationCharts(): Promise<{ success: boolean; charts: Record<string, string>; data: any; timestamp: number }> {
+    return this.request('/correlation-charts')
+  }
+
+  // 直接读取统计分析报告数据（用于高级分析功能）
+  static async getStatisticalAnalysisReport(): Promise<any> {
+    return this.request('/statistical-analysis-report')
   }
 } 

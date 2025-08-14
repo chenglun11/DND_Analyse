@@ -1,0 +1,453 @@
+{
+  "header": {
+    "schemaName": "dnd-dungeon-unified",
+    "schemaVersion": "1.0.0",
+    "name": "Royal Flush",
+    "author": "Christopher Selby (Converted by System Converter)",
+    "description": "Sewer-clearing job turns into an ancient secret beneath the royal palace.",
+    "grid": { "type": "square", "size": 5, "unit": "ft" }
+  },
+  "levels": [
+    {
+      "id": "level_1",
+      "name": "Main Level",
+      "map": { "width": 50, "height": 40 },
+
+      "rooms": [
+        {
+          "id": "room_1",
+          "room_type": "room",
+          "shape": "rectangle",
+          "position": { "x": 45, "y": 35 },
+          "size": { "width": 5, "height": 5 },
+          "name": "1. Entrance",
+          "description": "Start here. Low magical light in #3, #12, #15; torches in #13, #14.",
+          "is_entrance": true,
+          "monsters": [],
+          "treasures": []
+        },
+
+        {
+          "id": "room_2",
+          "room_type": "corridor",
+          "shape": "rectangle",
+          "position": { "x": 40, "y": 24 },
+          "size": { "width": 5, "height": 12 },
+          "name": "2. Drain from Street",
+          "description": "Debris, a small trinket and coins; ~8 rats. Hidden slide (2A) if the blockage is moved.",
+          "monsters": ["rats x8"],
+          "treasures": ["coins (few)", "trinket"]
+        },
+
+        {
+          "id": "room_3",
+          "room_type": "room",
+          "shape": "rectangle",
+          "position": { "x": 35, "y": 25 },
+          "size": { "width": 5, "height": 5 },
+          "name": "3. Secret Stash",
+          "description": "Chest with coins, a few gems, several valuable trinkets. Guarded by 12 rats and a Rat King.",
+          "monsters": ["rats x12", "Rat King"],
+          "treasures": ["coins", "gems", "valuable trinkets"]
+        },
+
+        {
+          "id": "room_4",
+          "room_type": "corridor",
+          "shape": "rectangle",
+          "position": { "x": 20, "y": 25 },
+          "size": { "width": 20, "height": 5 },
+          "name": "4. Corridor with Dead Bodies",
+          "description": "Corpses with melee weapons for early upgrades.",
+          "monsters": [],
+          "treasures": ["melee weapons (assorted)"]
+        },
+
+        {
+          "id": "room_5",
+          "room_type": "room",
+          "shape": "rectangle",
+          "position": { "x": 5, "y": 35 },
+          "size": { "width": 5, "height": 5 },
+          "name": "5. Kobold Guard Room",
+          "description": "Two kobolds off-duty; gear in the room (leather armor, shields, shortbows). #8 may come to investigate loud noise.",
+          "monsters": ["kobold", "kobold"],
+          "treasures": ["leather armor (2)", "shield (2)", "shortbow (2)"]
+        },
+
+        {
+          "id": "room_6",
+          "room_type": "room",
+          "shape": "rectangle",
+          "position": { "x": 5, "y": 25 },
+          "size": { "width": 5, "height": 5 },
+          "name": "6. Ancient Temple (Runes)",
+          "description": "Rune puzzle that opens secret passage to #12; runes describe the werecroc ritual.",
+          "monsters": [],
+          "treasures": ["rune clues"]
+        },
+
+        {
+          "id": "room_7",
+          "room_type": "corridor",
+          "shape": "rectangle",
+          "position": { "x": 25, "y": 18 },
+          "size": { "width": 4, "height": 10 },
+          "name": "7. Stairs Down to Guarded Area",
+          "description": "Locked door at the bottom blocks access to #13; guards audible farther down.",
+          "monsters": [],
+          "treasures": []
+        },
+
+        {
+          "id": "room_8",
+          "room_type": "corridor",
+          "shape": "rectangle",
+          "position": { "x": 35, "y": 20 },
+          "size": { "width": 10, "height": 4 },
+          "name": "8. Guarded Corridor",
+          "description": "On-duty kobold guards with leather armor, shields, shortbows. Door to #9 is locked; a kobold has the key.",
+          "monsters": ["kobold guards"],
+          "treasures": []
+        },
+
+        {
+          "id": "room_9",
+          "room_type": "room",
+          "shape": "rectangle",
+          "position": { "x": 46, "y": 14 },
+          "size": { "width": 4, "height": 5 },
+          "name": "9. Bullywug Pens",
+          "description": "Five bullywugs in cages as food for the werecroc. Belligerent even if freed.",
+          "monsters": ["bullywugs x5"],
+          "treasures": []
+        },
+
+        {
+          "id": "room_10",
+          "room_type": "room",
+          "shape": "octagon",
+          "position": { "x": 15, "y": 20 },
+          "size": { "width": 8, "height": 8 },
+          "name": "10. Croc Lair (Fake Boss)",
+          "description": "Female crocodile kept as mate for the werecroc; four baby crocs join the fight.",
+          "monsters": ["crocodile (female)", "baby crocodile x4"],
+          "treasures": []
+        },
+
+        {
+          "id": "room_11",
+          "room_type": "corridor",
+          "shape": "polyline",
+          "position": { "x": 40, "y": 8 },
+          "size": { "width": 10, "height": 14 },
+          "name": "11. Downward Slope",
+          "description": "Curves south toward #15. Depending on approach, PCs may overhear the handler talking with the prince.",
+          "monsters": [],
+          "treasures": []
+        },
+
+        {
+          "id": "room_12",
+          "room_type": "corridor",
+          "shape": "rectangle",
+          "position": { "x": 0, "y": 15 },
+          "size": { "width": 5, "height": 5 },
+          "name": "12. Ladder Corridor",
+          "description": "Ladder up to a locked trapdoor (fictional exit to the manor). Used to hide the prince’s transformations.",
+          "monsters": [],
+          "treasures": []
+        },
+
+        {
+          "id": "room_13",
+          "room_type": "room",
+          "shape": "rectangle",
+          "position": { "x": 20, "y": 10 },
+          "size": { "width": 5, "height": 5 },
+          "name": "13. Werecroc Handler Lab",
+          "description": "Ancient device controlling transformations. Handler starts here; after N turns moves to #14 then #15.",
+          "monsters": ["werecroc handler"],
+          "treasures": ["ancient control device", "handler key"]
+        },
+
+        {
+          "id": "room_14",
+          "room_type": "room",
+          "shape": "rectangle",
+          "position": { "x": 26, "y": 10 },
+          "size": { "width": 5, "height": 5 },
+          "name": "14. Prince's Bedchamber",
+          "description": "Clues to royal heritage and the curse; rune markings pointing toward #15. Torches lit.",
+          "monsters": [],
+          "treasures": ["notes", "books", "games"]
+        },
+
+        {
+          "id": "room_15",
+          "room_type": "room",
+          "shape": "rectangle",
+          "position": { "x": 32, "y": 6 },
+          "size": { "width": 5, "height": 5 },
+          "name": "15. Boss Room",
+          "description": "Only way out. Door is locked; handler has the key. Exit requires a Perception check to discover.",
+          "monsters": [
+            "werecroc (the prince)",
+            "handler (if ritual progressed)"
+          ],
+          "treasures": []
+        }
+      ],
+
+      "corridors": [
+        {
+          "id": "cor_2",
+          "name": "Drain Shaft",
+          "path": [
+            { "x": 42, "y": 35 },
+            { "x": 42, "y": 22 }
+          ],
+          "lighting": "dim"
+        },
+        {
+          "id": "cor_4",
+          "name": "Body Corridor",
+          "path": [
+            { "x": 32, "y": 25 },
+            { "x": 10, "y": 25 }
+          ],
+          "lighting": "normal"
+        },
+        {
+          "id": "cor_7",
+          "name": "Stairwell",
+          "path": [
+            { "x": 25, "y": 25 },
+            { "x": 25, "y": 10 }
+          ],
+          "lighting": "normal"
+        },
+        {
+          "id": "cor_8",
+          "name": "Guarded Walk",
+          "path": [
+            { "x": 35, "y": 20 },
+            { "x": 40, "y": 20 }
+          ],
+          "lighting": "dim"
+        },
+        {
+          "id": "cor_11",
+          "name": "Curved Slope",
+          "path": [
+            { "x": 45, "y": 20 },
+            { "x": 46, "y": 15 },
+            { "x": 42, "y": 7 },
+            { "x": 36, "y": 7 }
+          ],
+          "lighting": "dim"
+        },
+        {
+          "id": "cor_12",
+          "name": "West Link to #12",
+          "path": [
+            { "x": 8, "y": 15 },
+            { "x": 2, "y": 15 }
+          ],
+          "lighting": "normal"
+        }
+      ],
+
+      "connections": [
+        {
+          "id": "conn_01",
+          "from_room": "room_1",
+          "to_room": "room_2",
+          "door_type": "normal"
+        },
+        {
+          "id": "conn_02",
+          "from_room": "room_2",
+          "to_room": "room_4",
+          "door_type": "normal"
+        },
+        {
+          "id": "conn_03",
+          "from_room": "room_3",
+          "to_room": "room_4",
+          "door_type": "normal"
+        },
+
+        {
+          "id": "conn_04",
+          "from_room": "room_4",
+          "to_room": "room_5",
+          "door_type": "normal"
+        },
+        {
+          "id": "conn_05",
+          "from_room": "room_4",
+          "to_room": "room_6",
+          "door_type": "normal"
+        },
+        {
+          "id": "conn_06",
+          "from_room": "room_4",
+          "to_room": "room_10",
+          "door_type": "normal"
+        },
+        {
+          "id": "conn_07",
+          "from_room": "room_4",
+          "to_room": "room_7",
+          "door_type": "normal"
+        },
+        {
+          "id": "conn_08",
+          "from_room": "room_4",
+          "to_room": "room_8",
+          "door_type": "normal"
+        },
+
+        {
+          "id": "conn_09",
+          "from_room": "room_7",
+          "to_room": "room_13",
+          "door_type": "barred_locked"
+        },
+
+        {
+          "id": "conn_10",
+          "from_room": "room_13",
+          "to_room": "room_14",
+          "door_type": "normal"
+        },
+
+        {
+          "id": "conn_11",
+          "from_room": "room_8",
+          "to_room": "room_9",
+          "door_type": "wooden_locked"
+        },
+
+        {
+          "id": "conn_12",
+          "from_room": "room_6",
+          "to_room": "room_12",
+          "door_type": "secret_puzzle_locked"
+        },
+
+        {
+          "id": "conn_13",
+          "from_room": "room_11",
+          "to_room": "room_14",
+          "door_type": "normal"
+        },
+        {
+          "id": "conn_14",
+          "from_room": "room_14",
+          "to_room": "room_15",
+          "door_type": "iron_locked"
+        }
+      ],
+
+      "doors": [
+        {
+          "id": "door_8_9",
+          "between": { "from_room": "room_8", "to_room": "room_9" },
+          "type": "wooden",
+          "state": "locked",
+          "key_item": "kobold_key",
+          "notes": "One kobold from #8 carries the key."
+        },
+        {
+          "id": "door_7_13",
+          "between": { "from_room": "room_7", "to_room": "room_13" },
+          "type": "barred",
+          "state": "locked",
+          "notes": "Locked door at the bottom of the stairs."
+        },
+        {
+          "id": "door_6_12",
+          "between": { "from_room": "room_6", "to_room": "room_12" },
+          "type": "secret",
+          "state": "puzzle_locked",
+          "puzzle_id": "puz_runes_6",
+          "notes": "Opens after solving the rune puzzle in #6."
+        },
+        {
+          "id": "door_14_15",
+          "between": { "from_room": "room_14", "to_room": "room_15" },
+          "type": "iron",
+          "state": "locked",
+          "key_item": "handler_key",
+          "dc_pick": 18,
+          "notes": "Handler (from #13) holds the key."
+        }
+      ],
+
+      "game_elements": [
+        {
+          "type": "loot_cache",
+          "name": "Stash of coins, gems, trinkets",
+          "position": { "x": 35, "y": 25 },
+          "notes": "Guarded by 12 rats and a Rat King."
+        },
+        {
+          "type": "scavenge",
+          "name": "Melee weapon stash",
+          "position": { "x": 20, "y": 25 },
+          "notes": "Found among corpses; provides early gear upgrade."
+        },
+        {
+          "type": "mechanism",
+          "name": "Rune puzzle door",
+          "position": { "x": 5, "y": 25 },
+          "notes": "Solving puzzle opens secret passage from #6 to #12."
+        },
+        {
+          "type": "encounter",
+          "name": "Kobold guards",
+          "position": { "x": 35, "y": 20 },
+          "notes": "Armed with leather armor, shields, and shortbows. One holds key to #9."
+        },
+        {
+          "type": "boss_fake",
+          "name": "Female crocodile with hatchlings",
+          "position": { "x": 15, "y": 20 },
+          "notes": "Four baby crocodiles join the fight."
+        },
+        {
+          "type": "ambience",
+          "name": "Overheard conversation",
+          "position": { "x": 40, "y": 8 },
+          "notes": "Handler and prince talking; gives clues about keys and rituals."
+        },
+        {
+          "type": "objective",
+          "name": "Handler's transformation device",
+          "position": { "x": 20, "y": 10 },
+          "notes": "Ancient device controlling werecroc transformations; handler carries key to #15."
+        },
+        {
+          "type": "lore",
+          "name": "Royal heritage clues",
+          "position": { "x": 26, "y": 10 },
+          "notes": "Notes, books, and rune markings toward #15."
+        },
+        {
+          "type": "boss",
+          "name": "Werecroc (Prince)",
+          "position": { "x": 32, "y": 6 },
+          "notes": "Final boss; door requires handler key or DC 16 Perception to exit."
+        },
+        {
+          "type": "trap",
+          "name": "Hidden slide",
+          "position": { "x": 40, "y": 24 },
+          "notes": "Triggered if large carcass in #2 is moved; drops PCs to #4."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1362 @@
+{
+  "header": {
+    "schemaName": "dnd-dungeon-unified",
+    "schemaVersion": "1.0.0",
+    "name": "Swamp Tomb of the Jade Oracle",
+    "author": "BSP-Dungeon-Generator",
+    "description": "Long after the Jade Oracle's fall the tomb remained abandoned. Lately a fearsome soul-sucking ant has made its home here.",
+    "grid": {
+      "type": "square",
+      "size": 5,
+      "unit": "ft"
+    }
+  },
+  "levels": [
+    {
+      "id": "level_1",
+      "name": "Ground Floor",
+      "rooms": [
+        {
+          "id": "room_0",
+          "name": "Room 1",
+          "type": "room",
+          "position": {
+            "x": 1,
+            "y": 0
+          },
+          "size": {
+            "width": 2,
+            "height": 1
+          },
+          "properties": {},
+          "is_entrance": true,
+          "is_exit": false
+        },
+        {
+          "id": "room_1",
+          "name": "Room 2",
+          "type": "room",
+          "position": {
+            "x": 4,
+            "y": -2
+          },
+          "size": {
+            "width": 4,
+            "height": 5
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_2",
+          "name": "Room 3",
+          "type": "special",
+          "position": {
+            "x": 2,
+            "y": -8
+          },
+          "size": {
+            "width": 5,
+            "height": 5
+          },
+          "properties": {
+            "shape": "circular"
+          }
+        },
+        {
+          "id": "room_3",
+          "name": "Room 4",
+          "type": "special",
+          "position": {
+            "x": 2,
+            "y": 4
+          },
+          "size": {
+            "width": 5,
+            "height": 5
+          },
+          "properties": {
+            "shape": "circular"
+          }
+        },
+        {
+          "id": "room_4",
+          "name": "Room 5",
+          "type": "room",
+          "position": {
+            "x": -3,
+            "y": -7
+          },
+          "size": {
+            "width": 4,
+            "height": 3
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_5",
+          "name": "Room 6",
+          "type": "room",
+          "position": {
+            "x": 8,
+            "y": -7
+          },
+          "size": {
+            "width": 4,
+            "height": 3
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_6",
+          "name": "Room 7",
+          "type": "room",
+          "position": {
+            "x": -3,
+            "y": 5
+          },
+          "size": {
+            "width": 4,
+            "height": 3
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_7",
+          "name": "Room 8",
+          "type": "boss",
+          "position": {
+            "x": 8,
+            "y": 5
+          },
+          "size": {
+            "width": 4,
+            "height": 3
+          },
+          "properties": {
+            "is_ending": true
+          },
+          "is_exit": true,
+          "is_entrance": false
+        },
+        {
+          "id": "room_8",
+          "name": "Room 9",
+          "type": "room",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_9",
+          "name": "Room 10",
+          "type": "room",
+          "position": {
+            "x": 3,
+            "y": 0
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_10",
+          "name": "Room 11",
+          "type": "room",
+          "position": {
+            "x": 4,
+            "y": -3
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_11",
+          "name": "Room 12",
+          "type": "room",
+          "position": {
+            "x": 4,
+            "y": 3
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_12",
+          "name": "Room 13",
+          "type": "room",
+          "position": {
+            "x": 1,
+            "y": -6
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_13",
+          "name": "Room 14",
+          "type": "room",
+          "position": {
+            "x": 7,
+            "y": -6
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_14",
+          "name": "Room 15",
+          "type": "room",
+          "position": {
+            "x": 1,
+            "y": 6
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_15",
+          "name": "Room 16",
+          "type": "room",
+          "position": {
+            "x": 7,
+            "y": 6
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_16",
+          "name": "Room 17",
+          "type": "room",
+          "position": {
+            "x": 12,
+            "y": 6
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        }
+      ],
+      "connections": [
+        {
+          "id": "connection_0",
+          "from_room": "room_0",
+          "to_room": "room_8",
+          "type": "entrance",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "id": "connection_1",
+          "from_room": "room_0",
+          "to_room": "room_1",
+          "type": "locked",
+          "position": {
+            "x": 3,
+            "y": 0
+          }
+        },
+        {
+          "id": "connection_2",
+          "from_room": "room_1",
+          "to_room": "room_2",
+          "type": "locked",
+          "position": {
+            "x": 4,
+            "y": -3
+          }
+        },
+        {
+          "id": "connection_3",
+          "from_room": "room_0",
+          "to_room": "room_1",
+          "type": "locked",
+          "position": {
+            "x": 4,
+            "y": 3
+          }
+        },
+        {
+          "id": "connection_4",
+          "from_room": "room_2",
+          "to_room": "room_4",
+          "type": "open",
+          "position": {
+            "x": 1,
+            "y": -6
+          }
+        },
+        {
+          "id": "connection_5",
+          "from_room": "room_2",
+          "to_room": "room_5",
+          "type": "open",
+          "position": {
+            "x": 7,
+            "y": -6
+          }
+        },
+        {
+          "id": "connection_6",
+          "from_room": "room_3",
+          "to_room": "room_6",
+          "type": "locked",
+          "position": {
+            "x": 1,
+            "y": 6
+          }
+        },
+        {
+          "id": "connection_7",
+          "from_room": "room_3",
+          "to_room": "room_7",
+          "type": "trap",
+          "position": {
+            "x": 7,
+            "y": 6
+          }
+        },
+        {
+          "id": "connection_8",
+          "from_room": "room_7",
+          "to_room": "room_16",
+          "type": "portal",
+          "position": {
+            "x": 12,
+            "y": 6
+          }
+        },
+        {
+          "id": "connection_auto_9",
+          "from_room": "room_7",
+          "to_room": "room_15",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_10",
+          "from_room": "room_2",
+          "to_room": "room_12",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_11",
+          "from_room": "room_0",
+          "to_room": "room_9",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_12",
+          "from_room": "room_3",
+          "to_room": "room_11",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_13",
+          "from_room": "room_5",
+          "to_room": "room_13",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_14",
+          "from_room": "room_3",
+          "to_room": "room_14",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_15",
+          "from_room": "room_1",
+          "to_room": "room_10",
+          "type": "corridor"
+        },
+        {
+          "from_room": "room_1",
+          "to_room": "room_3",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_1",
+          "to_room": "room_9",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_1",
+          "to_room": "room_11",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_2",
+          "to_room": "room_10",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_2",
+          "to_room": "room_13",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_3",
+          "to_room": "room_15",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_4",
+          "to_room": "room_12",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_6",
+          "to_room": "room_14",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        }
+      ],
+      "game_elements": [
+        {
+          "id": "note_0",
+          "type": "item",
+          "name": "Item 1",
+          "description": "Remains of a hobgoblin, a scale mail and rations in his hands.",
+          "position": {
+            "x": 6,
+            "y": 0.5
+          }
+        },
+        {
+          "id": "note_1",
+          "type": "item",
+          "name": "Item 2",
+          "description": "A strongbox holds a mysterious, smoking idol.",
+          "position": {
+            "x": 4.5,
+            "y": -5.5
+          }
+        },
+        {
+          "id": "note_2",
+          "type": "key",
+          "name": "Item 3",
+          "description": "A scorched ironbound door with two keyholes on the eastern wall of the hall.",
+          "position": {
+            "x": 4.5,
+            "y": 6.5
+          }
+        },
+        {
+          "id": "note_3",
+          "type": "key",
+          "name": "Item 4",
+          "description": "A pile of rubble hides a key.",
+          "position": {
+            "x": 10,
+            "y": -5.5
+          }
+        },
+        {
+          "id": "note_4",
+          "type": "key",
+          "name": "Item 5",
+          "description": "A key in a large coffin.",
+          "position": {
+            "x": -1,
+            "y": 6.5
+          }
+        },
+        {
+          "id": "column_0",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 5.88581929876693,
+            "y": -4.925974851452366
+          }
+        },
+        {
+          "id": "column_1",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 5.074025148547634,
+            "y": -4.11418070123307
+          }
+        },
+        {
+          "id": "column_2",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 3.9259748514523656,
+            "y": -4.11418070123307
+          }
+        },
+        {
+          "id": "column_3",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 3.11418070123307,
+            "y": -4.925974851452365
+          }
+        },
+        {
+          "id": "column_4",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 3.11418070123307,
+            "y": -6.074025148547634
+          }
+        },
+        {
+          "id": "column_5",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 3.9259748514523647,
+            "y": -6.88581929876693
+          }
+        },
+        {
+          "id": "column_6",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 5.074025148547635,
+            "y": -6.88581929876693
+          }
+        },
+        {
+          "id": "column_7",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 5.88581929876693,
+            "y": -6.074025148547635
+          }
+        },
+        {
+          "id": "column_8",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 5.88581929876693,
+            "y": 7.074025148547634
+          }
+        },
+        {
+          "id": "column_9",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 5.074025148547634,
+            "y": 7.88581929876693
+          }
+        },
+        {
+          "id": "column_10",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 3.9259748514523656,
+            "y": 7.88581929876693
+          }
+        },
+        {
+          "id": "column_11",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 3.11418070123307,
+            "y": 7.074025148547635
+          }
+        },
+        {
+          "id": "column_12",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 3.11418070123307,
+            "y": 5.925974851452366
+          }
+        },
+        {
+          "id": "column_13",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 3.9259748514523647,
+            "y": 5.11418070123307
+          }
+        },
+        {
+          "id": "column_14",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 5.074025148547635,
+            "y": 5.11418070123307
+          }
+        },
+        {
+          "id": "column_15",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 5.88581929876693,
+            "y": 5.925974851452365
+          }
+        },
+        {
+          "id": "column_16",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": -2,
+            "y": -6
+          }
+        },
+        {
+          "id": "column_17",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": -2,
+            "y": -5
+          }
+        },
+        {
+          "id": "column_18",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": -1,
+            "y": -6
+          }
+        },
+        {
+          "id": "column_19",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": -1,
+            "y": -5
+          }
+        },
+        {
+          "id": "column_20",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 0,
+            "y": -6
+          }
+        },
+        {
+          "id": "column_21",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 0,
+            "y": -5
+          }
+        },
+        {
+          "id": "column_22",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 9,
+            "y": -6
+          }
+        },
+        {
+          "id": "column_23",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 9,
+            "y": -5
+          }
+        },
+        {
+          "id": "column_24",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 10,
+            "y": -6
+          }
+        },
+        {
+          "id": "column_25",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 10,
+            "y": -5
+          }
+        },
+        {
+          "id": "column_26",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 11,
+            "y": -6
+          }
+        },
+        {
+          "id": "column_27",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 11,
+            "y": -5
+          }
+        },
+        {
+          "id": "column_28",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": -2,
+            "y": 6
+          }
+        },
+        {
+          "id": "column_29",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": -2,
+            "y": 7
+          }
+        },
+        {
+          "id": "column_30",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": -1,
+            "y": 6
+          }
+        },
+        {
+          "id": "column_31",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": -1,
+            "y": 7
+          }
+        },
+        {
+          "id": "column_32",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 0,
+            "y": 6
+          }
+        },
+        {
+          "id": "column_33",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 0,
+            "y": 7
+          }
+        },
+        {
+          "id": "water_0",
+          "type": "hazard",
+          "name": "Water",
+          "description": "A water area",
+          "position": {
+            "x": 9,
+            "y": 4
+          }
+        },
+        {
+          "id": "water_1",
+          "type": "hazard",
+          "name": "Water",
+          "description": "A water area",
+          "position": {
+            "x": 10,
+            "y": 4
+          }
+        },
+        {
+          "id": "water_2",
+          "type": "hazard",
+          "name": "Water",
+          "description": "A water area",
+          "position": {
+            "x": 11,
+            "y": 4
+          }
+        },
+        {
+          "id": "water_3",
+          "type": "hazard",
+          "name": "Water",
+          "description": "A water area",
+          "position": {
+            "x": 9,
+            "y": 5
+          }
+        },
+        {
+          "id": "water_4",
+          "type": "hazard",
+          "name": "Water",
+          "description": "A water area",
+          "position": {
+            "x": 10,
+            "y": 5
+          }
+        },
+        {
+          "id": "water_5",
+          "type": "hazard",
+          "name": "Water",
+          "description": "A water area",
+          "position": {
+            "x": 11,
+            "y": 5
+          }
+        },
+        {
+          "id": "water_6",
+          "type": "hazard",
+          "name": "Water",
+          "description": "A water area",
+          "position": {
+            "x": 12,
+            "y": 5
+          }
+        },
+        {
+          "id": "water_7",
+          "type": "hazard",
+          "name": "Water",
+          "description": "A water area",
+          "position": {
+            "x": 7,
+            "y": 6
+          }
+        },
+        {
+          "id": "water_8",
+          "type": "hazard",
+          "name": "Water",
+          "description": "A water area",
+          "position": {
+            "x": 8,
+            "y": 6
+          }
+        },
+        {
+          "id": "water_9",
+          "type": "hazard",
+          "name": "Water",
+          "description": "A water area",
+          "position": {
+            "x": 9,
+            "y": 6
+          }
+        },
+        {
+          "id": "water_10",
+          "type": "hazard",
+          "name": "Water",
+          "description": "A water area",
+          "position": {
+            "x": 10,
+            "y": 6
+          }
+        },
+        {
+          "id": "water_11",
+          "type": "hazard",
+          "name": "Water",
+          "description": "A water area",
+          "position": {
+            "x": 11,
+            "y": 6
+          }
+        },
+        {
+          "id": "water_12",
+          "type": "hazard",
+          "name": "Water",
+          "description": "A water area",
+          "position": {
+            "x": 12,
+            "y": 6
+          }
+        },
+        {
+          "id": "water_13",
+          "type": "hazard",
+          "name": "Water",
+          "description": "A water area",
+          "position": {
+            "x": 7,
+            "y": 7
+          }
+        },
+        {
+          "id": "water_14",
+          "type": "hazard",
+          "name": "Water",
+          "description": "A water area",
+          "position": {
+            "x": 8,
+            "y": 7
+          }
+        },
+        {
+          "id": "water_15",
+          "type": "hazard",
+          "name": "Water",
+          "description": "A water area",
+          "position": {
+            "x": 9,
+            "y": 7
+          }
+        },
+        {
+          "id": "water_16",
+          "type": "hazard",
+          "name": "Water",
+          "description": "A water area",
+          "position": {
+            "x": 10,
+            "y": 7
+          }
+        },
+        {
+          "id": "water_17",
+          "type": "hazard",
+          "name": "Water",
+          "description": "A water area",
+          "position": {
+            "x": 11,
+            "y": 7
+          }
+        },
+        {
+          "id": "water_18",
+          "type": "hazard",
+          "name": "Water",
+          "description": "A water area",
+          "position": {
+            "x": 12,
+            "y": 7
+          }
+        },
+        {
+          "id": "water_19",
+          "type": "hazard",
+          "name": "Water",
+          "description": "A water area",
+          "position": {
+            "x": 8,
+            "y": 8
+          }
+        },
+        {
+          "id": "water_20",
+          "type": "hazard",
+          "name": "Water",
+          "description": "A water area",
+          "position": {
+            "x": 9,
+            "y": 8
+          }
+        },
+        {
+          "id": "water_21",
+          "type": "hazard",
+          "name": "Water",
+          "description": "A water area",
+          "position": {
+            "x": 10,
+            "y": 8
+          }
+        },
+        {
+          "id": "water_22",
+          "type": "hazard",
+          "name": "Water",
+          "description": "A water area",
+          "position": {
+            "x": 11,
+            "y": 8
+          }
+        }
+      ],
+      "connections_inferred": true,
+      "doors": [
+        {
+          "id": "door_room_0_room_1",
+          "position": {
+            "x": 4,
+            "y": 0.5
+          },
+          "connects": [
+            "room_0",
+            "room_1"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_0_room_8",
+          "position": {
+            "x": 1,
+            "y": 0.5
+          },
+          "connects": [
+            "room_0",
+            "room_8"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_0_room_9",
+          "position": {
+            "x": 3,
+            "y": 0.5
+          },
+          "connects": [
+            "room_0",
+            "room_9"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_1_room_2",
+          "position": {
+            "x": 5.5,
+            "y": -3
+          },
+          "connects": [
+            "room_1",
+            "room_2"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_1_room_3",
+          "position": {
+            "x": 5.5,
+            "y": 4
+          },
+          "connects": [
+            "room_1",
+            "room_3"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_1_room_9",
+          "position": {
+            "x": 4,
+            "y": 0.5
+          },
+          "connects": [
+            "room_1",
+            "room_9"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_1_room_10",
+          "position": {
+            "x": 4.5,
+            "y": -2
+          },
+          "connects": [
+            "room_1",
+            "room_10"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_1_room_11",
+          "position": {
+            "x": 4.5,
+            "y": 3
+          },
+          "connects": [
+            "room_1",
+            "room_11"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_2_room_4",
+          "position": {
+            "x": 1,
+            "y": -5.5
+          },
+          "connects": [
+            "room_2",
+            "room_4"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_2_room_5",
+          "position": {
+            "x": 8,
+            "y": -5.5
+          },
+          "connects": [
+            "room_2",
+            "room_5"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_2_room_10",
+          "position": {
+            "x": 4.5,
+            "y": -3
+          },
+          "connects": [
+            "room_2",
+            "room_10"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_2_room_12",
+          "position": {
+            "x": 2,
+            "y": -5.5
+          },
+          "connects": [
+            "room_2",
+            "room_12"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_2_room_13",
+          "position": {
+            "x": 7,
+            "y": -5.5
+          },
+          "connects": [
+            "room_2",
+            "room_13"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_3_room_6",
+          "position": {
+            "x": 1,
+            "y": 6.5
+          },
+          "connects": [
+            "room_3",
+            "room_6"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_3_room_7",
+          "position": {
+            "x": 8,
+            "y": 6.5
+          },
+          "connects": [
+            "room_3",
+            "room_7"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_3_room_11",
+          "position": {
+            "x": 4.5,
+            "y": 4
+          },
+          "connects": [
+            "room_3",
+            "room_11"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_3_room_14",
+          "position": {
+            "x": 2,
+            "y": 6.5
+          },
+          "connects": [
+            "room_3",
+            "room_14"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_3_room_15",
+          "position": {
+            "x": 7,
+            "y": 6.5
+          },
+          "connects": [
+            "room_3",
+            "room_15"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_4_room_12",
+          "position": {
+            "x": 1,
+            "y": -5.5
+          },
+          "connects": [
+            "room_4",
+            "room_12"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_5_room_13",
+          "position": {
+            "x": 8,
+            "y": -5.5
+          },
+          "connects": [
+            "room_5",
+            "room_13"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_6_room_14",
+          "position": {
+            "x": 1,
+            "y": 6.5
+          },
+          "connects": [
+            "room_6",
+            "room_14"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_7_room_15",
+          "position": {
+            "x": 8,
+            "y": 6.5
+          },
+          "connects": [
+            "room_7",
+            "room_15"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_7_room_16",
+          "position": {
+            "x": 12,
+            "y": 6.5
+          },
+          "connects": [
+            "room_7",
+            "room_16"
+          ],
+          "inferred": true
+        }
+      ],
+      "doors_inferred": true
+    }
+  ]
+}

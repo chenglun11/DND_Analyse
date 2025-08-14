@@ -46,9 +46,9 @@ onMounted(() => {
             <router-link to="/" class="nav-link" active-class="nav-link-active">
               {{ t('nav.home') }}
             </router-link>
-            <router-link to="/analytics" class="nav-link" active-class="nav-link-active">
+            <!-- <router-link to="/analytics" class="nav-link" active-class="nav-link-active">
               {{ t('nav.analytics') }}
-            </router-link>
+            </router-link> -->
             <!-- <router-link to="/test" class="nav-link" active-class="nav-link-active">
               {{ t('nav.test') }}
             </router-link> -->

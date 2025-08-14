@@ -1,0 +1,105 @@
+{
+  "header": {
+    "schemaName": "dnd-dungeon-unified",
+    "schemaVersion": "1.0.0",
+    "name": "The Eye of the Desecrator",
+    "author": "System Converter",
+    "description": "Converted one-page dungeon by Andrés Cuesta. Layout approximated for graph testing.",
+    "grid": { "type": "square", "size": 5, "unit": "ft" }
+  },
+  "levels": [
+    {
+      "id": "level_1",
+      "name": "Main Level",
+      "map": { "width": 50, "height": 40 },
+
+      "rooms": [
+        { "id": "room_1",  "shape": "rectangle", "position": { "x": 22, "y": 34 }, "size": { "width": 6, "height": 4 }, "name": "1. Temple Entrance", "description": "Sooted temple entrance and recent carnage." },
+        { "id": "room_2",  "shape": "rectangle", "position": { "x": 6,  "y": 6  }, "size": { "width": 5, "height": 4 }, "name": "2. Monk in Cage", "description": "Monk locked in iron cage; subjugation flea on nape." },
+        { "id": "room_3",  "shape": "rectangle", "position": { "x": 16, "y": 8  }, "size": { "width": 4, "height": 4 }, "name": "3. Broken Statue", "description": "Half-woman hare statue cries honey from a single eye." },
+        { "id": "room_4",  "shape": "rectangle", "position": { "x": 22, "y": 10 }, "size": { "width": 6, "height": 4 }, "name": "4. Empty Room", "description": "No one here; music from orcs in #10 can be heard." },
+        { "id": "room_5",  "shape": "rectangle", "position": { "x": 22, "y": 16 }, "size": { "width": 8, "height": 6 }, "name": "5. Great Hall of Coals", "description": "Guardian spirit in bonfire; temperature oscillates wildly." },
+        { "id": "room_6",  "shape": "rectangle", "position": { "x": 12, "y": 16 }, "size": { "width": 5, "height": 5 }, "name": "6. Skull with Candle", "description": "Skull idol on table; burns out in half an hour." },
+        { "id": "room_7",  "shape": "rectangle", "position": { "x": 8,  "y": 22 }, "size": { "width": 6, "height": 5 }, "name": "7. Pack of Wolfbats", "description": "Wolfbats devour remains of a defiler; lair here." },
+        { "id": "room_8",  "shape": "rectangle", "position": { "x": 12, "y": 28 }, "size": { "width": 6, "height": 4 }, "name": "8. Tumor Hand Pool", "description": "Trail of blood ends at pool; a tumorous hand grows within." },
+        { "id": "room_9",  "shape": "rectangle", "position": { "x": 22, "y": 24 }, "size": { "width": 6, "height": 5 }, "name": "9. Small Library", "description": "Table with few scrolls; defilers sell them cheaply." },
+        { "id": "room_10", "shape": "rectangle", "position": { "x": 30, "y": 24 }, "size": { "width": 6, "height": 5 }, "name": "10. Orc Gambling Den", "description": "Orcs gamble with 'dream wine'—sleepers have prophetic dreams." },
+        { "id": "room_11", "shape": "rectangle", "position": { "x": 36, "y": 18 }, "size": { "width": 6, "height": 4 }, "name": "11. Sealed Doors", "description": "Magically sealed. Enraged statue of a god jailed in sand & broken ceramic." },
+        { "id": "room_12", "shape": "rectangle", "position": { "x": 38, "y": 10 }, "size": { "width": 6, "height": 5 }, "name": "12. Orc in Golden Branches", "description": "Orc wearing crown of branches atop a pile of corpses; knight on a chain." },
+        { "id": "room_13", "shape": "rectangle", "position": { "x": 34, "y": 30 }, "size": { "width": 6, "height": 4 }, "name": "13. Desecrated Treasury", "description": "Small treasury; remaining pieces pending sale." },
+        { "id": "room_14", "shape": "rectangle", "position": { "x": 34, "y": 26 }, "size": { "width": 6, "height": 4 }, "name": "14. Saints' Bones & Master Defiler", "description": "Bones traded by defilers; master experiments with spores nearby." },
+        { "id": "room_15", "shape": "rectangle", "position": { "x": 10, "y": 34 }, "size": { "width": 6, "height": 4 }, "name": "15. Long Tables Store", "description": "Heavy shelves with materials and specimens for heresies." },
+        { "id": "room_16", "shape": "rectangle", "position": { "x": 6,  "y": 30 }, "size": { "width": 4, "height": 4 }, "name": "16. Minor Goddess Statue", "description": "Marble statue anoints with blood from stone." },
+        { "id": "room_17", "shape": "rectangle", "position": { "x": 42, "y": 26 }, "size": { "width": 6, "height": 4 }, "name": "17. Inner Shrine (Desecrator)", "description": "Converted into a dungeon; blind eyes of mosaic goddess' statue—emeralds stolen." },
+        { "id": "room_18", "shape": "rectangle", "position": { "x": 42, "y": 32 }, "size": { "width": 6, "height": 4 }, "name": "18. Orc Barricade", "description": "Standing guard; heavy lock; hole to mimic prisoners’ voices." },
+        { "id": "room_19", "shape": "rectangle", "position": { "x": 20, "y": 6  }, "size": { "width": 6, "height": 4 }, "name": "19. Blessed Head (Eye of the God)", "description": "Engraved god’s head; slowly self-repairs if destroyed." }
+      ],
+
+      "corridors": [
+        { "id": "corridor_a", "shape": "rectangle", "position": { "x": 22, "y": 20 }, "size": { "width": 12, "height": 2 }, "name": "Central Passage" },
+        { "id": "corridor_b", "shape": "rectangle", "position": { "x": 30, "y": 20 }, "size": { "width": 2,  "height": 10 }, "name": "North–South Spine" },
+        { "id": "corridor_c", "shape": "rectangle", "position": { "x": 14, "y": 22 }, "size": { "width": 8,  "height": 2 }, "name": "West Link" }
+      ],
+
+      "connections": [
+        { "from_room": "room_1",  "to_room": "corridor_a", "door_id": "door_01" },
+        { "from_room": "corridor_a", "to_room": "room_5",  "door_id": "door_02" },
+        { "from_room": "corridor_a", "to_room": "room_9",  "door_id": "door_03" },
+        { "from_room": "corridor_a", "to_room": "room_10", "door_id": "door_04" },
+        { "from_room": "room_10", "to_room": "room_14", "door_id": "door_05" },
+        { "from_room": "room_14", "to_room": "room_13", "door_id": "door_06" },
+        { "from_room": "room_14", "to_room": "room_17", "door_id": "door_07" },
+        { "from_room": "room_17", "to_room": "room_18", "door_id": "door_08" },
+        { "from_room": "corridor_a", "to_room": "corridor_b", "door_id": "door_09" },
+        { "from_room": "corridor_b", "to_room": "room_11", "door_id": "door_10" },
+        { "from_room": "corridor_b", "to_room": "room_12", "door_id": "door_11" },
+        { "from_room": "corridor_b", "to_room": "room_3",  "door_id": "door_12" },
+        { "from_room": "room_3", "to_room": "room_19", "door_id": "door_13" },
+        { "from_room": "room_19", "to_room": "room_2",  "door_id": "door_14" },
+
+        { "from_room": "corridor_a", "to_room": "corridor_c", "door_id": "door_15" },
+        { "from_room": "corridor_c", "to_room": "room_6", "door_id": "door_16" },
+        { "from_room": "corridor_c", "to_room": "room_7", "door_id": "door_17" },
+        { "from_room": "room_7", "to_room": "room_8", "door_id": "door_18" },
+        { "from_room": "corridor_a", "to_room": "room_15", "door_id": "door_19" },
+        { "from_room": "room_15", "to_room": "room_16", "door_id": "door_20" },
+
+        { "from_room": "room_11", "to_room": "room_5", "door_id": "door_21" }
+      ],
+
+      "doors": [
+        { "id": "door_01", "position": { "x": 25, "y": 34, "dir": { "x": 0, "y": -1 }, "type": 1 } },
+        { "id": "door_02", "position": { "x": 26, "y": 20, "dir": { "x": 1, "y": 0 },  "type": 1 } },
+        { "id": "door_03", "position": { "x": 24, "y": 22, "dir": { "x": 1, "y": 0 },  "type": 1 } },
+        { "id": "door_04", "position": { "x": 30, "y": 22, "dir": { "x": 0, "y": 1 },  "type": 1 } },
+        { "id": "door_05", "position": { "x": 33, "y": 26, "dir": { "x": 1, "y": 0 },  "type": 1 } },
+        { "id": "door_06", "position": { "x": 37, "y": 28, "dir": { "x": 0, "y": 1 },  "type": 1 } },
+        { "id": "door_07", "position": { "x": 40, "y": 26, "dir": { "x": 1, "y": 0 },  "type": 3 } },
+        { "id": "door_08", "position": { "x": 45, "y": 30, "dir": { "x": 0, "y": 1 },  "type": 1 } },
+        { "id": "door_09", "position": { "x": 30, "y": 20, "dir": { "x": 0, "y": 1 },  "type": 1 } },
+        { "id": "door_10", "position": { "x": 36, "y": 20, "dir": { "x": 0, "y": 1 },  "type": 3 } },
+        { "id": "door_11", "position": { "x": 39, "y": 14, "dir": { "x": 0, "y": -1 }, "type": 1 } },
+        { "id": "door_12", "position": { "x": 18, "y": 12, "dir": { "x": 0, "y": 1 },  "type": 2 } },
+        { "id": "door_13", "position": { "x": 22, "y": 8,  "dir": { "x": 1, "y": 0 },  "type": 2 } },
+        { "id": "door_14", "position": { "x": 20, "y": 8,  "dir": { "x": -1,"y": 0 },  "type": 1 } },
+        { "id": "door_15", "position": { "x": 22, "y": 22, "dir": { "x": -1,"y": 0 },  "type": 1 } },
+        { "id": "door_16", "position": { "x": 16, "y": 22, "dir": { "x": -1,"y": 0 },  "type": 1 } },
+        { "id": "door_17", "position": { "x": 12, "y": 24, "dir": { "x": 0, "y": 1 },  "type": 1 } },
+        { "id": "door_18", "position": { "x": 12, "y": 27, "dir": { "x": 0, "y": 1 },  "type": 1 } },
+        { "id": "door_19", "position": { "x": 22, "y": 32, "dir": { "x": -1,"y": 0 },  "type": 1 } },
+        { "id": "door_20", "position": { "x": 13, "y": 34, "dir": { "x": 0, "y": 1 },  "type": 1 } },
+        { "id": "door_21", "position": { "x": 34, "y": 18, "dir": { "x": -1,"y": 0 },  "type": 2 } }
+      ],
+
+      "game_elements": [
+        { "id": "treasure_1", "name": "Ring of Regeneration", "type": "treasure", "position": { "x": 9, "y": 22 }, "description": "On the tumorous hand in the pool.", "ref": "7" },
+        { "id": "treasure_2", "name": "Small Treasury", "type": "treasure", "position": { "x": 36, "y": 30 }, "description": "Coins and appraised goods.", "ref": "13" },
+        { "id": "mechanism_1", "name": "Magical Seals", "type": "mechanism", "position": { "x": 38, "y": 18 }, "description": "Sealed doors, enraged statue imprisoned.", "ref": "11" },
+        { "id": "boss_1", "name": "Master Defiler", "type": "boss", "position": { "x": 36, "y": 26 }, "description": "Leads defilers, aided by animated corpses.", "ref": "14" },
+        { "id": "boss_2", "name": "Desecrator", "type": "boss", "position": { "x": 44, "y": 26 }, "description": "Robbed emeralds from mosaic; commands orcs.", "ref": "17" },
+        { "id": "mechanism_2", "name": "Bonfire Guardian Spirit", "type": "mechanism", "position": { "x": 25, "y": 18 }, "description": "Heat cycles; can be used as trap to kill group.", "ref": "5" },
+        { "id": "treasure_3", "name": "Knight's Wager", "type": "treasure", "position": { "x": 40, "y": 11 }, "description": "Knight chained like a dog; bargaining chip.", "ref": "12" }
+      ]
+    }
+  ]
+}

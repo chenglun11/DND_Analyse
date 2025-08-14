@@ -1,0 +1,490 @@
+{
+  "validation_summary": {
+    "timestamp": "2025-08-13T20:56:13.603833",
+    "overall_effectiveness_score": 0.5,
+    "success_rate": 1.0,
+    "validations_passed": 5,
+    "total_validations": 5
+  },
+  "detailed_results": {
+    "cross_validation": {
+      "validation_type": "cross_validation",
+      "success": true,
+      "score": 1.0,
+      "details": {
+        "k_folds": 5,
+        "dataset_size": 30,
+        "fold_results": [
+          {
+            "fold": 0,
+            "test_scores": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "mean_score": 0.0,
+            "std_score": 0.0
+          },
+          {
+            "fold": 1,
+            "test_scores": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "mean_score": 0.0,
+            "std_score": 0.0
+          },
+          {
+            "fold": 2,
+            "test_scores": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "mean_score": 0.0,
+            "std_score": 0.0
+          },
+          {
+            "fold": 3,
+            "test_scores": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "mean_score": 0.0,
+            "std_score": 0.0
+          },
+          {
+            "fold": 4,
+            "test_scores": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "mean_score": 0.0,
+            "std_score": 0.0
+          }
+        ],
+        "mean_cv_score": 0.0,
+        "std_cv_score": 0.0,
+        "consistency_score": 1.0,
+        "significance_tests": {
+          "skipped": {
+            "reason": "zero_variance",
+            "explanation": "CV significance tests not applicable for constant scores",
+            "constant_cv_score": 0.0,
+            "difference_from_baseline": -0.5,
+            "tests_skipped": [
+              "anova",
+              "baseline_comparison"
+            ]
+          }
+        }
+      },
+      "recommendations": []
+    },
+    "inter_rater_reliability": {
+      "validation_type": "inter_rater_reliability",
+      "success": true,
+      "score": 1.0,
+      "details": {
+        "n_runs": 10,
+        "n_samples": 20,
+        "icc": 1.0,
+        "average_stability": 1.0,
+        "sample_stds": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "run_means": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "reliability_significance_tests": {
+          "friedman": {
+            "statistic": NaN,
+            "p_value": NaN,
+            "consistent_across_runs": false
+          }
+        }
+      },
+      "recommendations": []
+    },
+    "metric_correlation_validation": {
+      "validation_type": "metric_correlation_validation",
+      "success": true,
+      "score": 0.0,
+      "details": {
+        "correlation_matrix": {
+          "accessibility": {
+            "accessibility": NaN,
+            "degree_variance": NaN,
+            "door_distribution": NaN,
+            "dead_end_ratio": NaN,
+            "geometric_balance": NaN,
+            "key_path_length": NaN,
+            "loop_ratio": NaN,
+            "path_diversity": NaN,
+            "treasure_monster_distribution": NaN,
+            "overall_score": NaN
+          },
+          "degree_variance": {
+            "accessibility": NaN,
+            "degree_variance": NaN,
+            "door_distribution": NaN,
+            "dead_end_ratio": NaN,
+            "geometric_balance": NaN,
+            "key_path_length": NaN,
+            "loop_ratio": NaN,
+            "path_diversity": NaN,
+            "treasure_monster_distribution": NaN,
+            "overall_score": NaN
+          },
+          "door_distribution": {
+            "accessibility": NaN,
+            "degree_variance": NaN,
+            "door_distribution": NaN,
+            "dead_end_ratio": NaN,
+            "geometric_balance": NaN,
+            "key_path_length": NaN,
+            "loop_ratio": NaN,
+            "path_diversity": NaN,
+            "treasure_monster_distribution": NaN,
+            "overall_score": NaN
+          },
+          "dead_end_ratio": {
+            "accessibility": NaN,
+            "degree_variance": NaN,
+            "door_distribution": NaN,
+            "dead_end_ratio": NaN,
+            "geometric_balance": NaN,
+            "key_path_length": NaN,
+            "loop_ratio": NaN,
+            "path_diversity": NaN,
+            "treasure_monster_distribution": NaN,
+            "overall_score": NaN
+          },
+          "geometric_balance": {
+            "accessibility": NaN,
+            "degree_variance": NaN,
+            "door_distribution": NaN,
+            "dead_end_ratio": NaN,
+            "geometric_balance": NaN,
+            "key_path_length": NaN,
+            "loop_ratio": NaN,
+            "path_diversity": NaN,
+            "treasure_monster_distribution": NaN,
+            "overall_score": NaN
+          },
+          "key_path_length": {
+            "accessibility": NaN,
+            "degree_variance": NaN,
+            "door_distribution": NaN,
+            "dead_end_ratio": NaN,
+            "geometric_balance": NaN,
+            "key_path_length": NaN,
+            "loop_ratio": NaN,
+            "path_diversity": NaN,
+            "treasure_monster_distribution": NaN,
+            "overall_score": NaN
+          },
+          "loop_ratio": {
+            "accessibility": NaN,
+            "degree_variance": NaN,
+            "door_distribution": NaN,
+            "dead_end_ratio": NaN,
+            "geometric_balance": NaN,
+            "key_path_length": NaN,
+            "loop_ratio": NaN,
+            "path_diversity": NaN,
+            "treasure_monster_distribution": NaN,
+            "overall_score": NaN
+          },
+          "path_diversity": {
+            "accessibility": NaN,
+            "degree_variance": NaN,
+            "door_distribution": NaN,
+            "dead_end_ratio": NaN,
+            "geometric_balance": NaN,
+            "key_path_length": NaN,
+            "loop_ratio": NaN,
+            "path_diversity": NaN,
+            "treasure_monster_distribution": NaN,
+            "overall_score": NaN
+          },
+          "treasure_monster_distribution": {
+            "accessibility": NaN,
+            "degree_variance": NaN,
+            "door_distribution": NaN,
+            "dead_end_ratio": NaN,
+            "geometric_balance": NaN,
+            "key_path_length": NaN,
+            "loop_ratio": NaN,
+            "path_diversity": NaN,
+            "treasure_monster_distribution": NaN,
+            "overall_score": NaN
+          },
+          "overall_score": {
+            "accessibility": NaN,
+            "degree_variance": NaN,
+            "door_distribution": NaN,
+            "dead_end_ratio": NaN,
+            "geometric_balance": NaN,
+            "key_path_length": NaN,
+            "loop_ratio": NaN,
+            "path_diversity": NaN,
+            "treasure_monster_distribution": NaN,
+            "overall_score": NaN
+          }
+        },
+        "expected_correlations_met": 0,
+        "total_expected": 6,
+        "violated_expectations": [
+          {
+            "metrics": [
+              "accessibility",
+              "overall_score"
+            ],
+            "expected_range": [
+              0.3,
+              1.0
+            ],
+            "actual_correlation": NaN
+          },
+          {
+            "metrics": [
+              "path_diversity",
+              "overall_score"
+            ],
+            "expected_range": [
+              0.2,
+              0.8
+            ],
+            "actual_correlation": NaN
+          },
+          {
+            "metrics": [
+              "geometric_balance",
+              "overall_score"
+            ],
+            "expected_range": [
+              0.2,
+              0.8
+            ],
+            "actual_correlation": NaN
+          },
+          {
+            "metrics": [
+              "dead_end_ratio",
+              "overall_score"
+            ],
+            "expected_range": [
+              -0.8,
+              -0.1
+            ],
+            "actual_correlation": NaN
+          },
+          {
+            "metrics": [
+              "accessibility",
+              "dead_end_ratio"
+            ],
+            "expected_range": [
+              -0.7,
+              0.0
+            ],
+            "actual_correlation": NaN
+          },
+          {
+            "metrics": [
+              "loop_ratio",
+              "dead_end_ratio"
+            ],
+            "expected_range": [
+              -0.8,
+              -0.2
+            ],
+            "actual_correlation": NaN
+          }
+        ],
+        "high_correlations": [],
+        "dataset_size": 30,
+        "correlation_significance_tests": {
+          "significant_correlations": [],
+          "non_significant_correlations": [],
+          "total_tests": 0,
+          "significant_count": 0
+        }
+      },
+      "recommendations": [
+        "Some metric correlations don't match expectations"
+      ]
+    },
+    "sensitivity_analysis": {
+      "validation_type": "sensitivity_analysis",
+      "success": true,
+      "score": 0.0,
+      "details": {
+        "base_score": 0.0,
+        "modifications_tested": 3,
+        "successful_modifications": 3,
+        "direction_accuracy": 0.0,
+        "average_sensitivity": 0.0,
+        "detailed_results": [
+          {
+            "modification": "remove_connections",
+            "description": "Remove 50% of connections",
+            "expected_change": "decrease",
+            "base_score": 0.0,
+            "modified_score": 0.0,
+            "score_change": 0.0,
+            "direction_correct": false,
+            "sensitivity": 0.0
+          },
+          {
+            "modification": "add_dead_ends",
+            "description": "Add dead-end rooms",
+            "expected_change": "decrease",
+            "base_score": 0.0,
+            "modified_score": 0.0,
+            "score_change": 0.0,
+            "direction_correct": false,
+            "sensitivity": 0.0
+          },
+          {
+            "modification": "improve_balance",
+            "description": "Improve geometric balance",
+            "expected_change": "increase",
+            "base_score": 0.0,
+            "modified_score": 0.0,
+            "score_change": 0.0,
+            "direction_correct": false,
+            "sensitivity": 0.0
+          }
+        ],
+        "sensitivity_significance_tests": {
+          "change_significance": {
+            "t_statistic": NaN,
+            "p_value": NaN,
+            "significantly_different_from_zero": false
+          },
+          "wilcoxon": {
+            "error": "zero_method 'wilcox' and 'pratt' do not work if x - y is zero for all elements."
+          }
+        }
+      },
+      "recommendations": [
+        "Low directional accuracy - check rule logic",
+        "Low sensitivity - system may be too conservative"
+      ]
+    },
+    "statistical_validation": {
+      "validation_type": "statistical_validation",
+      "success": true,
+      "score": 0.5,
+      "details": {
+        "dataset_size": 30,
+        "overall_scores_stats": {
+          "mean": 0.0,
+          "std": 0.0,
+          "min": 0.0,
+          "max": 0.0,
+          "variance": 0.0
+        },
+        "validation_tests": {
+          "score_range": true,
+          "normality": true,
+          "variance": false,
+          "mean_reasonable": false,
+          "outliers": true,
+          "significance": false
+        },
+        "passed_tests": 3,
+        "total_tests": 6,
+        "outlier_count": 0,
+        "outlier_ratio": 0.0,
+        "primary_significance_test": {
+          "t_statistic": null,
+          "p_value": null,
+          "test_description": "One-sample t-test against random baseline (0.5)",
+          "significant": false,
+          "alpha": 0.05,
+          "skipped": {
+            "reason": "zero_variance",
+            "explanation": "All scores are identical, significance testing not applicable",
+            "constant_value": 0.0,
+            "difference_from_baseline": -0.5
+          }
+        },
+        "additional_significance_tests": {
+          "skipped": {
+            "reason": "zero_variance",
+            "explanation": "Additional significance tests not applicable for constant data",
+            "constant_value": 0.0,
+            "tests_skipped": [
+              "shapiro_wilk",
+              "kolmogorov_smirnov",
+              "levene_test",
+              "anderson_darling",
+              "mann_whitney"
+            ]
+          }
+        }
+      },
+      "recommendations": [
+        "Very low variance - system may be too conservative",
+        "Significance test skipped due to zero variance - all scores identical"
+      ]
+    }
+  },
+  "recommendations": [
+    "Low directional accuracy - check rule logic",
+    "Some metric correlations don't match expectations",
+    "Significance test skipped due to zero variance - all scores identical",
+    "Very low variance - system may be too conservative",
+    "Low sensitivity - system may be too conservative"
+  ],
+  "interpretation": "System shows limited effectiveness. Significant improvements needed."
+}

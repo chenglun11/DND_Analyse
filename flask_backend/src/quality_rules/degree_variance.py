@@ -70,7 +70,8 @@ class DegreeVarianceRule(BaseQualityRule):
         normalized_variance = min(max(normalized_variance, 0.0), 1.0)
 
         # 评分: 度数越均匀 (方差越低) 得分越高
-        score = 1.0 - normalized_variance
+        # 使用指数衰减函数，避免极端情况下的0分
+        score = math.exp(-2.0 * normalized_variance)
 
         return score, {
             'raw_variance': raw_variance,

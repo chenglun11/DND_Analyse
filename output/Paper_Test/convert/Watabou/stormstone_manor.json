@@ -1,0 +1,2847 @@
+{
+  "header": {
+    "schemaName": "dnd-dungeon-unified",
+    "schemaVersion": "1.0.0",
+    "name": "Stormstone Manor",
+    "author": "BSP-Dungeon-Generator",
+    "description": "The manor is situated deep in the wasteland, away from busy roads. These days it is overrun with boars, which don't care about the history of the place.",
+    "grid": {
+      "type": "square",
+      "size": 5,
+      "unit": "ft"
+    }
+  },
+  "levels": [
+    {
+      "id": "level_1",
+      "name": "Ground Floor",
+      "rooms": [
+        {
+          "id": "room_0",
+          "name": "Room 1",
+          "type": "room",
+          "position": {
+            "x": -3,
+            "y": -6
+          },
+          "size": {
+            "width": 7,
+            "height": 6
+          },
+          "properties": {},
+          "is_entrance": true,
+          "is_exit": false
+        },
+        {
+          "id": "room_1",
+          "name": "Room 2",
+          "type": "room",
+          "position": {
+            "x": -5,
+            "y": -4
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_2",
+          "name": "Room 3",
+          "type": "room",
+          "position": {
+            "x": 5,
+            "y": -4
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_3",
+          "name": "Room 4",
+          "type": "room",
+          "position": {
+            "x": -5,
+            "y": -6
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_4",
+          "name": "Room 5",
+          "type": "room",
+          "position": {
+            "x": -5,
+            "y": -2
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_5",
+          "name": "Room 6",
+          "type": "room",
+          "position": {
+            "x": 5,
+            "y": -2
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_6",
+          "name": "Room 7",
+          "type": "room",
+          "position": {
+            "x": -7,
+            "y": -6
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_7",
+          "name": "Room 8",
+          "type": "room",
+          "position": {
+            "x": -7,
+            "y": -2
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_8",
+          "name": "Room 9",
+          "type": "room",
+          "position": {
+            "x": 7,
+            "y": -2
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_9",
+          "name": "Room 10",
+          "type": "room",
+          "position": {
+            "x": -8,
+            "y": -10
+          },
+          "size": {
+            "width": 3,
+            "height": 3
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_10",
+          "name": "Room 11",
+          "type": "room",
+          "position": {
+            "x": -8,
+            "y": 0
+          },
+          "size": {
+            "width": 3,
+            "height": 3
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_11",
+          "name": "Room 12",
+          "type": "room",
+          "position": {
+            "x": 6,
+            "y": 0
+          },
+          "size": {
+            "width": 3,
+            "height": 3
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_12",
+          "name": "Room 13",
+          "type": "room",
+          "position": {
+            "x": -4,
+            "y": -8
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_13",
+          "name": "Room 14",
+          "type": "room",
+          "position": {
+            "x": -10,
+            "y": 0
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_14",
+          "name": "Room 15",
+          "type": "room",
+          "position": {
+            "x": 3,
+            "y": 1
+          },
+          "size": {
+            "width": 2,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_15",
+          "name": "Room 16",
+          "type": "room",
+          "position": {
+            "x": -4,
+            "y": -10
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_16",
+          "name": "Room 17",
+          "type": "room",
+          "position": {
+            "x": -10,
+            "y": 2
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_17",
+          "name": "Room 18",
+          "type": "room",
+          "position": {
+            "x": -10,
+            "y": -3
+          },
+          "size": {
+            "width": 1,
+            "height": 2
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_18",
+          "name": "Room 19",
+          "type": "room",
+          "position": {
+            "x": -2,
+            "y": -12
+          },
+          "size": {
+            "width": 5,
+            "height": 5
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_19",
+          "name": "Room 20",
+          "type": "special",
+          "position": {
+            "x": -14,
+            "y": 1
+          },
+          "size": {
+            "width": 3,
+            "height": 3
+          },
+          "properties": {
+            "shape": "circular"
+          }
+        },
+        {
+          "id": "room_20",
+          "name": "Room 21",
+          "type": "special",
+          "position": {
+            "x": -14,
+            "y": -3
+          },
+          "size": {
+            "width": 3,
+            "height": 3
+          },
+          "properties": {
+            "shape": "circular"
+          }
+        },
+        {
+          "id": "room_21",
+          "name": "Room 22",
+          "type": "boss",
+          "position": {
+            "x": -14,
+            "y": -7
+          },
+          "size": {
+            "width": 3,
+            "height": 3
+          },
+          "properties": {
+            "is_ending": true
+          },
+          "is_exit": true,
+          "is_entrance": false
+        },
+        {
+          "id": "room_22",
+          "name": "Room 23",
+          "type": "room",
+          "position": {
+            "x": -10,
+            "y": -5
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_23",
+          "name": "Room 24",
+          "type": "room",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_24",
+          "name": "Room 25",
+          "type": "room",
+          "position": {
+            "x": -4,
+            "y": -4
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_25",
+          "name": "Room 26",
+          "type": "room",
+          "position": {
+            "x": 4,
+            "y": -4
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_26",
+          "name": "Room 27",
+          "type": "room",
+          "position": {
+            "x": -5,
+            "y": -5
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_27",
+          "name": "Room 28",
+          "type": "room",
+          "position": {
+            "x": -5,
+            "y": -3
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_28",
+          "name": "Room 29",
+          "type": "room",
+          "position": {
+            "x": 5,
+            "y": -3
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_29",
+          "name": "Room 30",
+          "type": "room",
+          "position": {
+            "x": -6,
+            "y": -6
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_30",
+          "name": "Room 31",
+          "type": "room",
+          "position": {
+            "x": -6,
+            "y": -2
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_31",
+          "name": "Room 32",
+          "type": "room",
+          "position": {
+            "x": 6,
+            "y": -2
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_32",
+          "name": "Room 33",
+          "type": "room",
+          "position": {
+            "x": -7,
+            "y": -7
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_33",
+          "name": "Room 34",
+          "type": "room",
+          "position": {
+            "x": -7,
+            "y": -1
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_34",
+          "name": "Room 35",
+          "type": "room",
+          "position": {
+            "x": 7,
+            "y": -1
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_35",
+          "name": "Room 36",
+          "type": "room",
+          "position": {
+            "x": -5,
+            "y": -8
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_36",
+          "name": "Room 37",
+          "type": "room",
+          "position": {
+            "x": -9,
+            "y": 0
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_37",
+          "name": "Room 38",
+          "type": "room",
+          "position": {
+            "x": 5,
+            "y": 1
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_38",
+          "name": "Room 39",
+          "type": "room",
+          "position": {
+            "x": -4,
+            "y": -9
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_39",
+          "name": "Room 40",
+          "type": "room",
+          "position": {
+            "x": -10,
+            "y": 1
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_40",
+          "name": "Room 41",
+          "type": "room",
+          "position": {
+            "x": -10,
+            "y": -1
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_41",
+          "name": "Room 42",
+          "type": "room",
+          "position": {
+            "x": -3,
+            "y": -10
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_42",
+          "name": "Room 43",
+          "type": "room",
+          "position": {
+            "x": -11,
+            "y": 2
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_43",
+          "name": "Room 44",
+          "type": "room",
+          "position": {
+            "x": -11,
+            "y": -2
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_44",
+          "name": "Room 45",
+          "type": "room",
+          "position": {
+            "x": -13,
+            "y": -4
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_45",
+          "name": "Room 46",
+          "type": "room",
+          "position": {
+            "x": -11,
+            "y": -5
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_46",
+          "name": "Room 47",
+          "type": "room",
+          "position": {
+            "x": -13,
+            "y": -8
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_47",
+          "name": "Room 48",
+          "type": "room",
+          "position": {
+            "x": -2,
+            "y": -7
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_48",
+          "name": "Room 49",
+          "type": "room",
+          "position": {
+            "x": 3,
+            "y": 0
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_49",
+          "name": "Room 50",
+          "type": "room",
+          "position": {
+            "x": -10,
+            "y": -4
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_50",
+          "name": "Room 51",
+          "type": "room",
+          "position": {
+            "x": -13,
+            "y": 0
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        }
+      ],
+      "connections": [
+        {
+          "id": "connection_0",
+          "from_room": "room_0",
+          "to_room": "room_23",
+          "type": "entrance",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "id": "connection_1",
+          "from_room": "room_0",
+          "to_room": "room_1",
+          "type": "locked",
+          "position": {
+            "x": -4,
+            "y": -4
+          }
+        },
+        {
+          "id": "connection_2",
+          "from_room": "room_0",
+          "to_room": "room_2",
+          "type": "locked",
+          "position": {
+            "x": 4,
+            "y": -4
+          }
+        },
+        {
+          "id": "connection_3",
+          "from_room": "room_0",
+          "to_room": "room_1",
+          "type": "normal",
+          "position": {
+            "x": -5,
+            "y": -5
+          }
+        },
+        {
+          "id": "connection_4",
+          "from_room": "room_0",
+          "to_room": "room_1",
+          "type": "normal",
+          "position": {
+            "x": -5,
+            "y": -3
+          }
+        },
+        {
+          "id": "connection_5",
+          "from_room": "room_0",
+          "to_room": "room_2",
+          "type": "normal",
+          "position": {
+            "x": 5,
+            "y": -3
+          }
+        },
+        {
+          "id": "connection_6",
+          "from_room": "room_1",
+          "to_room": "room_3",
+          "type": "normal",
+          "position": {
+            "x": -6,
+            "y": -6
+          }
+        },
+        {
+          "id": "connection_7",
+          "from_room": "room_1",
+          "to_room": "room_4",
+          "type": "normal",
+          "position": {
+            "x": -6,
+            "y": -2
+          }
+        },
+        {
+          "id": "connection_8",
+          "from_room": "room_0",
+          "to_room": "room_2",
+          "type": "normal",
+          "position": {
+            "x": 6,
+            "y": -2
+          }
+        },
+        {
+          "id": "connection_9",
+          "from_room": "room_3",
+          "to_room": "room_6",
+          "type": "locked",
+          "position": {
+            "x": -7,
+            "y": -7
+          }
+        },
+        {
+          "id": "connection_10",
+          "from_room": "room_1",
+          "to_room": "room_4",
+          "type": "locked",
+          "position": {
+            "x": -7,
+            "y": -1
+          }
+        },
+        {
+          "id": "connection_11",
+          "from_room": "room_2",
+          "to_room": "room_5",
+          "type": "locked",
+          "position": {
+            "x": 7,
+            "y": -1
+          }
+        },
+        {
+          "id": "connection_12",
+          "from_room": "room_0",
+          "to_room": "room_3",
+          "type": "secret",
+          "position": {
+            "x": -5,
+            "y": -8
+          }
+        },
+        {
+          "id": "connection_13",
+          "from_room": "room_7",
+          "to_room": "room_10",
+          "type": "trap",
+          "position": {
+            "x": -9,
+            "y": 0
+          }
+        },
+        {
+          "id": "connection_14",
+          "from_room": "room_0",
+          "to_room": "room_5",
+          "type": "locked",
+          "position": {
+            "x": 5,
+            "y": 1
+          }
+        },
+        {
+          "id": "connection_15",
+          "from_room": "room_9",
+          "to_room": "room_12",
+          "type": "normal",
+          "position": {
+            "x": -4,
+            "y": -9
+          }
+        },
+        {
+          "id": "connection_16",
+          "from_room": "room_10",
+          "to_room": "room_13",
+          "type": "normal",
+          "position": {
+            "x": -10,
+            "y": 1
+          }
+        },
+        {
+          "id": "connection_17",
+          "from_room": "room_10",
+          "to_room": "room_13",
+          "type": "open",
+          "position": {
+            "x": -10,
+            "y": -1
+          }
+        },
+        {
+          "id": "connection_18",
+          "from_room": "room_9",
+          "to_room": "room_12",
+          "type": "secret",
+          "position": {
+            "x": -3,
+            "y": -10
+          }
+        },
+        {
+          "id": "connection_19",
+          "from_room": "room_13",
+          "to_room": "room_16",
+          "type": "normal",
+          "position": {
+            "x": -11,
+            "y": 2
+          }
+        },
+        {
+          "id": "connection_20",
+          "from_room": "room_13",
+          "to_room": "room_17",
+          "type": "normal",
+          "position": {
+            "x": -11,
+            "y": -2
+          }
+        },
+        {
+          "id": "connection_21",
+          "from_room": "room_20",
+          "to_room": "room_21",
+          "type": "locked",
+          "position": {
+            "x": -13,
+            "y": -4
+          }
+        },
+        {
+          "id": "connection_22",
+          "from_room": "room_17",
+          "to_room": "room_20",
+          "type": "normal",
+          "position": {
+            "x": -11,
+            "y": -5
+          }
+        },
+        {
+          "id": "connection_23",
+          "from_room": "room_21",
+          "to_room": "room_46",
+          "type": "portal",
+          "position": {
+            "x": -13,
+            "y": -8
+          }
+        },
+        {
+          "id": "connection_24",
+          "from_room": "room_0",
+          "to_room": "room_3",
+          "type": "locked",
+          "position": {
+            "x": -2,
+            "y": -7
+          }
+        },
+        {
+          "id": "connection_25",
+          "from_room": "room_0",
+          "to_room": "room_5",
+          "type": "locked",
+          "position": {
+            "x": 3,
+            "y": 0
+          }
+        },
+        {
+          "id": "connection_26",
+          "from_room": "room_17",
+          "to_room": "room_20",
+          "type": "normal",
+          "position": {
+            "x": -10,
+            "y": -4
+          }
+        },
+        {
+          "id": "connection_27",
+          "from_room": "room_19",
+          "to_room": "room_20",
+          "type": "normal",
+          "position": {
+            "x": -13,
+            "y": 0
+          }
+        },
+        {
+          "id": "connection_auto_28",
+          "from_room": "room_17",
+          "to_room": "room_22",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_29",
+          "from_room": "room_1",
+          "to_room": "room_26",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_30",
+          "from_room": "room_12",
+          "to_room": "room_38",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_31",
+          "from_room": "room_2",
+          "to_room": "room_28",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_32",
+          "from_room": "room_1",
+          "to_room": "room_27",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_33",
+          "from_room": "room_0",
+          "to_room": "room_47",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_34",
+          "from_room": "room_17",
+          "to_room": "room_43",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_35",
+          "from_room": "room_5",
+          "to_room": "room_34",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_36",
+          "from_room": "room_3",
+          "to_room": "room_29",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_37",
+          "from_room": "room_38",
+          "to_room": "room_15",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_38",
+          "from_room": "room_23",
+          "to_room": "room_48",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_39",
+          "from_room": "room_20",
+          "to_room": "room_44",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_40",
+          "from_room": "room_5",
+          "to_room": "room_37",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_41",
+          "from_room": "room_4",
+          "to_room": "room_30",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_42",
+          "from_room": "room_34",
+          "to_room": "room_8",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_43",
+          "from_room": "room_17",
+          "to_room": "room_49",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_44",
+          "from_room": "room_2",
+          "to_room": "room_25",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_45",
+          "from_room": "room_22",
+          "to_room": "room_45",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_46",
+          "from_room": "room_15",
+          "to_room": "room_41",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_47",
+          "from_room": "room_19",
+          "to_room": "room_50",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_48",
+          "from_room": "room_16",
+          "to_room": "room_42",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_49",
+          "from_room": "room_10",
+          "to_room": "room_36",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_50",
+          "from_room": "room_7",
+          "to_room": "room_33",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_51",
+          "from_room": "room_13",
+          "to_room": "room_39",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_52",
+          "from_room": "room_6",
+          "to_room": "room_32",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_53",
+          "from_room": "room_13",
+          "to_room": "room_40",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_54",
+          "from_room": "room_41",
+          "to_room": "room_18",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_55",
+          "from_room": "room_12",
+          "to_room": "room_35",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_56",
+          "from_room": "room_34",
+          "to_room": "room_11",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_57",
+          "from_room": "room_48",
+          "to_room": "room_14",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_58",
+          "from_room": "room_1",
+          "to_room": "room_24",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_59",
+          "from_room": "room_5",
+          "to_room": "room_31",
+          "type": "corridor"
+        },
+        {
+          "from_room": "room_0",
+          "to_room": "room_4",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_0",
+          "to_room": "room_14",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_0",
+          "to_room": "room_18",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_0",
+          "to_room": "room_24",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_0",
+          "to_room": "room_25",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_0",
+          "to_room": "room_26",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_0",
+          "to_room": "room_27",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_0",
+          "to_room": "room_28",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_0",
+          "to_room": "room_48",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_3",
+          "to_room": "room_26",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_3",
+          "to_room": "room_35",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_4",
+          "to_room": "room_7",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_4",
+          "to_room": "room_27",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_5",
+          "to_room": "room_8",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_5",
+          "to_room": "room_28",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_6",
+          "to_room": "room_9",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_6",
+          "to_room": "room_29",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_7",
+          "to_room": "room_30",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_8",
+          "to_room": "room_11",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_8",
+          "to_room": "room_31",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_9",
+          "to_room": "room_15",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_9",
+          "to_room": "room_29",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_9",
+          "to_room": "room_32",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_9",
+          "to_room": "room_35",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_9",
+          "to_room": "room_38",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_10",
+          "to_room": "room_16",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_10",
+          "to_room": "room_30",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_10",
+          "to_room": "room_33",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_10",
+          "to_room": "room_39",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_11",
+          "to_room": "room_14",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_11",
+          "to_room": "room_31",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_11",
+          "to_room": "room_37",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_12",
+          "to_room": "room_15",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_12",
+          "to_room": "room_18",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_13",
+          "to_room": "room_36",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_14",
+          "to_room": "room_37",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_15",
+          "to_room": "room_18",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_16",
+          "to_room": "room_19",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_16",
+          "to_room": "room_39",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_17",
+          "to_room": "room_40",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_18",
+          "to_room": "room_38",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_18",
+          "to_room": "room_47",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_19",
+          "to_room": "room_39",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_19",
+          "to_room": "room_42",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_20",
+          "to_room": "room_40",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_20",
+          "to_room": "room_43",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_20",
+          "to_room": "room_50",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_21",
+          "to_room": "room_22",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_21",
+          "to_room": "room_44",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_21",
+          "to_room": "room_45",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_22",
+          "to_room": "room_49",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_26",
+          "to_room": "room_27",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_39",
+          "to_room": "room_40",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        }
+      ],
+      "game_elements": [
+        {
+          "id": "note_0",
+          "type": "treasure",
+          "name": "Item 1",
+          "description": "A fungus-covered body of a goblin, some gold and a scarf nearby.",
+          "position": {
+            "x": -6.5,
+            "y": -8.5
+          }
+        },
+        {
+          "id": "note_1",
+          "type": "key",
+          "name": "Item 2",
+          "description": "A huge door with a keyhole to the west.",
+          "position": {
+            "x": -6.5,
+            "y": 1.5
+          }
+        },
+        {
+          "id": "note_2",
+          "type": "item",
+          "name": "Item 3",
+          "description": "A map under pieces of broken furniture.",
+          "position": {
+            "x": 7.5,
+            "y": 1.5
+          }
+        },
+        {
+          "id": "note_3",
+          "type": "key",
+          "name": "Item 4",
+          "description": "A key locked in a  safe.",
+          "position": {
+            "x": 0.5,
+            "y": -9.5
+          }
+        },
+        {
+          "id": "note_4",
+          "type": "item",
+          "name": "Item 5",
+          "description": "A colorful mosaic on the wall depicting the wasteland around the manor as it looked in the distant past.",
+          "position": {
+            "x": -12.5,
+            "y": 2.5
+          }
+        }
+      ],
+      "connections_inferred": true,
+      "doors": [
+        {
+          "id": "door_room_0_room_1",
+          "position": {
+            "x": -4,
+            "y": -3.5
+          },
+          "connects": [
+            "room_0",
+            "room_1"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_0_room_2",
+          "position": {
+            "x": 5,
+            "y": -3.5
+          },
+          "connects": [
+            "room_0",
+            "room_2"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_0_room_3",
+          "position": {
+            "x": -4,
+            "y": -5.5
+          },
+          "connects": [
+            "room_0",
+            "room_3"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_0_room_4",
+          "position": {
+            "x": -4,
+            "y": -1.5
+          },
+          "connects": [
+            "room_0",
+            "room_4"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_0_room_5",
+          "position": {
+            "x": 5,
+            "y": -1.5
+          },
+          "connects": [
+            "room_0",
+            "room_5"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_0_room_14",
+          "position": {
+            "x": 3.5,
+            "y": 1
+          },
+          "connects": [
+            "room_0",
+            "room_14"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_0_room_18",
+          "position": {
+            "x": 0.5,
+            "y": -7
+          },
+          "connects": [
+            "room_0",
+            "room_18"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_0_room_23",
+          "position": {
+            "x": 0.5,
+            "y": 0
+          },
+          "connects": [
+            "room_0",
+            "room_23"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_0_room_24",
+          "position": {
+            "x": -3,
+            "y": -3.5
+          },
+          "connects": [
+            "room_0",
+            "room_24"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_0_room_25",
+          "position": {
+            "x": 4,
+            "y": -3.5
+          },
+          "connects": [
+            "room_0",
+            "room_25"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_0_room_26",
+          "position": {
+            "x": -4,
+            "y": -4.5
+          },
+          "connects": [
+            "room_0",
+            "room_26"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_0_room_27",
+          "position": {
+            "x": -4,
+            "y": -2.5
+          },
+          "connects": [
+            "room_0",
+            "room_27"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_0_room_28",
+          "position": {
+            "x": 5,
+            "y": -2.5
+          },
+          "connects": [
+            "room_0",
+            "room_28"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_0_room_47",
+          "position": {
+            "x": -1.5,
+            "y": -6
+          },
+          "connects": [
+            "room_0",
+            "room_47"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_0_room_48",
+          "position": {
+            "x": 3.5,
+            "y": 0
+          },
+          "connects": [
+            "room_0",
+            "room_48"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_1_room_3",
+          "position": {
+            "x": -4.5,
+            "y": -5
+          },
+          "connects": [
+            "room_1",
+            "room_3"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_1_room_4",
+          "position": {
+            "x": -4.5,
+            "y": -2
+          },
+          "connects": [
+            "room_1",
+            "room_4"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_1_room_24",
+          "position": {
+            "x": -4,
+            "y": -3.5
+          },
+          "connects": [
+            "room_1",
+            "room_24"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_1_room_26",
+          "position": {
+            "x": -4.5,
+            "y": -4
+          },
+          "connects": [
+            "room_1",
+            "room_26"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_1_room_27",
+          "position": {
+            "x": -4.5,
+            "y": -3
+          },
+          "connects": [
+            "room_1",
+            "room_27"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_2_room_5",
+          "position": {
+            "x": 5.5,
+            "y": -2
+          },
+          "connects": [
+            "room_2",
+            "room_5"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_2_room_25",
+          "position": {
+            "x": 5,
+            "y": -3.5
+          },
+          "connects": [
+            "room_2",
+            "room_25"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_2_room_28",
+          "position": {
+            "x": 5.5,
+            "y": -3
+          },
+          "connects": [
+            "room_2",
+            "room_28"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_3_room_6",
+          "position": {
+            "x": -6,
+            "y": -5.5
+          },
+          "connects": [
+            "room_3",
+            "room_6"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_3_room_26",
+          "position": {
+            "x": -4.5,
+            "y": -5
+          },
+          "connects": [
+            "room_3",
+            "room_26"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_3_room_29",
+          "position": {
+            "x": -5,
+            "y": -5.5
+          },
+          "connects": [
+            "room_3",
+            "room_29"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_3_room_35",
+          "position": {
+            "x": -4.5,
+            "y": -7
+          },
+          "connects": [
+            "room_3",
+            "room_35"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_4_room_7",
+          "position": {
+            "x": -6,
+            "y": -1.5
+          },
+          "connects": [
+            "room_4",
+            "room_7"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_4_room_27",
+          "position": {
+            "x": -4.5,
+            "y": -2
+          },
+          "connects": [
+            "room_4",
+            "room_27"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_4_room_30",
+          "position": {
+            "x": -5,
+            "y": -1.5
+          },
+          "connects": [
+            "room_4",
+            "room_30"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_5_room_8",
+          "position": {
+            "x": 7,
+            "y": -1.5
+          },
+          "connects": [
+            "room_5",
+            "room_8"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_5_room_28",
+          "position": {
+            "x": 5.5,
+            "y": -2
+          },
+          "connects": [
+            "room_5",
+            "room_28"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_5_room_31",
+          "position": {
+            "x": 6,
+            "y": -1.5
+          },
+          "connects": [
+            "room_5",
+            "room_31"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_6_room_9",
+          "position": {
+            "x": -6.5,
+            "y": -7
+          },
+          "connects": [
+            "room_6",
+            "room_9"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_6_room_29",
+          "position": {
+            "x": -6,
+            "y": -5.5
+          },
+          "connects": [
+            "room_6",
+            "room_29"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_6_room_32",
+          "position": {
+            "x": -6.5,
+            "y": -6
+          },
+          "connects": [
+            "room_6",
+            "room_32"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_7_room_10",
+          "position": {
+            "x": -6.5,
+            "y": 0
+          },
+          "connects": [
+            "room_7",
+            "room_10"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_7_room_30",
+          "position": {
+            "x": -6,
+            "y": -1.5
+          },
+          "connects": [
+            "room_7",
+            "room_30"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_7_room_33",
+          "position": {
+            "x": -6.5,
+            "y": -1
+          },
+          "connects": [
+            "room_7",
+            "room_33"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_8_room_11",
+          "position": {
+            "x": 7.5,
+            "y": 0
+          },
+          "connects": [
+            "room_8",
+            "room_11"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_8_room_31",
+          "position": {
+            "x": 7,
+            "y": -1.5
+          },
+          "connects": [
+            "room_8",
+            "room_31"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_8_room_34",
+          "position": {
+            "x": 7.5,
+            "y": -1
+          },
+          "connects": [
+            "room_8",
+            "room_34"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_9_room_12",
+          "position": {
+            "x": -4,
+            "y": -7.5
+          },
+          "connects": [
+            "room_9",
+            "room_12"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_9_room_15",
+          "position": {
+            "x": -4,
+            "y": -9.5
+          },
+          "connects": [
+            "room_9",
+            "room_15"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_9_room_29",
+          "position": {
+            "x": -5.5,
+            "y": -6
+          },
+          "connects": [
+            "room_9",
+            "room_29"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_9_room_32",
+          "position": {
+            "x": -6.5,
+            "y": -7
+          },
+          "connects": [
+            "room_9",
+            "room_32"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_9_room_35",
+          "position": {
+            "x": -5,
+            "y": -7.5
+          },
+          "connects": [
+            "room_9",
+            "room_35"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_9_room_38",
+          "position": {
+            "x": -4,
+            "y": -8.5
+          },
+          "connects": [
+            "room_9",
+            "room_38"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_10_room_13",
+          "position": {
+            "x": -9,
+            "y": 0.5
+          },
+          "connects": [
+            "room_10",
+            "room_13"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_10_room_16",
+          "position": {
+            "x": -9,
+            "y": 2.5
+          },
+          "connects": [
+            "room_10",
+            "room_16"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_10_room_30",
+          "position": {
+            "x": -5.5,
+            "y": -1
+          },
+          "connects": [
+            "room_10",
+            "room_30"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_10_room_33",
+          "position": {
+            "x": -6.5,
+            "y": 0
+          },
+          "connects": [
+            "room_10",
+            "room_33"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_10_room_36",
+          "position": {
+            "x": -8,
+            "y": 0.5
+          },
+          "connects": [
+            "room_10",
+            "room_36"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_10_room_39",
+          "position": {
+            "x": -9,
+            "y": 1.5
+          },
+          "connects": [
+            "room_10",
+            "room_39"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_11_room_14",
+          "position": {
+            "x": 5,
+            "y": 1.5
+          },
+          "connects": [
+            "room_11",
+            "room_14"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_11_room_31",
+          "position": {
+            "x": 6.5,
+            "y": -1
+          },
+          "connects": [
+            "room_11",
+            "room_31"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_11_room_34",
+          "position": {
+            "x": 7.5,
+            "y": 0
+          },
+          "connects": [
+            "room_11",
+            "room_34"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_11_room_37",
+          "position": {
+            "x": 6,
+            "y": 1.5
+          },
+          "connects": [
+            "room_11",
+            "room_37"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_12_room_15",
+          "position": {
+            "x": -3.5,
+            "y": -9
+          },
+          "connects": [
+            "room_12",
+            "room_15"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_12_room_18",
+          "position": {
+            "x": -2,
+            "y": -7.5
+          },
+          "connects": [
+            "room_12",
+            "room_18"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_12_room_35",
+          "position": {
+            "x": -4,
+            "y": -7.5
+          },
+          "connects": [
+            "room_12",
+            "room_35"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_12_room_38",
+          "position": {
+            "x": -3.5,
+            "y": -8
+          },
+          "connects": [
+            "room_12",
+            "room_38"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_13_room_16",
+          "position": {
+            "x": -9.5,
+            "y": 2
+          },
+          "connects": [
+            "room_13",
+            "room_16"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_13_room_17",
+          "position": {
+            "x": -9.5,
+            "y": -1
+          },
+          "connects": [
+            "room_13",
+            "room_17"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_13_room_36",
+          "position": {
+            "x": -9,
+            "y": 0.5
+          },
+          "connects": [
+            "room_13",
+            "room_36"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_13_room_39",
+          "position": {
+            "x": -9.5,
+            "y": 1
+          },
+          "connects": [
+            "room_13",
+            "room_39"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_13_room_40",
+          "position": {
+            "x": -9.5,
+            "y": 0
+          },
+          "connects": [
+            "room_13",
+            "room_40"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_14_room_37",
+          "position": {
+            "x": 5,
+            "y": 1.5
+          },
+          "connects": [
+            "room_14",
+            "room_37"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_14_room_48",
+          "position": {
+            "x": 3.5,
+            "y": 1
+          },
+          "connects": [
+            "room_14",
+            "room_48"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_15_room_18",
+          "position": {
+            "x": -2,
+            "y": -9.5
+          },
+          "connects": [
+            "room_15",
+            "room_18"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_15_room_38",
+          "position": {
+            "x": -3.5,
+            "y": -9
+          },
+          "connects": [
+            "room_15",
+            "room_38"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_15_room_41",
+          "position": {
+            "x": -3,
+            "y": -9.5
+          },
+          "connects": [
+            "room_15",
+            "room_41"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_16_room_19",
+          "position": {
+            "x": -11,
+            "y": 2.5
+          },
+          "connects": [
+            "room_16",
+            "room_19"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_16_room_39",
+          "position": {
+            "x": -9.5,
+            "y": 2
+          },
+          "connects": [
+            "room_16",
+            "room_39"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_16_room_42",
+          "position": {
+            "x": -10,
+            "y": 2.5
+          },
+          "connects": [
+            "room_16",
+            "room_42"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_17_room_20",
+          "position": {
+            "x": -11,
+            "y": -2.0
+          },
+          "connects": [
+            "room_17",
+            "room_20"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_17_room_22",
+          "position": {
+            "x": -9.5,
+            "y": -4
+          },
+          "connects": [
+            "room_17",
+            "room_22"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_17_room_40",
+          "position": {
+            "x": -9.5,
+            "y": -1
+          },
+          "connects": [
+            "room_17",
+            "room_40"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_17_room_43",
+          "position": {
+            "x": -10,
+            "y": -1.5
+          },
+          "connects": [
+            "room_17",
+            "room_43"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_17_room_49",
+          "position": {
+            "x": -9.5,
+            "y": -3
+          },
+          "connects": [
+            "room_17",
+            "room_49"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_18_room_38",
+          "position": {
+            "x": -3,
+            "y": -8.5
+          },
+          "connects": [
+            "room_18",
+            "room_38"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_18_room_41",
+          "position": {
+            "x": -2,
+            "y": -9.5
+          },
+          "connects": [
+            "room_18",
+            "room_41"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_18_room_47",
+          "position": {
+            "x": -1.5,
+            "y": -7
+          },
+          "connects": [
+            "room_18",
+            "room_47"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_19_room_20",
+          "position": {
+            "x": -12.5,
+            "y": 0
+          },
+          "connects": [
+            "room_19",
+            "room_20"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_19_room_39",
+          "position": {
+            "x": -10,
+            "y": 1.5
+          },
+          "connects": [
+            "room_19",
+            "room_39"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_19_room_42",
+          "position": {
+            "x": -11,
+            "y": 2.5
+          },
+          "connects": [
+            "room_19",
+            "room_42"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_19_room_50",
+          "position": {
+            "x": -12.5,
+            "y": 1
+          },
+          "connects": [
+            "room_19",
+            "room_50"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_20_room_21",
+          "position": {
+            "x": -12.5,
+            "y": -4
+          },
+          "connects": [
+            "room_20",
+            "room_21"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_20_room_40",
+          "position": {
+            "x": -10,
+            "y": -0.5
+          },
+          "connects": [
+            "room_20",
+            "room_40"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_20_room_43",
+          "position": {
+            "x": -11,
+            "y": -1.5
+          },
+          "connects": [
+            "room_20",
+            "room_43"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_20_room_44",
+          "position": {
+            "x": -12.5,
+            "y": -3
+          },
+          "connects": [
+            "room_20",
+            "room_44"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_20_room_50",
+          "position": {
+            "x": -12.5,
+            "y": 0
+          },
+          "connects": [
+            "room_20",
+            "room_50"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_21_room_22",
+          "position": {
+            "x": -10,
+            "y": -4.5
+          },
+          "connects": [
+            "room_21",
+            "room_22"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_21_room_44",
+          "position": {
+            "x": -12.5,
+            "y": -4
+          },
+          "connects": [
+            "room_21",
+            "room_44"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_21_room_45",
+          "position": {
+            "x": -11,
+            "y": -4.5
+          },
+          "connects": [
+            "room_21",
+            "room_45"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_21_room_46",
+          "position": {
+            "x": -12.5,
+            "y": -7
+          },
+          "connects": [
+            "room_21",
+            "room_46"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_22_room_45",
+          "position": {
+            "x": -10,
+            "y": -4.5
+          },
+          "connects": [
+            "room_22",
+            "room_45"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_22_room_49",
+          "position": {
+            "x": -9.5,
+            "y": -4
+          },
+          "connects": [
+            "room_22",
+            "room_49"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_26_room_27",
+          "position": {
+            "x": -4.5,
+            "y": -3
+          },
+          "connects": [
+            "room_26",
+            "room_27"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_39_room_40",
+          "position": {
+            "x": -9.5,
+            "y": 0
+          },
+          "connects": [
+            "room_39",
+            "room_40"
+          ],
+          "inferred": true
+        }
+      ],
+      "doors_inferred": true
+    }
+  ]
+}

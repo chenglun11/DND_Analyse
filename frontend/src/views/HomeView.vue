@@ -144,18 +144,8 @@ const analyzeAllFiles = async () => {
             }
           }
           
-          // 重新计算总体分数（基于选中的指标）
-          let totalScore = 0
-          let validMetricsCount = 0
-          
-          for (const metric of selectedMetrics.value) {
-            if (filteredScores[metric]) {
-              totalScore += filteredScores[metric].score
-              validMetricsCount += 1
-            }
-          }
-          
-          const overallScore = validMetricsCount > 0 ? totalScore / validMetricsCount : 0
+          // 使用后端计算的总体分数，不重新计算
+          const overallScore = result.result.overall_score || 0
           
           // 根据新分数确定等级
           let grade = '未知'
@@ -710,12 +700,23 @@ onMounted(async () => {
       <div v-else class="grid grid-cols-1 xl:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
         <!-- 左侧：文件上传和配置 - 统一高度 -->
         <div class="xl:col-span-2 space-y-4 sm:space-y-6">
-          <!-- 文件上传区域 - 统一高度 -->
+          <!-- 文件上传区域 - 改进版 -->
           <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 sm:p-6 min-h-[200px] sm:min-h-[250px] lg:min-h-[300px]">
             <div class="mb-3 sm:mb-4">
-              <h3 class="text-sm sm:text-base font-semibold text-slate-800 mb-2 sm:mb-3">文件上传</h3>
+              <div class="flex justify-between items-center mb-2 sm:mb-3">
+                <h3 class="text-sm sm:text-base font-semibold text-slate-800">{{t('home.uploadFiles')}}</h3>
+                <button 
+                  @click="analysisResults = []; uploadedFiles = []" 
+                  class="text-xs sm:text-sm text-slate-500 hover:text-blue-600 font-medium transition-colors flex items-center gap-1"
+                  title="清空所有结果，重新开始"
+                >
+                  <RefreshIcon class="w-3 h-3 sm:w-4 sm:h-4" />
+                  {{t('home.restart')}}
+                </button>
+              </div>
+              
               <div 
-                class="border-2 border-dashed border-slate-300 bg-slate-50 rounded-lg p-3 sm:p-4 lg:p-8 text-center hover:border-[#2892D7] hover:bg-slate-100 transition-all duration-200 cursor-pointer flex-1 flex flex-col justify-center"
+                class="border-2 border-dashed border-slate-300 bg-slate-50 rounded-lg p-3 sm:p-4 lg:p-6 text-center hover:border-[#2892D7] hover:bg-slate-100 transition-all duration-200 cursor-pointer flex-1 flex flex-col justify-center"
                 @drop="handleDrop" 
                 @dragover.prevent 
                 @dragenter.prevent
@@ -730,27 +731,31 @@ onMounted(async () => {
                   class="hidden"
                 />
                 
-                <div class="flex flex-col items-center gap-2 sm:gap-3 lg:gap-4">
-                  <div class="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 bg-[#2892D7] rounded-full flex items-center justify-center">
-                    <span class="text-white text-lg sm:text-xl lg:text-2xl">📁</span>
+                <div class="flex flex-col items-center gap-2 sm:gap-3">
+                  <div class="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 bg-[#2892D7] rounded-full flex items-center justify-center">
+                    <span class="text-white text-sm sm:text-lg lg:text-xl">📁</span>
                   </div>
                   
-                  <div class="space-y-1 sm:space-y-2">
-                    <p class="text-slate-700 text-xs sm:text-sm lg:text-base font-medium">{{ t('home.dragAndDrop') }}</p>
-                    <p class="text-slate-500 text-xs sm:text-sm">{{ t('home.supportedFormats') }}</p>
+                  <div class="space-y-1">
+                    <p class="text-slate-700 text-xs sm:text-sm font-medium">{{ t('home.uploadFiles') }}</p>
+                    <p class="text-slate-500 text-xs">{{ t('home.dragAndDrop') }}</p>
                   </div>
                   
                   <button 
-                    class="bg-[#2892D7] text-white px-3 sm:px-4 lg:px-6 py-2 sm:py-3 rounded-lg text-xs sm:text-sm lg:text-base font-medium hover:bg-[#1D70A2] transition-colors"
+                    class="bg-[#2892D7] text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium hover:bg-[#1D70A2] transition-colors"
                     @click.stop="fileInput?.click()"
                   >
                     {{ t('home.selectFiles') }}
                   </button>
                 </div>
               </div>
-              <div v-if="uploadedFiles.length === 0" class="text-center mt-2 sm:mt-3">
-                <p class="text-slate-500 text-xs sm:text-sm">{{ t('home.uploadPrompt') }}</p>
-              </div>
+              
+              <!-- 操作提示 -->
+              <!-- <div class="text-center mt-2 sm:mt-3">
+                <p class="text-slate-500 text-xs">
+                  💡 上传新文件将添加到当前列表中
+                </p>
+              </div> -->
             </div>
           </div>
           
@@ -784,6 +789,19 @@ onMounted(async () => {
                   <XMarkIcon class="w-4 h-4 sm:w-5 sm:h-5" />
                 </button>
               </div>
+            </div>
+            
+            <!-- 新增文件分析按钮 -->
+            <div v-if="uploadedFiles.length > analysisResults.length" class="mt-3 sm:mt-4 pt-3 border-t border-slate-200">
+              <button 
+                @click="analyzeAllFiles" 
+                :disabled="isAnalyzing"
+                class="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-2 sm:py-3 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-300 hover:from-blue-600 hover:to-indigo-700 hover:shadow-lg disabled:from-slate-400 disabled:to-slate-500 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                <span v-if="isAnalyzing" class="w-4 h-4 border-2 border-transparent border-t-white rounded-full animate-spin"></span>
+                <span v-else class="text-sm">⚡</span>
+                <span>{{ isAnalyzing ?  t('home.analyzing') : t('home.startAnalysis',count =uploadedFiles.length - analysisResults.length )}}</span>
+              </button>
             </div>
           </div>
         </div>
@@ -822,11 +840,13 @@ onMounted(async () => {
                   <span class="relative z-10">{{t('home.exportResults')}}</span>
                 </button>
                 <button
-                  @click="clearResults"
-                  class="group relative inline-flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-6 py-1.5 sm:py-2 lg:py-3 bg-gradient-to-r from-[#2892D7] to-[#1D70A2] text-white rounded-md sm:rounded-lg lg:rounded-xl hover:from-[#1D70A2] hover:to-[#173753] transition-all duration-300 text-xs sm:text-sm lg:text-base font-semibold shadow-md hover:shadow-lg hover:-translate-y-0.5 transform overflow-hidden"
+                  @click="analysisResults = []; uploadedFiles = []"
+                  class="group relative inline-flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-6 py-1.5 sm:py-2 lg:py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-md sm:rounded-lg lg:rounded-xl hover:from-orange-600 hover:to-red-600 transition-all duration-300 text-xs sm:text-sm lg:text-base font-semibold shadow-md hover:shadow-lg hover:-translate-y-0.5 transform overflow-hidden"
+                  
                 >
                   <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-                  <span class="relative z-10">{{t('home.clearResults')}}</span>
+                  <RefreshIcon class="w-3 h-3 sm:w-4 sm:h-4 relative z-10" />
+                  <span class="relative z-10">{{ t('home.restart') }}</span>
                 </button>
               </div>
             </div>

@@ -67,21 +67,49 @@ class TreasureMonsterDistributionRule(BaseQualityRule):
         t_positions = []
         m_positions = []
         
-        for t in treasures:
-            pos = t.get('position', {})
-            tx, ty = pos.get('x', 0), pos.get('y', 0)
-            t_positions.append((tx, ty))
-            # 找到最近的房间
-            nearest_room = min(room_ids, key=lambda rid: math.hypot(tx - room_pos[rid][0], ty - room_pos[rid][1]))
-            t_counts[nearest_room] += 1
+        # 首先处理房间内的宝藏和怪物（字符串形式）
+        for room in rooms:
+            room_id = room['id']
+            # 统计房间内的宝藏数量
+            room_treasures = room.get('treasures', [])
+            for treasure in room_treasures:
+                if isinstance(treasure, str):
+                    t_counts[room_id] += 1
+                    # 对字符串形式的宝藏，使用房间位置作为宝藏位置
+                    rx, ry = room_pos[room_id]
+                    t_positions.append((rx, ry))
             
-        for m in monsters:
-            pos = m.get('position', {})
-            mx, my = pos.get('x', 0), pos.get('y', 0)
-            m_positions.append((mx, my))
-            # 找到最近的房间
-            nearest_room = min(room_ids, key=lambda rid: math.hypot(mx - room_pos[rid][0], my - room_pos[rid][1]))
-            m_counts[nearest_room] += 1
+            # 统计房间内的怪物数量
+            room_monsters = room.get('monsters', [])
+            for monster in room_monsters:
+                if isinstance(monster, str):
+                    m_counts[room_id] += 1
+                    # 对字符串形式的怪物，使用房间位置作为怪物位置
+                    rx, ry = room_pos[room_id]
+                    m_positions.append((rx, ry))
+        
+        # 然后处理game_elements中有具体位置的宝藏和怪物
+        for t in element_treasures:
+            if isinstance(t, dict):
+                pos = t.get('position', {})
+                if isinstance(pos, dict):
+                    tx, ty = pos.get('x', 0), pos.get('y', 0)
+                    t_positions.append((tx, ty))
+                    # 找到最近的房间
+                    if room_ids:  # 确保有房间
+                        nearest_room = min(room_ids, key=lambda rid: math.hypot(tx - room_pos[rid][0], ty - room_pos[rid][1]))
+                        t_counts[nearest_room] += 1
+            
+        for m in element_monsters:
+            if isinstance(m, dict):
+                pos = m.get('position', {})
+                if isinstance(pos, dict):
+                    mx, my = pos.get('x', 0), pos.get('y', 0)
+                    m_positions.append((mx, my))
+                    # 找到最近的房间
+                    if room_ids:  # 确保有房间
+                        nearest_room = min(room_ids, key=lambda rid: math.hypot(mx - room_pos[rid][0], my - room_pos[rid][1]))
+                        m_counts[nearest_room] += 1
             
         # 确保所有房间都有key
         for rid in room_ids:

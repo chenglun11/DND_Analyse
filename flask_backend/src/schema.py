@@ -129,7 +129,103 @@ def identify_entrance_exit(dungeon_data: Dict[str, Any]) -> Dict[str, Any]:
         elif room.get('is_exit', False):
             exit_room = room['id']
     
-    # 2. 拓扑分析识别（改进版）
+    # 1.5. 检查game_elements中的入口出口
+    game_elements = level.get('game_elements', [])
+    if not entrance_room or not exit_room:
+        entrance_elements = [elem for elem in game_elements if elem.get('type') == 'entrance']
+        exit_elements = [elem for elem in game_elements if elem.get('type') == 'exit']
+        
+        if entrance_elements and not entrance_room:
+            # 找到离入口元素最近的房间
+            entrance_elem = entrance_elements[0]
+            entrance_pos = entrance_elem.get('position', {})
+            if entrance_pos:
+                ex, ey = entrance_pos.get('x', 0), entrance_pos.get('y', 0)
+                def get_room_center(room):
+                    pos = room.get('position', {})
+                    size = room.get('size', {})
+                    return pos.get('x', 0) + size.get('width', 0) / 2, pos.get('y', 0) + size.get('height', 0) / 2
+                
+                nearest_room = min(rooms, key=lambda r: 
+                    ((get_room_center(r)[0] - ex) ** 2 + (get_room_center(r)[1] - ey) ** 2) ** 0.5)
+                entrance_room = nearest_room['id']
+        
+        if exit_elements and not exit_room:
+            # 找到离出口元素最近的房间
+            exit_elem = exit_elements[0]
+            exit_pos = exit_elem.get('position', {})
+            if exit_pos:
+                ex, ey = exit_pos.get('x', 0), exit_pos.get('y', 0)
+                def get_room_center(room):
+                    pos = room.get('position', {})
+                    size = room.get('size', {})
+                    return pos.get('x', 0) + size.get('width', 0) / 2, pos.get('y', 0) + size.get('height', 0) / 2
+                
+                nearest_room = min(rooms, key=lambda r: 
+                    ((get_room_center(r)[0] - ex) ** 2 + (get_room_center(r)[1] - ey) ** 2) ** 0.5)
+                exit_room = nearest_room['id']
+    
+    # 2. 语义分析 - 优先识别boss房间作为exit
+    if not exit_room:
+        # 查找boss房间
+        boss_rooms = []
+        for room in rooms:
+            room_name = room.get('name', '').lower()
+            room_desc = room.get('description', '').lower()
+            room_type = room.get('room_type', '').lower()
+            
+            # 检查是否为boss房间
+            boss_keywords = ['boss', '首领', '领袖', 'final', 'end', 'last', '最终', '终极']
+            is_boss = (
+                any(keyword in room_name for keyword in boss_keywords) or
+                any(keyword in room_desc for keyword in boss_keywords) or
+                room_type == 'boss' or
+                'werecroc' in room_desc or  # Royal Flush specific boss
+                'prince' in room_desc or
+                'dragon' in room_desc or
+                'lich' in room_desc
+            )
+            
+            if is_boss:
+                boss_rooms.append(room)
+        
+        # 如果找到boss房间，优先选择作为exit
+        if boss_rooms and entrance_room:
+            # 按优先级排序boss房间
+            def boss_priority(room):
+                name = room.get('name', '').lower()
+                desc = room.get('description', '').lower()
+                room_type = room.get('room_type', '').lower()
+                
+                # 最高优先级：名字中只包含"boss room"或类似（排除"fake boss"）
+                if 'boss room' in name or (name.endswith('boss') and 'fake' not in name):
+                    return 1
+                # 第二优先级：名字中包含"boss"但可能是"fake boss"
+                elif 'boss' in name:
+                    if 'fake' in name:
+                        return 5  # 降低fake boss的优先级
+                    else:
+                        return 2
+                # 第三优先级：类型为boss
+                elif room_type == 'boss':
+                    return 3
+                # 第四优先级：描述中包含boss关键词
+                elif any(keyword in desc for keyword in ['boss', 'final', 'end', 'last']):
+                    return 4
+                # 最低优先级：其他特征（如werecroc, prince等）
+                else:
+                    return 6
+            
+            # 按优先级排序
+            sorted_boss_rooms = sorted(boss_rooms, key=boss_priority)
+            
+            # 选择优先级最高且可达的boss房间
+            for boss_room in sorted_boss_rooms:
+                if _is_reachable(graph, entrance_room, boss_room['id']):
+                    exit_room = boss_room['id']
+                    break
+    
+    # 3. 拓扑分析识别（改进版）- 作为后备方案
     if not entrance_room or not exit_room:
         # 只考虑有连接的房间
         connected_rooms = [room for room in rooms if len(graph[room['id']]) > 0]
@@ -165,7 +261,7 @@ def identify_entrance_exit(dungeon_data: Dict[str, Any]) -> Dict[str, Any]:
                                 exit_room = candidate['id']
                                 break
     
-    # 3. 空间位置分析（如果拓扑分析失败）
+    # 4. 空间位置分析（如果拓扑分析失败）
     if not entrance_room or not exit_room:
         def get_room_center(room):
             pos = room.get('position', {})
@@ -197,7 +293,7 @@ def identify_entrance_exit(dungeon_data: Dict[str, Any]) -> Dict[str, Any]:
                 if exit_candidates:
                     exit_room = max(exit_candidates, key=lambda x: x['x'] + x['y'])['room_id']
     
-    # 4. 标记识别结果
+    # 5. 标记识别结果
     if entrance_room and exit_room:
         for room in rooms:
             if room['id'] == entrance_room:

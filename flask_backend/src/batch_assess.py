@@ -21,27 +21,29 @@ class TimeoutError(Exception):
     pass
 
 def assess_all_maps(input_dir: str = "output", output_dir: str = "output/reports", timeout_per_file: int = 30) -> Dict[str, Any]:
-    """评估目录中所有统一格式的地牢地图文件"""
+    """评估目录中所有统一格式的地牢地图文件（包括子文件夹）"""
     
     input_path = Path(input_dir)
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)
     
-    # 查找所有统一格式的JSON文件
-    json_files = list(input_path.glob("*.json"))
+    # 递归查找所有统一格式的JSON文件
+    json_files = list(input_path.rglob("*.json"))
     
     if not json_files:
-        logger.warning(f"No JSON files found in {input_dir}")
+        logger.warning(f"No JSON files found in {input_dir} and subdirectories")
         return {}
     
-    logger.info(f" {len(json_files)} Maps to be assessed")
+    logger.info(f"{len(json_files)} Maps to be assessed (including subdirectories)")
     
     results = {}
     assessor = DungeonQualityAssessor()
     
     for i, json_file in enumerate(json_files, 1):
         try:
-            logger.info(f"评估文件 [{i}/{len(json_files)}]: {json_file.name}")
+            # 计算相对路径以保持目录结构
+            relative_path = json_file.relative_to(input_path)
+            logger.info(f"评估文件 [{i}/{len(json_files)}]: {relative_path}")
             
             try:
                 # 读取地图数据
@@ -55,21 +57,25 @@ def assess_all_maps(input_dir: str = "output", output_dir: str = "output/reports
                 
                 # 检查是否超时
                 if end_time - start_time > timeout_per_file:
-                    logger.error(f"Assess {json_file.name} overtime")
-                    results[json_file.name] = {
+                    logger.error(f"Assess {relative_path} overtime")
+                    results[str(relative_path)] = {
                         'error': 'overtime',
                         'overall_score': 0.0,
                         'grade': '超时'
                     }
                     continue
                 
-                # 保存单独的报告
-                report_file = output_path / f"quality_report_{json_file.stem}.json"
+                # 保存单独的报告，保持目录结构
+                report_relative_path = relative_path.with_stem(f"quality_report_{relative_path.stem}")
+                report_file = output_path / report_relative_path
+                # 确保报告文件的目录存在
+                report_file.parent.mkdir(parents=True, exist_ok=True)
+                
                 with open(report_file, 'w', encoding='utf-8') as f:
                     json.dump(metrics, f, ensure_ascii=False, indent=2)
                 
-                # 收集结果
-                results[json_file.name] = {
+                # 收集结果，使用相对路径作为key
+                results[str(relative_path)] = {
                     'overall_score': metrics['overall_score'],
                     'grade': metrics['grade'],
                     'detailed_metrics': metrics['scores'],
@@ -78,19 +84,20 @@ def assess_all_maps(input_dir: str = "output", output_dir: str = "output/reports
                     'processing_time': end_time - start_time
                 }
                 
-                logger.info(f"✓ {json_file.name}: {metrics['overall_score']:.3f} ({metrics['grade']}) - {end_time - start_time:.2f}s")
+                logger.info(f"✓ {relative_path}: {metrics['overall_score']:.3f} ({metrics['grade']}) - {end_time - start_time:.2f}s")
                 
             except Exception as e:
-                logger.error(f"Assess {json_file.name} cause error: {e}")
-                results[json_file.name] = {
+                logger.error(f"Assess {relative_path} cause error: {e}")
+                results[str(relative_path)] = {
                     'error': str(e),
                     'overall_score': 0.0,
                     'grade': 'error'
                 }
                 
         except Exception as e:
-            logger.error(f"Error while using {json_file.name} expection: {e}")
-            results[json_file.name] = {
+            logger.error(f"Error while using {json_file} expection: {e}")
+            relative_path = json_file.relative_to(input_path)
+            results[str(relative_path)] = {
                 'error': f'un-expect error: {str(e)}',
                 'overall_score': 0.0,
                 'grade': 'un-expect error'
@@ -282,11 +289,13 @@ def print_summary_report(report: Dict[str, Any]) -> None:
     print("="*60)
 
 def batch_assess_quality(input_dir: str, output_dir: str, enable_spatial_inference: bool = True, adjacency_threshold: float = 1.0, timeout_per_file: int = 30):
-    """批量评估地图质量 - CLI 调用的接口函数"""
+    """批量评估地图质量 - CLI 调用的接口函数（支持递归搜索子文件夹）"""
     try:
-        logger.info(f"开始批量评估，输入目录: {input_dir}")
+        logger.info(f"开始批量评估，输入目录: {input_dir}（包括子文件夹）")
         logger.info(f"输出目录: {output_dir}")
         logger.info(f"每个文件超时时间: {timeout_per_file}秒")
+        logger.info(f"空间推断: {'启用' if enable_spatial_inference else '禁用'}")
+        logger.info(f"邻接阈值: {adjacency_threshold}")
         
         # 确保输出目录存在
         os.makedirs(output_dir, exist_ok=True)

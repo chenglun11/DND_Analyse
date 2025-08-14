@@ -67,8 +67,13 @@ class DoorDistributionRule(BaseQualityRule):
         
         # 距离归一化：使用平均房间间距离作为基准
         # 理论依据：Delaunay三角剖分中的平均边长
-        room_positions = [(r['position']['x'] + r['size']['width']/2, 
-                          r['position']['y'] + r['size']['height']/2) for r in all_rooms]
+        room_positions = []
+        for r in all_rooms:
+            if 'position' in r and isinstance(r['position'], dict) and 'size' in r and isinstance(r['size'], dict):
+                if all(key in r['position'] for key in ['x', 'y']) and all(key in r['size'] for key in ['width', 'height']):
+                    center_x = r['position']['x'] + r['size']['width']/2
+                    center_y = r['position']['y'] + r['size']['height']/2
+                    room_positions.append((center_x, center_y))
         if len(room_positions) >= 2:
             # 计算所有房间对的距离，取平均值作为特征距离
             total_dist = 0
@@ -114,8 +119,18 @@ class DoorDistributionRule(BaseQualityRule):
 
     def _calculate_avg_door_distance(self, rooms: List[Dict], connections: List[Dict], doors: List[Dict]) -> Tuple[float, Dict[str, Any]]:
         # build coord maps
-        door_pos = {d['id']:(d['position']['x'], d['position']['y']) for d in doors if 'position' in d}
-        room_pos = {r['id']:(r['position']['x'], r['position']['y']) for r in rooms}
+        door_pos = {}
+        if doors:
+            for d in doors:
+                if 'position' in d and isinstance(d['position'], dict):
+                    if 'x' in d['position'] and 'y' in d['position']:
+                        door_pos[d['id']] = (d['position']['x'], d['position']['y'])
+        
+        room_pos = {}
+        for r in rooms:
+            if 'position' in r and isinstance(r['position'], dict):
+                if 'x' in r['position'] and 'y' in r['position']:
+                    room_pos[r['id']] = (r['position']['x'], r['position']['y'])
         dists = []
         for c in connections:
             # door-level
@@ -138,7 +153,11 @@ class DoorDistributionRule(BaseQualityRule):
 
     def _calculate_avg_room_entropy(self, rooms: List[Dict], connections: List[Dict]) -> float:
         room_doors = defaultdict(list)
-        room_pos = {r['id']:(r['position']['x'], r['position']['y']) for r in rooms}
+        room_pos = {}
+        for r in rooms:
+            if 'position' in r and isinstance(r['position'], dict):
+                if 'x' in r['position'] and 'y' in r['position']:
+                    room_pos[r['id']] = (r['position']['x'], r['position']['y'])
         room_ids = set(room_pos.keys())
         
         # Only process connections between actual rooms, not game elements

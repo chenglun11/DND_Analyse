@@ -117,7 +117,8 @@ class SpatialInferenceEngine:
         Returns:
             the enhanced dungeon data
         """
-        enhanced_data = dungeon_data.copy()
+        import copy
+        enhanced_data = copy.deepcopy(dungeon_data)
         for level in enhanced_data.get('levels', []):
             rooms = level.get('rooms', [])
             corridors = level.get('corridors', [])

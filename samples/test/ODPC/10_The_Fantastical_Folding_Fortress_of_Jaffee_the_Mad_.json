@@ -1,0 +1,75 @@
+{
+  "header": {
+    "schemaName": "dnd-dungeon-unified",
+    "schemaVersion": "1.0.0",
+    "name": "The Fantastical Folding Fortress of Jaffee the Mad",
+    "author": "System Converter",
+    "description": "Converted one-page dungeon by Jason O'Toole (map by Duncan Scrowl). Layout approximated for graph and pathfinding testing.",
+    "grid": { "type": "square", "size": 5, "unit": "ft" }
+  },
+  "levels": [
+    {
+      "id": "level_1",
+      "name": "Main Level",
+      "map": { "width": 90, "height": 90 },
+
+      "rooms": [
+        { "id": "room_entrance", "shape": "rectangle", "position": { "x": 8, "y": 40 }, "size": { "width": 6, "height": 4 }, "name": "Entrance", "description": "Main entrance hall to the folding fortress." },
+        { "id": "room_1a", "shape": "rectangle", "position": { "x": 10, "y": 30 }, "size": { "width": 8, "height": 6 }, "name": "1.a Kamera Infinita", "description": "Mirror-walled chamber shifts shape as fortress folds through dimensions." },
+        { "id": "room_1b", "shape": "rectangle", "position": { "x": 70, "y": 54 }, "size": { "width": 8, "height": 6 }, "name": "1.b Kamera Infinita", "description": "Another dimensional mirror chamber. Exits change randomly." },
+        { "id": "room_1c", "shape": "rectangle", "position": { "x": 26, "y": 10 }, "size": { "width": 8, "height": 6 }, "name": "1.c Kamera Infinita", "description": "Random exit dimensional mirror room." },
+        { "id": "room_1d", "shape": "rectangle", "position": { "x": 56, "y": 18 }, "size": { "width": 8, "height": 6 }, "name": "1.d Kamera Infinita", "description": "Dimensional mirror chamber shifting shape." },
+        { "id": "room_2", "shape": "rectangle", "position": { "x": 14, "y": 60 }, "size": { "width": 10, "height": 6 }, "name": "2 The Topsyr Shrine", "description": "Dana Gemjorral, Fallen Celestial Knight, imprisoned here. Wears golden gear that restores health." },
+        { "id": "room_3", "shape": "rectangle", "position": { "x": 50, "y": 8 }, "size": { "width": 12, "height": 8 }, "name": "3 Shrine of Awhout-rout-yuh", "description": "Powerful wizard's lair possessed by Awhout-rout-yuh, Infernal Prince of Madness." },
+        { "id": "room_4", "shape": "rectangle", "position": { "x": 40, "y": 36 }, "size": { "width": 12, "height": 8 }, "name": "4 The Fold Viper Nest", "description": "Cavern-like room with extra-dimensional vipers. Can Plane Shift and cause madness." },
+        { "id": "room_5", "shape": "rectangle", "position": { "x": 74, "y": 72 }, "size": { "width": 10, "height": 8 }, "name": "5 The Turnup Shrine", "description": "Home of Votrakes Kobojilla, powerful wraith. Keeper of Turnup." },
+        { "id": "room_6", "shape": "rectangle", "position": { "x": 60, "y": 42 }, "size": { "width": 14, "height": 10 }, "name": "6 Galleries of Madness", "description": "Jaffee's inspiration from paintings. Contains works by great masters." },
+        { "id": "room_v1", "shape": "rectangle", "position": { "x": 30, "y": 70 }, "size": { "width": 8, "height": 6 }, "name": "V.1 Vault of Fealty", "description": "Jeweled amulet granting aid from angelic being." },
+        { "id": "room_v2", "shape": "rectangle", "position": { "x": 40, "y": 70 }, "size": { "width": 8, "height": 6 }, "name": "V.2 Vault of Vanguard", "description": "Shield granting +3 AC." },
+        { "id": "room_v3", "shape": "rectangle", "position": { "x": 50, "y": 70 }, "size": { "width": 8, "height": 6 }, "name": "V.3 Vault of Vanguard's Sword", "description": "Sword, +3 vs. undead and fiends." },
+        { "id": "room_v4", "shape": "rectangle", "position": { "x": 60, "y": 70 }, "size": { "width": 8, "height": 6 }, "name": "V.4 Vault of the Bow", "description": "Bow ignores armor, deals full damage." },
+        { "id": "room_v5", "shape": "rectangle", "position": { "x": 74, "y": 60 }, "size": { "width": 10, "height": 6 }, "name": "V.5 Vault of the True Sight", "description": "Ring granting True Sight." }
+      ],
+
+      "connections": [
+        { "from_room": "room_entrance", "to_room": "room_1a", "door_id": "door_01" },
+        { "from_room": "room_1a", "to_room": "room_v1", "door_id": "door_02" },
+        { "from_room": "room_v1", "to_room": "room_v2", "door_id": "door_03" },
+        { "from_room": "room_v2", "to_room": "room_v3", "door_id": "door_04" },
+        { "from_room": "room_v3", "to_room": "room_v4", "door_id": "door_05" },
+        { "from_room": "room_v4", "to_room": "room_v5", "door_id": "door_06" },
+        { "from_room": "room_v5", "to_room": "room_5", "door_id": "door_07" },
+        { "from_room": "room_1a", "to_room": "room_4", "door_id": "door_08" },
+        { "from_room": "room_4", "to_room": "room_6", "door_id": "door_09" },
+        { "from_room": "room_6", "to_room": "room_5", "door_id": "door_10" },
+        { "from_room": "room_4", "to_room": "room_3", "door_id": "door_11" },
+        { "from_room": "room_3", "to_room": "room_1d", "door_id": "door_12" },
+        { "from_room": "room_1d", "to_room": "room_1b", "door_id": "door_13" }
+      ],
+
+      "doors": [
+        { "id": "door_01", "position": { "x": 10, "y": 38, "dir": { "x": 0, "y": 1 }, "type": 1 } },
+        { "id": "door_02", "position": { "x": 14, "y": 30, "dir": { "x": 1, "y": 0 }, "type": 1 } },
+        { "id": "door_03", "position": { "x": 38, "y": 70, "dir": { "x": 1, "y": 0 }, "type": 1 } },
+        { "id": "door_04", "position": { "x": 48, "y": 70, "dir": { "x": 1, "y": 0 }, "type": 1 } },
+        { "id": "door_05", "position": { "x": 58, "y": 70, "dir": { "x": 1, "y": 0 }, "type": 1 } },
+        { "id": "door_06", "position": { "x": 68, "y": 70, "dir": { "x": 1, "y": 0 }, "type": 1 } },
+        { "id": "door_07", "position": { "x": 78, "y": 66, "dir": { "x": 0, "y": 1 }, "type": 1 } },
+        { "id": "door_08", "position": { "x": 18, "y": 34, "dir": { "x": 1, "y": 0 }, "type": 1 } },
+        { "id": "door_09", "position": { "x": 50, "y": 42, "dir": { "x": 1, "y": 0 }, "type": 1 } },
+        { "id": "door_10", "position": { "x": 74, "y": 64, "dir": { "x": 0, "y": -1 }, "type": 1 } },
+        { "id": "door_11", "position": { "x": 46, "y": 12, "dir": { "x": -1, "y": 0 }, "type": 1 } },
+        { "id": "door_12", "position": { "x": 56, "y": 20, "dir": { "x": 0, "y": 1 }, "type": 1 } },
+        { "id": "door_13", "position": { "x": 70, "y": 58, "dir": { "x": -1, "y": 0 }, "type": 1 } }
+      ],
+
+      "game_elements": [
+        { "id": "treasure_amulet", "name": "Jeweled Amulet", "type": "treasure", "position": { "x": 30, "y": 70 }, "description": "Grants angelic aid." },
+        { "id": "treasure_shield", "name": "Shield of Vanguard", "type": "treasure", "position": { "x": 40, "y": 70 }, "description": "Shield +3 AC." },
+        { "id": "treasure_sword", "name": "Sword of Vanguard", "type": "treasure", "position": { "x": 50, "y": 70 }, "description": "Sword +3 vs undead and fiends." },
+        { "id": "treasure_bow", "name": "Bow of True Strike", "type": "treasure", "position": { "x": 60, "y": 70 }, "description": "Ignores armor, full damage." },
+        { "id": "treasure_ring", "name": "Ring of True Sight", "type": "treasure", "position": { "x": 74, "y": 60 }, "description": "Grants True Sight." }
+      ]
+    }
+  ]
+}

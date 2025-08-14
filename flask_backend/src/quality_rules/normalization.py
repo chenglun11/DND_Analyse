@@ -199,7 +199,7 @@ def variance_normalize(values: List[float], target_variance: float = 1.0) -> flo
         return 1.0
     
     actual_variance = np.var(values)
-    return gaussian_normalize(actual_variance, target_variance, target_variance * 0.5)
+    return gaussian_normalize(actual_variance, target_variance, target_variance)
 
 def connectivity_normalize(connected_components: int, total_nodes: int) -> float:
     """

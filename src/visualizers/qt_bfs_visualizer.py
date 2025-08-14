@@ -700,13 +700,13 @@ class QtBFSVisualizer(QMainWindow):
         # 视图菜单
         view_menu = menubar.addMenu('')
         
-        fit_view_action = view_menu.addAction('适应视图')
+        fit_view_action = view_menu.addAction('Adaptive View')
         fit_view_action.triggered.connect(self.canvas._auto_fit_view)
         
         # 帮助菜单
-        help_menu = menubar.addMenu('帮助')
+        help_menu = menubar.addMenu('Help')
         
-        about_action = help_menu.addAction('关于')
+        about_action = help_menu.addAction('About')
         about_action.triggered.connect(self.show_about)
     
     def load_dungeon_file(self):
@@ -729,11 +729,11 @@ class QtBFSVisualizer(QMainWindow):
                 if self.canvas.load_dungeon_data(dungeon_data):
                     self.update_node_combos()
                     self.start_btn.setEnabled(True)  # 启用BFS开始按钮
-                    self.statusBar().showMessage(f"已加载文件: {Path(file_path).name}")
+                    self.statusBar().showMessage(f"Loaded files: {Path(file_path).name}")
                 else:
-                    QMessageBox.warning(self, "错误", "无法加载地牢数据")
+                    QMessageBox.warning(self, "Error", "Unable to load dungeon data")
             except Exception as e:
-                QMessageBox.critical(self, "错误", f"加载文件失败: {e}")
+                QMessageBox.critical(self, "Error", f"Failed to load file: {e}")
     
     def update_node_combos(self):
         """更新节点选择下拉框"""
@@ -755,7 +755,7 @@ class QtBFSVisualizer(QMainWindow):
             target_node = None
         
         if not start_node:
-            QMessageBox.warning(self, "警告", "请选择起始节点")
+            QMessageBox.warning(self, "Warning", "Please select the starting node.")
             return
         
         # 创建并启动BFS工作线程
@@ -771,7 +771,7 @@ class QtBFSVisualizer(QMainWindow):
         # 更新UI状态
         self.start_btn.setEnabled(False)
         self.stop_btn.setEnabled(True)
-        self.statusBar().showMessage("BFS算法运行中...")
+        self.statusBar().showMessage("BFS algorithm running...")
         
         # 启动线程
         self.bfs_worker.start()
@@ -787,7 +787,7 @@ class QtBFSVisualizer(QMainWindow):
         """BFS算法完成"""
         self.start_btn.setEnabled(True)
         self.stop_btn.setEnabled(False)
-        self.statusBar().showMessage("BFS算法完成")
+        self.statusBar().showMessage("BFS algorithm completed")
         # 显示最短路径
         start_node = self.start_node_combo.currentText()
         target_node = self.target_node_combo.currentText()
@@ -795,15 +795,15 @@ class QtBFSVisualizer(QMainWindow):
             path = self._find_shortest_path(start_node, target_node)
             if path:
                 path_str = " → ".join(path)
-                self.info_text.append(f"\n最短路径：\n{path_str}")
+                self.info_text.append(f"\n shortest path:\n{path_str}")
             else:
-                self.info_text.append("\n未找到最短路径")
+                self.info_text.append("\n No shortest path found")
         else:
-            self.info_text.append("\n未指定终点，未显示路径")
+            self.info_text.append("\n No destination specified, no route displayed")
     
     def bfs_error(self, error_msg: str):
         """BFS算法错误"""
-        QMessageBox.critical(self, "错误", f"BFS算法错误: {error_msg}")
+        QMessageBox.critical(self, "Error", f"BFS algorithm error: {error_msg}")
         self.bfs_finished()
     
     def update_visualization(self, visited: Set[str], current: str, 
@@ -813,10 +813,10 @@ class QtBFSVisualizer(QMainWindow):
         self.canvas.set_visualization_state(visited, current, queue, path, start, end)
         
         # 更新信息显示
-        info = f"当前节点: {current}\n"
-        info += f"已访问: {len(visited)} 个节点\n"
-        info += f"队列中: {len(queue)} 个节点\n"
-        info += f"路径长度: {len(path)}"
+        info = f"Current node: {current}\n"
+        info += f"Visited: {len(visited)} node\n"
+        info += f"In the queue: {len(queue)} node\n"
+        info += f"Path length: {len(path)}"
         
         self.info_text.setText(info)
     
@@ -824,12 +824,12 @@ class QtBFSVisualizer(QMainWindow):
         """重置可视化"""
         self.canvas.set_visualization_state(set(), None, set(), [], None, None)
         self.info_text.clear()
-        self.statusBar().showMessage("可视化已重置")
+        self.statusBar().showMessage("Visualisation has been reset")
     
     def analyze_accessibility(self):
         """分析可达性"""
         if not self.graph:
-            QMessageBox.warning(self, "警告", "请先加载地牢数据")
+            QMessageBox.warning(self, "Warning", "Please load the dungeon data.")
             return
         
         # 简单的可达性分析
@@ -855,23 +855,23 @@ class QtBFSVisualizer(QMainWindow):
             
             unreachable = all_nodes - reachable_from_start
             
-            info = f"可达性分析结果:\n"
-            info += f"总节点数: {len(all_nodes)}\n"
-            info += f"可达节点数: {len(reachable_from_start)}\n"
-            info += f"不可达节点数: {len(unreachable)}\n"
-            info += f"可达性比例: {len(reachable_from_start)/len(all_nodes)*100:.1f}%\n"
+            info = f"Accessibility analysis results:\n"
+            info += f"Total number of nodes: {len(all_nodes)}\n"
+            info += f"Number of reachable nodes: {len(reachable_from_start)}\n"
+            info += f"Number of unreachable nodes: {len(unreachable)}\n"
+            info += f"Accessibility ratio: {len(reachable_from_start)/len(all_nodes)*100:.1f}%\n"
             
             if unreachable:
-                info += f"不可达节点: {', '.join(sorted(unreachable))}"
+                info += f"Unreachable node: {', '.join(sorted(unreachable))}"
             
             self.info_text.setText(info)
         else:
-            QMessageBox.warning(self, "警告", "请选择起始节点")
+            QMessageBox.warning(self, "Warning", "Please select the starting node.")
     
     def analyze_path_diversity(self):
         """分析路径多样性"""
         if not self.graph:
-            QMessageBox.warning(self, "警告", "请先加载地牢数据")
+            QMessageBox.warning(self, "Warning", "Please load the dungeon data.")
             return
         
         # 获取所有房间节点
@@ -882,7 +882,7 @@ class QtBFSVisualizer(QMainWindow):
             room_nodes = [room['id'] for room in rooms]
         
         if not room_nodes:
-            QMessageBox.warning(self, "警告", "未找到房间数据")
+            QMessageBox.warning(self, "Warning", "No room data found")
             return
         
         # 分析所有房间对之间的路径
@@ -901,7 +901,7 @@ class QtBFSVisualizer(QMainWindow):
                     path_distribution[count].append(f"{room1}->{room2}")
         
         if not path_counts:
-            self.info_text.setText("路径多样性分析:\n没有找到可达的房间对")
+            self.info_text.setText("Path diversity analysis:\nNo available rooms found.")
             return
         
         # 计算统计信息
@@ -910,16 +910,16 @@ class QtBFSVisualizer(QMainWindow):
         min_paths = min(path_counts)
         
         # 生成简洁的报告
-        info = f"路径多样性分析报告:\n"
-        info += f"分析房间对数量: {len(path_counts)}\n"
-        info += f"平均路径数: {avg_paths:.2f}\n"
-        info += f"最大路径数: {max_paths}\n"
-        info += f"最小路径数: {min_paths}\n\n"
+        info = f"Path Diversity Analysis Report:\n"
+        info += f"Analyse the number of rooms: {len(path_counts)}\n"
+        info += f"average path number: {avg_paths:.2f}\n"
+        info += f"Maximum number of paths: {max_paths}\n"
+        info += f"minimum path number: {min_paths}\n\n"
         
-        info += f"路径数量分布:\n"
+        info += f"Distribution of path numbers:\n"
         for count in sorted(path_distribution.keys()):
             room_pairs = path_distribution[count]
-            info += f"  {count}条路径: {len(room_pairs)}对房间\n"
+            info += f"  {count}path: {len(room_pairs)}For the room\n"
             # 只显示前3个房间对作为示例
             if len(room_pairs) <= 3:
                 for pair in room_pairs:
@@ -927,19 +927,19 @@ class QtBFSVisualizer(QMainWindow):
             else:
                 for pair in room_pairs[:2]:
                     info += f"    {pair}\n"
-                info += f"    ... 还有{len(room_pairs)-2}对\n"
+                info += f"    ... Left{len(room_pairs)-2}Pair\n"
         
         # 添加评分信息
         max_diversity = 5.0
         score = min(1.0, avg_paths / max_diversity)
-        info += f"\n路径多样性评分: {score:.3f}"
+        info += f"\n Path Diversity Score: {score:.3f}"
         
         self.info_text.setText(info)
 
     def view_path_details(self):
         """查看特定房间对的路径详情"""
         if not self.graph:
-            QMessageBox.warning(self, "警告", "请先加载地牢数据")
+            QMessageBox.warning(self, "Warning", "Please load the dungeon data first.")
             return
         
         # 获取所有房间节点
@@ -950,14 +950,14 @@ class QtBFSVisualizer(QMainWindow):
             room_nodes = [room['id'] for room in rooms]
         
         if not room_nodes:
-            QMessageBox.warning(self, "警告", "未找到房间数据")
+            QMessageBox.warning(self, "Warning", "No data")
             return
         
         # 创建房间选择对话框
         from PyQt5.QtWidgets import QDialog, QVBoxLayout, QHBoxLayout, QComboBox, QPushButton, QTextEdit
         
         dialog = QDialog(self)
-        dialog.setWindowTitle("查看路径详情")
+        dialog.setWindowTitle("View path details")
         dialog.setModal(True)
         dialog.resize(600, 400)
         
@@ -965,12 +965,12 @@ class QtBFSVisualizer(QMainWindow):
         
         # 房间选择
         select_layout = QHBoxLayout()
-        select_layout.addWidget(QLabel("起始房间:"))
+        select_layout.addWidget(QLabel("Starting room:"))
         start_combo = QComboBox()
         start_combo.addItems(room_nodes)
         select_layout.addWidget(start_combo)
         
-        select_layout.addWidget(QLabel("目标房间:"))
+        select_layout.addWidget(QLabel("Target room:"))
         end_combo = QComboBox()
         end_combo.addItems(room_nodes)
         select_layout.addWidget(end_combo)
@@ -978,7 +978,7 @@ class QtBFSVisualizer(QMainWindow):
         layout.addLayout(select_layout)
         
         # 查看按钮
-        view_btn = QPushButton("查看路径")
+        view_btn = QPushButton("View path")
         layout.addWidget(view_btn)
         
         # 结果显示
@@ -991,21 +991,21 @@ class QtBFSVisualizer(QMainWindow):
             end = end_combo.currentText()
             
             if start == end:
-                result_text.setText("起始房间和目标房间相同")
+                result_text.setText("Start and end are same")
                 return
             
             count, paths = self._find_all_shortest_paths(start, end)
             
             if count == 0:
-                result_text.setText(f"从 {start} 到 {end} 没有可达路径")
+                result_text.setText(f"No route from {start} to {end}")
                 return
             
-            info = f"从 {start} 到 {end} 的路径详情:\n"
-            info += f"总路径数: {count}\n\n"
+            info = f"Detail from {start} to {end} :\n"
+            info += f"Total number of paths: {count}\n\n"
             
             for idx, path in enumerate(paths):
                 path_str = " -> ".join(path)
-                info += f"路径{idx+1}: {path_str}\n"
+                info += f"Path{idx+1}: {path_str}\n"
             
             result_text.setText(info)
         
@@ -1078,10 +1078,9 @@ class QtBFSVisualizer(QMainWindow):
     
     def show_about(self):
         """显示关于对话框"""
-        QMessageBox.about(self, "关于", 
-                         "地牢BFS可视化器\n\n"
-                         "基于Qt的BFS算法可视化工具\n"
-                         "用于分析地牢的可达性和路径多样性")
+        QMessageBox.about(self, "About", 
+                         "QT BFS Dungeon visualiser\n"
+                         )
 
 
 def create_qt_bfs_visualizer() -> QtBFSVisualizer:
@@ -1094,7 +1093,7 @@ def run_qt_bfs_visualizer():
     app = QApplication(sys.argv)
     
     # 设置应用程序信息
-    app.setApplicationName("地牢BFS可视化器")
+    app.setApplicationName("Dungeon BFS VisualiserDungeon BFS Visualiser")
     app.setApplicationVersion("1.0")
     app.setOrganizationName("Dungeon Adapter")
     

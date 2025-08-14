@@ -118,7 +118,12 @@ class DungeonVisualizer:
             ax.set_xlabel('X (ft)', fontsize=12)
             ax.set_ylabel('Y (ft)', fontsize=12)
             self._add_legend(ax, show_game_elements)
-            os.makedirs(os.path.dirname(output_path), exist_ok=True)
+            
+            # 确保输出目录存在
+            output_dir = os.path.dirname(output_path)
+            if output_dir:  # 只有当目录不为空时才创建
+                os.makedirs(output_dir, exist_ok=True)
+            
             plt.savefig(output_path, dpi=self.dpi, bbox_inches='tight', facecolor='white', edgecolor='none')
             plt.close()
             logger.info(f"Dungeon Saved To: {output_path}")
@@ -838,6 +843,262 @@ class DungeonVisualizer:
                            alpha=0.8, 
                            zorder=5,
                            solid_capstyle='round')
+
+    def _extract_visualization_data(self, dungeon_data: Dict[str, Any]) -> Dict[str, Any]:
+        """提取前端可用的可视化数据"""
+        try:
+            if not dungeon_data or 'levels' not in dungeon_data:
+                return self._create_default_visualization_data()
+            
+            level = dungeon_data['levels'][0] if dungeon_data['levels'] else {}
+            rooms = level.get('rooms', [])
+            corridors = level.get('corridors', [])
+            connections = level.get('connections', [])
+            
+            # 转换房间和通道数据
+            frontend_rooms = []
+            frontend_corridors = []
+            
+            # 处理房间数据
+            for room in rooms:
+                # 提取位置信息
+                x = 0
+                y = 0
+                width = 50
+                height = 50
+                
+                if room.get('position'):
+                    x = room['position'].get('x', 0)
+                    y = room['position'].get('y', 0)
+                elif 'x' in room and 'y' in room:
+                    x = room['x']
+                    y = room['y']
+                
+                if room.get('size'):
+                    width = room['size'].get('width', 50)
+                    height = room['size'].get('height', 50)
+                elif 'width' in room and 'height' in room:
+                    width = room['width']
+                    height = room['height']
+                
+                # 缩放坐标
+                x = x * 5 + 400
+                y = y * 5 + 300
+                width = width * 5
+                height = height * 5
+                
+                # 确定房间类型
+                room_type = room.get('room_type', 'room')
+                if room.get('is_entrance'):
+                    room_type = 'entrance'
+                elif 'boss' in room.get('name', '').lower() or 'boss' in room.get('description', '').lower():
+                    room_type = 'boss'
+                elif 'treasure' in room.get('name', '').lower() or 'treasure' in room.get('description', '').lower():
+                    room_type = 'treasure'
+                
+                frontend_rooms.append({
+                    'id': room.get('id', f'room_{len(frontend_rooms)}'),
+                    'x': x,
+                    'y': y,
+                    'width': width,
+                    'height': height,
+                    'type': room_type,
+                    'connections': room.get('connections', []),
+                    'name': room.get('name', ''),
+                    'description': room.get('description', '')
+                })
+            
+            # 处理专门的通道数组（如果有的话，且包含path信息）
+            corridors = level.get('corridors', [])
+            for corridor in corridors:
+                # 检查是否有path信息（Royal Flush格式）
+                if 'path' in corridor and corridor['path']:
+                    path = corridor['path']
+                    if len(path) >= 2:
+                        # 取路径的第一个和最后一个点
+                        start_point = path[0]
+                        end_point = path[-1]
+                        
+                        # 缩放坐标
+                        start_x = start_point['x'] * 5 + 400
+                        start_y = start_point['y'] * 5 + 300
+                        end_x = end_point['x'] * 5 + 400
+                        end_y = end_point['y'] * 5 + 300
+                        
+                        frontend_corridors.append({
+                            'id': corridor.get('id', f'corridor_{len(frontend_corridors)}'),
+                            'start': {'x': start_x, 'y': start_y},
+                            'end': {'x': end_x, 'y': end_y},
+                            'width': 8,
+                            'name': corridor.get('name', f'Corridor {len(frontend_corridors)}'),
+                            'connection_type': 'physical'
+                        })
+                else:
+                    # 没有path信息，使用position/size信息（回退处理）
+                    x = 0
+                    y = 0
+                    width = 50
+                    height = 50
+                    
+                    if corridor.get('position'):
+                        x = corridor['position'].get('x', 0)
+                        y = corridor['position'].get('y', 0)
+                    elif 'x' in corridor and 'y' in corridor:
+                        x = corridor['x']
+                        y = corridor['y']
+                    
+                    if corridor.get('size'):
+                        width = corridor['size'].get('width', 50)
+                        height = corridor['size'].get('height', 50)
+                    elif 'width' in corridor and 'height' in corridor:
+                        width = corridor['width']
+                        height = corridor['height']
+                    
+                    # 缩放坐标
+                    x = x * 5 + 400
+                    y = y * 5 + 300
+                    width = width * 5
+                    height = height * 5
+                    
+                    # 转换为线段
+                    if width > height:
+                        # 水平通道
+                        start_x = x
+                        start_y = y + height / 2
+                        end_x = x + width
+                        end_y = y + height / 2
+                    else:
+                        # 垂直通道
+                        start_x = x + width / 2
+                        start_y = y
+                        end_x = x + width / 2
+                        end_y = y + height
+                    
+                    frontend_corridors.append({
+                        'id': corridor.get('id', f'corridor_{len(frontend_corridors)}'),
+                        'start': {'x': start_x, 'y': start_y},
+                        'end': {'x': end_x, 'y': end_y},
+                        'width': 8,
+                        'name': corridor.get('name', f'Corridor {len(frontend_corridors)}'),
+                        'connection_type': 'physical'
+                    })
+            
+            # 基于连接关系生成通道
+            for connection in connections:
+                from_room_id = connection.get('from_room')
+                to_room_id = connection.get('to_room')
+                
+                if from_room_id and to_room_id:
+                    # 查找对应的房间
+                    from_room = None
+                    to_room = None
+                    
+                    # 在房间数组中查找
+                    for room in rooms:
+                        if room['id'] == from_room_id:
+                            from_room = room
+                        elif room['id'] == to_room_id:
+                            to_room = room
+                    
+                    if from_room and to_room:
+                        # 计算房间中心点
+                        from_x = from_room.get('position', {}).get('x', 0) * 5 + 400
+                        from_y = from_room.get('position', {}).get('y', 0) * 5 + 300
+                        from_width = from_room.get('size', {}).get('width', 50) * 5
+                        from_height = from_room.get('size', {}).get('height', 50) * 5
+                        
+                        to_x = to_room.get('position', {}).get('x', 0) * 5 + 400
+                        to_y = to_room.get('position', {}).get('y', 0) * 5 + 300
+                        to_width = to_room.get('size', {}).get('width', 50) * 5
+                        to_height = to_room.get('size', {}).get('height', 50) * 5
+                        
+                        from_center_x = from_x + from_width / 2
+                        from_center_y = from_y + from_height / 2
+                        to_center_x = to_x + to_width / 2
+                        to_center_y = to_y + to_height / 2
+                        
+                        # 创建连接通道
+                        corridor_id = f'connection_{from_room_id}_{to_room_id}'
+                        
+                        # 检查是否已存在相同的连接
+                        existing_connection = False
+                        for existing_corridor in frontend_corridors:
+                            if (existing_corridor['start']['x'] == from_center_x and 
+                                existing_corridor['start']['y'] == from_center_y and
+                                existing_corridor['end']['x'] == to_center_x and 
+                                existing_corridor['end']['y'] == to_center_y):
+                                existing_connection = True
+                                break
+                        
+                        if not existing_connection:
+                            frontend_corridors.append({
+                                'id': corridor_id,
+                                'start': {'x': from_center_x, 'y': from_center_y},
+                                'end': {'x': to_center_x, 'y': to_center_y},
+                                'width': 6,
+                                'name': f'Connection {from_room_id} to {to_room_id}',
+                                'connection_type': 'room_to_room'
+                            })
+            
+            # 计算地图边界
+            min_x = min([room['x'] for room in frontend_rooms]) if frontend_rooms else 0
+            max_x = max([room['x'] + room['width'] for room in frontend_rooms]) if frontend_rooms else 800
+            min_y = min([room['y'] for room in frontend_rooms]) if frontend_rooms else 0
+            max_y = max([room['y'] + room['height'] for room in frontend_rooms]) if frontend_rooms else 600
+            
+            if frontend_corridors:
+                corridor_xs = [c['start']['x'] for c in frontend_corridors] + [c['end']['x'] for c in frontend_corridors]
+                corridor_ys = [c['start']['y'] for c in frontend_corridors] + [c['end']['y'] for c in frontend_corridors]
+                min_x = min(min_x, min(corridor_xs))
+                max_x = max(max_x, max(corridor_xs))
+                min_y = min(min_y, min(corridor_ys))
+                max_y = max(max_y, max(corridor_ys))
+            
+            return {
+                'rooms': frontend_rooms,
+                'corridors': frontend_corridors,
+                'width': max(800, max_x - min_x + 100),
+                'height': max(600, max_y - min_y + 100)
+            }
+            
+        except Exception as e:
+            logger.error(f"Error extracting visualization data: {e}")
+            return self._create_default_visualization_data()
+    
+    def _create_default_visualization_data(self) -> Dict[str, Any]:
+        """创建默认的可视化数据"""
+        return {
+            'rooms': [
+                {
+                    'id': 'entrance',
+                    'x': 100,
+                    'y': 100,
+                    'width': 80,
+                    'height': 60,
+                    'type': 'room',
+                    'connections': ['corridor1']
+                },
+                {
+                    'id': 'chamber1',
+                    'x': 300,
+                    'y': 80,
+                    'width': 100,
+                    'height': 80,
+                    'type': 'chamber',
+                    'connections': ['corridor1', 'corridor2']
+                }
+            ],
+            'corridors': [
+                {
+                    'id': 'corridor1',
+                    'start': {'x': 180, 'y': 130},
+                    'end': {'x': 300, 'y': 120},
+                    'width': 8
+                }
+            ],
+            'width': 800,
+            'height': 600
+        }
 
 # ====== 便捷入口函数 ======
 def visualize_dungeon(dungeon_data: Dict[str, Any], output_path: str, 

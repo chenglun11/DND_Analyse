@@ -851,70 +851,116 @@ class DungeonVisualizer:
                 return self._create_default_visualization_data()
             
             level = dungeon_data['levels'][0] if dungeon_data['levels'] else {}
-            # 在Watabou格式中，节点分布在rooms和corridors数组中
             rooms = level.get('rooms', [])
             corridors = level.get('corridors', [])
-            all_nodes = rooms + corridors  # 合并所有节点
             connections = level.get('connections', [])
             
             # 转换房间和通道数据
             frontend_rooms = []
             frontend_corridors = []
             
-            # 首先处理所有节点
-            for node in all_nodes:
+            # 处理房间数据
+            for room in rooms:
                 # 提取位置信息
                 x = 0
                 y = 0
                 width = 50
                 height = 50
                 
-                if node.get('position'):
-                    x = node['position'].get('x', 0)
-                    y = node['position'].get('y', 0)
-                elif 'x' in node and 'y' in node:
-                    x = node['x']
-                    y = node['y']
+                if room.get('position'):
+                    x = room['position'].get('x', 0)
+                    y = room['position'].get('y', 0)
+                elif 'x' in room and 'y' in room:
+                    x = room['x']
+                    y = room['y']
                 
-                if node.get('size'):
-                    width = node['size'].get('width', 50)
-                    height = node['size'].get('height', 50)
-                elif 'width' in node and 'height' in node:
-                    width = node['width']
-                    height = node['height']
+                if room.get('size'):
+                    width = room['size'].get('width', 50)
+                    height = room['size'].get('height', 50)
+                elif 'width' in room and 'height' in room:
+                    width = room['width']
+                    height = room['height']
                 
                 # 缩放坐标
-                x = x * 50 + 400
-                y = y * 50 + 300
-                width = width * 50
-                height = height * 50
+                x = x * 5 + 400
+                y = y * 5 + 300
+                width = width * 5
+                height = height * 5
                 
-                # 确定节点类型
-                is_corridor = node.get('is_corridor', False)
-                is_room = node.get('is_room', False)
+                # 确定房间类型
+                room_type = room.get('room_type', 'room')
+                if room.get('is_entrance'):
+                    room_type = 'entrance'
+                elif 'boss' in room.get('name', '').lower() or 'boss' in room.get('description', '').lower():
+                    room_type = 'boss'
+                elif 'treasure' in room.get('name', '').lower() or 'treasure' in room.get('description', '').lower():
+                    room_type = 'treasure'
                 
-                # 基于尺寸判断是否为通道（参考WatabouAdapter的逻辑）
-                is_thin_corridor = (width <= 50 and height <= 150) or (height <= 50 and width <= 150)
-                
-                # 如果没有明确的标记，基于尺寸和描述判断
-                if not is_room and not is_corridor:
-                    # 检查是否有描述（有描述通常是房间）
-                    has_description = bool(node.get('description', '').strip())
-                    has_name = bool(node.get('name', '').strip())
+                frontend_rooms.append({
+                    'id': room.get('id', f'room_{len(frontend_rooms)}'),
+                    'x': x,
+                    'y': y,
+                    'width': width,
+                    'height': height,
+                    'type': room_type,
+                    'connections': room.get('connections', []),
+                    'name': room.get('name', ''),
+                    'description': room.get('description', '')
+                })
+            
+            # 处理专门的通道数组（如果有的话，且包含path信息）
+            corridors = level.get('corridors', [])
+            for corridor in corridors:
+                # 检查是否有path信息（Royal Flush格式）
+                if 'path' in corridor and corridor['path']:
+                    path = corridor['path']
+                    if len(path) >= 2:
+                        # 取路径的第一个和最后一个点
+                        start_point = path[0]
+                        end_point = path[-1]
+                        
+                        # 缩放坐标
+                        start_x = start_point['x'] * 5 + 400
+                        start_y = start_point['y'] * 5 + 300
+                        end_x = end_point['x'] * 5 + 400
+                        end_y = end_point['y'] * 5 + 300
+                        
+                        frontend_corridors.append({
+                            'id': corridor.get('id', f'corridor_{len(frontend_corridors)}'),
+                            'start': {'x': start_x, 'y': start_y},
+                            'end': {'x': end_x, 'y': end_y},
+                            'width': 8,
+                            'name': corridor.get('name', f'Corridor {len(frontend_corridors)}'),
+                            'connection_type': 'physical'
+                        })
+                else:
+                    # 没有path信息，使用position/size信息（回退处理）
+                    x = 0
+                    y = 0
+                    width = 50
+                    height = 50
                     
-                    if has_description or has_name:
-                        is_room = True
-                    elif is_thin_corridor:
-                        is_corridor = True
-                    else:
-                        # 默认情况下，较大的矩形是房间，较小的矩形是通道
-                        if width > 100 and height > 100:
-                            is_room = True
-                        else:
-                            is_corridor = True
-                
-                if is_corridor or is_thin_corridor:
-                    # 这是通道，转换为线段
+                    if corridor.get('position'):
+                        x = corridor['position'].get('x', 0)
+                        y = corridor['position'].get('y', 0)
+                    elif 'x' in corridor and 'y' in corridor:
+                        x = corridor['x']
+                        y = corridor['y']
+                    
+                    if corridor.get('size'):
+                        width = corridor['size'].get('width', 50)
+                        height = corridor['size'].get('height', 50)
+                    elif 'width' in corridor and 'height' in corridor:
+                        width = corridor['width']
+                        height = corridor['height']
+                    
+                    # 缩放坐标
+                    x = x * 5 + 400
+                    y = y * 5 + 300
+                    width = width * 5
+                    height = height * 5
+                    
+                    # 转换为线段
                     if width > height:
                         # 水平通道
                         start_x = x
@@ -929,114 +975,42 @@ class DungeonVisualizer:
                         end_y = y + height
                     
                     frontend_corridors.append({
-                        'id': node.get('id', f'corridor_{len(frontend_corridors)}'),
+                        'id': corridor.get('id', f'corridor_{len(frontend_corridors)}'),
                         'start': {'x': start_x, 'y': start_y},
                         'end': {'x': end_x, 'y': end_y},
                         'width': 8,
-                        'name': node.get('name', f'Corridor {len(frontend_corridors)}')
+                        'name': corridor.get('name', f'Corridor {len(frontend_corridors)}'),
+                        'connection_type': 'physical'
                     })
-                else:
-                    # 这是房间
-                    room_type = 'room'
-                    if node.get('type'):
-                        room_type = node['type']
-                    elif 'boss' in node.get('name', '').lower() or 'boss' in node.get('description', '').lower():
-                        room_type = 'boss'
-                    elif 'treasure' in node.get('name', '').lower() or 'treasure' in node.get('description', '').lower():
-                        room_type = 'treasure'
-                    
-                    frontend_rooms.append({
-                        'id': node.get('id', f'room_{len(frontend_rooms)}'),
-                        'x': x,
-                        'y': y,
-                        'width': width,
-                        'height': height,
-                        'type': room_type,
-                        'connections': node.get('connections', []),
-                        'name': node.get('name', ''),
-                        'description': node.get('description', '')
-                    })
-            
-            # 然后处理通道数组（如果有的话）
-            corridors = level.get('corridors', [])
-            for corridor in corridors:
-                # 提取位置信息
-                x = 0
-                y = 0
-                width = 50
-                height = 50
-                
-                if corridor.get('position'):
-                    x = corridor['position'].get('x', 0)
-                    y = corridor['position'].get('y', 0)
-                elif 'x' in corridor and 'y' in corridor:
-                    x = corridor['x']
-                    y = corridor['y']
-                
-                if corridor.get('size'):
-                    width = corridor['size'].get('width', 50)
-                    height = corridor['size'].get('height', 50)
-                elif 'width' in corridor and 'height' in corridor:
-                    width = corridor['width']
-                    height = corridor['height']
-                
-                # 缩放坐标
-                x = x * 50 + 400
-                y = y * 50 + 300
-                width = width * 50
-                height = height * 50
-                
-                # 转换为线段
-                if width > height:
-                    # 水平通道
-                    start_x = x
-                    start_y = y + height / 2
-                    end_x = x + width
-                    end_y = y + height / 2
-                else:
-                    # 垂直通道
-                    start_x = x + width / 2
-                    start_y = y
-                    end_x = x + width / 2
-                    end_y = y + height
-                
-                frontend_corridors.append({
-                    'id': corridor.get('id', f'corridor_{len(frontend_corridors)}'),
-                    'start': {'x': start_x, 'y': start_y},
-                    'end': {'x': end_x, 'y': end_y},
-                    'width': 8,
-                    'name': corridor.get('name', f'Corridor {len(frontend_corridors)}')
-                })
             
             # 基于连接关系生成通道
-            connections = level.get('connections', [])
             for connection in connections:
                 from_room_id = connection.get('from_room')
                 to_room_id = connection.get('to_room')
                 
                 if from_room_id and to_room_id:
-                    # 查找对应的房间或通道（在Watabou格式中，所有节点都在rooms数组中）
-                    from_node = None
-                    to_node = None
+                    # 查找对应的房间
+                    from_room = None
+                    to_room = None
                     
-                    # 在所有节点中查找
-                    for node in all_nodes:
-                        if node['id'] == from_room_id:
-                            from_node = node
-                        elif node['id'] == to_room_id:
-                            to_node = node
+                    # 在房间数组中查找
+                    for room in rooms:
+                        if room['id'] == from_room_id:
+                            from_room = room
+                        elif room['id'] == to_room_id:
+                            to_room = room
                     
-                    if from_node and to_node:
-                        # 计算节点中心点
-                        from_x = from_node.get('position', {}).get('x', 0) * 50 + 400
-                        from_y = from_node.get('position', {}).get('y', 0) * 50 + 300
-                        from_width = from_node.get('size', {}).get('width', 50) * 50
-                        from_height = from_node.get('size', {}).get('height', 50) * 50
+                    if from_room and to_room:
+                        # 计算房间中心点
+                        from_x = from_room.get('position', {}).get('x', 0) * 5 + 400
+                        from_y = from_room.get('position', {}).get('y', 0) * 5 + 300
+                        from_width = from_room.get('size', {}).get('width', 50) * 5
+                        from_height = from_room.get('size', {}).get('height', 50) * 5
                         
-                        to_x = to_node.get('position', {}).get('x', 0) * 50 + 400
-                        to_y = to_node.get('position', {}).get('y', 0) * 50 + 300
-                        to_width = to_node.get('size', {}).get('width', 50) * 50
-                        to_height = to_node.get('size', {}).get('height', 50) * 50
+                        to_x = to_room.get('position', {}).get('x', 0) * 5 + 400
+                        to_y = to_room.get('position', {}).get('y', 0) * 5 + 300
+                        to_width = to_room.get('size', {}).get('width', 50) * 5
+                        to_height = to_room.get('size', {}).get('height', 50) * 5
                         
                         from_center_x = from_x + from_width / 2
                         from_center_y = from_y + from_height / 2

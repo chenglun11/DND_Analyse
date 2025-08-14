@@ -1,0 +1,193 @@
+{
+  "header": {
+    "schemaName": "dnd-dungeon-unified",
+    "schemaVersion": "1.0.0",
+    "name": "Dr. Demonara & The Dungeon of Death",
+    "author": "John Earegood (converted by System Converter)",
+    "description": "A trap-heavy lair with false gems, demon statues, and Dr. Demonara.",
+    "grid": { "type": "square", "size": 5, "unit": "ft" }
+  },
+  "levels": [
+    {
+      "id": "dr_demonara_main",
+      "name": "Main Level",
+      "map": { "width": 60, "height": 60 },
+
+      "rooms": [
+        {
+          "id": "room_entrance",
+          "shape": "rectangle",
+          "position": { "x": 6, "y": 42 },
+          "size": { "width": 10, "height": 8 },
+          "name": "Entrance Hall (Skull Idols)",
+          "description": "Two skull idols in alcoves guard the door (shoot arrows when crossed). Central skull altar; bronze plaque: 'All who enter die screaming'.",
+          "is_entrance": true,
+          "is_exit": true
+        },
+        {
+          "id": "room_corpse",
+          "shape": "rectangle",
+          "position": { "x": 20, "y": 40 },
+          "size": { "width": 12, "height": 12 },
+          "name": "Corpse Room",
+          "description": "Multiple bodies hang on hooks, missing limbs—harvested by the Doctor."
+        },
+        {
+          "id": "room_deep_pit",
+          "shape": "rectangle",
+          "position": { "x": 20, "y": 28 },
+          "size": { "width": 12, "height": 10 },
+          "name": "Deep Pit Chamber",
+          "description": "A deep pit yawns in the floor; something stirs below. Quiet!"
+        },
+        {
+          "id": "room_black_gem",
+          "shape": "rectangle",
+          "position": { "x": 8, "y": 26 },
+          "size": { "width": 10, "height": 10 },
+          "name": "The Black Gem Room",
+          "description": "Damp, smells of the sea; a large drain in the floor. A black gem sits in a niche—an illusion. If opened, the gem vanishes, doors lock and water floods the room."
+        },
+        {
+          "id": "room_blood_pit",
+          "shape": "rectangle",
+          "position": { "x": 6, "y": 16 },
+          "size": { "width": 10, "height": 8 },
+          "name": "Blood Pit",
+          "description": "Crossing the foul pit may attract a lurking monster from the depths."
+        },
+        {
+          "id": "room_prison",
+          "shape": "circle",
+          "position": { "x": 22, "y": 16 },
+          "size": { "width": 8, "height": 8 },
+          "name": "Prison Cell",
+          "description": "A prisoner in a cage; his eyes are gone—EVIL."
+        },
+        {
+          "id": "room_secret_treasure",
+          "shape": "rectangle",
+          "position": { "x": 36, "y": 18 },
+          "size": { "width": 8, "height": 8 },
+          "name": "Doctor's Secret Treasure",
+          "description": "Careful! The Doctor's hidden stash is trapped."
+        },
+        {
+          "id": "room_red_mirror",
+          "shape": "rectangle",
+          "position": { "x": 44, "y": 14 },
+          "size": { "width": 10, "height": 8 },
+          "name": "Red Mirror Room",
+          "description": "A red mirror covered by cloth to hide its evil—look into it and die!"
+        },
+        {
+          "id": "room_private_office",
+          "shape": "rectangle",
+          "position": { "x": 48, "y": 6 },
+          "size": { "width": 10, "height": 8 },
+          "name": "Dr's Private Office",
+          "description": "Occult books, black-magic scrolls and more. BEWARE: the paintings are watching you!"
+        },
+        {
+          "id": "room_lab",
+          "shape": "rectangle",
+          "position": { "x": 36, "y": 6 },
+          "size": { "width": 10, "height": 10 },
+          "name": "Laboratory",
+          "description": "Two demon statues sit in alcoves; two cages with mutated beasts near west wall. Viscous creatures: beasts attack if you get close; statues animate if searched."
+        },
+        {
+          "id": "room_cobra",
+          "shape": "rectangle",
+          "position": { "x": 28, "y": 6 },
+          "size": { "width": 8, "height": 10 },
+          "name": "Giant Stone Cobra",
+          "description": "Statue guards a large gold bar (4000 gp). If removed, snakes pour out from wall holes—roll D20 for amount, D4 for bite damage."
+        },
+        {
+          "id": "room_demon_gem",
+          "shape": "rectangle",
+          "position": { "x": 28, "y": 18 },
+          "size": { "width": 8, "height": 8 },
+          "name": "Demon Statue with Red Gem",
+          "description": "Statue holds a red gemstone; if you steal it, the statue attacks and the DOORS LOCK YOU IN!"
+        },
+        {
+          "id": "room_boss",
+          "shape": "rectangle",
+          "position": { "x": 36, "y": 30 },
+          "size": { "width": 12, "height": 12 },
+          "name": "Dr. Demonara",
+          "description": "DR. DEMONARA appears every D4 rounds to attack. Claw Slice +1. Lair of the Doctor."
+        },
+        {
+          "id": "room_dead_end",
+          "shape": "rectangle",
+          "position": { "x": 36, "y": 26 },
+          "size": { "width": 6, "height": 4 },
+          "name": "Dead End",
+          "description": "A short passage that leads nowhere (trap nearby)."
+        }
+      ],
+
+      "connections": [
+        { "id": "dd_01", "from_room": "room_entrance",        "to_room": "room_corpse",          "door_type": "normal" },
+        { "id": "dd_02", "from_room": "room_corpse",          "to_room": "room_deep_pit",        "door_type": "normal" },
+        { "id": "dd_03", "from_room": "room_corpse",          "to_room": "room_black_gem",       "door_type": "normal" },
+        { "id": "dd_04", "from_room": "room_black_gem",       "to_room": "room_blood_pit",       "door_type": "normal" },
+        { "id": "dd_05", "from_room": "room_deep_pit",        "to_room": "room_prison",          "door_type": "normal" },
+        { "id": "dd_06", "from_room": "room_prison",          "to_room": "room_secret_treasure", "door_type": "normal" },
+        { "id": "dd_07", "from_room": "room_secret_treasure", "to_room": "room_red_mirror",      "door_type": "normal" },
+        { "id": "dd_08", "from_room": "room_red_mirror",      "to_room": "room_private_office",  "door_type": "normal" },
+        { "id": "dd_09", "from_room": "room_private_office",  "to_room": "room_lab",             "door_type": "normal" },
+        { "id": "dd_10", "from_room": "room_lab",             "to_room": "room_cobra",           "door_type": "normal" },
+        { "id": "dd_11", "from_room": "room_cobra",           "to_room": "room_demon_gem",       "door_type": "normal" },
+        { "id": "dd_12", "from_room": "room_demon_gem",       "to_room": "room_dead_end",        "door_type": "normal" },
+        { "id": "dd_13", "from_room": "room_dead_end",        "to_room": "room_boss",            "door_type": "normal" },
+        { "id": "dd_14", "from_room": "room_boss",            "to_room": "room_deep_pit",        "door_type": "normal" }
+      ],
+
+      "doors": [
+        {
+          "id": "dd_d_blackgem_lock",
+          "between": { "from_room": "room_black_gem", "to_room": "room_corpse" },
+          "type": "flood_lock",
+          "state": "locks_on_trigger",
+          "notes": "Black gem is illusion; opening niche locks doors and floods from drain."
+        },
+        {
+          "id": "dd_d_demon_gem_lock",
+          "between": { "from_room": "room_demon_gem", "to_room": "room_cobra" },
+          "type": "magical_lock",
+          "state": "locks_on_trigger",
+          "notes": "Taking red gem animates statue and locks surrounding doors."
+        },
+        {
+          "id": "dd_d_mirror_door",
+          "between": { "from_room": "room_red_mirror", "to_room": "room_secret_treasure" },
+          "type": "normal",
+          "state": "unlocked",
+          "notes": "Leads past the red mirror (save-or-die if stared into)."
+        }
+      ],
+
+      "game_elements": [
+        { "type": "trap",      "name": "Skull Idol Arrow Trap",           "position": { "x": 6,  "y": 42 }, "notes": "Arrows shoot when crossing the entrance idols." },
+        { "type": "trap",      "name": "Black Gem Flood Trap",            "position": { "x": 10, "y": 28 }, "notes": "Gem is an illusion; opening causes doors to lock and room to flood from floor drain." },
+        { "type": "trap",      "name": "Blood Pit Lurker",                "position": { "x": 8,  "y": 18 }, "notes": "Crossing draws a monster up from the pit." },
+        { "type": "trap",      "name": "Treasure Stash Trap",             "position": { "x": 38, "y": 20 }, "notes": "Doctor's secret treasure is trapped." },
+        { "type": "trap",      "name": "Red Mirror Death Gaze",           "position": { "x": 46, "y": 16 }, "notes": "Look into the uncovered mirror—instant death (save at GM’s discretion)." },
+        { "type": "trap",      "name": "Watching Paintings",              "position": { "x": 50, "y": 8  }, "notes": "Paintings in private office surveil intruders; may trigger fear/charm." },
+        { "type": "encounter", "name": "Lab Demon Statues",               "position": { "x": 38, "y": 8  }, "notes": "Two demon statues animate if searched; beasts in cages attack if approached." },
+        { "type": "treasure",  "name": "Gold Bar (4000 gp)",              "position": { "x": 30, "y": 8  }, "notes": "Guarded by giant stone cobra; removing spawns snakes from wall holes (D20 number, D4 bite damage)." },
+        { "type": "trap",      "name": "Snake Swarm Trigger",             "position": { "x": 30, "y": 8  }, "notes": "Triggered when gold bar is removed." },
+        { "type": "trap",      "name": "Demon Gem Lockdown",              "position": { "x": 30, "y": 20 }, "notes": "Taking the red gem animates statue and locks adjacent doors." },
+        { "type": "lore",      "name": "Prisoner with Hollow Eyes",       "position": { "x": 22, "y": 16 }, "notes": "EVIL influence; may provide clues or curses." },
+        { "type": "boss",      "name": "Dr. Demonara",                    "position": { "x": 38, "y": 32 }, "notes": "Appears every D4 rounds to attack. Claw Slice +1. Central boss room." },
+        { "type": "roaming",   "name": "Roaming Monsters Table (D12)",    "position": { "x": 50, "y": 30 }, "notes": "Rats, Cobra, Zombie, Bats, Ooze, Demon, Beast, Acid Roach, Death Spider, Flesh Maggots, Slimey Cube, Eyestalk—use map legend HP/AC." },
+        { "type": "trap",      "name": "Traps Table (D6)",                 "position": { "x": 52, "y": 22 }, "notes": "Arrows d6, Poison Gas d6, Ice Spray d6, Spin Blades d8, Fire Darts d8, Spike Clamp d8 damage." },
+        { "type": "treasure",  "name": "Treasure Table (D8)",             "position": { "x": 52, "y": 36 }, "notes": "150/250/300/50/200/500/100/50 gp; roll per legend." }
+      ]
+    }
+  ]
+}

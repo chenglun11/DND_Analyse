@@ -73,31 +73,37 @@ def convert_single_file(adapter_manager: AdapterManager, input_path: str, output
     return True
 
 def convert_directory(adapter_manager: AdapterManager, input_dir: str, output_dir: str, format_name: Optional[str] = None, visualize: bool = False, enable_spatial_inference: bool = True, adjacency_threshold: float = 1.0, enable_entrance_exit_identification: bool = True) -> int:
-    """转换目录中的所有JSON文件"""
+    """转换目录中的所有JSON文件（包括子文件夹）"""
     input_path = Path(input_dir)
     output_path = Path(output_dir)
     
     # 确保输出目录存在
     output_path.mkdir(parents=True, exist_ok=True)
     
-    # 查找所有JSON文件
-    json_files = list(input_path.glob("*.json"))
+    # 递归查找所有JSON文件
+    json_files = list(input_path.rglob("*.json"))
     if not json_files:
-        print(f"No JSON files found in directory: {input_dir}")
+        print(f"No JSON files found in directory and subdirectories: {input_dir}")
         return 0
+    
+    print(f"Found {len(json_files)} JSON files in {input_dir} and subdirectories")
     
     success_count = 0
     for json_file in json_files:
-        print(f"Processing: {json_file.name}")
+        # 计算相对路径以保持目录结构
+        relative_path = json_file.relative_to(input_path)
+        print(f"Processing: {relative_path}")
         
         # 加载源文件
         source_data = load_json_file(str(json_file))
         if not source_data:
+            print(f"✗ Failed to load: {relative_path}")
             continue
         
         # 转换数据
         unified_data = adapter_manager.convert(source_data, format_name, enable_spatial_inference, adjacency_threshold)
         if not unified_data:
+            print(f"✗ Failed to convert: {relative_path}")
             continue
         
         # 入口出口识别（如果启用）
@@ -105,17 +111,23 @@ def convert_directory(adapter_manager: AdapterManager, input_dir: str, output_di
             from src.schema import identify_entrance_exit
             unified_data = identify_entrance_exit(unified_data)
         
-        # 保存转换后的文件
-        output_file = output_path / json_file.name
+        # 保存转换后的文件，保持目录结构
+        output_file = output_path / relative_path
+        # 确保输出文件的目录存在
+        output_file.parent.mkdir(parents=True, exist_ok=True)
+        
         if save_json_file(unified_data, str(output_file)):
             success_count += 1
-            print(f"✓ Successfully converted: {json_file.name}")
+            print(f"✓ Successfully converted: {relative_path}")
             if visualize:
-                vis_output_path = output_path / json_file.with_suffix('.png').name
+                vis_output_path = output_file.with_suffix('.png')
+                # 确保可视化文件的目录存在
+                vis_output_path.parent.mkdir(parents=True, exist_ok=True)
                 from src.visualizer import visualize_dungeon
                 visualize_dungeon(unified_data, str(vis_output_path), show_room_ids=True, show_grid=True)
+                print(f"✓ Visualization saved: {vis_output_path.relative_to(output_path)}")
         else:
-            print(f"✗ Failed to convert: {json_file.name}")
+            print(f"✗ Failed to save: {relative_path}")
     
     return success_count
 
@@ -209,7 +221,7 @@ def main():
   # Convert single file (specify format)
   python cli.py convert samples/onepage_example.json output/ --format onepage_dungeon
 
-  # Convert entire directory
+  # Convert entire directory (including subdirectories)
   python cli.py convert-dir samples/ output/
 
   # Detect file format
@@ -224,8 +236,11 @@ def main():
   # Assess single file quality
   python cli.py assess output/test_onepage_example.json
 
-  # Batch assess directory quality
+  # Batch assess directory quality (including subdirectories)
   python cli.py batch-assess output/watabou_test/ output/batch_reports/
+
+  # Statistical analysis of batch results
+  python cli.py statistical-analysis output/watabou_test_batch_report.json
         """
     )
     
@@ -242,7 +257,7 @@ def main():
     convert_parser.add_argument('--no-entrance-exit-identification', action='store_true', help='禁用入口出口识别功能 / disable entrance/exit identification')
     
     # convert-dir 命令
-    convert_dir_parser = subparsers.add_parser('convert-dir', help='转换目录中的所有JSON文件 / convert all JSON files in the directory')
+    convert_dir_parser = subparsers.add_parser('convert-dir', help='转换目录中的所有JSON文件（包括子文件夹） / convert all JSON files in directory and subdirectories')
     convert_dir_parser.add_argument('input', help='输入目录路径 / input directory path')
     convert_dir_parser.add_argument('output', help='输出目录路径 / output directory path')
     convert_dir_parser.add_argument('--format', '-f', help='指定源格式（可选，会自动检测） / specify source format (optional, will be detected automatically)')
@@ -278,7 +293,7 @@ def main():
                               help='邻接判定阈值 (默认: 1.0)')
 
     # 'batch-assess' command
-    batch_parser = subparsers.add_parser('batch-assess', help='批量评估地图质量 / batch assess dungeon quality')
+    batch_parser = subparsers.add_parser('batch-assess', help='批量评估地图质量（包括子文件夹） / batch assess dungeon quality (including subdirectories)')
     batch_parser.add_argument('input_dir', help='输入目录路径 / input directory path')
     batch_parser.add_argument('output_dir', help='输出目录路径 / output directory path')
     batch_parser.add_argument('--no-spatial-inference', action='store_true',
@@ -287,6 +302,12 @@ def main():
                               help='邻接判定阈值 (默认: 1.0)')
     batch_parser.add_argument('--timeout', type=int, default=30,
                               help='每个文件的超时时间（秒）(默认: 30)')
+
+    # 'statistical-analysis' command
+    stats_parser = subparsers.add_parser('statistical-analysis', help='统计分析批量评估结果 / statistical analysis of batch assessment results')
+    stats_parser.add_argument('summary_path', help='批量评估汇总JSON文件路径 / batch assessment summary JSON file path')
+    stats_parser.add_argument('--output', '-o', default='output',
+                             help='分析结果输出目录 (默认: output) / analysis results output directory (default: output)')
 
     args = parser.parse_args()
     
@@ -447,6 +468,30 @@ def main():
             
         except Exception as e:
             logger.error(f"Error during batch assessment: {e}")
+            sys.exit(1)
+
+    elif args.command == 'statistical-analysis':
+        try:
+            from src.statistical_analysis import StatisticalAnalyzer
+            
+            # 验证输入文件
+            if not os.path.exists(args.summary_path):
+                print(f"Error: Summary file not found: {args.summary_path}")
+                sys.exit(1)
+            
+            # 执行统计分析
+            analyzer = StatisticalAnalyzer()
+            success = analyzer.analyze_batch_results(args.summary_path, args.output)
+            
+            if success:
+                print(f"\n✓ Statistical analysis completed successfully!")
+                print(f"Results saved to: {args.output}/")
+            else:
+                print(f"\n✗ Statistical analysis failed!")
+                sys.exit(1)
+                
+        except Exception as e:
+            logger.error(f"Error during statistical analysis: {e}")
             sys.exit(1)
 
 if __name__ == '__main__':

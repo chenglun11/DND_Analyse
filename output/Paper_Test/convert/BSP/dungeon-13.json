@@ -1,0 +1,3221 @@
+{
+  "header": {
+    "schemaName": "dnd-dungeon-unified",
+    "schemaVersion": "1.0.0",
+    "name": "BSP Generated Dungeon",
+    "author": "BSP-Dungeon-Generator",
+    "description": "Generated using BSP algorithm from website",
+    "grid": {
+      "type": "square",
+      "size": 5,
+      "unit": "ft"
+    }
+  },
+  "levels": [
+    {
+      "id": "level_1",
+      "name": "Ground Floor",
+      "rooms": [
+        {
+          "id": "room_0",
+          "name": "Monsters Room",
+          "type": "monsters",
+          "position": {
+            "x": 5,
+            "y": 2
+          },
+          "size": {
+            "width": 8,
+            "height": 8
+          },
+          "properties": {
+            "template_id": "monster_s_02"
+          }
+        },
+        {
+          "id": "room_1",
+          "name": "Heal Room",
+          "type": "heal",
+          "position": {
+            "x": 6,
+            "y": 12
+          },
+          "size": {
+            "width": 6,
+            "height": 6
+          },
+          "properties": {
+            "template_id": "heal_02"
+          }
+        },
+        {
+          "id": "room_2",
+          "name": "Monsters Room",
+          "type": "monsters",
+          "position": {
+            "x": 18,
+            "y": 5
+          },
+          "size": {
+            "width": 10,
+            "height": 10
+          },
+          "properties": {
+            "template_id": "monster_s_03"
+          }
+        },
+        {
+          "id": "room_3",
+          "name": "Monsters Room",
+          "type": "monsters",
+          "position": {
+            "x": 29,
+            "y": 4
+          },
+          "size": {
+            "width": 8,
+            "height": 12
+          },
+          "properties": {
+            "template_id": "monster_v_01"
+          }
+        },
+        {
+          "id": "room_4",
+          "name": "Monsters Room",
+          "type": "monsters",
+          "position": {
+            "x": 4,
+            "y": 19
+          },
+          "size": {
+            "width": 12,
+            "height": 12
+          },
+          "properties": {
+            "template_id": "monster_s_04"
+          }
+        },
+        {
+          "id": "room_5",
+          "name": "Entrance Room",
+          "type": "entrance",
+          "position": {
+            "x": 7,
+            "y": 36
+          },
+          "size": {
+            "width": 6,
+            "height": 6
+          },
+          "properties": {
+            "template_id": "entrance_03"
+          },
+          "is_entrance": true,
+          "is_exit": false
+        },
+        {
+          "id": "room_6",
+          "name": "Monsters Room",
+          "type": "monsters",
+          "position": {
+            "x": 22,
+            "y": 20
+          },
+          "size": {
+            "width": 12,
+            "height": 8
+          },
+          "properties": {
+            "template_id": "monster_h_01"
+          }
+        },
+        {
+          "id": "room_7",
+          "name": "Monsters Room",
+          "type": "monsters",
+          "position": {
+            "x": 20,
+            "y": 31
+          },
+          "size": {
+            "width": 16,
+            "height": 14
+          },
+          "properties": {
+            "template_id": "monster_h_04"
+          }
+        },
+        {
+          "id": "room_8",
+          "name": "Monsters Room",
+          "type": "monsters",
+          "position": {
+            "x": 39,
+            "y": 2
+          },
+          "size": {
+            "width": 12,
+            "height": 12
+          },
+          "properties": {
+            "template_id": "monster_s_05"
+          }
+        },
+        {
+          "id": "room_9",
+          "name": "Monsters Room",
+          "type": "monsters",
+          "position": {
+            "x": 52,
+            "y": 1
+          },
+          "size": {
+            "width": 10,
+            "height": 14
+          },
+          "properties": {
+            "template_id": "monster_v_02"
+          }
+        },
+        {
+          "id": "room_10",
+          "name": "Monsters Room",
+          "type": "monsters",
+          "position": {
+            "x": 38,
+            "y": 19
+          },
+          "size": {
+            "width": 14,
+            "height": 10
+          },
+          "properties": {
+            "template_id": "monster_h_02"
+          }
+        },
+        {
+          "id": "room_11",
+          "name": "Monsters Room",
+          "type": "monsters",
+          "position": {
+            "x": 52,
+            "y": 18
+          },
+          "size": {
+            "width": 10,
+            "height": 12
+          },
+          "properties": {
+            "template_id": "monster_v_03"
+          }
+        },
+        {
+          "id": "room_12",
+          "name": "Monsters Room",
+          "type": "monsters",
+          "position": {
+            "x": 40,
+            "y": 32
+          },
+          "size": {
+            "width": 6,
+            "height": 6
+          },
+          "properties": {
+            "template_id": "monster_s_07"
+          }
+        },
+        {
+          "id": "room_13",
+          "name": "Monsters Room",
+          "type": "monsters",
+          "position": {
+            "x": 38,
+            "y": 39
+          },
+          "size": {
+            "width": 10,
+            "height": 6
+          },
+          "properties": {
+            "template_id": "monster_h_03"
+          }
+        },
+        {
+          "id": "room_14",
+          "name": "Monsters Room",
+          "type": "monsters",
+          "position": {
+            "x": 49,
+            "y": 36
+          },
+          "size": {
+            "width": 7,
+            "height": 7
+          },
+          "properties": {
+            "template_id": "monster_s_06"
+          }
+        },
+        {
+          "id": "room_15",
+          "name": "Treasure Room",
+          "type": "boss",
+          "position": {
+            "x": 56,
+            "y": 37
+          },
+          "size": {
+            "width": 6,
+            "height": 4
+          },
+          "properties": {
+            "template_id": "treasure_h_01"
+          },
+          "is_exit": true,
+          "is_entrance": false
+        }
+      ],
+      "connections": [
+        {
+          "id": "connection_auto_15",
+          "from_room": "room_0",
+          "to_room": "room_8",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_16",
+          "from_room": "room_0",
+          "to_room": "room_4",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_17",
+          "from_room": "room_0",
+          "to_room": "room_2",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_18",
+          "from_room": "room_0",
+          "to_room": "room_1",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_19",
+          "from_room": "room_2",
+          "to_room": "room_3",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_20",
+          "from_room": "room_4",
+          "to_room": "room_6",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_21",
+          "from_room": "room_4",
+          "to_room": "room_5",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_22",
+          "from_room": "room_6",
+          "to_room": "room_7",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_23",
+          "from_room": "room_8",
+          "to_room": "room_12",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_24",
+          "from_room": "room_8",
+          "to_room": "room_10",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_25",
+          "from_room": "room_8",
+          "to_room": "room_9",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_26",
+          "from_room": "room_10",
+          "to_room": "room_11",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_27",
+          "from_room": "room_12",
+          "to_room": "room_14",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_28",
+          "from_room": "room_12",
+          "to_room": "room_13",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_29",
+          "from_room": "room_14",
+          "to_room": "room_15",
+          "type": "corridor"
+        },
+        {
+          "from_room": "room_1",
+          "to_room": "room_4",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_13",
+          "to_room": "room_14",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        }
+      ],
+      "game_elements": [
+        {
+          "id": "prop_0",
+          "type": "item",
+          "name": "Bone",
+          "description": "A bone remains",
+          "position": {
+            "x": 60,
+            "y": 2
+          },
+          "properties": {
+            "layer_value": 2
+          }
+        },
+        {
+          "id": "prop_1",
+          "type": "decoration",
+          "name": "Skull",
+          "description": "A warning skull",
+          "position": {
+            "x": 11,
+            "y": 3
+          },
+          "properties": {
+            "layer_value": 9
+          }
+        },
+        {
+          "id": "prop_2",
+          "type": "light",
+          "name": "Lamp",
+          "description": "A glowing lamp",
+          "position": {
+            "x": 40,
+            "y": 3
+          },
+          "properties": {
+            "layer_value": 8
+          }
+        },
+        {
+          "id": "prop_3",
+          "type": "light",
+          "name": "Lamp",
+          "description": "A glowing lamp",
+          "position": {
+            "x": 49,
+            "y": 3
+          },
+          "properties": {
+            "layer_value": 8
+          }
+        },
+        {
+          "id": "prop_4",
+          "type": "item",
+          "name": "Bone",
+          "description": "A bone remains",
+          "position": {
+            "x": 6,
+            "y": 5
+          },
+          "properties": {
+            "layer_value": 2
+          }
+        },
+        {
+          "id": "prop_5",
+          "type": "obstacle",
+          "name": "Small Stones",
+          "description": "Small stone pile",
+          "position": {
+            "x": 30,
+            "y": 5
+          },
+          "properties": {
+            "layer_value": 11
+          }
+        },
+        {
+          "id": "prop_6",
+          "type": "obstacle",
+          "name": "Large Stones",
+          "description": "Large stone formation",
+          "position": {
+            "x": 43,
+            "y": 5
+          },
+          "properties": {
+            "layer_value": 10
+          }
+        },
+        {
+          "id": "prop_7",
+          "type": "obstacle",
+          "name": "Small Stones",
+          "description": "Small stone pile",
+          "position": {
+            "x": 19,
+            "y": 6
+          },
+          "properties": {
+            "layer_value": 11
+          }
+        },
+        {
+          "id": "prop_8",
+          "type": "item",
+          "name": "Bone",
+          "description": "A bone remains",
+          "position": {
+            "x": 53,
+            "y": 6
+          },
+          "properties": {
+            "layer_value": 2
+          }
+        },
+        {
+          "id": "prop_9",
+          "type": "light",
+          "name": "Torch",
+          "description": "A burning torch",
+          "position": {
+            "x": 31,
+            "y": 7
+          },
+          "properties": {
+            "layer_value": 12
+          }
+        },
+        {
+          "id": "prop_10",
+          "type": "light",
+          "name": "Torch",
+          "description": "A burning torch",
+          "position": {
+            "x": 34,
+            "y": 7
+          },
+          "properties": {
+            "layer_value": 12
+          }
+        },
+        {
+          "id": "prop_11",
+          "type": "item",
+          "name": "Bone",
+          "description": "A bone remains",
+          "position": {
+            "x": 11,
+            "y": 8
+          },
+          "properties": {
+            "layer_value": 2
+          }
+        },
+        {
+          "id": "prop_12",
+          "type": "light",
+          "name": "Torch",
+          "description": "A burning torch",
+          "position": {
+            "x": 13,
+            "y": 8
+          },
+          "properties": {
+            "layer_value": 12
+          }
+        },
+        {
+          "id": "prop_13",
+          "type": "light",
+          "name": "Torch",
+          "description": "A burning torch",
+          "position": {
+            "x": 17,
+            "y": 8
+          },
+          "properties": {
+            "layer_value": 12
+          }
+        },
+        {
+          "id": "prop_14",
+          "type": "light",
+          "name": "Torch",
+          "description": "A burning torch",
+          "position": {
+            "x": 20,
+            "y": 8
+          },
+          "properties": {
+            "layer_value": 12
+          }
+        },
+        {
+          "id": "prop_15",
+          "type": "light",
+          "name": "Torch",
+          "description": "A burning torch",
+          "position": {
+            "x": 21,
+            "y": 8
+          },
+          "properties": {
+            "layer_value": 12
+          }
+        },
+        {
+          "id": "prop_16",
+          "type": "obstacle",
+          "name": "Peak",
+          "description": "A rocky peak formation",
+          "position": {
+            "x": 22,
+            "y": 8
+          },
+          "properties": {
+            "layer_value": 1
+          }
+        },
+        {
+          "id": "prop_17",
+          "type": "obstacle",
+          "name": "Peak",
+          "description": "A rocky peak formation",
+          "position": {
+            "x": 23,
+            "y": 8
+          },
+          "properties": {
+            "layer_value": 1
+          }
+        },
+        {
+          "id": "prop_18",
+          "type": "light",
+          "name": "Torch",
+          "description": "A burning torch",
+          "position": {
+            "x": 24,
+            "y": 8
+          },
+          "properties": {
+            "layer_value": 12
+          }
+        },
+        {
+          "id": "prop_19",
+          "type": "light",
+          "name": "Torch",
+          "description": "A burning torch",
+          "position": {
+            "x": 25,
+            "y": 8
+          },
+          "properties": {
+            "layer_value": 12
+          }
+        },
+        {
+          "id": "prop_20",
+          "type": "obstacle",
+          "name": "Web Left",
+          "description": "Spider web on the left",
+          "position": {
+            "x": 26,
+            "y": 8
+          },
+          "properties": {
+            "layer_value": 13
+          }
+        },
+        {
+          "id": "prop_21",
+          "type": "treasure",
+          "name": "Silver Crate",
+          "description": "A crate containing silver",
+          "position": {
+            "x": 31,
+            "y": 8
+          },
+          "properties": {
+            "layer_value": 3
+          }
+        },
+        {
+          "id": "prop_24",
+          "type": "obstacle",
+          "name": "Web Left",
+          "description": "Spider web on the left",
+          "position": {
+            "x": 34,
+            "y": 8
+          },
+          "properties": {
+            "layer_value": 13
+          }
+        },
+        {
+          "id": "prop_27",
+          "type": "obstacle",
+          "name": "Small Stones",
+          "description": "Small stone pile",
+          "position": {
+            "x": 42,
+            "y": 9
+          },
+          "properties": {
+            "layer_value": 11
+          }
+        },
+        {
+          "id": "prop_30",
+          "type": "treasure",
+          "name": "Wood Crate",
+          "description": "A wooden crate",
+          "position": {
+            "x": 54,
+            "y": 10
+          },
+          "properties": {
+            "layer_value": 4
+          }
+        },
+        {
+          "id": "prop_31",
+          "type": "treasure",
+          "name": "Wood Crate",
+          "description": "A wooden crate",
+          "position": {
+            "x": 55,
+            "y": 10
+          },
+          "properties": {
+            "layer_value": 4
+          }
+        },
+        {
+          "id": "prop_32",
+          "type": "decoration",
+          "name": "Skull",
+          "description": "A warning skull",
+          "position": {
+            "x": 60,
+            "y": 10
+          },
+          "properties": {
+            "layer_value": 9
+          }
+        },
+        {
+          "id": "prop_33",
+          "type": "light",
+          "name": "Torch",
+          "description": "A burning torch",
+          "position": {
+            "x": 8,
+            "y": 11
+          },
+          "properties": {
+            "layer_value": 12
+          }
+        },
+        {
+          "id": "prop_36",
+          "type": "treasure",
+          "name": "Wood Crate",
+          "description": "A wooden crate",
+          "position": {
+            "x": 55,
+            "y": 11
+          },
+          "properties": {
+            "layer_value": 4
+          }
+        },
+        {
+          "id": "prop_39",
+          "type": "light",
+          "name": "Torch",
+          "description": "A burning torch",
+          "position": {
+            "x": 21,
+            "y": 12
+          },
+          "properties": {
+            "layer_value": 12
+          }
+        },
+        {
+          "id": "prop_42",
+          "type": "light",
+          "name": "Torch",
+          "description": "A burning torch",
+          "position": {
+            "x": 32,
+            "y": 12
+          },
+          "properties": {
+            "layer_value": 12
+          }
+        },
+        {
+          "id": "prop_45",
+          "type": "light",
+          "name": "Lamp",
+          "description": "A glowing lamp",
+          "position": {
+            "x": 49,
+            "y": 12
+          },
+          "properties": {
+            "layer_value": 8
+          }
+        },
+        {
+          "id": "prop_48",
+          "type": "obstacle",
+          "name": "Small Stones",
+          "description": "Small stone pile",
+          "position": {
+            "x": 36,
+            "y": 13
+          },
+          "properties": {
+            "layer_value": 11
+          }
+        },
+        {
+          "id": "prop_49",
+          "type": "magic",
+          "name": "Large Mana Potion",
+          "description": "A large mana potion",
+          "position": {
+            "x": 8,
+            "y": 14
+          },
+          "properties": {
+            "layer_value": 19
+          }
+        },
+        {
+          "id": "prop_50",
+          "type": "heal",
+          "name": "Large Health Potion",
+          "description": "A large healing potion",
+          "position": {
+            "x": 9,
+            "y": 14
+          },
+          "properties": {
+            "layer_value": 15
+          }
+        },
+        {
+          "id": "prop_51",
+          "type": "obstacle",
+          "name": "Large Stones",
+          "description": "Large stone formation",
+          "position": {
+            "x": 30,
+            "y": 14
+          },
+          "properties": {
+            "layer_value": 10
+          }
+        },
+        {
+          "id": "prop_52",
+          "type": "treasure",
+          "name": "Wood Crate",
+          "description": "A wooden crate",
+          "position": {
+            "x": 8,
+            "y": 15
+          },
+          "properties": {
+            "layer_value": 4
+          }
+        },
+        {
+          "id": "prop_53",
+          "type": "treasure",
+          "name": "Wood Crate",
+          "description": "A wooden crate",
+          "position": {
+            "x": 9,
+            "y": 15
+          },
+          "properties": {
+            "layer_value": 4
+          }
+        },
+        {
+          "id": "prop_54",
+          "type": "item",
+          "name": "Bone",
+          "description": "A bone remains",
+          "position": {
+            "x": 7,
+            "y": 16
+          },
+          "properties": {
+            "layer_value": 2
+          }
+        },
+        {
+          "id": "prop_57",
+          "type": "obstacle",
+          "name": "Small Stones",
+          "description": "Small stone pile",
+          "position": {
+            "x": 54,
+            "y": 20
+          },
+          "properties": {
+            "layer_value": 11
+          }
+        },
+        {
+          "id": "prop_58",
+          "type": "treasure",
+          "name": "Wood Crate",
+          "description": "A wooden crate",
+          "position": {
+            "x": 60,
+            "y": 20
+          },
+          "properties": {
+            "layer_value": 4
+          }
+        },
+        {
+          "id": "prop_60",
+          "type": "light",
+          "name": "Torch",
+          "description": "A burning torch",
+          "position": {
+            "x": 6,
+            "y": 21
+          },
+          "properties": {
+            "layer_value": 12
+          }
+        },
+        {
+          "id": "prop_63",
+          "type": "obstacle",
+          "name": "Peak",
+          "description": "A rocky peak formation",
+          "position": {
+            "x": 25,
+            "y": 21
+          },
+          "properties": {
+            "layer_value": 1
+          }
+        },
+        {
+          "id": "prop_66",
+          "type": "obstacle",
+          "name": "Peak",
+          "description": "A rocky peak formation",
+          "position": {
+            "x": 30,
+            "y": 21
+          },
+          "properties": {
+            "layer_value": 1
+          }
+        },
+        {
+          "id": "prop_69",
+          "type": "item",
+          "name": "Bone",
+          "description": "A bone remains",
+          "position": {
+            "x": 50,
+            "y": 21
+          },
+          "properties": {
+            "layer_value": 2
+          }
+        },
+        {
+          "id": "prop_72",
+          "type": "treasure",
+          "name": "Wood Crate",
+          "description": "A wooden crate",
+          "position": {
+            "x": 60,
+            "y": 21
+          },
+          "properties": {
+            "layer_value": 4
+          }
+        },
+        {
+          "id": "prop_73",
+          "type": "item",
+          "name": "Bone",
+          "description": "A bone remains",
+          "position": {
+            "x": 6,
+            "y": 22
+          },
+          "properties": {
+            "layer_value": 2
+          }
+        },
+        {
+          "id": "prop_75",
+          "type": "light",
+          "name": "Torch",
+          "description": "A burning torch",
+          "position": {
+            "x": 37,
+            "y": 22
+          },
+          "properties": {
+            "layer_value": 12
+          }
+        },
+        {
+          "id": "prop_78",
+          "type": "obstacle",
+          "name": "Small Stones",
+          "description": "Small stone pile",
+          "position": {
+            "x": 11,
+            "y": 23
+          },
+          "properties": {
+            "layer_value": 11
+          }
+        },
+        {
+          "id": "prop_81",
+          "type": "obstacle",
+          "name": "Peak",
+          "description": "A rocky peak formation",
+          "position": {
+            "x": 23,
+            "y": 24
+          },
+          "properties": {
+            "layer_value": 1
+          }
+        },
+        {
+          "id": "prop_84",
+          "type": "obstacle",
+          "name": "Peak",
+          "description": "A rocky peak formation",
+          "position": {
+            "x": 32,
+            "y": 24
+          },
+          "properties": {
+            "layer_value": 1
+          }
+        },
+        {
+          "id": "prop_85",
+          "type": "item",
+          "name": "Bone",
+          "description": "A bone remains",
+          "position": {
+            "x": 43,
+            "y": 24
+          },
+          "properties": {
+            "layer_value": 2
+          }
+        },
+        {
+          "id": "prop_87",
+          "type": "light",
+          "name": "Torch",
+          "description": "A burning torch",
+          "position": {
+            "x": 11,
+            "y": 25
+          },
+          "properties": {
+            "layer_value": 12
+          }
+        },
+        {
+          "id": "prop_88",
+          "type": "item",
+          "name": "Bone",
+          "description": "A bone remains",
+          "position": {
+            "x": 27,
+            "y": 25
+          },
+          "properties": {
+            "layer_value": 2
+          }
+        },
+        {
+          "id": "prop_89",
+          "type": "decoration",
+          "name": "Skull",
+          "description": "A warning skull",
+          "position": {
+            "x": 28,
+            "y": 25
+          },
+          "properties": {
+            "layer_value": 9
+          }
+        },
+        {
+          "id": "prop_90",
+          "type": "treasure",
+          "name": "Wood Crate",
+          "description": "A wooden crate",
+          "position": {
+            "x": 8,
+            "y": 26
+          },
+          "properties": {
+            "layer_value": 4
+          }
+        },
+        {
+          "id": "prop_93",
+          "type": "obstacle",
+          "name": "Web Left",
+          "description": "Spider web on the left",
+          "position": {
+            "x": 11,
+            "y": 26
+          },
+          "properties": {
+            "layer_value": 13
+          }
+        },
+        {
+          "id": "prop_96",
+          "type": "obstacle",
+          "name": "Peak",
+          "description": "A rocky peak formation",
+          "position": {
+            "x": 29,
+            "y": 26
+          },
+          "properties": {
+            "layer_value": 1
+          }
+        },
+        {
+          "id": "prop_99",
+          "type": "light",
+          "name": "Torch",
+          "description": "A burning torch",
+          "position": {
+            "x": 42,
+            "y": 26
+          },
+          "properties": {
+            "layer_value": 12
+          }
+        },
+        {
+          "id": "prop_102",
+          "type": "obstacle",
+          "name": "Small Stones",
+          "description": "Small stone pile",
+          "position": {
+            "x": 5,
+            "y": 27
+          },
+          "properties": {
+            "layer_value": 11
+          }
+        },
+        {
+          "id": "prop_103",
+          "type": "item",
+          "name": "Bone",
+          "description": "A bone remains",
+          "position": {
+            "x": 49,
+            "y": 27
+          },
+          "properties": {
+            "layer_value": 2
+          }
+        },
+        {
+          "id": "prop_105",
+          "type": "light",
+          "name": "Torch",
+          "description": "A burning torch",
+          "position": {
+            "x": 55,
+            "y": 27
+          },
+          "properties": {
+            "layer_value": 12
+          }
+        },
+        {
+          "id": "prop_106",
+          "type": "decoration",
+          "name": "Skull",
+          "description": "A warning skull",
+          "position": {
+            "x": 57,
+            "y": 27
+          },
+          "properties": {
+            "layer_value": 9
+          }
+        },
+        {
+          "id": "prop_108",
+          "type": "light",
+          "name": "Torch",
+          "description": "A burning torch",
+          "position": {
+            "x": 5,
+            "y": 29
+          },
+          "properties": {
+            "layer_value": 12
+          }
+        },
+        {
+          "id": "prop_111",
+          "type": "light",
+          "name": "Torch",
+          "description": "A burning torch",
+          "position": {
+            "x": 14,
+            "y": 29
+          },
+          "properties": {
+            "layer_value": 12
+          }
+        },
+        {
+          "id": "prop_112",
+          "type": "decoration",
+          "name": "Skull",
+          "description": "A warning skull",
+          "position": {
+            "x": 13,
+            "y": 30
+          },
+          "properties": {
+            "layer_value": 9
+          }
+        },
+        {
+          "id": "prop_114",
+          "type": "light",
+          "name": "Torch",
+          "description": "A burning torch",
+          "position": {
+            "x": 27,
+            "y": 30
+          },
+          "properties": {
+            "layer_value": 12
+          }
+        },
+        {
+          "id": "prop_117",
+          "type": "obstacle",
+          "name": "Peak",
+          "description": "A rocky peak formation",
+          "position": {
+            "x": 26,
+            "y": 33
+          },
+          "properties": {
+            "layer_value": 1
+          }
+        },
+        {
+          "id": "prop_120",
+          "type": "obstacle",
+          "name": "Peak",
+          "description": "A rocky peak formation",
+          "position": {
+            "x": 29,
+            "y": 33
+          },
+          "properties": {
+            "layer_value": 1
+          }
+        },
+        {
+          "id": "prop_121",
+          "type": "decoration",
+          "name": "Flag",
+          "description": "A decorative flag",
+          "position": {
+            "x": 24,
+            "y": 34
+          },
+          "properties": {
+            "layer_value": 5
+          }
+        },
+        {
+          "id": "prop_123",
+          "type": "light",
+          "name": "Torch",
+          "description": "A burning torch",
+          "position": {
+            "x": 30,
+            "y": 34
+          },
+          "properties": {
+            "layer_value": 12
+          }
+        },
+        {
+          "id": "prop_124",
+          "type": "decoration",
+          "name": "Flag",
+          "description": "A decorative flag",
+          "position": {
+            "x": 31,
+            "y": 34
+          },
+          "properties": {
+            "layer_value": 5
+          }
+        },
+        {
+          "id": "prop_126",
+          "type": "light",
+          "name": "Torch",
+          "description": "A burning torch",
+          "position": {
+            "x": 11,
+            "y": 35
+          },
+          "properties": {
+            "layer_value": 12
+          }
+        },
+        {
+          "id": "prop_129",
+          "type": "treasure",
+          "name": "Wood Crate",
+          "description": "A wooden crate",
+          "position": {
+            "x": 24,
+            "y": 35
+          },
+          "properties": {
+            "layer_value": 4
+          }
+        },
+        {
+          "id": "prop_130",
+          "type": "treasure",
+          "name": "Wood Crate",
+          "description": "A wooden crate",
+          "position": {
+            "x": 25,
+            "y": 35
+          },
+          "properties": {
+            "layer_value": 4
+          }
+        },
+        {
+          "id": "prop_132",
+          "type": "light",
+          "name": "Torch",
+          "description": "A burning torch",
+          "position": {
+            "x": 33,
+            "y": 35
+          },
+          "properties": {
+            "layer_value": 12
+          }
+        },
+        {
+          "id": "prop_135",
+          "type": "obstacle",
+          "name": "Peak",
+          "description": "A rocky peak formation",
+          "position": {
+            "x": 22,
+            "y": 36
+          },
+          "properties": {
+            "layer_value": 1
+          }
+        },
+        {
+          "id": "prop_138",
+          "type": "treasure",
+          "name": "Wood Crate",
+          "description": "A wooden crate",
+          "position": {
+            "x": 8,
+            "y": 37
+          },
+          "properties": {
+            "layer_value": 4
+          }
+        },
+        {
+          "id": "prop_141",
+          "type": "treasure",
+          "name": "Wood Crate",
+          "description": "A wooden crate",
+          "position": {
+            "x": 8,
+            "y": 38
+          },
+          "properties": {
+            "layer_value": 4
+          }
+        },
+        {
+          "id": "prop_144",
+          "type": "obstacle",
+          "name": "Peak",
+          "description": "A rocky peak formation",
+          "position": {
+            "x": 22,
+            "y": 38
+          },
+          "properties": {
+            "layer_value": 1
+          }
+        },
+        {
+          "id": "prop_147",
+          "type": "item",
+          "name": "Bone",
+          "description": "A bone remains",
+          "position": {
+            "x": 51,
+            "y": 38
+          },
+          "properties": {
+            "layer_value": 2
+          }
+        },
+        {
+          "id": "prop_148",
+          "type": "treasure",
+          "name": "Wood Crate",
+          "description": "A wooden crate",
+          "position": {
+            "x": 57,
+            "y": 38
+          },
+          "properties": {
+            "layer_value": 4
+          }
+        },
+        {
+          "id": "prop_149",
+          "type": "treasure",
+          "name": "Silver Crate",
+          "description": "A crate containing silver",
+          "position": {
+            "x": 58,
+            "y": 38
+          },
+          "properties": {
+            "layer_value": 3
+          }
+        },
+        {
+          "id": "prop_150",
+          "type": "treasure",
+          "name": "Silver Crate",
+          "description": "A crate containing silver",
+          "position": {
+            "x": 59,
+            "y": 38
+          },
+          "properties": {
+            "layer_value": 3
+          }
+        },
+        {
+          "id": "prop_151",
+          "type": "treasure",
+          "name": "Wood Crate",
+          "description": "A wooden crate",
+          "position": {
+            "x": 60,
+            "y": 38
+          },
+          "properties": {
+            "layer_value": 4
+          }
+        },
+        {
+          "id": "prop_152",
+          "type": "transport",
+          "name": "Ladder",
+          "description": "A ladder for climbing",
+          "position": {
+            "x": 10,
+            "y": 39
+          },
+          "properties": {
+            "layer_value": 21
+          }
+        },
+        {
+          "id": "prop_153",
+          "type": "obstacle",
+          "name": "Peak",
+          "description": "A rocky peak formation",
+          "position": {
+            "x": 22,
+            "y": 39
+          },
+          "properties": {
+            "layer_value": 1
+          }
+        },
+        {
+          "id": "prop_155",
+          "type": "treasure",
+          "name": "Wood Crate",
+          "description": "A wooden crate",
+          "position": {
+            "x": 57,
+            "y": 39
+          },
+          "properties": {
+            "layer_value": 4
+          }
+        },
+        {
+          "id": "prop_156",
+          "type": "treasure",
+          "name": "Silver Crate",
+          "description": "A crate containing silver",
+          "position": {
+            "x": 58,
+            "y": 39
+          },
+          "properties": {
+            "layer_value": 3
+          }
+        },
+        {
+          "id": "prop_157",
+          "type": "treasure",
+          "name": "Silver Crate",
+          "description": "A crate containing silver",
+          "position": {
+            "x": 59,
+            "y": 39
+          },
+          "properties": {
+            "layer_value": 3
+          }
+        },
+        {
+          "id": "prop_158",
+          "type": "treasure",
+          "name": "Wood Crate",
+          "description": "A wooden crate",
+          "position": {
+            "x": 60,
+            "y": 39
+          },
+          "properties": {
+            "layer_value": 4
+          }
+        },
+        {
+          "id": "prop_159",
+          "type": "obstacle",
+          "name": "Large Stones",
+          "description": "Large stone formation",
+          "position": {
+            "x": 24,
+            "y": 40
+          },
+          "properties": {
+            "layer_value": 10
+          }
+        },
+        {
+          "id": "prop_162",
+          "type": "obstacle",
+          "name": "Peak",
+          "description": "A rocky peak formation",
+          "position": {
+            "x": 41,
+            "y": 40
+          },
+          "properties": {
+            "layer_value": 1
+          }
+        },
+        {
+          "id": "prop_165",
+          "type": "obstacle",
+          "name": "Peak",
+          "description": "A rocky peak formation",
+          "position": {
+            "x": 44,
+            "y": 40
+          },
+          "properties": {
+            "layer_value": 1
+          }
+        },
+        {
+          "id": "prop_168",
+          "type": "item",
+          "name": "Bone",
+          "description": "A bone remains",
+          "position": {
+            "x": 50,
+            "y": 40
+          },
+          "properties": {
+            "layer_value": 2
+          }
+        },
+        {
+          "id": "prop_171",
+          "type": "light",
+          "name": "Torch",
+          "description": "A burning torch",
+          "position": {
+            "x": 22,
+            "y": 42
+          },
+          "properties": {
+            "layer_value": 12
+          }
+        },
+        {
+          "id": "prop_172",
+          "type": "item",
+          "name": "Handcuff 1",
+          "description": "Metal handcuffs",
+          "position": {
+            "x": 23,
+            "y": 42
+          },
+          "properties": {
+            "layer_value": 6
+          }
+        },
+        {
+          "id": "prop_174",
+          "type": "obstacle",
+          "name": "Peak",
+          "description": "A rocky peak formation",
+          "position": {
+            "x": 26,
+            "y": 42
+          },
+          "properties": {
+            "layer_value": 1
+          }
+        },
+        {
+          "id": "prop_177",
+          "type": "obstacle",
+          "name": "Peak",
+          "description": "A rocky peak formation",
+          "position": {
+            "x": 29,
+            "y": 42
+          },
+          "properties": {
+            "layer_value": 1
+          }
+        },
+        {
+          "id": "prop_179",
+          "type": "item",
+          "name": "Handcuff 2",
+          "description": "Another set of handcuffs",
+          "position": {
+            "x": 31,
+            "y": 42
+          },
+          "properties": {
+            "layer_value": 7
+          }
+        },
+        {
+          "id": "prop_180",
+          "type": "item",
+          "name": "Handcuff 2",
+          "description": "Another set of handcuffs",
+          "position": {
+            "x": 32,
+            "y": 42
+          },
+          "properties": {
+            "layer_value": 7
+          }
+        },
+        {
+          "id": "prop_183",
+          "type": "obstacle",
+          "name": "Peak",
+          "description": "A rocky peak formation",
+          "position": {
+            "x": 46,
+            "y": 42
+          },
+          "properties": {
+            "layer_value": 1
+          }
+        },
+        {
+          "id": "prop_184",
+          "type": "decoration",
+          "name": "Skull",
+          "description": "A warning skull",
+          "position": {
+            "x": 23,
+            "y": 43
+          },
+          "properties": {
+            "layer_value": 9
+          }
+        },
+        {
+          "id": "prop_185",
+          "type": "item",
+          "name": "Bone",
+          "description": "A bone remains",
+          "position": {
+            "x": 31,
+            "y": 43
+          },
+          "properties": {
+            "layer_value": 2
+          }
+        },
+        {
+          "id": "prop_186",
+          "type": "item",
+          "name": "Bone",
+          "description": "A bone remains",
+          "position": {
+            "x": 32,
+            "y": 43
+          },
+          "properties": {
+            "layer_value": 2
+          }
+        },
+        {
+          "id": "prop_189",
+          "type": "obstacle",
+          "name": "Peak",
+          "description": "A rocky peak formation",
+          "position": {
+            "x": 41,
+            "y": 43
+          },
+          "properties": {
+            "layer_value": 1
+          }
+        },
+        {
+          "id": "prop_192",
+          "type": "obstacle",
+          "name": "Peak",
+          "description": "A rocky peak formation",
+          "position": {
+            "x": 44,
+            "y": 43
+          },
+          "properties": {
+            "layer_value": 1
+          }
+        },
+        {
+          "id": "encounter_107",
+          "type": "encounter",
+          "name": "Mixed Encounter",
+          "description": "An encounter with 4 centaur males and 8 skeletons",
+          "position": {
+            "x": 8,
+            "y": 6
+          },
+          "properties": {
+            "total_monsters": 12,
+            "monster_types": {
+              "3": [
+                [
+                  7,
+                  4
+                ],
+                [
+                  7,
+                  7
+                ],
+                [
+                  10,
+                  4
+                ],
+                [
+                  10,
+                  7
+                ]
+              ],
+              "6": [
+                [
+                  7,
+                  5
+                ],
+                [
+                  7,
+                  6
+                ],
+                [
+                  8,
+                  4
+                ],
+                [
+                  8,
+                  7
+                ],
+                [
+                  9,
+                  4
+                ],
+                [
+                  9,
+                  7
+                ],
+                [
+                  10,
+                  5
+                ],
+                [
+                  10,
+                  6
+                ]
+              ]
+            },
+            "encounter_positions": [
+              [
+                7,
+                4,
+                3
+              ],
+              [
+                7,
+                5,
+                6
+              ],
+              [
+                7,
+                6,
+                6
+              ],
+              [
+                7,
+                7,
+                3
+              ],
+              [
+                8,
+                4,
+                6
+              ],
+              [
+                8,
+                7,
+                6
+              ],
+              [
+                9,
+                4,
+                6
+              ],
+              [
+                9,
+                7,
+                6
+              ],
+              [
+                10,
+                4,
+                3
+              ],
+              [
+                10,
+                5,
+                6
+              ],
+              [
+                10,
+                6,
+                6
+              ],
+              [
+                10,
+                7,
+                3
+              ]
+            ]
+          }
+        },
+        {
+          "id": "encounter_108",
+          "type": "encounter",
+          "name": "Mixed Encounter",
+          "description": "An encounter with 3 bandits and 2 centaur males and 2 centaur females",
+          "position": {
+            "x": 45,
+            "y": 7
+          },
+          "properties": {
+            "total_monsters": 7,
+            "monster_types": {
+              "1": [
+                [
+                  45,
+                  5
+                ],
+                [
+                  42,
+                  7
+                ],
+                [
+                  47,
+                  8
+                ]
+              ],
+              "3": [
+                [
+                  44,
+                  7
+                ],
+                [
+                  45,
+                  8
+                ]
+              ],
+              "2": [
+                [
+                  44,
+                  8
+                ],
+                [
+                  45,
+                  7
+                ]
+              ]
+            },
+            "encounter_positions": [
+              [
+                45,
+                5,
+                1
+              ],
+              [
+                42,
+                7,
+                1
+              ],
+              [
+                44,
+                7,
+                3
+              ],
+              [
+                44,
+                8,
+                2
+              ],
+              [
+                45,
+                7,
+                2
+              ],
+              [
+                45,
+                8,
+                3
+              ],
+              [
+                47,
+                8,
+                1
+              ]
+            ]
+          }
+        },
+        {
+          "id": "encounter_109",
+          "type": "encounter",
+          "name": "Mixed Encounter",
+          "description": "An encounter with 2 skeletons and 2 small mushrooms",
+          "position": {
+            "x": 56,
+            "y": 6
+          },
+          "properties": {
+            "total_monsters": 4,
+            "monster_types": {
+              "6": [
+                [
+                  55,
+                  5
+                ],
+                [
+                  58,
+                  5
+                ]
+              ],
+              "5": [
+                [
+                  54,
+                  7
+                ],
+                [
+                  57,
+                  5
+                ]
+              ]
+            },
+            "encounter_positions": [
+              [
+                55,
+                5,
+                6
+              ],
+              [
+                54,
+                7,
+                5
+              ],
+              [
+                57,
+                5,
+                5
+              ],
+              [
+                58,
+                5,
+                6
+              ]
+            ]
+          }
+        },
+        {
+          "id": "encounter_110",
+          "type": "encounter",
+          "name": "Mixed Encounter",
+          "description": "An encounter with 7 bandits and large mushroom",
+          "position": {
+            "x": 22,
+            "y": 9
+          },
+          "properties": {
+            "total_monsters": 8,
+            "monster_types": {
+              "1": [
+                [
+                  22,
+                  7
+                ],
+                [
+                  20,
+                  9
+                ],
+                [
+                  20,
+                  10
+                ],
+                [
+                  22,
+                  12
+                ],
+                [
+                  23,
+                  7
+                ],
+                [
+                  25,
+                  9
+                ],
+                [
+                  25,
+                  10
+                ]
+              ],
+              "4": [
+                [
+                  22,
+                  10
+                ]
+              ]
+            },
+            "encounter_positions": [
+              [
+                22,
+                7,
+                1
+              ],
+              [
+                20,
+                9,
+                1
+              ],
+              [
+                20,
+                10,
+                1
+              ],
+              [
+                22,
+                10,
+                4
+              ],
+              [
+                22,
+                12,
+                1
+              ],
+              [
+                23,
+                7,
+                1
+              ],
+              [
+                25,
+                9,
+                1
+              ],
+              [
+                25,
+                10,
+                1
+              ]
+            ]
+          }
+        },
+        {
+          "id": "encounter_111",
+          "type": "encounter",
+          "name": "Small Mushroom Pack",
+          "description": "A pack of 2 small mushrooms",
+          "position": {
+            "x": 60,
+            "y": 8
+          },
+          "properties": {
+            "total_monsters": 2,
+            "monster_types": {
+              "5": [
+                [
+                  61,
+                  7
+                ],
+                [
+                  58,
+                  10
+                ]
+              ]
+            },
+            "encounter_positions": [
+              [
+                61,
+                7,
+                5
+              ],
+              [
+                58,
+                10,
+                5
+              ]
+            ]
+          }
+        },
+        {
+          "id": "encounter_112",
+          "type": "encounter",
+          "name": "Small Mushroom Pack",
+          "description": "A pack of 5 small mushrooms",
+          "position": {
+            "x": 32,
+            "y": 10
+          },
+          "properties": {
+            "total_monsters": 5,
+            "monster_types": {
+              "5": [
+                [
+                  34,
+                  8
+                ],
+                [
+                  31,
+                  9
+                ],
+                [
+                  31,
+                  11
+                ],
+                [
+                  32,
+                  10
+                ],
+                [
+                  34,
+                  10
+                ]
+              ]
+            },
+            "encounter_positions": [
+              [
+                34,
+                8,
+                5
+              ],
+              [
+                31,
+                9,
+                5
+              ],
+              [
+                31,
+                11,
+                5
+              ],
+              [
+                32,
+                10,
+                5
+              ],
+              [
+                34,
+                10,
+                5
+              ]
+            ]
+          }
+        },
+        {
+          "id": "encounter_113",
+          "type": "encounter",
+          "name": "Bandit",
+          "description": "A bandit",
+          "position": {
+            "x": 44,
+            "y": 10
+          },
+          "properties": {
+            "total_monsters": 1,
+            "monster_types": {
+              "1": [
+                [
+                  44,
+                  10
+                ]
+              ]
+            },
+            "encounter_positions": [
+              [
+                44,
+                10,
+                1
+              ]
+            ]
+          }
+        },
+        {
+          "id": "encounter_114",
+          "type": "encounter",
+          "name": "Mixed Encounter",
+          "description": "An encounter with 2 small mushrooms and skeleton",
+          "position": {
+            "x": 55,
+            "y": 11
+          },
+          "properties": {
+            "total_monsters": 3,
+            "monster_types": {
+              "5": [
+                [
+                  53,
+                  10
+                ],
+                [
+                  57,
+                  12
+                ]
+              ],
+              "6": [
+                [
+                  56,
+                  10
+                ]
+              ]
+            },
+            "encounter_positions": [
+              [
+                53,
+                10,
+                5
+              ],
+              [
+                56,
+                10,
+                6
+              ],
+              [
+                57,
+                12,
+                5
+              ]
+            ]
+          }
+        },
+        {
+          "id": "encounter_115",
+          "type": "encounter",
+          "name": "Bandit",
+          "description": "A bandit",
+          "position": {
+            "x": 23,
+            "y": 12
+          },
+          "properties": {
+            "total_monsters": 1,
+            "monster_types": {
+              "1": [
+                [
+                  23,
+                  12
+                ]
+              ]
+            },
+            "encounter_positions": [
+              [
+                23,
+                12,
+                1
+              ]
+            ]
+          }
+        },
+        {
+          "id": "encounter_116",
+          "type": "encounter",
+          "name": "Mixed Encounter",
+          "description": "An encounter with 3 wolfs and 4 skeletons",
+          "position": {
+            "x": 44,
+            "y": 23
+          },
+          "properties": {
+            "total_monsters": 7,
+            "monster_types": {
+              "8": [
+                [
+                  44,
+                  21
+                ],
+                [
+                  44,
+                  26
+                ],
+                [
+                  45,
+                  21
+                ]
+              ],
+              "6": [
+                [
+                  43,
+                  24
+                ],
+                [
+                  44,
+                  23
+                ],
+                [
+                  45,
+                  24
+                ],
+                [
+                  46,
+                  23
+                ]
+              ]
+            },
+            "encounter_positions": [
+              [
+                44,
+                21,
+                8
+              ],
+              [
+                43,
+                24,
+                6
+              ],
+              [
+                44,
+                23,
+                6
+              ],
+              [
+                44,
+                26,
+                8
+              ],
+              [
+                45,
+                21,
+                8
+              ],
+              [
+                45,
+                24,
+                6
+              ],
+              [
+                46,
+                23,
+                6
+              ]
+            ]
+          }
+        },
+        {
+          "id": "encounter_117",
+          "type": "encounter",
+          "name": "Mixed Encounter",
+          "description": "An encounter with 2 bandits and wolf",
+          "position": {
+            "x": 54,
+            "y": 22
+          },
+          "properties": {
+            "total_monsters": 3,
+            "monster_types": {
+              "1": [
+                [
+                  54,
+                  21
+                ],
+                [
+                  54,
+                  22
+                ]
+              ],
+              "8": [
+                [
+                  55,
+                  22
+                ]
+              ]
+            },
+            "encounter_positions": [
+              [
+                54,
+                21,
+                1
+              ],
+              [
+                54,
+                22,
+                1
+              ],
+              [
+                55,
+                22,
+                8
+              ]
+            ]
+          }
+        },
+        {
+          "id": "encounter_118",
+          "type": "encounter",
+          "name": "Mixed Encounter",
+          "description": "An encounter with centaur male and 4 bandits and 2 centaur females",
+          "position": {
+            "x": 9,
+            "y": 24
+          },
+          "properties": {
+            "total_monsters": 7,
+            "monster_types": {
+              "3": [
+                [
+                  9,
+                  22
+                ]
+              ],
+              "1": [
+                [
+                  7,
+                  24
+                ],
+                [
+                  7,
+                  25
+                ],
+                [
+                  12,
+                  24
+                ],
+                [
+                  12,
+                  25
+                ]
+              ],
+              "2": [
+                [
+                  9,
+                  27
+                ],
+                [
+                  10,
+                  22
+                ]
+              ]
+            },
+            "encounter_positions": [
+              [
+                9,
+                22,
+                3
+              ],
+              [
+                7,
+                24,
+                1
+              ],
+              [
+                7,
+                25,
+                1
+              ],
+              [
+                9,
+                27,
+                2
+              ],
+              [
+                10,
+                22,
+                2
+              ],
+              [
+                12,
+                24,
+                1
+              ],
+              [
+                12,
+                25,
+                1
+              ]
+            ]
+          }
+        },
+        {
+          "id": "encounter_119",
+          "type": "encounter",
+          "name": "Mixed Encounter",
+          "description": "An encounter with 4 bandits and 2 wolfs",
+          "position": {
+            "x": 27,
+            "y": 23
+          },
+          "properties": {
+            "total_monsters": 6,
+            "monster_types": {
+              "1": [
+                [
+                  25,
+                  22
+                ],
+                [
+                  24,
+                  24
+                ],
+                [
+                  29,
+                  22
+                ],
+                [
+                  30,
+                  22
+                ]
+              ],
+              "8": [
+                [
+                  24,
+                  23
+                ],
+                [
+                  29,
+                  25
+                ]
+              ]
+            },
+            "encounter_positions": [
+              [
+                25,
+                22,
+                1
+              ],
+              [
+                24,
+                23,
+                8
+              ],
+              [
+                24,
+                24,
+                1
+              ],
+              [
+                29,
+                22,
+                1
+              ],
+              [
+                29,
+                25,
+                8
+              ],
+              [
+                30,
+                22,
+                1
+              ]
+            ]
+          }
+        },
+        {
+          "id": "encounter_120",
+          "type": "encounter",
+          "name": "Bandit Pack",
+          "description": "A pack of 2 bandits",
+          "position": {
+            "x": 30,
+            "y": 24
+          },
+          "properties": {
+            "total_monsters": 2,
+            "monster_types": {
+              "1": [
+                [
+                  31,
+                  23
+                ],
+                [
+                  30,
+                  25
+                ]
+              ]
+            },
+            "encounter_positions": [
+              [
+                31,
+                23,
+                1
+              ],
+              [
+                30,
+                25,
+                1
+              ]
+            ]
+          }
+        },
+        {
+          "id": "encounter_121",
+          "type": "encounter",
+          "name": "Mixed Encounter",
+          "description": "An encounter with wolf and 2 bandits",
+          "position": {
+            "x": 59,
+            "y": 25
+          },
+          "properties": {
+            "total_monsters": 3,
+            "monster_types": {
+              "8": [
+                [
+                  58,
+                  25
+                ]
+              ],
+              "1": [
+                [
+                  59,
+                  25
+                ],
+                [
+                  59,
+                  26
+                ]
+              ]
+            },
+            "encounter_positions": [
+              [
+                58,
+                25,
+                8
+              ],
+              [
+                59,
+                25,
+                1
+              ],
+              [
+                59,
+                26,
+                1
+              ]
+            ]
+          }
+        },
+        {
+          "id": "encounter_122",
+          "type": "encounter",
+          "name": "Wolf",
+          "description": "A wolf",
+          "position": {
+            "x": 45,
+            "y": 26
+          },
+          "properties": {
+            "total_monsters": 1,
+            "monster_types": {
+              "8": [
+                [
+                  45,
+                  26
+                ]
+              ]
+            },
+            "encounter_positions": [
+              [
+                45,
+                26,
+                8
+              ]
+            ]
+          }
+        },
+        {
+          "id": "encounter_123",
+          "type": "encounter",
+          "name": "Centaur Male",
+          "description": "A centaur male",
+          "position": {
+            "x": 10,
+            "y": 27
+          },
+          "properties": {
+            "total_monsters": 1,
+            "monster_types": {
+              "3": [
+                [
+                  10,
+                  27
+                ]
+              ]
+            },
+            "encounter_positions": [
+              [
+                10,
+                27,
+                3
+              ]
+            ]
+          }
+        },
+        {
+          "id": "encounter_124",
+          "type": "encounter",
+          "name": "Small Mushroom Pack",
+          "description": "A pack of 8 small mushrooms",
+          "position": {
+            "x": 42,
+            "y": 34
+          },
+          "properties": {
+            "total_monsters": 8,
+            "monster_types": {
+              "5": [
+                [
+                  41,
+                  33
+                ],
+                [
+                  41,
+                  35
+                ],
+                [
+                  42,
+                  34
+                ],
+                [
+                  42,
+                  36
+                ],
+                [
+                  43,
+                  33
+                ],
+                [
+                  43,
+                  35
+                ],
+                [
+                  44,
+                  34
+                ],
+                [
+                  44,
+                  36
+                ]
+              ]
+            },
+            "encounter_positions": [
+              [
+                41,
+                33,
+                5
+              ],
+              [
+                41,
+                35,
+                5
+              ],
+              [
+                42,
+                34,
+                5
+              ],
+              [
+                42,
+                36,
+                5
+              ],
+              [
+                43,
+                33,
+                5
+              ],
+              [
+                43,
+                35,
+                5
+              ],
+              [
+                44,
+                34,
+                5
+              ],
+              [
+                44,
+                36,
+                5
+              ]
+            ]
+          }
+        },
+        {
+          "id": "encounter_125",
+          "type": "encounter",
+          "name": "Mixed Encounter",
+          "description": "An encounter with 3 bandits and 2 skeletons",
+          "position": {
+            "x": 26,
+            "y": 37
+          },
+          "properties": {
+            "total_monsters": 5,
+            "monster_types": {
+              "1": [
+                [
+                  26,
+                  35
+                ],
+                [
+                  26,
+                  40
+                ],
+                [
+                  29,
+                  35
+                ]
+              ],
+              "6": [
+                [
+                  24,
+                  37
+                ],
+                [
+                  24,
+                  38
+                ]
+              ]
+            },
+            "encounter_positions": [
+              [
+                26,
+                35,
+                1
+              ],
+              [
+                24,
+                37,
+                6
+              ],
+              [
+                24,
+                38,
+                6
+              ],
+              [
+                26,
+                40,
+                1
+              ],
+              [
+                29,
+                35,
+                1
+              ]
+            ]
+          }
+        },
+        {
+          "id": "encounter_126",
+          "type": "encounter",
+          "name": "Mixed Encounter",
+          "description": "An encounter with 2 skeletons and bandit",
+          "position": {
+            "x": 30,
+            "y": 38
+          },
+          "properties": {
+            "total_monsters": 3,
+            "monster_types": {
+              "6": [
+                [
+                  31,
+                  37
+                ],
+                [
+                  31,
+                  38
+                ]
+              ],
+              "1": [
+                [
+                  29,
+                  40
+                ]
+              ]
+            },
+            "encounter_positions": [
+              [
+                31,
+                37,
+                6
+              ],
+              [
+                29,
+                40,
+                1
+              ],
+              [
+                31,
+                38,
+                6
+              ]
+            ]
+          }
+        },
+        {
+          "id": "encounter_127",
+          "type": "encounter",
+          "name": "Mixed Encounter",
+          "description": "An encounter with 5 bandits and centaur female and centaur male",
+          "position": {
+            "x": 52,
+            "y": 39
+          },
+          "properties": {
+            "total_monsters": 7,
+            "monster_types": {
+              "1": [
+                [
+                  53,
+                  37
+                ],
+                [
+                  50,
+                  40
+                ],
+                [
+                  51,
+                  38
+                ],
+                [
+                  52,
+                  41
+                ],
+                [
+                  54,
+                  39
+                ]
+              ],
+              "2": [
+                [
+                  51,
+                  39
+                ]
+              ],
+              "3": [
+                [
+                  53,
+                  39
+                ]
+              ]
+            },
+            "encounter_positions": [
+              [
+                53,
+                37,
+                1
+              ],
+              [
+                50,
+                40,
+                1
+              ],
+              [
+                51,
+                38,
+                1
+              ],
+              [
+                51,
+                39,
+                2
+              ],
+              [
+                52,
+                41,
+                1
+              ],
+              [
+                53,
+                39,
+                3
+              ],
+              [
+                54,
+                39,
+                1
+              ]
+            ]
+          }
+        },
+        {
+          "id": "encounter_128",
+          "type": "encounter",
+          "name": "Mixed Encounter",
+          "description": "An encounter with 2 centaur females and 2 bandits",
+          "position": {
+            "x": 42,
+            "y": 42
+          },
+          "properties": {
+            "total_monsters": 4,
+            "monster_types": {
+              "2": [
+                [
+                  42,
+                  41
+                ],
+                [
+                  43,
+                  42
+                ]
+              ],
+              "1": [
+                [
+                  42,
+                  42
+                ],
+                [
+                  43,
+                  41
+                ]
+              ]
+            },
+            "encounter_positions": [
+              [
+                42,
+                41,
+                2
+              ],
+              [
+                42,
+                42,
+                1
+              ],
+              [
+                43,
+                41,
+                1
+              ],
+              [
+                43,
+                42,
+                2
+              ]
+            ]
+          }
+        }
+      ],
+      "connections_inferred": true,
+      "doors": [
+        {
+          "id": "door_room_1_room_4",
+          "position": {
+            "x": 9.0,
+            "y": 19
+          },
+          "connects": [
+            "room_1",
+            "room_4"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_2_room_3",
+          "position": {
+            "x": 29,
+            "y": 10.0
+          },
+          "connects": [
+            "room_2",
+            "room_3"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_8_room_9",
+          "position": {
+            "x": 52,
+            "y": 8.0
+          },
+          "connects": [
+            "room_8",
+            "room_9"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_10_room_11",
+          "position": {
+            "x": 52,
+            "y": 24.0
+          },
+          "connects": [
+            "room_10",
+            "room_11"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_12_room_13",
+          "position": {
+            "x": 43.0,
+            "y": 39
+          },
+          "connects": [
+            "room_12",
+            "room_13"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_13_room_14",
+          "position": {
+            "x": 49,
+            "y": 41.0
+          },
+          "connects": [
+            "room_13",
+            "room_14"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_14_room_15",
+          "position": {
+            "x": 56,
+            "y": 39.0
+          },
+          "connects": [
+            "room_14",
+            "room_15"
+          ],
+          "inferred": true
+        }
+      ],
+      "doors_inferred": true
+    }
+  ]
+}

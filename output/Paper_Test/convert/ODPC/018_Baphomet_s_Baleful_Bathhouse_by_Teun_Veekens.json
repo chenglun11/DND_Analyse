@@ -1,0 +1,266 @@
+{
+  "header": {
+    "schemaName": "dnd-dungeon-unified",
+    "schemaVersion": "1.0.0",
+    "name": "Baphomet's Baleful Bathhouse",
+    "author": "System Converter",
+    "description": "Converted one-page dungeon by Teun Veekens. Layout approximated for graph and pathfinding testing.",
+    "grid": {
+      "type": "square",
+      "size": 5,
+      "unit": "ft"
+    }
+  },
+  "levels": [
+    {
+      "id": "level_1",
+      "name": "Main Level",
+      "map": {
+        "width": 40,
+        "height": 40
+      },
+      "rooms": [
+        {
+          "id": "room_1",
+          "shape": "rectangle",
+          "position": {
+            "x": 20,
+            "y": 34
+          },
+          "size": {
+            "width": 8,
+            "height": 6
+          },
+          "name": "Reception",
+          "description": "Fiendish woman receptionist, pentagram teleport circle, two petrified hands on floor.",
+          "is_entrance": true,
+          "is_exit": false
+        },
+        {
+          "id": "room_2",
+          "shape": "rectangle",
+          "position": {
+            "x": 20,
+            "y": 24
+          },
+          "size": {
+            "width": 10,
+            "height": 8
+          },
+          "name": "Swimming Pool",
+          "description": "Murky dark water pool, demons swimming, ghoul fisherman with net."
+        },
+        {
+          "id": "room_3",
+          "shape": "rectangle",
+          "position": {
+            "x": 32,
+            "y": 24
+          },
+          "size": {
+            "width": 8,
+            "height": 6
+          },
+          "name": "Massage Room",
+          "description": "Three ghoul staff massaging a minotaur. Oils, candles, poison on shelves. Key on ghoul's belt."
+        },
+        {
+          "id": "room_4",
+          "shape": "rectangle",
+          "position": {
+            "x": 32,
+            "y": 14
+          },
+          "size": {
+            "width": 8,
+            "height": 6
+          },
+          "name": "Steam Room",
+          "description": "Blue and white benches. Water elemental and fire elemental in eternal fight.",
+          "is_entrance": false,
+          "is_exit": true
+        },
+        {
+          "id": "room_5",
+          "shape": "rectangle",
+          "position": {
+            "x": 20,
+            "y": 14
+          },
+          "size": {
+            "width": 8,
+            "height": 6
+          },
+          "name": "Hottubs",
+          "description": "Three bubbling pools. Naked wizard with drink, skeletons nearby."
+        },
+        {
+          "id": "room_6",
+          "shape": "rectangle",
+          "position": {
+            "x": 8,
+            "y": 24
+          },
+          "size": {
+            "width": 8,
+            "height": 6
+          },
+          "name": "Staff Room",
+          "description": "Large staff with glowing orb. Ghoul whipping cultists. Four cultists chant in ancient tongue."
+        },
+        {
+          "id": "room_7",
+          "shape": "rectangle",
+          "position": {
+            "x": 8,
+            "y": 34
+          },
+          "size": {
+            "width": 8,
+            "height": 6
+          },
+          "name": "Sauna",
+          "description": "Coal golem, burning coals, fiendish creatures relaxing on benches."
+        }
+      ],
+      "connections": [
+        {
+          "from_room": "room_1",
+          "to_room": "room_2",
+          "door_id": "door_01"
+        },
+        {
+          "from_room": "room_2",
+          "to_room": "room_3",
+          "door_id": "door_02"
+        },
+        {
+          "from_room": "room_3",
+          "to_room": "room_4",
+          "door_id": "door_03"
+        },
+        {
+          "from_room": "room_2",
+          "to_room": "room_5",
+          "door_id": "door_04"
+        },
+        {
+          "from_room": "room_2",
+          "to_room": "room_6",
+          "door_id": "door_05"
+        },
+        {
+          "from_room": "room_6",
+          "to_room": "room_7",
+          "door_id": "door_06"
+        }
+      ],
+      "doors": [
+        {
+          "id": "door_01",
+          "position": {
+            "x": 20,
+            "y": 30
+          },
+          "dir": {
+            "x": 0,
+            "y": -1
+          },
+          "type": 1
+        },
+        {
+          "id": "door_02",
+          "position": {
+            "x": 28,
+            "y": 24
+          },
+          "dir": {
+            "x": 1,
+            "y": 0
+          },
+          "type": 1
+        },
+        {
+          "id": "door_03",
+          "position": {
+            "x": 36,
+            "y": 18
+          },
+          "dir": {
+            "x": 0,
+            "y": -1
+          },
+          "type": 1
+        },
+        {
+          "id": "door_04",
+          "position": {
+            "x": 20,
+            "y": 18
+          },
+          "dir": {
+            "x": 0,
+            "y": -1
+          },
+          "type": 1
+        },
+        {
+          "id": "door_05",
+          "position": {
+            "x": 12,
+            "y": 24
+          },
+          "dir": {
+            "x": -1,
+            "y": 0
+          },
+          "type": 1
+        },
+        {
+          "id": "door_06",
+          "position": {
+            "x": 8,
+            "y": 30
+          },
+          "dir": {
+            "x": 0,
+            "y": 1
+          },
+          "type": 1
+        }
+      ],
+      "game_elements": [
+        {
+          "id": "treasure1",
+          "name": "Ghoul's Key",
+          "type": "treasure",
+          "position": {
+            "x": 32,
+            "y": 24
+          },
+          "description": "Key on ghoul's belt in massage room."
+        },
+        {
+          "id": "treasure2",
+          "name": "Ghoul Fisherman's Key",
+          "type": "treasure",
+          "position": {
+            "x": 20,
+            "y": 24
+          },
+          "description": "Key held by ghoul fisherman at pool."
+        },
+        {
+          "id": "treasure3",
+          "name": "Cultist's Key",
+          "type": "treasure",
+          "position": {
+            "x": 8,
+            "y": 24
+          },
+          "description": "Key guarded by ghoul and cultists in staff room."
+        }
+      ]
+    }
+  ]
+}

@@ -17,10 +17,13 @@ from scipy.cluster.hierarchy import linkage, fcluster, dendrogram
 import warnings
 warnings.filterwarnings('ignore')
 
-# 继承ChartGenerator的基础功能
-from .chart_generator import ChartGenerator
+# 继承UnifiedChartGenerator的基础功能
+try:
+    from .unified_chart_generator import UnifiedChartGenerator
+except ImportError:
+    from unified_chart_generator import UnifiedChartGenerator
 
-class AdvancedAnalytics(ChartGenerator):
+class AdvancedAnalytics(UnifiedChartGenerator):
     """高级数据分析图表生成器"""
     
     def __init__(self):
@@ -121,7 +124,7 @@ class AdvancedAnalytics(ChartGenerator):
                     cluster_groups[cluster_id] = []
                 cluster_groups[cluster_id].append(metric_names[i])
             
-            clustering_results[k] = {
+            clustering_results[str(k)] = {  # 将键转换为字符串
                 'clusters': clusters.tolist(),
                 'groups': cluster_groups
             }

@@ -50,10 +50,12 @@ class WatabouAdapter(BaseAdapter):
             max_x = max(r['x'] + r['w'] for r in rects)
             max_y = max(r['y'] + r['h'] for r in rects)
 
-            # UNIFIED NODE CREATION
+            # IMPROVED NODE CREATION - 区分房间和走廊基于大小
             all_nodes = []
             rect_to_notes = {idx: [] for idx in range(len(rects))}
             room_rect_indices = set()
+            
+            # 找到包含notes的rects
             for note in notes:
                 pos = note.get('pos')
                 if not pos: continue
@@ -63,7 +65,18 @@ class WatabouAdapter(BaseAdapter):
                         room_rect_indices.add(idx)
                         rect_to_notes[idx].append(note)
                         break
-
+            
+            # 基于大小识别房间（面积大于等于6的矩形通常是房间）
+            size_based_rooms = set()
+            for idx, rect in enumerate(rects):
+                area = rect['w'] * rect['h']
+                # 面积大于等于6且至少有一边大于等于2的被认为是房间
+                if area >= 6 and min(rect['w'], rect['h']) >= 2:
+                    size_based_rooms.add(idx)
+            
+            # 合并两种房间识别方法
+            all_room_indices = room_rect_indices | size_based_rooms
+            
             for idx, rect in enumerate(rects):
                 node = {
                     "id": f"rect_{idx}",
@@ -71,57 +84,76 @@ class WatabouAdapter(BaseAdapter):
                     "position": {"x": rect['x'], "y": rect['y']},
                     "size": {"width": rect['w'], "height": rect['h']},
                 }
-                if idx in room_rect_indices:
-                    notes_in_room = rect_to_notes.get(idx, [])
-                    description = "\\n".join([n['text'] for n in notes_in_room])
-                    room_name = f"room_{notes_in_room[0]['ref']}" if notes_in_room and 'ref' in notes_in_room[0] else f"Area {idx}"
+                
+                if idx in all_room_indices:
+                    # 如果有notes，使用notes信息
+                    if idx in room_rect_indices:
+                        notes_in_room = rect_to_notes.get(idx, [])
+                        description = "\\n".join([n['text'] for n in notes_in_room])
+                        room_name = f"room_{notes_in_room[0]['ref']}" if notes_in_room and 'ref' in notes_in_room[0] else f"Room {idx}"
+                    else:
+                        # 基于大小识别的房间
+                        description = "A room in the dungeon"
+                        room_name = f"Room {idx}"
                     node.update({"name": room_name, "description": description, "is_room": True})
                 else:
+                    # 小的矩形作为走廊
                     node.update({"name": f"Corridor {idx}", "is_corridor": True})
+                
                 all_nodes.append(node)
 
             doors = [{"id": f"door_{i}", "position": door_data} for i, door_data in enumerate(raw_doors)]
             
-            # UNIFIED CONNECTION GENERATION
+            # IMPROVED CONNECTION GENERATION - 基于门的方向和位置
             connections = []
             for door in doors:
                 door_pos = door['position']
                 door_x, door_y = door_pos.get('x', 0), door_pos.get('y', 0)
+                door_dir = door_pos.get('dir', {'x': 0, 'y': 0})
                 
                 connected_nodes_ids = []
+                
+                # 基于门的方向来更准确地识别连接的房间
                 for node in all_nodes:
                     pos, size = node['position'], node['size']
                     x, y, w, h = pos['x'], pos['y'], size['width'], size['height']
-
-                    # 使用"膨胀矩形"法进行更鲁棒的检测
-                    # 如果一个门的中心点在一个矩形的轻微膨胀区域内，
-                    # 并且不在原始矩形内部，我们就认为它与该矩形相连。
-                    padding = 0.1 # 膨胀量
                     
-                    is_inside_original = (x < door_x < x + w) and (y < door_y < y + h)
-                    is_inside_padded = (
-                        (x - padding <= door_x <= x + w + padding) and
-                        (y - padding <= door_y <= y + h + padding)
-                    )
-
-                    if is_inside_padded and not is_inside_original:
+                    # 检查门是否在房间的边界上
+                    tolerance = 0.5  # 允许的误差范围
+                    
+                    # 检查门是否在房间的边界附近
+                    on_boundary = False
+                    
+                    # 检查是否在水平边界（上边或下边）
+                    if (abs(door_y - y) <= tolerance or abs(door_y - (y + h)) <= tolerance):
+                        if x <= door_x <= x + w:
+                            on_boundary = True
+                    
+                    # 检查是否在垂直边界（左边或右边）
+                    if (abs(door_x - x) <= tolerance or abs(door_x - (x + w)) <= tolerance):
+                        if y <= door_y <= y + h:
+                            on_boundary = True
+                    
+                    if on_boundary:
                         connected_nodes_ids.append(node['id'])
-
-                # 移除重复项
+                
+                # 移除重复项并限制连接数量
                 connected_nodes_ids = list(set(connected_nodes_ids))
-
-                # 一个门通常只连接两个区域。如果检测到多于两个，
-                # 我们只取前两个，这是一个简化处理，但在大多数情况下是有效的。
-                # 或者，我们可以创建所有可能的配对，这取决于我们期望的地图复杂性。
-                # 目前，我们维持之前的逻辑，连接所有检测到的节点对。
-                if len(connected_nodes_ids) >= 2:
-                    for j in range(len(connected_nodes_ids)):
-                        for k in range(j + 1, len(connected_nodes_ids)):
-                            connections.append({
-                                "from_room": connected_nodes_ids[j],
-                                "to_room": connected_nodes_ids[k],
-                                "door_id": door['id']
-                            })
+                
+                # 一个门应该连接恰好两个区域
+                if len(connected_nodes_ids) == 2:
+                    connections.append({
+                        "from_room": connected_nodes_ids[0],
+                        "to_room": connected_nodes_ids[1],
+                        "door_id": door['id']
+                    })
+                elif len(connected_nodes_ids) > 2:
+                    # 如果检测到多个连接，只连接前两个最相关的
+                    connections.append({
+                        "from_room": connected_nodes_ids[0],
+                        "to_room": connected_nodes_ids[1],
+                        "door_id": door['id']
+                    })
             
             # 提取游戏元素
             game_elements = []

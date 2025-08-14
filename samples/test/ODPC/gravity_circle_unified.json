@@ -1,0 +1,367 @@
+{
+  "header": {
+    "schemaName": "dnd-dungeon-unified",
+    "schemaVersion": "1.0.0",
+    "name": "Gravity Circle Dungeon",
+    "author": "System Converter",
+    "description": "One-page dungeon with gravity shifts, portals and a rolling boulder.",
+    "grid": {
+      "type": "square",
+      "size": 5,
+      "unit": "ft"
+    }
+  },
+  "levels": [
+    {
+      "id": "level_1",
+      "name": "Main Level",
+      "map": {
+        "width": 120,
+        "height": 90
+      },
+      "rooms": [
+        {
+          "id": "entrance",
+          "shape": "rectangle",
+          "position": {
+            "x": 20,
+            "y": 70
+          },
+          "size": {
+            "width": 18,
+            "height": 12
+          },
+          "name": "Entrance",
+          "description": "Starting vestibule; artifact frame missing.",
+          "is_entrance": true,
+          "monsters": [],
+          "treasures": []
+        },
+        {
+          "id": "first_room",
+          "shape": "rectangle",
+          "position": {
+            "x": 38,
+            "y": 62
+          },
+          "size": {
+            "width": 20,
+            "height": 14
+          },
+          "name": "First room",
+          "description": "Players test gravity; door opens after pedestal event.",
+          "is_entrance": false,
+          "monsters": [],
+          "treasures": []
+        },
+        {
+          "id": "fragment_pedestal",
+          "shape": "rectangle",
+          "position": {
+            "x": 56,
+            "y": 54
+          },
+          "size": {
+            "width": 12,
+            "height": 12
+          },
+          "name": "Fragment pedestal",
+          "description": "Pedestal for a fragment; triggers boulder on completion.",
+          "monsters": [],
+          "treasures": [
+            {
+              "type": "fragment"
+            }
+          ]
+        },
+        {
+          "id": "rolling_boulder",
+          "shape": "rectangle",
+          "position": {
+            "x": 60,
+            "y": 64
+          },
+          "size": {
+            "width": 16,
+            "height": 10
+          },
+          "name": "Rolling boulder passage",
+          "description": "Arched passage where the boulder moves.",
+          "monsters": [],
+          "treasures": []
+        },
+        {
+          "id": "second_room",
+          "shape": "rectangle",
+          "position": {
+            "x": 26,
+            "y": 40
+          },
+          "size": {
+            "width": 18,
+            "height": 12
+          },
+          "name": "Second room",
+          "description": "Monkey Boss encounter; drops Red Fragment before fleeing.",
+          "monsters": [
+            {
+              "type": "monkey_boss"
+            },
+            {
+              "type": "monkey_minions"
+            }
+          ],
+          "treasures": [
+            {
+              "type": "fragment_red"
+            }
+          ]
+        },
+        {
+          "id": "third_room",
+          "shape": "rectangle",
+          "position": {
+            "x": 96,
+            "y": 26
+          },
+          "size": {
+            "width": 18,
+            "height": 12
+          },
+          "name": "Third room",
+          "description": "Monkeys skirmish; players figure out the portals.",
+          "monsters": [
+            {
+              "type": "monkey_minions"
+            }
+          ],
+          "treasures": []
+        },
+        {
+          "id": "fourth_room",
+          "shape": "rectangle",
+          "position": {
+            "x": 98,
+            "y": 58
+          },
+          "size": {
+            "width": 20,
+            "height": 14
+          },
+          "name": "Fourth room",
+          "description": "Max-frequency gravity shift; reaching fragment is hard.",
+          "monsters": [],
+          "treasures": [
+            {
+              "type": "fragment"
+            }
+          ]
+        },
+        {
+          "id": "portals",
+          "shape": "rectangle",
+          "position": {
+            "x": 86,
+            "y": 40
+          },
+          "size": {
+            "width": 14,
+            "height": 10
+          },
+          "name": "Portals",
+          "description": "Two linked portals; momentum preserved, facing resets.",
+          "monsters": [],
+          "treasures": []
+        },
+        {
+          "id": "final_battle",
+          "shape": "rectangle",
+          "position": {
+            "x": 56,
+            "y": 30
+          },
+          "size": {
+            "width": 24,
+            "height": 16
+          },
+          "name": "Final battle",
+          "description": "Gravity Monkey evolves; can shift gravity and summon portals.",
+          "monsters": [
+            {
+              "type": "gravity_monkey_boss"
+            }
+          ],
+          "treasures": []
+        },
+        {
+          "id": "reward_chamber",
+          "shape": "rectangle",
+          "position": {
+            "x": 106,
+            "y": 80
+          },
+          "size": {
+            "width": 12,
+            "height": 12
+          },
+          "name": "Reward",
+          "description": "Artifact face grants charges (change gravity, summon portals, bag of holding).",
+          "monsters": [],
+          "treasures": [
+            {
+              "type": "artifact_reward"
+            }
+          ]
+        }
+      ],
+      "corridors": [
+        {
+          "id": "cor_1",
+          "shape": "rectangle",
+          "position": {
+            "x": 30,
+            "y": 70
+          },
+          "size": {
+            "width": 12,
+            "height": 4
+          }
+        },
+        {
+          "id": "cor_2",
+          "shape": "rectangle",
+          "position": {
+            "x": 48,
+            "y": 60
+          },
+          "size": {
+            "width": 10,
+            "height": 4
+          }
+        },
+        {
+          "id": "cor_3",
+          "shape": "rectangle",
+          "position": {
+            "x": 70,
+            "y": 60
+          },
+          "size": {
+            "width": 12,
+            "height": 4
+          }
+        },
+        {
+          "id": "cor_4",
+          "shape": "rectangle",
+          "position": {
+            "x": 82,
+            "y": 52
+          },
+          "size": {
+            "width": 8,
+            "height": 4
+          }
+        },
+        {
+          "id": "cor_5",
+          "shape": "rectangle",
+          "position": {
+            "x": 70,
+            "y": 40
+          },
+          "size": {
+            "width": 12,
+            "height": 4
+          }
+        }
+      ],
+      "connections": [
+        {
+          "id": "conn_1",
+          "from_room": "entrance",
+          "to_room": "first_room",
+          "door_type": "normal"
+        },
+        {
+          "id": "conn_2",
+          "from_room": "first_room",
+          "to_room": "fragment_pedestal",
+          "door_type": "normal"
+        },
+        {
+          "id": "conn_3",
+          "from_room": "fragment_pedestal",
+          "to_room": "rolling_boulder",
+          "door_type": "arch"
+        },
+        {
+          "id": "conn_4",
+          "from_room": "fragment_pedestal",
+          "to_room": "second_room",
+          "door_type": "normal"
+        },
+        {
+          "id": "conn_5",
+          "from_room": "fragment_pedestal",
+          "to_room": "portals",
+          "door_type": "normal"
+        },
+        {
+          "id": "conn_6",
+          "from_room": "portals",
+          "to_room": "third_room",
+          "door_type": "normal"
+        },
+        {
+          "id": "conn_7",
+          "from_room": "portals",
+          "to_room": "fourth_room",
+          "door_type": "normal"
+        },
+        {
+          "id": "conn_8",
+          "from_room": "rolling_boulder",
+          "to_room": "final_battle",
+          "door_type": "normal"
+        },
+        {
+          "id": "conn_9",
+          "from_room": "final_battle",
+          "to_room": "reward_chamber",
+          "door_type": "secret"
+        }
+      ],
+      "doors": [],
+      "game_elements": [
+        {
+          "type": "mechanism",
+          "name": "Gravity shift",
+          "position": {
+            "x": 58,
+            "y": 48
+          },
+          "notes": "Global periodic shift; DM controls cadence."
+        },
+        {
+          "type": "hazard",
+          "name": "Rolling boulder",
+          "position": {
+            "x": 62,
+            "y": 62
+          },
+          "notes": "Follows gravity; can break a cracked wall."
+        },
+        {
+          "type": "portal_pair",
+          "name": "Linked portals",
+          "position": {
+            "x": 86,
+            "y": 40
+          },
+          "notes": "Momentum preserved, facing resets."
+        }
+      ]
+    }
+  ]
+}
