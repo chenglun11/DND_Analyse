@@ -739,7 +739,7 @@ class QtBFSVisualizer(QMainWindow):
         """更新节点选择下拉框"""
         self.start_node_combo.clear()
         self.target_node_combo.clear()
-        self.target_node_combo.addItem("无")
+        self.target_node_combo.addItem("None")
         
         if self.graph:
             nodes = sorted(self.graph.keys())
@@ -751,7 +751,7 @@ class QtBFSVisualizer(QMainWindow):
         start_node = self.start_node_combo.currentText()
         target_node = self.target_node_combo.currentText()
         
-        if target_node == "无":
+        if target_node == "None":
             target_node = None
         
         if not start_node:
@@ -791,7 +791,7 @@ class QtBFSVisualizer(QMainWindow):
         # 显示最短路径
         start_node = self.start_node_combo.currentText()
         target_node = self.target_node_combo.currentText()
-        if start_node and target_node and target_node != "无":
+        if start_node and target_node and target_node != "None":
             path = self._find_shortest_path(start_node, target_node)
             if path:
                 path_str = " → ".join(path)
