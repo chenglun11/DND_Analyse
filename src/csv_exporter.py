@@ -253,9 +253,16 @@ class CSVExporter:
             
             # 提取描述性统计数据
             descriptive_stats = report.get('descriptive_statistics', {})
+            
+            # 如果没有描述性统计，检查是否是新格式的相关性分析报告
             if not descriptive_stats:
-                logger.error("No descriptive statistics found in report")
-                return False
+                if 'correlation_analysis' in report and 'summary' in report:
+                    logger.info("Detected new format statistical analysis report without descriptive statistics")
+                    logger.info("Consider using --correlation option for correlation analysis data")
+                    return False
+                else:
+                    logger.error("No descriptive statistics found in report")
+                    return False
             
             # 准备CSV数据
             csv_rows = []

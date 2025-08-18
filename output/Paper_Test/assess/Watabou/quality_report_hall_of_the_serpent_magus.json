@@ -1,7 +1,7 @@
 {
   "scores": {
     "accessibility": {
-      "score": 0.7681550586050896,
+      "score": 0.7133735092520281,
       "detail": {
         "reachability_ratio": 1.0,
         "avg_path_length": 2.066666666666667,
@@ -9,9 +9,9 @@
         "normalized": [
           1.0,
           0.4833333333333333,
-          0.9377777777777778
+          0.7511111111111111
         ],
-        "score": 0.7681550586050896
+        "score": 0.7133735092520281
       }
     },
     "degree_variance": {
@@ -113,30 +113,30 @@
       }
     },
     "path_diversity": {
-      "score": 0.4099670705273566,
+      "score": 0.5022282032593357,
       "detail": {
-        "avg_path_diversity": 0.26838644720293037,
-        "std_path_diversity": 0.20544917113164263,
-        "max_path_diversity": 0.6546536697635116,
+        "avg_path_diversity": 0.22143800857666238,
+        "std_path_diversity": 0.1527177046853643,
+        "max_path_diversity": 0.4409111378843023,
         "min_path_diversity": 0.0,
         "total_pairs_analyzed": 42,
         "rounds_completed": 4,
         "detailed_analysis": {
           "round_0": {
             "pairs_analyzed": 11,
-            "avg_diversity": 0.3078151256567001
+            "avg_diversity": 0.23238381327088786
           },
           "round_1": {
             "pairs_analyzed": 11,
-            "avg_diversity": 0.20998353033065423
+            "avg_diversity": 0.18653373362785147
           },
           "round_2": {
             "pairs_analyzed": 10,
-            "avg_diversity": 0.3362428186768812
+            "avg_diversity": 0.2998491942553696
           },
           "round_3": {
             "pairs_analyzed": 10,
-            "avg_diversity": 0.2214017379893364
+            "avg_diversity": 0.16938114017799905
           }
         },
         "adaptive_params": {
@@ -152,7 +152,7 @@
         "normalization": "Robust_with_predefined_bounds",
         "fusion_method": "Geometric_mean_of_normalized_metrics",
         "performance": {
-          "time_taken": 0.003098011016845703,
+          "time_taken": 0.00311279296875,
           "timeout": false
         }
       }
@@ -174,11 +174,11 @@
     }
   },
   "category_scores": {
-    "structural": 0.6246332352609011,
+    "structural": 0.6299874614578893,
     "gameplay": 0.0,
     "aesthetic": 0.4333172502063373
   },
-  "overall_score": 0.35265016182241277,
+  "overall_score": 0.3544349038880755,
   "grade": "D",
   "details": {
     "accessibility": {
@@ -188,9 +188,9 @@
       "normalized": [
         1.0,
         0.4833333333333333,
-        0.9377777777777778
+        0.7511111111111111
       ],
-      "score": 0.7681550586050896
+      "score": 0.7133735092520281
     },
     "degree_variance": {
       "raw_variance": 3.262222222222222,
@@ -276,28 +276,28 @@
       }
     },
     "path_diversity": {
-      "avg_path_diversity": 0.26838644720293037,
-      "std_path_diversity": 0.20544917113164263,
-      "max_path_diversity": 0.6546536697635116,
+      "avg_path_diversity": 0.22143800857666238,
+      "std_path_diversity": 0.1527177046853643,
+      "max_path_diversity": 0.4409111378843023,
       "min_path_diversity": 0.0,
       "total_pairs_analyzed": 42,
       "rounds_completed": 4,
       "detailed_analysis": {
         "round_0": {
           "pairs_analyzed": 11,
-          "avg_diversity": 0.3078151256567001
+          "avg_diversity": 0.23238381327088786
         },
         "round_1": {
           "pairs_analyzed": 11,
-          "avg_diversity": 0.20998353033065423
+          "avg_diversity": 0.18653373362785147
         },
         "round_2": {
           "pairs_analyzed": 10,
-          "avg_diversity": 0.3362428186768812
+          "avg_diversity": 0.2998491942553696
         },
         "round_3": {
           "pairs_analyzed": 10,
-          "avg_diversity": 0.2214017379893364
+          "avg_diversity": 0.16938114017799905
         }
       },
       "adaptive_params": {
@@ -313,7 +313,7 @@
       "normalization": "Robust_with_predefined_bounds",
       "fusion_method": "Geometric_mean_of_normalized_metrics",
       "performance": {
-        "time_taken": 0.003098011016845703,
+        "time_taken": 0.00311279296875,
         "timeout": false
       }
     },
@@ -328,7 +328,6 @@
     }
   },
   "recommendations": [
-    "路径多样性不足：增加路径选择以提供更多到达目标的方式",
     "关键路径过短：增加关键路径长度以提供更好的游戏体验",
     "可玩性评分较低：需要增强游戏元素分布和路径多样性",
     "游戏元素分布不当：确保平衡的密度，添加Boss，并在地图上分散元素",

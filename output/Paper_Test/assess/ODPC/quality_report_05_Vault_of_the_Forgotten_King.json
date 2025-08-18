@@ -1,7 +1,7 @@
 {
   "scores": {
     "accessibility": {
-      "score": 0.7972956920301136,
+      "score": 0.7327142786972272,
       "detail": {
         "reachability_ratio": 1.0,
         "avg_path_length": 3.1875,
@@ -9,9 +9,9 @@
         "normalized": [
           1.0,
           0.5446428571428571,
-          0.9305644132653061
+          0.7222576530612245
         ],
-        "score": 0.7972956920301136
+        "score": 0.7327142786972272
       }
     },
     "degree_variance": {
@@ -117,34 +117,34 @@
       }
     },
     "path_diversity": {
-      "score": 0.261379494228247,
+      "score": 0.4130451445744033,
       "detail": {
-        "avg_path_diversity": 0.15090752113561312,
-        "std_path_diversity": 0.20325151358766982,
-        "max_path_diversity": 0.5773502683566853,
+        "avg_path_diversity": 0.1886257970265253,
+        "std_path_diversity": 0.1681054828156404,
+        "max_path_diversity": 0.4566711399570694,
         "min_path_diversity": 0.0,
         "total_pairs_analyzed": 45,
         "rounds_completed": 5,
         "detailed_analysis": {
           "round_0": {
             "pairs_analyzed": 9,
-            "avg_diversity": 0.19512471794719988
+            "avg_diversity": 0.19995035625645827
           },
           "round_1": {
             "pairs_analyzed": 9,
-            "avg_diversity": 0.13814177842043285
+            "avg_diversity": 0.17888169315944089
           },
           "round_2": {
             "pairs_analyzed": 9,
-            "avg_diversity": 0.16024004721100515
+            "avg_diversity": 0.2042445765778587
           },
           "round_3": {
             "pairs_analyzed": 9,
-            "avg_diversity": 0.12731035540544322
+            "avg_diversity": 0.19519253238748
           },
           "round_4": {
             "pairs_analyzed": 9,
-            "avg_diversity": 0.13372070669398445
+            "avg_diversity": 0.1648598267513886
           }
         },
         "adaptive_params": {
@@ -160,7 +160,7 @@
         "normalization": "Robust_with_predefined_bounds",
         "fusion_method": "Geometric_mean_of_normalized_metrics",
         "performance": {
-          "time_taken": 0.0035867691040039062,
+          "time_taken": 0.0035626888275146484,
           "timeout": false
         }
       }
@@ -188,11 +188,11 @@
     }
   },
   "category_scores": {
-    "structural": 0.6187662673462027,
+    "structural": 0.6312068726338126,
     "gameplay": 0.750205069995604,
     "aesthetic": 0.48569107533517697
   },
-  "overall_score": 0.6182208042256612,
+  "overall_score": 0.6223676726548645,
   "grade": "C",
   "details": {
     "accessibility": {
@@ -202,9 +202,9 @@
       "normalized": [
         1.0,
         0.5446428571428571,
-        0.9305644132653061
+        0.7222576530612245
       ],
-      "score": 0.7972956920301136
+      "score": 0.7327142786972272
     },
     "degree_variance": {
       "raw_variance": 0.734375,
@@ -294,32 +294,32 @@
       }
     },
     "path_diversity": {
-      "avg_path_diversity": 0.15090752113561312,
-      "std_path_diversity": 0.20325151358766982,
-      "max_path_diversity": 0.5773502683566853,
+      "avg_path_diversity": 0.1886257970265253,
+      "std_path_diversity": 0.1681054828156404,
+      "max_path_diversity": 0.4566711399570694,
       "min_path_diversity": 0.0,
       "total_pairs_analyzed": 45,
       "rounds_completed": 5,
       "detailed_analysis": {
         "round_0": {
           "pairs_analyzed": 9,
-          "avg_diversity": 0.19512471794719988
+          "avg_diversity": 0.19995035625645827
         },
         "round_1": {
           "pairs_analyzed": 9,
-          "avg_diversity": 0.13814177842043285
+          "avg_diversity": 0.17888169315944089
         },
         "round_2": {
           "pairs_analyzed": 9,
-          "avg_diversity": 0.16024004721100515
+          "avg_diversity": 0.2042445765778587
         },
         "round_3": {
           "pairs_analyzed": 9,
-          "avg_diversity": 0.12731035540544322
+          "avg_diversity": 0.19519253238748
         },
         "round_4": {
           "pairs_analyzed": 9,
-          "avg_diversity": 0.13372070669398445
+          "avg_diversity": 0.1648598267513886
         }
       },
       "adaptive_params": {
@@ -335,7 +335,7 @@
       "normalization": "Robust_with_predefined_bounds",
       "fusion_method": "Geometric_mean_of_normalized_metrics",
       "performance": {
-        "time_taken": 0.0035867691040039062,
+        "time_taken": 0.0035626888275146484,
         "timeout": false
       }
     },

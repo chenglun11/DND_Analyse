@@ -77,8 +77,9 @@ class AccessibilityRule(BaseQualityRule):
         diameter = max(lengths)
         # 归一化平均距离: (diameter - avg_len) / diameter
         norm_avg = (diameter - avg_len) / diameter if diameter > 0 else 0.0
-        # 归一化方差: 1 - var/(diameter^2)
-        norm_var = 1 - (var_len / (diameter*diameter) if diameter > 0 else 0.0)
+        # 归一化方差: 使用严格上界 Var ≤ Diam²/4（区分度更好）
+        strict_upper_bound = (diameter * diameter) / 4 if diameter > 0 else 0.0
+        norm_var = 1 - (var_len / strict_upper_bound if strict_upper_bound > 0 else 0.0)
         norm_var = max(0.0, min(1.0, norm_var))
 
         # 几何平均融合

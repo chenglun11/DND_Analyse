@@ -676,8 +676,8 @@ class PathDiversityRule(BaseQualityRule):
         
         if mean_distance > 0:
             cv = std_distance / mean_distance
-            # 归一化变异系数到 [0,1] 范围
-            return min(1.0, cv / 2.0)  # 除以2是经验性的归一化
+            # 规范化变异系数：cv' = cv / (1 + cv)，确保落在 (0,1)
+            return cv / (1 + cv)
         else:
             return 0.0
     
@@ -697,8 +697,8 @@ class PathDiversityRule(BaseQualityRule):
         # 2. 归一化指标
         normalized_metrics = self._normalize_metrics(raw_metrics)
         
-        # 3. 融合指标
-        overall_diversity = self._fuse_metrics(normalized_metrics)
+        # 3. 融合指标，包含Jaccard距离
+        overall_diversity = self._fuse_metrics(normalized_metrics, raw_metrics['avg_jaccard_distance'])
         
         return {
             'avg_jaccard_distance': raw_metrics['avg_jaccard_distance'],
@@ -751,13 +751,14 @@ class PathDiversityRule(BaseQualityRule):
         max_entropy = np.log2(unique_lengths) if unique_lengths > 1 else 0.0
         normalized_entropy = entropy / max_entropy if max_entropy > 0 else 0.0
         
-        # 方差归一化：使用变异系数
+        # 方差归一化：使用变异系数，规范化为 cv' = cv / (1 + cv)
         length_variance = raw_metrics['length_variance']
         lengths = raw_metrics['lengths']
         
         if len(lengths) > 1 and np.mean(lengths) > 0:
             cv = np.sqrt(length_variance) / np.mean(lengths)
-            normalized_variance = cv
+            # 规范化 CV：cv' = cv / (1 + cv)，确保落在 (0,1)
+            normalized_variance = cv / (1 + cv)
         else:
             normalized_variance = 0.0
         
@@ -766,12 +767,14 @@ class PathDiversityRule(BaseQualityRule):
             'normalized_variance': normalized_variance
         }
     
-    def _fuse_metrics(self, normalized_metrics: Dict[str, float]) -> float:
-        """融合归一化指标：几何平均，纯客观处理"""
+    def _fuse_metrics(self, normalized_metrics: Dict[str, float], avg_jaccard_distance: float) -> float:
+        """融合归一化指标：几何平均，纳入Jaccard距离"""
         diversity_factors = []
         
         # 只使用非零的指标进行几何平均
         # 理论依据：零值表示该维度没有多样性，应该被排除
+        if avg_jaccard_distance > 0:
+            diversity_factors.append(avg_jaccard_distance)
         if normalized_metrics['normalized_entropy'] > 0:
             diversity_factors.append(normalized_metrics['normalized_entropy'])
         if normalized_metrics['normalized_variance'] > 0:

@@ -1,7 +1,7 @@
 {
   "scores": {
     "accessibility": {
-      "score": 0.7000850236860057,
+      "score": 0.6278536178219456,
       "detail": {
         "reachability_ratio": 0.8333333333333334,
         "avg_path_length": 2.2,
@@ -9,9 +9,9 @@
         "normalized": [
           0.8333333333333334,
           0.44999999999999996,
-          0.915
+          0.66
         ],
-        "score": 0.7000850236860057
+        "score": 0.6278536178219456
       }
     },
     "degree_variance": {
@@ -147,7 +147,7 @@
         "normalization": "Robust_with_predefined_bounds",
         "fusion_method": "Geometric_mean_of_normalized_metrics",
         "performance": {
-          "time_taken": 0.001135110855102539,
+          "time_taken": 0.0011539459228515625,
           "timeout": false
         }
       }
@@ -169,11 +169,11 @@
     }
   },
   "category_scores": {
-    "structural": 0.5319854565090634,
+    "structural": 0.5216666842427691,
     "gameplay": 0.0,
     "aesthetic": 0.8929370753569464
   },
-  "overall_score": 0.4749741772886699,
+  "overall_score": 0.4715345865332385,
   "grade": "D",
   "details": {
     "accessibility": {
@@ -183,9 +183,9 @@
       "normalized": [
         0.8333333333333334,
         0.44999999999999996,
-        0.915
+        0.66
       ],
-      "score": 0.7000850236860057
+      "score": 0.6278536178219456
     },
     "degree_variance": {
       "raw_variance": 0.8055555555555555,
@@ -303,7 +303,7 @@
       "normalization": "Robust_with_predefined_bounds",
       "fusion_method": "Geometric_mean_of_normalized_metrics",
       "performance": {
-        "time_taken": 0.001135110855102539,
+        "time_taken": 0.0011539459228515625,
         "timeout": false
       }
     },

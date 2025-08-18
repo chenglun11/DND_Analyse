@@ -113,37 +113,6 @@ def run_statistical_analysis(args):
         logger.error(f"Statistical analysis failed: {e}")
         return False
 
-def run_fq_analysis(args):
-    """运行F_Q数据分析"""
-    try:
-        from f_q_data_statistics import FQDataAnalyzer
-        
-        logger.info("Starting F_Q data analysis...")
-        
-        # 验证F_Q_Report目录是否存在
-        fq_report_dir = Path("../../output/F_Q_Report")
-        if not fq_report_dir.exists():
-            logger.error(f"F_Q_Report directory not found: {fq_report_dir}")
-            return False
-        
-        # 初始化分析器
-        analyzer = FQDataAnalyzer()
-        
-        # 执行分析
-        output_dir = args.output or "../../output/F_Q_Report/SA"
-        success = analyzer.analyze_f_q_data(output_dir)
-        
-        if success:
-            logger.info("F_Q data analysis completed successfully!")
-            return True
-        else:
-            logger.error("F_Q data analysis failed!")
-            return False
-            
-    except Exception as e:
-        logger.error(f"F_Q data analysis failed: {e}")
-        return False
-
 def run_all_tests(args):
     """运行所有测试"""
     logger.info("Starting comprehensive testing suite...")
@@ -192,8 +161,6 @@ def run_all_tests(args):
         output=args.output and f"{args.output}/F_Q_SA"
     )
     
-    if run_fq_analysis(fq_args):
-        success_count += 1
     total_tests += 1
     
     # 总结
@@ -291,9 +258,6 @@ Examples:
             logger.error("Analysis mode requires --input parameter")
             return 1
         success = run_statistical_analysis(args)
-        
-    elif args.mode == 'fq_analysis':
-        success = run_fq_analysis(args)
         
     elif args.mode == 'all':
         success = run_all_tests(args)

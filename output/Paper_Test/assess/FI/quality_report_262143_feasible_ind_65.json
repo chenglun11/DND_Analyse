@@ -1,7 +1,7 @@
 {
   "scores": {
     "accessibility": {
-      "score": 0.7103391338960336,
+      "score": 0.6499846621465825,
       "detail": {
         "reachability_ratio": 1.0,
         "avg_path_length": 2.4545454545454546,
@@ -9,9 +9,9 @@
         "normalized": [
           1.0,
           0.38636363636363635,
-          0.9276859504132231
+          0.7107438016528926
         ],
-        "score": 0.7103391338960336
+        "score": 0.6499846621465825
       }
     },
     "degree_variance": {
@@ -109,30 +109,30 @@
       }
     },
     "path_diversity": {
-      "score": 0.4627225478003454,
+      "score": 0.4851069003051916,
       "detail": {
-        "avg_path_diversity": 0.3044449962090426,
-        "std_path_diversity": 0.22451991046222367,
-        "max_path_diversity": 0.6579428594009297,
+        "avg_path_diversity": 0.2739018423641516,
+        "std_path_diversity": 0.17007571637102223,
+        "max_path_diversity": 0.5646216167855659,
         "min_path_diversity": 0.0,
         "total_pairs_analyzed": 46,
         "rounds_completed": 4,
         "detailed_analysis": {
           "round_0": {
             "pairs_analyzed": 12,
-            "avg_diversity": 0.21417408787632855
+            "avg_diversity": 0.1822580077028698
           },
           "round_1": {
             "pairs_analyzed": 11,
-            "avg_diversity": 0.40821091598919707
+            "avg_diversity": 0.336213051152099
           },
           "round_2": {
             "pairs_analyzed": 12,
-            "avg_diversity": 0.28759353219609535
+            "avg_diversity": 0.3295017779793777
           },
           "round_3": {
             "pairs_analyzed": 11,
-            "avg_diversity": 0.31753984626051834
+            "avg_diversity": 0.2509112507173559
           }
         },
         "adaptive_params": {
@@ -148,7 +148,7 @@
         "normalization": "Robust_with_predefined_bounds",
         "fusion_method": "Geometric_mean_of_normalized_metrics",
         "performance": {
-          "time_taken": 0.003129720687866211,
+          "time_taken": 0.002772092819213867,
           "timeout": false
         }
       }
@@ -170,11 +170,11 @@
     }
   },
   "category_scores": {
-    "structural": 0.6363199697677691,
+    "structural": 0.6308956670185398,
     "gameplay": 0.0,
     "aesthetic": 0.8949283158127457
   },
-  "overall_score": 0.5104160951935048,
+  "overall_score": 0.5086079942770951,
   "grade": "C",
   "details": {
     "accessibility": {
@@ -184,9 +184,9 @@
       "normalized": [
         1.0,
         0.38636363636363635,
-        0.9276859504132231
+        0.7107438016528926
       ],
-      "score": 0.7103391338960336
+      "score": 0.6499846621465825
     },
     "degree_variance": {
       "raw_variance": 2.555555555555556,
@@ -268,28 +268,28 @@
       }
     },
     "path_diversity": {
-      "avg_path_diversity": 0.3044449962090426,
-      "std_path_diversity": 0.22451991046222367,
-      "max_path_diversity": 0.6579428594009297,
+      "avg_path_diversity": 0.2739018423641516,
+      "std_path_diversity": 0.17007571637102223,
+      "max_path_diversity": 0.5646216167855659,
       "min_path_diversity": 0.0,
       "total_pairs_analyzed": 46,
       "rounds_completed": 4,
       "detailed_analysis": {
         "round_0": {
           "pairs_analyzed": 12,
-          "avg_diversity": 0.21417408787632855
+          "avg_diversity": 0.1822580077028698
         },
         "round_1": {
           "pairs_analyzed": 11,
-          "avg_diversity": 0.40821091598919707
+          "avg_diversity": 0.336213051152099
         },
         "round_2": {
           "pairs_analyzed": 12,
-          "avg_diversity": 0.28759353219609535
+          "avg_diversity": 0.3295017779793777
         },
         "round_3": {
           "pairs_analyzed": 11,
-          "avg_diversity": 0.31753984626051834
+          "avg_diversity": 0.2509112507173559
         }
       },
       "adaptive_params": {
@@ -305,7 +305,7 @@
       "normalization": "Robust_with_predefined_bounds",
       "fusion_method": "Geometric_mean_of_normalized_metrics",
       "performance": {
-        "time_taken": 0.003129720687866211,
+        "time_taken": 0.002772092819213867,
         "timeout": false
       }
     },

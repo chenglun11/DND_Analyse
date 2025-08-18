@@ -1,7 +1,7 @@
 {
   "scores": {
     "accessibility": {
-      "score": 0.5796781606973519,
+      "score": 0.48272016508540133,
       "detail": {
         "reachability_ratio": 1.0,
         "avg_path_length": 2.3333333333333335,
@@ -9,9 +9,9 @@
         "normalized": [
           1.0,
           0.22222222222222218,
-          0.8765432098765432
+          0.5061728395061729
         ],
-        "score": 0.5796781606973519
+        "score": 0.48272016508540133
       }
     },
     "degree_variance": {
@@ -143,7 +143,7 @@
         "normalization": "Robust_with_predefined_bounds",
         "fusion_method": "Geometric_mean_of_normalized_metrics",
         "performance": {
-          "time_taken": 0.0008709430694580078,
+          "time_taken": 0.0008420944213867188,
           "timeout": false
         }
       }
@@ -171,11 +171,11 @@
     }
   },
   "category_scores": {
-    "structural": 0.3552746448005173,
+    "structural": 0.3414235025702387,
     "gameplay": 0.698206889389746,
     "aesthetic": 0.8437948797778345
   },
-  "overall_score": 0.6324254713226992,
+  "overall_score": 0.6278084239126063,
   "grade": "C",
   "details": {
     "accessibility": {
@@ -185,9 +185,9 @@
       "normalized": [
         1.0,
         0.22222222222222218,
-        0.8765432098765432
+        0.5061728395061729
       ],
-      "score": 0.5796781606973519
+      "score": 0.48272016508540133
     },
     "degree_variance": {
       "raw_variance": 3.5061728395061724,
@@ -301,7 +301,7 @@
       "normalization": "Robust_with_predefined_bounds",
       "fusion_method": "Geometric_mean_of_normalized_metrics",
       "performance": {
-        "time_taken": 0.0008709430694580078,
+        "time_taken": 0.0008420944213867188,
         "timeout": false
       }
     },
@@ -323,6 +323,7 @@
   },
   "recommendations": [
     "结构性评分较低：需要改善房间连通性和门的位置分布",
+    "可达性不足：增加房间间的连接以提高可达性",
     "门分布不合理：改善门的分布以获得更好的流动感",
     "循环比例不当：调整房间连接以优化循环结构",
     "路径多样性不足：增加路径选择以提供更多到达目标的方式",

@@ -1,7 +1,7 @@
 {
   "scores": {
     "accessibility": {
-      "score": 0.7768081264884648,
+      "score": 0.7211247851537042,
       "detail": {
         "reachability_ratio": 1.0,
         "avg_path_length": 2.0,
@@ -9,9 +9,9 @@
         "normalized": [
           1.0,
           0.5,
-          0.9375
+          0.75
         ],
-        "score": 0.7768081264884648
+        "score": 0.7211247851537042
       }
     },
     "degree_variance": {
@@ -117,26 +117,26 @@
       }
     },
     "path_diversity": {
-      "score": 0.21935914925601896,
+      "score": 0.30041993911567,
       "detail": {
-        "avg_path_diversity": 0.1460972838461387,
-        "std_path_diversity": 0.20057820237104426,
-        "max_path_diversity": 0.6660186472351117,
+        "avg_path_diversity": 0.13819506863971115,
+        "std_path_diversity": 0.16293208910409723,
+        "max_path_diversity": 0.4600063133176464,
         "min_path_diversity": 0.0,
         "total_pairs_analyzed": 34,
         "rounds_completed": 5,
         "detailed_analysis": {
           "round_0": {
             "pairs_analyzed": 7,
-            "avg_diversity": 0.13822922563939646
+            "avg_diversity": 0.1870352864862884
           },
           "round_1": {
             "pairs_analyzed": 6,
-            "avg_diversity": 0.2068597828758664
+            "avg_diversity": 0.1561948838892927
           },
           "round_2": {
             "pairs_analyzed": 8,
-            "avg_diversity": 0.15982816955764498
+            "avg_diversity": 0.17079055983711927
           },
           "round_3": {
             "pairs_analyzed": 6,
@@ -144,7 +144,7 @@
           },
           "round_4": {
             "pairs_analyzed": 7,
-            "avg_diversity": 0.21141700251094037
+            "avg_diversity": 0.15512736375906427
           }
         },
         "adaptive_params": {
@@ -160,7 +160,7 @@
         "normalization": "Robust_with_predefined_bounds",
         "fusion_method": "Geometric_mean_of_normalized_metrics",
         "performance": {
-          "time_taken": 0.002888917922973633,
+          "time_taken": 0.003116130828857422,
           "timeout": false
         }
       }
@@ -189,11 +189,11 @@
     }
   },
   "category_scores": {
-    "structural": 0.5688457035242472,
+    "structural": 0.5724710533135173,
     "gameplay": 0.7227140439090833,
     "aesthetic": 0.903754354889896
   },
-  "overall_score": 0.7317713674410755,
+  "overall_score": 0.7329798173708322,
   "grade": "B",
   "details": {
     "accessibility": {
@@ -203,9 +203,9 @@
       "normalized": [
         1.0,
         0.5,
-        0.9375
+        0.75
       ],
-      "score": 0.7768081264884648
+      "score": 0.7211247851537042
     },
     "degree_variance": {
       "raw_variance": 1.1875,
@@ -295,24 +295,24 @@
       }
     },
     "path_diversity": {
-      "avg_path_diversity": 0.1460972838461387,
-      "std_path_diversity": 0.20057820237104426,
-      "max_path_diversity": 0.6660186472351117,
+      "avg_path_diversity": 0.13819506863971115,
+      "std_path_diversity": 0.16293208910409723,
+      "max_path_diversity": 0.4600063133176464,
       "min_path_diversity": 0.0,
       "total_pairs_analyzed": 34,
       "rounds_completed": 5,
       "detailed_analysis": {
         "round_0": {
           "pairs_analyzed": 7,
-          "avg_diversity": 0.13822922563939646
+          "avg_diversity": 0.1870352864862884
         },
         "round_1": {
           "pairs_analyzed": 6,
-          "avg_diversity": 0.2068597828758664
+          "avg_diversity": 0.1561948838892927
         },
         "round_2": {
           "pairs_analyzed": 8,
-          "avg_diversity": 0.15982816955764498
+          "avg_diversity": 0.17079055983711927
         },
         "round_3": {
           "pairs_analyzed": 6,
@@ -320,7 +320,7 @@
         },
         "round_4": {
           "pairs_analyzed": 7,
-          "avg_diversity": 0.21141700251094037
+          "avg_diversity": 0.15512736375906427
         }
       },
       "adaptive_params": {
@@ -336,7 +336,7 @@
       "normalization": "Robust_with_predefined_bounds",
       "fusion_method": "Geometric_mean_of_normalized_metrics",
       "performance": {
-        "time_taken": 0.002888917922973633,
+        "time_taken": 0.003116130828857422,
         "timeout": false
       }
     },

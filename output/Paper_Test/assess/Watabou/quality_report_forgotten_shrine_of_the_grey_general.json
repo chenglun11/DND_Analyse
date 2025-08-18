@@ -1,7 +1,7 @@
 {
   "scores": {
     "accessibility": {
-      "score": 0.7269477209634394,
+      "score": 0.66086722851155,
       "detail": {
         "reachability_ratio": 1.0,
         "avg_path_length": 2.92,
@@ -9,9 +9,9 @@
         "normalized": [
           1.0,
           0.41600000000000004,
-          0.923456
+          0.693824
         ],
-        "score": 0.7269477209634394
+        "score": 0.66086722851155
       }
     },
     "degree_variance": {
@@ -124,30 +124,30 @@
       }
     },
     "path_diversity": {
-      "score": 0.3417949950852357,
+      "score": 0.38751211072657077,
       "detail": {
-        "avg_path_diversity": 0.20641272770707006,
-        "std_path_diversity": 0.19793530022391953,
-        "max_path_diversity": 0.6039079877562149,
+        "avg_path_diversity": 0.2583414071510472,
+        "std_path_diversity": 0.167076168632099,
+        "max_path_diversity": 0.6666666666666667,
         "min_path_diversity": 0.0,
         "total_pairs_analyzed": 29,
         "rounds_completed": 4,
         "detailed_analysis": {
           "round_0": {
             "pairs_analyzed": 7,
-            "avg_diversity": 0.14448160752189323
+            "avg_diversity": 0.20606722800182678
           },
           "round_1": {
             "pairs_analyzed": 7,
-            "avg_diversity": 0.27818445849871526
+            "avg_diversity": 0.2831885845301901
           },
           "round_2": {
             "pairs_analyzed": 8,
-            "avg_diversity": 0.2478344378989954
+            "avg_diversity": 0.24711190116864024
           },
           "round_3": {
             "pairs_analyzed": 7,
-            "avg_diversity": 0.14923301973840136
+            "avg_diversity": 0.2986021300438753
           }
         },
         "adaptive_params": {
@@ -163,7 +163,7 @@
         "normalization": "Robust_with_predefined_bounds",
         "fusion_method": "Geometric_mean_of_normalized_metrics",
         "performance": {
-          "time_taken": 0.0054857730865478516,
+          "time_taken": 0.004569053649902344,
           "timeout": false
         }
       }
@@ -185,11 +185,11 @@
     }
   },
   "category_scores": {
-    "structural": 0.6423459151072684,
+    "structural": 0.6394368612771891,
     "gameplay": 0.0,
     "aesthetic": 0.5856394783683793
   },
-  "overall_score": 0.40932846449188254,
+  "overall_score": 0.4083587798818561,
   "grade": "D",
   "details": {
     "accessibility": {
@@ -199,9 +199,9 @@
       "normalized": [
         1.0,
         0.41600000000000004,
-        0.923456
+        0.693824
       ],
-      "score": 0.7269477209634394
+      "score": 0.66086722851155
     },
     "degree_variance": {
       "raw_variance": 5.9936,
@@ -298,28 +298,28 @@
       }
     },
     "path_diversity": {
-      "avg_path_diversity": 0.20641272770707006,
-      "std_path_diversity": 0.19793530022391953,
-      "max_path_diversity": 0.6039079877562149,
+      "avg_path_diversity": 0.2583414071510472,
+      "std_path_diversity": 0.167076168632099,
+      "max_path_diversity": 0.6666666666666667,
       "min_path_diversity": 0.0,
       "total_pairs_analyzed": 29,
       "rounds_completed": 4,
       "detailed_analysis": {
         "round_0": {
           "pairs_analyzed": 7,
-          "avg_diversity": 0.14448160752189323
+          "avg_diversity": 0.20606722800182678
         },
         "round_1": {
           "pairs_analyzed": 7,
-          "avg_diversity": 0.27818445849871526
+          "avg_diversity": 0.2831885845301901
         },
         "round_2": {
           "pairs_analyzed": 8,
-          "avg_diversity": 0.2478344378989954
+          "avg_diversity": 0.24711190116864024
         },
         "round_3": {
           "pairs_analyzed": 7,
-          "avg_diversity": 0.14923301973840136
+          "avg_diversity": 0.2986021300438753
         }
       },
       "adaptive_params": {
@@ -335,7 +335,7 @@
       "normalization": "Robust_with_predefined_bounds",
       "fusion_method": "Geometric_mean_of_normalized_metrics",
       "performance": {
-        "time_taken": 0.0054857730865478516,
+        "time_taken": 0.004569053649902344,
         "timeout": false
       }
     },

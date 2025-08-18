@@ -1,7 +1,7 @@
 {
   "scores": {
     "accessibility": {
-      "score": 0.8002445963145205,
+      "score": 0.7279925922146282,
       "detail": {
         "reachability_ratio": 1.0,
         "avg_path_length": 3.5625,
@@ -9,9 +9,9 @@
         "normalized": [
           1.0,
           0.5546875,
-          0.92388916015625
+          0.695556640625
         ],
-        "score": 0.8002445963145205
+        "score": 0.7279925922146282
       }
     },
     "degree_variance": {
@@ -113,42 +113,42 @@
       }
     },
     "path_diversity": {
-      "score": 0.4904100200978823,
+      "score": 0.49982418890842095,
       "detail": {
-        "avg_path_diversity": 0.2937055672954952,
-        "std_path_diversity": 0.22230532885188203,
-        "max_path_diversity": 0.598897973652483,
+        "avg_path_diversity": 0.2352788038372907,
+        "std_path_diversity": 0.14590991461863706,
+        "max_path_diversity": 0.4707231243672344,
         "min_path_diversity": 0.0,
         "total_pairs_analyzed": 39,
         "rounds_completed": 7,
         "detailed_analysis": {
           "round_0": {
             "pairs_analyzed": 6,
-            "avg_diversity": 0.34092674277531493
+            "avg_diversity": 0.2517884264522831
           },
           "round_1": {
             "pairs_analyzed": 6,
-            "avg_diversity": 0.1545345004817342
+            "avg_diversity": 0.16769933442395515
           },
           "round_2": {
             "pairs_analyzed": 6,
-            "avg_diversity": 0.3308093111162295
+            "avg_diversity": 0.2993205101340412
           },
           "round_3": {
             "pairs_analyzed": 4,
-            "avg_diversity": 0.25603539724188434
+            "avg_diversity": 0.2130519626150351
           },
           "round_4": {
             "pairs_analyzed": 5,
-            "avg_diversity": 0.41136764773606344
+            "avg_diversity": 0.3222319407566734
           },
           "round_5": {
             "pairs_analyzed": 6,
-            "avg_diversity": 0.21058012223953834
+            "avg_diversity": 0.14901488981644137
           },
           "round_6": {
             "pairs_analyzed": 6,
-            "avg_diversity": 0.3587388728665921
+            "avg_diversity": 0.25092780507508367
           }
         },
         "adaptive_params": {
@@ -164,7 +164,7 @@
         "normalization": "Robust_with_predefined_bounds",
         "fusion_method": "Geometric_mean_of_normalized_metrics",
         "performance": {
-          "time_taken": 0.004169940948486328,
+          "time_taken": 0.004171848297119141,
           "timeout": false
         }
       }
@@ -192,11 +192,11 @@
     }
   },
   "category_scores": {
-    "structural": 0.5854094384139809,
+    "structural": 0.5764326048012159,
     "gameplay": 0.5348450674093733,
     "aesthetic": 0.8847463253781022
   },
-  "overall_score": 0.6683336104004853,
+  "overall_score": 0.6653413325295637,
   "grade": "B",
   "details": {
     "accessibility": {
@@ -206,9 +206,9 @@
       "normalized": [
         1.0,
         0.5546875,
-        0.92388916015625
+        0.695556640625
       ],
-      "score": 0.8002445963145205
+      "score": 0.7279925922146282
     },
     "degree_variance": {
       "raw_variance": 0.7768595041322314,
@@ -294,40 +294,40 @@
       }
     },
     "path_diversity": {
-      "avg_path_diversity": 0.2937055672954952,
-      "std_path_diversity": 0.22230532885188203,
-      "max_path_diversity": 0.598897973652483,
+      "avg_path_diversity": 0.2352788038372907,
+      "std_path_diversity": 0.14590991461863706,
+      "max_path_diversity": 0.4707231243672344,
       "min_path_diversity": 0.0,
       "total_pairs_analyzed": 39,
       "rounds_completed": 7,
       "detailed_analysis": {
         "round_0": {
           "pairs_analyzed": 6,
-          "avg_diversity": 0.34092674277531493
+          "avg_diversity": 0.2517884264522831
         },
         "round_1": {
           "pairs_analyzed": 6,
-          "avg_diversity": 0.1545345004817342
+          "avg_diversity": 0.16769933442395515
         },
         "round_2": {
           "pairs_analyzed": 6,
-          "avg_diversity": 0.3308093111162295
+          "avg_diversity": 0.2993205101340412
         },
         "round_3": {
           "pairs_analyzed": 4,
-          "avg_diversity": 0.25603539724188434
+          "avg_diversity": 0.2130519626150351
         },
         "round_4": {
           "pairs_analyzed": 5,
-          "avg_diversity": 0.41136764773606344
+          "avg_diversity": 0.3222319407566734
         },
         "round_5": {
           "pairs_analyzed": 6,
-          "avg_diversity": 0.21058012223953834
+          "avg_diversity": 0.14901488981644137
         },
         "round_6": {
           "pairs_analyzed": 6,
-          "avg_diversity": 0.3587388728665921
+          "avg_diversity": 0.25092780507508367
         }
       },
       "adaptive_params": {
@@ -343,7 +343,7 @@
       "normalization": "Robust_with_predefined_bounds",
       "fusion_method": "Geometric_mean_of_normalized_metrics",
       "performance": {
-        "time_taken": 0.004169940948486328,
+        "time_taken": 0.004171848297119141,
         "timeout": false
       }
     },

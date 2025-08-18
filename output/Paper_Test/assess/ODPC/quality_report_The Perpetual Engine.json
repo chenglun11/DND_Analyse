@@ -1,7 +1,7 @@
 {
   "scores": {
     "accessibility": {
-      "score": 0.6402415000261648,
+      "score": 0.5648288321745921,
       "detail": {
         "reachability_ratio": 0.7391304347826086,
         "avg_path_length": 1.8235294117647058,
@@ -9,9 +9,9 @@
         "normalized": [
           0.7391304347826086,
           0.39215686274509803,
-          0.9054209919261822
+          0.621683967704729
         ],
-        "score": 0.6402415000261648
+        "score": 0.5648288321745921
       }
     },
     "degree_variance": {
@@ -113,11 +113,11 @@
       }
     },
     "path_diversity": {
-      "score": 0.5034968948545755,
+      "score": 0.5141836381021397,
       "detail": {
-        "avg_path_diversity": 0.29370876713006294,
-        "std_path_diversity": 0.26228190382114097,
-        "max_path_diversity": 0.5833377924106058,
+        "avg_path_diversity": 0.21683963796096326,
+        "std_path_diversity": 0.1904710547599156,
+        "max_path_diversity": 0.4217163322452693,
         "min_path_diversity": 0.0,
         "total_pairs_analyzed": 14,
         "rounds_completed": 3,
@@ -128,11 +128,11 @@
           },
           "round_1": {
             "pairs_analyzed": 5,
-            "avg_diversity": 0.414224883741257
+            "avg_diversity": 0.30707315360830606
           },
           "round_2": {
             "pairs_analyzed": 6,
-            "avg_diversity": 0.3401330535190992
+            "avg_diversity": 0.2500648605686592
           }
         },
         "adaptive_params": {
@@ -148,7 +148,7 @@
         "normalization": "Robust_with_predefined_bounds",
         "fusion_method": "Geometric_mean_of_normalized_metrics",
         "performance": {
-          "time_taken": 0.002763032913208008,
+          "time_taken": 0.0027437210083007812,
           "timeout": false
         }
       }
@@ -176,11 +176,11 @@
     }
   },
   "category_scores": {
-    "structural": 0.5075121497719955,
+    "structural": 0.4982655891142801,
     "gameplay": 0.5581161534328695,
     "aesthetic": 0.8725650963332308
   },
-  "overall_score": 0.6460644665126986,
+  "overall_score": 0.6429822796267934,
   "grade": "C",
   "details": {
     "accessibility": {
@@ -190,9 +190,9 @@
       "normalized": [
         0.7391304347826086,
         0.39215686274509803,
-        0.9054209919261822
+        0.621683967704729
       ],
-      "score": 0.6402415000261648
+      "score": 0.5648288321745921
     },
     "degree_variance": {
       "raw_variance": 1.5555555555555556,
@@ -278,9 +278,9 @@
       }
     },
     "path_diversity": {
-      "avg_path_diversity": 0.29370876713006294,
-      "std_path_diversity": 0.26228190382114097,
-      "max_path_diversity": 0.5833377924106058,
+      "avg_path_diversity": 0.21683963796096326,
+      "std_path_diversity": 0.1904710547599156,
+      "max_path_diversity": 0.4217163322452693,
       "min_path_diversity": 0.0,
       "total_pairs_analyzed": 14,
       "rounds_completed": 3,
@@ -291,11 +291,11 @@
         },
         "round_1": {
           "pairs_analyzed": 5,
-          "avg_diversity": 0.414224883741257
+          "avg_diversity": 0.30707315360830606
         },
         "round_2": {
           "pairs_analyzed": 6,
-          "avg_diversity": 0.3401330535190992
+          "avg_diversity": 0.2500648605686592
         }
       },
       "adaptive_params": {
@@ -311,7 +311,7 @@
       "normalization": "Robust_with_predefined_bounds",
       "fusion_method": "Geometric_mean_of_normalized_metrics",
       "performance": {
-        "time_taken": 0.002763032913208008,
+        "time_taken": 0.0027437210083007812,
         "timeout": false
       }
     },
@@ -332,6 +332,7 @@
     }
   },
   "recommendations": [
+    "结构性评分较低：需要改善房间连通性和门的位置分布",
     "门分布不合理：改善门的分布以获得更好的流动感",
     "死胡同过多：减少死胡同以改善探索流程",
     "关键路径过短：增加关键路径长度以提供更好的游戏体验"

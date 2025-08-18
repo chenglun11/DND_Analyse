@@ -1,7 +1,7 @@
 {
   "scores": {
     "accessibility": {
-      "score": 0.7373059771961145,
+      "score": 0.6951706467995324,
       "detail": {
         "reachability_ratio": 1.0,
         "avg_path_length": 7.508333333333334,
@@ -9,9 +9,9 @@
         "normalized": [
           1.0,
           0.4224358974358974,
-          0.9488169789612098
+          0.7952679158448389
         ],
-        "score": 0.7373059771961145
+        "score": 0.6951706467995324
       }
     },
     "degree_variance": {
@@ -225,66 +225,66 @@
       }
     },
     "path_diversity": {
-      "score": 0.4103453241486503,
+      "score": 0.5191692578530644,
       "detail": {
-        "avg_path_diversity": 0.2926877913914291,
-        "std_path_diversity": 0.1998597875345434,
-        "max_path_diversity": 0.7132719057995187,
+        "avg_path_diversity": 0.2904844970259111,
+        "std_path_diversity": 0.17046078604464135,
+        "max_path_diversity": 0.55951790795002,
         "min_path_diversity": 0.0,
         "total_pairs_analyzed": 88,
         "rounds_completed": 13,
         "detailed_analysis": {
           "round_0": {
             "pairs_analyzed": 6,
-            "avg_diversity": 0.3671912295761522
+            "avg_diversity": 0.3368478230129996
           },
           "round_1": {
             "pairs_analyzed": 8,
-            "avg_diversity": 0.2656562632094528
+            "avg_diversity": 0.2744920428099726
           },
           "round_2": {
             "pairs_analyzed": 7,
-            "avg_diversity": 0.26320491333469126
+            "avg_diversity": 0.2751737794402201
           },
           "round_3": {
             "pairs_analyzed": 8,
-            "avg_diversity": 0.30034597003443253
+            "avg_diversity": 0.3306261900662059
           },
           "round_4": {
             "pairs_analyzed": 7,
-            "avg_diversity": 0.31542205465960477
+            "avg_diversity": 0.3320605065878529
           },
           "round_5": {
             "pairs_analyzed": 7,
-            "avg_diversity": 0.32402669648200716
+            "avg_diversity": 0.2963765486858619
           },
           "round_6": {
             "pairs_analyzed": 7,
-            "avg_diversity": 0.3508280360196757
+            "avg_diversity": 0.3288521402633825
           },
           "round_7": {
             "pairs_analyzed": 5,
-            "avg_diversity": 0.2709610742767499
+            "avg_diversity": 0.26531777102221604
           },
           "round_8": {
             "pairs_analyzed": 8,
-            "avg_diversity": 0.2839737476696072
+            "avg_diversity": 0.30679180116423943
           },
           "round_9": {
             "pairs_analyzed": 6,
-            "avg_diversity": 0.18152382757443233
+            "avg_diversity": 0.18820555336937198
           },
           "round_10": {
             "pairs_analyzed": 6,
-            "avg_diversity": 0.28260899631407876
+            "avg_diversity": 0.2660852131615054
           },
           "round_11": {
             "pairs_analyzed": 7,
-            "avg_diversity": 0.31751510769774816
+            "avg_diversity": 0.2888165155322876
           },
           "round_12": {
             "pairs_analyzed": 6,
-            "avg_diversity": 0.2694984076016664
+            "avg_diversity": 0.25749644000254285
           }
         },
         "adaptive_params": {
@@ -300,7 +300,7 @@
         "normalization": "Robust_with_predefined_bounds",
         "fusion_method": "Geometric_mean_of_normalized_metrics",
         "performance": {
-          "time_taken": 0.1709299087524414,
+          "time_taken": 0.1664571762084961,
           "timeout": false
         }
       }
@@ -329,11 +329,11 @@
     }
   },
   "category_scores": {
-    "structural": 0.6701722271787224,
+    "structural": 0.6796991705084127,
     "gameplay": 0.8994100748210602,
     "aesthetic": 0.49554651110865733
   },
-  "overall_score": 0.6883762710361465,
+  "overall_score": 0.6915519188127099,
   "grade": "B",
   "details": {
     "accessibility": {
@@ -343,9 +343,9 @@
       "normalized": [
         1.0,
         0.4224358974358974,
-        0.9488169789612098
+        0.7952679158448389
       ],
-      "score": 0.7373059771961145
+      "score": 0.6951706467995324
     },
     "degree_variance": {
       "raw_variance": 7.345555555555555,
@@ -543,64 +543,64 @@
       }
     },
     "path_diversity": {
-      "avg_path_diversity": 0.2926877913914291,
-      "std_path_diversity": 0.1998597875345434,
-      "max_path_diversity": 0.7132719057995187,
+      "avg_path_diversity": 0.2904844970259111,
+      "std_path_diversity": 0.17046078604464135,
+      "max_path_diversity": 0.55951790795002,
       "min_path_diversity": 0.0,
       "total_pairs_analyzed": 88,
       "rounds_completed": 13,
       "detailed_analysis": {
         "round_0": {
           "pairs_analyzed": 6,
-          "avg_diversity": 0.3671912295761522
+          "avg_diversity": 0.3368478230129996
         },
         "round_1": {
           "pairs_analyzed": 8,
-          "avg_diversity": 0.2656562632094528
+          "avg_diversity": 0.2744920428099726
         },
         "round_2": {
           "pairs_analyzed": 7,
-          "avg_diversity": 0.26320491333469126
+          "avg_diversity": 0.2751737794402201
         },
         "round_3": {
           "pairs_analyzed": 8,
-          "avg_diversity": 0.30034597003443253
+          "avg_diversity": 0.3306261900662059
         },
         "round_4": {
           "pairs_analyzed": 7,
-          "avg_diversity": 0.31542205465960477
+          "avg_diversity": 0.3320605065878529
         },
         "round_5": {
           "pairs_analyzed": 7,
-          "avg_diversity": 0.32402669648200716
+          "avg_diversity": 0.2963765486858619
         },
         "round_6": {
           "pairs_analyzed": 7,
-          "avg_diversity": 0.3508280360196757
+          "avg_diversity": 0.3288521402633825
         },
         "round_7": {
           "pairs_analyzed": 5,
-          "avg_diversity": 0.2709610742767499
+          "avg_diversity": 0.26531777102221604
         },
         "round_8": {
           "pairs_analyzed": 8,
-          "avg_diversity": 0.2839737476696072
+          "avg_diversity": 0.30679180116423943
         },
         "round_9": {
           "pairs_analyzed": 6,
-          "avg_diversity": 0.18152382757443233
+          "avg_diversity": 0.18820555336937198
         },
         "round_10": {
           "pairs_analyzed": 6,
-          "avg_diversity": 0.28260899631407876
+          "avg_diversity": 0.2660852131615054
         },
         "round_11": {
           "pairs_analyzed": 7,
-          "avg_diversity": 0.31751510769774816
+          "avg_diversity": 0.2888165155322876
         },
         "round_12": {
           "pairs_analyzed": 6,
-          "avg_diversity": 0.2694984076016664
+          "avg_diversity": 0.25749644000254285
         }
       },
       "adaptive_params": {
@@ -616,7 +616,7 @@
       "normalization": "Robust_with_predefined_bounds",
       "fusion_method": "Geometric_mean_of_normalized_metrics",
       "performance": {
-        "time_taken": 0.1709299087524414,
+        "time_taken": 0.1664571762084961,
         "timeout": false
       }
     },
@@ -638,7 +638,6 @@
     }
   },
   "recommendations": [
-    "路径多样性不足：增加路径选择以提供更多到达目标的方式",
     "关键路径过短：增加关键路径长度以提供更好的游戏体验",
     "视觉性评分较低：需要考虑几何平衡和主题元素",
     "几何平衡不足：适度变化房间大小，确保良好的空间分布，并保持主题一致性"
