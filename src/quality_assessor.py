@@ -204,7 +204,7 @@ class DungeonQualityAssessor:
 
     def _calculate_overall_score(self, category_scores: Dict[str, float]) -> float:
         """
-        整体评分：对三大类别分再进行等权融合，得到最终整体分
+        Overall score: The three major categories are then weighted equally to obtain the final overall score.
         
         三大类别等权：结构性 33.33% + 可玩性 33.33% + 几何性 33.33%
         """
@@ -263,32 +263,32 @@ class DungeonQualityAssessor:
         
         # 结构性建议
         if structural_score < 0.5:
-            recs.append("结构性评分较低：需要改善房间连通性和门的位置分布")
+            recs.append("Low structural score: Room connectivity and door placement need improvement.")
         if accessibility_score < 0.5:
-            recs.append("可达性不足：增加房间间的连接以提高可达性")
+            recs.append("Insufficient accessibility: Increase connections between rooms to improve accessibility.")
         if degree_variance_score < 0.5:
-            recs.append("连接度差异过大：平衡房间连接，避免某些房间连接过多或过少")
+            recs.append("Excessive connectivity differences: Balance room connectivity to avoid excessive or insufficient connectivity in certain rooms.")
         if door_distribution_score < 0.5:
-            recs.append("门分布不合理：改善门的分布以获得更好的流动感")
+            recs.append("Unreasonable door distribution: Improve door distribution to achieve better flow.")
         if loop_ratio_score < 0.5:
-            recs.append("循环比例不当：调整房间连接以优化循环结构")
+            recs.append("Improper circulation ratio: Adjust room connections to optimise circulation structure.")
         if path_diversity_score < 0.5:
-            recs.append("路径多样性不足：增加路径选择以提供更多到达目标的方式")
+            recs.append("Insufficient path diversity: Increase path selection to provide more ways to reach the destination.")
         if dead_end_score < 0.5:
-            recs.append("死胡同过多：减少死胡同以改善探索流程")
+            recs.append("Too many dead ends: Reduce dead ends to improve the exploration process.")
         if key_path_score < 0.5:
-            recs.append("关键路径过短：增加关键路径长度以提供更好的游戏体验")
+            recs.append("Key path too short: Increase the length of the key path to provide a better gaming experience.")
         
         # 可玩性建议
         if gameplay_score < 0.5:
-            recs.append("可玩性评分较低：需要增强游戏元素分布和路径多样性")
+            recs.append("Low playability score: Need to enhance the distribution of game elements and path diversity.")
         if treasure_monster_score < 0.5:
-            recs.append("游戏元素分布不当：确保平衡的密度，添加Boss，并在地图上分散元素")
+            recs.append("Improper distribution of game elements: Ensure balanced density, add bosses, and scatter elements across the map.")
         
         # 视觉性建议
         if aesthetic_score_category < 0.5:
-            recs.append("视觉性评分较低：需要考虑几何平衡和主题元素")
+            recs.append("Low visual score: Consider geometric balance and thematic elements.")
         if aesthetic_score < 0.5:
-            recs.append("几何平衡不足：适度变化房间大小，确保良好的空间分布，并保持主题一致性")
+            recs.append("Insufficient geometric balance: Moderately change the size of the room, ensure good spatial distribution, and maintain thematic consistency.")
         
         return recs 

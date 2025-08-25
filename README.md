@@ -1,47 +1,78 @@
-# 地下城分析器 (Dungeon Analyzer)
+# Dungeon Analyzer
 
-一个专业的D&D地下城质量评估工具，包含Vue.js前端界面和Flask后端API。
+[中文版本 (Chinese Version)](./README_CN.md) | [English Version](./README.md)
 
-## 项目结构
+A professional D&D dungeon quality assessment tool featuring a Vue.js frontend interface and Flask backend API.
+
+## Project Structure
 
 ```
 dungeon-adapter/
-├── frontend/                 # Vue.js前端应用
+├── frontend/                 # Vue.js frontend application
 │   ├── src/
-│   │   ├── components/      # Vue组件
-│   │   ├── views/          # 页面视图
-│   │   ├── services/       # API服务
-│   │   └── router/         # 路由配置
+│   │   ├── components/      # Vue components
+│   │   ├── views/          # Page views
+│   │   ├── services/       # API services
+│   │   └── router/         # Routing configuration
 │   └── package.json
-├── flask_backend/           # Flask后端API
-│   ├── src/                # 复制的分析模块
-│   ├── app.py              # Flask应用主文件
-│   ├── run.py              # 启动脚本
-│   └── requirements.txt    # Python依赖
-├── src/                    # 原始Python分析模块
+├── flask_backend/           # Flask backend API
+│   ├── src/                # Copied analysis modules
+│   ├── app.py              # Main Flask application file
+│   ├── run.py              # Startup script
+│   └── requirements.txt    # Python dependencies
+├── src/                    # Original Python analysis modules
+│   ├── adapters/           # Format adapters for different dungeon generators
+│   │   ├── __init__.py
+│   │   ├── base.py         # Base adapter class
+│   │   ├── bsp_adapter.py  # BSP tree format adapter
+│   │   ├── dd2vtt_adapter.py # DD2VTT format adapter
+│   │   ├── donjon_adapter.py # Donjon format adapter
+│   │   ├── dungeondraft_adapter.py # DungeonDraft format adapter
+│   │   ├── edgar_adapter.py # Edgar format adapter
+│   │   ├── fimap_elites_adapter.py # FIMAP Elites format adapter
+│   │   └── watabou_adapter.py # Watabou format adapter
+│   ├── quality_rules/      # Quality assessment rules
+│   │   ├── __init__.py
+│   │   ├── base.py         # Base quality rule class
+│   │   ├── accessibility.py # Accessibility analysis
+│   │   ├── dead_end_ratio.py # Dead-end ratio analysis
+│   │   ├── degree_variance.py # Room connection variance analysis
+│   │   ├── door_distribution.py # Door distribution analysis
+│   │   ├── geometric_balance.py # Geometric balance analysis
+│   │   ├── key_path_length.py # Critical path length analysis
+│   │   ├── loop_ratio.py   # Loop ratio analysis
+│   │   ├── normalization.py # Score normalization utilities
+│   │   ├── path_diversity.py # Path diversity analysis
+│   │   └── treasure_monster_distribution.py # Game element distribution
+│   ├── statistical_testing/ # Statistical analysis and validation
+│   │   ├── __init__.py
+│   │   ├── advanced_analytics.py # Advanced statistical analytics
+│   │   ├── png_chart_generator.py # PNG chart generation
+│   │   ├── run.py          # Test runner
+│   │   ├── statistical_analysis.py # Main statistical analysis
+│   │   ├── summarize_validations.py # Validation summaries
+│   │   ├── unified_chart_generator.py # Unified chart generation
+│   │   └── validation.py   # Validation framework
+│   ├── visualizers/        # Visualization tools
+│   │   ├── __init__.py
+│   │   ├── astar_visualizer.py # A* pathfinding visualizer
+│   │   ├── bfs_visualizer.py # BFS visualizer
+│   │   └── qt_bfs_visualizer.py # Qt-based BFS visualizer
+│   ├── __init__.py
+│   ├── adapter_manager.py  # Manages format adapters
+│   ├── batch_assess.py     # Batch assessment functionality
+│   ├── cli.py              # Command-line interface
+│   ├── csv_exporter.py     # CSV export functionality
+│   ├── quality_assessor.py # Main quality assessment engine
+│   ├── schema.py           # Data schema definitions
+│   ├── spatial_inference.py # Spatial connection inference
+│   └── visualizer.py       # Main visualization module
 └── README.md
 ```
 
-## 功能特性
+## Quick Start
 
-### 前端功能
-- 🎨 现代化的Vue.js界面
-- 📁 拖拽文件上传
-- 🔍 多种分析选项
-- 📊 可视化分析结果
-- 🗺️ Phaser.js地下城地图可视化
-- 📱 响应式设计
-
-### 后端功能
-- 🔌 RESTful API接口
-- 📊 多格式地下城文件支持
-- 🎯 多种质量评估指标
-- 🔄 批量分析处理
-- 🌐 跨域支持
-
-## 快速开始
-
-### 1. 启动Flask后端
+### 1. Start Flask Backend
 
 ```bash
 cd flask_backend
@@ -49,9 +80,9 @@ pip install -r requirements.txt
 python app.py
 ```
 
-后端将在 `http://localhost:5001` 启动
+Backend will start at `http://localhost:5001`
 
-### 2. 启动Vue前端
+### 2. Start Vue Frontend
 
 ```bash
 cd frontend
@@ -59,117 +90,109 @@ npm install
 npm run dev
 ```
 
-前端将在 `http://localhost:5173` 启动
+Frontend will start at `http://localhost:5173`
 
-### 3. 使用应用
+### 3. Using the Application
 
-1. 打开浏览器访问 `http://localhost:5173`
-2. 上传地下城JSON文件
-3. 选择分析选项
-4. 点击"开始分析"
-5. 查看分析结果
+1. Open browser and visit `http://localhost:5173`
+2. Upload dungeon JSON files
+3. Select analysis options
+4. Click "Start Analysis"
+5. View analysis results
 
-## API接口
+## API Endpoints
 
-### 健康检查
+### Health Check
 ```
 GET /api/health
 ```
 
-### 获取支持格式
+### Get Supported Formats
 ```
 GET /api/supported-formats
 ```
 
-### 获取分析选项
+### Get Analysis Options
 ```
 GET /api/analysis-options
 ```
 
-### 分析单个文件
+### Analyze Single File
 ```
 POST /api/analyze
 Content-Type: multipart/form-data
 ```
 
-### 批量分析
+### Batch Analysis
 ```
 POST /api/analyze-batch
 Content-Type: multipart/form-data
 ```
 
-### 格式转换
+### Format Conversion
 ```
 POST /api/convert-dungeon
 Content-Type: multipart/form-data
 ```
 
-## 支持的文件格式
+## Supported File Formats
 
-- **Watabou**: Watabou Dungeon Generator格式
-- **Donjon**: Donjon Dungeon Generator格式
-- **DungeonDraft**: DungeonDraft导出格式
-- **Edgar**: Edgar Dungeon Generator格式
-- **JSON**: 通用JSON格式
+- **Watabou**: Watabou Dungeon Generator format
+- **Donjon**: Donjon Dungeon Generator format
+- **DungeonDraft**: DungeonDraft export format
+- **Edgar**: Edgar Dungeon Generator format
+- **JSON**: Generic JSON format
 
-## 分析指标
+## Analysis Metrics
 
-### 结构性指标
-- **可达性**: 分析地下城的可达性和路径设计
-- **度方差**: 评估房间连接度的分布
-- **门分布**: 分析门的位置和分布
-- **死胡同比例**: 评估死胡同的数量和分布
-- **关键路径长度**: 分析关键路径的设计
-- **环路比例**: 分析环路设计，避免线性体验
-- **路径多样性**: 评估路径选择的多样性
+### Structural Metrics
+- **Accessibility**: Analyzes dungeon accessibility and path design
+- **Degree Variance**: Evaluates room connection degree distribution
+- **Door Distribution**: Analyzes door positioning and distribution
+- **Dead End Ratio**: Evaluates dead-end quantity and distribution
+- **Key Path Length**: Analyzes critical path design
+- **Loop Ratio**: Analyzes loop design to avoid linear experience
+- **Path Diversity**: Evaluates path selection diversity
 
-### 可玩性指标
-- **宝藏怪物分布**: 分析宝藏和怪物的分布合理性
+### Playability Metrics
+- **Treasure Monster Distribution**: Analyzes reasonable distribution of treasures and monsters
 
-### 视觉性指标
-- **美学平衡**: 评估房间布局的美观性和平衡性
+### Visual Metrics
+- **Aesthetic Balance**: Evaluates room layout aesthetics and balance
 
-## 技术栈
+## Technology Stack
 
-### 前端
+### Frontend
 - Vue 3 + TypeScript
 - Vite
-- Phaser.js (游戏引擎)
+- Phaser.js (Game engine)
 - Vue Router
-- Pinia (状态管理)
+- Pinia (State management)
 
-### 后端
+### Backend
 - Flask
 - Flask-CORS
 - Python 3.x
 
-## 开发说明
+## Development
 
-### 前端开发
+### Frontend Development
 ```bash
 cd frontend
-npm run dev          # 开发模式
-npm run build        # 构建生产版本
-npm run preview      # 预览构建结果
+npm run dev          # Development mode
+npm run build        # Build production version
+npm run preview      # Preview build results
 ```
 
-### 后端开发
+### Backend Development
 ```bash
 cd flask_backend
-python app.py        # 开发模式
+python app.py        # Development mode
 ```
 
-## 注意事项
+## Contributing
+Author: MAX LI- Chenglun11
 
-1. **端口冲突**: 如果5001端口被占用，可以修改`flask_backend/app.py`中的端口号
-2. **文件大小**: 上传文件大小限制为16MB
-3. **分析时间**: 复杂的地下城可能需要较长的分析时间
-4. **浏览器兼容**: 建议使用现代浏览器（Chrome、Firefox、Safari）
-
-## 贡献
-
-欢迎提交Issue和Pull Request来改进这个项目！
-
-## 许可证
+## License
 
 MIT License 
