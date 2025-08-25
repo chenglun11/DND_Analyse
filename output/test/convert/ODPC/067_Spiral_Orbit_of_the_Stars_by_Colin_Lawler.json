@@ -1,0 +1,408 @@
+{
+  "header": {
+    "schemaName": "dnd-dungeon-unified",
+    "schemaVersion": "1.0.0",
+    "name": "Spiral Orbit of the Stars",
+    "author": "Colin Lawler (converted by System Converter)",
+    "description": "A spiral stair descends to a Zodiac orrery, surrounded by magical constellations, NPCs, puzzles, and treasures.",
+    "grid": {
+      "type": "square",
+      "size": 10,
+      "unit": "ft"
+    }
+  },
+  "levels": [
+    {
+      "id": "level_1",
+      "name": "Main Level",
+      "map": {
+        "width": 60,
+        "height": 60
+      },
+      "rooms": [
+        {
+          "id": "room_surface_entry",
+          "shape": "rectangle",
+          "position": {
+            "x": 6,
+            "y": 6
+          },
+          "size": {
+            "width": 10,
+            "height": 8
+          },
+          "name": "Surface Entry",
+          "description": "Iron disk with constellations; during solstice it rolls away for 1 hour. Spiral stairs descend.",
+          "is_entrance": true,
+          "is_exit": false
+        },
+        {
+          "id": "room_study",
+          "shape": "rectangle",
+          "position": {
+            "x": 16,
+            "y": 18
+          },
+          "size": {
+            "width": 10,
+            "height": 8
+          },
+          "name": "Study",
+          "description": "Bedroll, table, cabinet. Occult Telescope. Dead wizard with tools; a scorpion on his face."
+        },
+        {
+          "id": "room_center",
+          "shape": "circle",
+          "position": {
+            "x": 32,
+            "y": 28
+          },
+          "size": {
+            "width": 16,
+            "height": 16
+          },
+          "name": "Center Orrery",
+          "description": "8 crystalline planets and a luminous sun. Large crank (missing Gear); each turn advances time 1 day. Each planet holds a Magic Essence."
+        },
+        {
+          "id": "room_constellation",
+          "shape": "rectangle",
+          "position": {
+            "x": 44,
+            "y": 18
+          },
+          "size": {
+            "width": 10,
+            "height": 8
+          },
+          "name": "Constellation Map Room",
+          "description": "Huge star map with books. Sun Lion sleeps here. The Gear is on the table."
+        },
+        {
+          "id": "room_supplies",
+          "shape": "rectangle",
+          "position": {
+            "x": 22,
+            "y": 10
+          },
+          "size": {
+            "width": 10,
+            "height": 6
+          },
+          "name": "Supplies",
+          "description": "Sacks of seeds, coal, wood—valuable barter goods."
+        },
+        {
+          "id": "room_mudroom",
+          "shape": "rectangle",
+          "position": {
+            "x": 52,
+            "y": 34
+          },
+          "size": {
+            "width": 10,
+            "height": 6
+          },
+          "name": "Mudroom",
+          "description": "d6+2 subterranean hogs rooting among corn and thick earth."
+        },
+        {
+          "id": "room_twin_statues",
+          "shape": "rectangle",
+          "position": {
+            "x": 18,
+            "y": 38
+          },
+          "size": {
+            "width": 10,
+            "height": 6
+          },
+          "name": "Twin Statues",
+          "description": "Twins embrace; inscription: 'Make us laugh, make us cry.' Tell such stories to animate them."
+        },
+        {
+          "id": "room_crab",
+          "shape": "rectangle",
+          "position": {
+            "x": 36,
+            "y": 44
+          },
+          "size": {
+            "width": 10,
+            "height": 6
+          },
+          "name": "Crab Room",
+          "description": "Grand crab paintings; golden orb on pedestal. Taking it animates a crab claw."
+        },
+        {
+          "id": "room_island",
+          "shape": "rectangle",
+          "position": {
+            "x": 54,
+            "y": 8
+          },
+          "size": {
+            "width": 12,
+            "height": 8
+          },
+          "name": "Island (Infinite Ocean)",
+          "description": "Rocky isle in an endless sea. The Starlit Sword gleams; fires starburst under moonlight.",
+          "is_exit": true,
+          "is_entrance": false
+        }
+      ],
+      "connections": [
+        {
+          "id": "so_01",
+          "from_room": "room_surface_entry",
+          "to_room": "room_study",
+          "door_type": "normal"
+        },
+        {
+          "id": "so_02",
+          "from_room": "room_study",
+          "to_room": "room_center",
+          "door_type": "normal"
+        },
+        {
+          "id": "so_03",
+          "from_room": "room_center",
+          "to_room": "room_constellation",
+          "door_type": "normal"
+        },
+        {
+          "id": "so_04",
+          "from_room": "room_center",
+          "to_room": "room_supplies",
+          "door_type": "normal"
+        },
+        {
+          "id": "so_05",
+          "from_room": "room_center",
+          "to_room": "room_mudroom",
+          "door_type": "normal"
+        },
+        {
+          "id": "so_06",
+          "from_room": "room_center",
+          "to_room": "room_twin_statues",
+          "door_type": "normal"
+        },
+        {
+          "id": "so_07",
+          "from_room": "room_center",
+          "to_room": "room_crab",
+          "door_type": "normal"
+        },
+        {
+          "id": "so_08",
+          "from_room": "room_center",
+          "to_room": "room_island",
+          "door_type": "normal"
+        }
+      ],
+      "doors": [
+        {
+          "id": "door_01",
+          "between": {
+            "from_room": "room_surface_entry",
+            "to_room": "room_study"
+          },
+          "type": "normal",
+          "notes": "standard door"
+        },
+        {
+          "id": "door_02",
+          "between": {
+            "from_room": "room_study",
+            "to_room": "room_center"
+          },
+          "type": "normal",
+          "notes": "standard door"
+        },
+        {
+          "id": "door_03",
+          "between": {
+            "from_room": "room_center",
+            "to_room": "room_constellation"
+          },
+          "type": "normal",
+          "notes": "standard door"
+        },
+        {
+          "id": "door_04",
+          "between": {
+            "from_room": "room_center",
+            "to_room": "room_supplies"
+          },
+          "type": "normal",
+          "notes": "standard door"
+        },
+        {
+          "id": "door_05",
+          "between": {
+            "from_room": "room_center",
+            "to_room": "room_mudroom"
+          },
+          "type": "normal",
+          "notes": "standard door"
+        },
+        {
+          "id": "door_06",
+          "between": {
+            "from_room": "room_center",
+            "to_room": "room_twin_statues"
+          },
+          "type": "normal",
+          "notes": "standard door"
+        },
+        {
+          "id": "door_07",
+          "between": {
+            "from_room": "room_center",
+            "to_room": "room_crab"
+          },
+          "type": "normal",
+          "notes": "standard door"
+        },
+        {
+          "id": "door_08",
+          "between": {
+            "from_room": "room_center",
+            "to_room": "room_island"
+          },
+          "type": "normal",
+          "notes": "standard door"
+        }
+      ],
+      "game_elements": [
+        {
+          "type": "mechanism",
+          "name": "Occult Telescope",
+          "position": {
+            "x": 18,
+            "y": 20
+          },
+          "notes": "Learn a spell each night by gazing."
+        },
+        {
+          "type": "lore",
+          "name": "Dead Wizard",
+          "position": {
+            "x": 18,
+            "y": 21
+          },
+          "notes": "Corpse with tools; scorpion on his face."
+        },
+        {
+          "type": "mechanism",
+          "name": "Orrery Crank",
+          "position": {
+            "x": 32,
+            "y": 28
+          },
+          "notes": "Advances planets; missing Gear."
+        },
+        {
+          "type": "treasure",
+          "name": "Magic Essence",
+          "position": {
+            "x": 32,
+            "y": 28
+          },
+          "notes": "One per crystalline planet; restores spells."
+        },
+        {
+          "type": "boss",
+          "name": "Sun Lion",
+          "position": {
+            "x": 46,
+            "y": 20
+          },
+          "notes": "Guardian of knowledge; sleeping."
+        },
+        {
+          "type": "treasure",
+          "name": "Gear",
+          "position": {
+            "x": 46,
+            "y": 20
+          },
+          "notes": "Repairs the Orrery crank."
+        },
+        {
+          "type": "npc",
+          "name": "Water Bearer",
+          "position": {
+            "x": 30,
+            "y": 30
+          },
+          "notes": "Immortal youth; wants to escape."
+        },
+        {
+          "type": "treasure",
+          "name": "Everflowing Jar",
+          "position": {
+            "x": 30,
+            "y": 30
+          },
+          "notes": "Bottomless water."
+        },
+        {
+          "type": "treasure",
+          "name": "Sacks of Supplies",
+          "position": {
+            "x": 24,
+            "y": 11
+          },
+          "notes": "Seeds, coal, wood."
+        },
+        {
+          "type": "npc",
+          "name": "Subterranean Hogs",
+          "position": {
+            "x": 54,
+            "y": 35
+          },
+          "notes": "Rooting in the mudroom."
+        },
+        {
+          "type": "trap",
+          "name": "Golden Orb Pedestal",
+          "position": {
+            "x": 38,
+            "y": 45
+          },
+          "notes": "Triggers crab claw attack."
+        },
+        {
+          "type": "treasure",
+          "name": "Starlit Sword",
+          "position": {
+            "x": 56,
+            "y": 9
+          },
+          "notes": "Fires starburst under moonlight."
+        },
+        {
+          "type": "ambience",
+          "name": "Infinite Ocean",
+          "position": {
+            "x": 58,
+            "y": 8
+          },
+          "notes": "Surrounds the island."
+        },
+        {
+          "type": "mechanism",
+          "name": "Spiral Stairs",
+          "position": {
+            "x": 8,
+            "y": 8
+          },
+          "notes": "Connects surface entry to main level."
+        }
+      ]
+    }
+  ]
+}

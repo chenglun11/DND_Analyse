@@ -1,0 +1,820 @@
+{
+  "header": {
+    "schemaName": "dnd-dungeon-unified",
+    "schemaVersion": "1.0.0",
+    "name": "Hall of the Serpent Magus",
+    "author": "BSP-Dungeon-Generator",
+    "description": "For a long time the hall of the Serpent Magus remained sealed. Lately a gang of goblins rediscovered it, making it their headquarters. It is said that Azaranai, a legendary wand, is hidden here.",
+    "grid": {
+      "type": "square",
+      "size": 5,
+      "unit": "ft"
+    }
+  },
+  "levels": [
+    {
+      "id": "level_1",
+      "name": "Ground Floor",
+      "rooms": [
+        {
+          "id": "room_0",
+          "name": "Room 1",
+          "type": "room",
+          "position": {
+            "x": 1,
+            "y": 0
+          },
+          "size": {
+            "width": 2,
+            "height": 1
+          },
+          "properties": {},
+          "is_entrance": true,
+          "is_exit": false
+        },
+        {
+          "id": "room_1",
+          "name": "Room 2",
+          "type": "room",
+          "position": {
+            "x": 4,
+            "y": -3
+          },
+          "size": {
+            "width": 6,
+            "height": 7
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_2",
+          "name": "Room 3",
+          "type": "room",
+          "position": {
+            "x": 6,
+            "y": 5
+          },
+          "size": {
+            "width": 3,
+            "height": 6
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_3",
+          "name": "Room 4",
+          "type": "room",
+          "position": {
+            "x": 5,
+            "y": -8
+          },
+          "size": {
+            "width": 5,
+            "height": 4
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_4",
+          "name": "Room 5",
+          "type": "room",
+          "position": {
+            "x": 2,
+            "y": 5
+          },
+          "size": {
+            "width": 3,
+            "height": 5
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_5",
+          "name": "Room 6",
+          "type": "boss",
+          "position": {
+            "x": 11,
+            "y": -8
+          },
+          "size": {
+            "width": 7,
+            "height": 5
+          },
+          "properties": {
+            "is_ending": true
+          },
+          "is_exit": true,
+          "is_entrance": false
+        },
+        {
+          "id": "room_6",
+          "name": "Room 7",
+          "type": "room",
+          "position": {
+            "x": 0,
+            "y": -7
+          },
+          "size": {
+            "width": 4,
+            "height": 3
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_7",
+          "name": "Room 8",
+          "type": "room",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_8",
+          "name": "Room 9",
+          "type": "room",
+          "position": {
+            "x": 3,
+            "y": 0
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_9",
+          "name": "Room 10",
+          "type": "room",
+          "position": {
+            "x": 7,
+            "y": 4
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_10",
+          "name": "Room 11",
+          "type": "room",
+          "position": {
+            "x": 7,
+            "y": -4
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_11",
+          "name": "Room 12",
+          "type": "room",
+          "position": {
+            "x": 5,
+            "y": 7
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_12",
+          "name": "Room 13",
+          "type": "room",
+          "position": {
+            "x": 10,
+            "y": -6
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_13",
+          "name": "Room 14",
+          "type": "room",
+          "position": {
+            "x": 4,
+            "y": -6
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        },
+        {
+          "id": "room_14",
+          "name": "Room 15",
+          "type": "room",
+          "position": {
+            "x": 18,
+            "y": -6
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          },
+          "properties": {}
+        }
+      ],
+      "connections": [
+        {
+          "id": "connection_0",
+          "from_room": "room_0",
+          "to_room": "room_7",
+          "type": "entrance",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "id": "connection_1",
+          "from_room": "room_0",
+          "to_room": "room_1",
+          "type": "normal",
+          "position": {
+            "x": 3,
+            "y": 0
+          }
+        },
+        {
+          "id": "connection_2",
+          "from_room": "room_1",
+          "to_room": "room_2",
+          "type": "secret",
+          "position": {
+            "x": 7,
+            "y": 4
+          }
+        },
+        {
+          "id": "connection_3",
+          "from_room": "room_1",
+          "to_room": "room_3",
+          "type": "locked",
+          "position": {
+            "x": 7,
+            "y": -4
+          }
+        },
+        {
+          "id": "connection_4",
+          "from_room": "room_2",
+          "to_room": "room_4",
+          "type": "magic",
+          "position": {
+            "x": 5,
+            "y": 7
+          }
+        },
+        {
+          "id": "connection_5",
+          "from_room": "room_3",
+          "to_room": "room_5",
+          "type": "trap",
+          "position": {
+            "x": 10,
+            "y": -6
+          }
+        },
+        {
+          "id": "connection_6",
+          "from_room": "room_3",
+          "to_room": "room_6",
+          "type": "normal",
+          "position": {
+            "x": 4,
+            "y": -6
+          }
+        },
+        {
+          "id": "connection_7",
+          "from_room": "room_5",
+          "to_room": "room_14",
+          "type": "portal",
+          "position": {
+            "x": 18,
+            "y": -6
+          }
+        },
+        {
+          "id": "connection_auto_8",
+          "from_room": "room_2",
+          "to_room": "room_11",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_9",
+          "from_room": "room_1",
+          "to_room": "room_10",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_10",
+          "from_room": "room_0",
+          "to_room": "room_8",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_11",
+          "from_room": "room_2",
+          "to_room": "room_9",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_12",
+          "from_room": "room_5",
+          "to_room": "room_12",
+          "type": "corridor"
+        },
+        {
+          "id": "connection_auto_13",
+          "from_room": "room_1",
+          "to_room": "room_13",
+          "type": "corridor"
+        },
+        {
+          "from_room": "room_1",
+          "to_room": "room_4",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_1",
+          "to_room": "room_8",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_1",
+          "to_room": "room_9",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_3",
+          "to_room": "room_10",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_3",
+          "to_room": "room_12",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_3",
+          "to_room": "room_13",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_4",
+          "to_room": "room_11",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_6",
+          "to_room": "room_13",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        }
+      ],
+      "game_elements": [
+        {
+          "id": "note_0",
+          "type": "key",
+          "name": "Item 1",
+          "description": "A massive iron double door with a keyhole to the east.",
+          "position": {
+            "x": 7.5,
+            "y": -6
+          }
+        },
+        {
+          "id": "note_1",
+          "type": "item",
+          "name": "Item 2",
+          "description": "A bottomless well, ages a person if a coin is dropped into it.",
+          "position": {
+            "x": 3.5,
+            "y": 7.5
+          }
+        },
+        {
+          "id": "note_2",
+          "type": "key",
+          "name": "Item 3",
+          "description": "A key in a strongbox.",
+          "position": {
+            "x": 2,
+            "y": -5.5
+          }
+        },
+        {
+          "id": "column_0",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 12,
+            "y": -7
+          }
+        },
+        {
+          "id": "column_1",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 12,
+            "y": -4
+          }
+        },
+        {
+          "id": "column_2",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 13,
+            "y": -7
+          }
+        },
+        {
+          "id": "column_3",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 13,
+            "y": -4
+          }
+        },
+        {
+          "id": "column_4",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 14,
+            "y": -7
+          }
+        },
+        {
+          "id": "column_5",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 14,
+            "y": -4
+          }
+        },
+        {
+          "id": "column_6",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 15,
+            "y": -7
+          }
+        },
+        {
+          "id": "column_7",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 15,
+            "y": -4
+          }
+        },
+        {
+          "id": "column_8",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 16,
+            "y": -7
+          }
+        },
+        {
+          "id": "column_9",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 16,
+            "y": -4
+          }
+        },
+        {
+          "id": "column_10",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 17,
+            "y": -7
+          }
+        },
+        {
+          "id": "column_11",
+          "type": "obstacle",
+          "name": "Column",
+          "description": "A structural column",
+          "position": {
+            "x": 17,
+            "y": -4
+          }
+        }
+      ],
+      "connections_inferred": true,
+      "doors": [
+        {
+          "id": "door_room_0_room_1",
+          "position": {
+            "x": 4,
+            "y": 0.5
+          },
+          "connects": [
+            "room_0",
+            "room_1"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_0_room_7",
+          "position": {
+            "x": 1,
+            "y": 0.5
+          },
+          "connects": [
+            "room_0",
+            "room_7"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_0_room_8",
+          "position": {
+            "x": 3,
+            "y": 0.5
+          },
+          "connects": [
+            "room_0",
+            "room_8"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_1_room_2",
+          "position": {
+            "x": 7.5,
+            "y": 5
+          },
+          "connects": [
+            "room_1",
+            "room_2"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_1_room_3",
+          "position": {
+            "x": 7.5,
+            "y": -4
+          },
+          "connects": [
+            "room_1",
+            "room_3"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_1_room_4",
+          "position": {
+            "x": 4.5,
+            "y": 5
+          },
+          "connects": [
+            "room_1",
+            "room_4"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_1_room_8",
+          "position": {
+            "x": 4,
+            "y": 0.5
+          },
+          "connects": [
+            "room_1",
+            "room_8"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_1_room_9",
+          "position": {
+            "x": 7.5,
+            "y": 4
+          },
+          "connects": [
+            "room_1",
+            "room_9"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_1_room_10",
+          "position": {
+            "x": 7.5,
+            "y": -3
+          },
+          "connects": [
+            "room_1",
+            "room_10"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_2_room_4",
+          "position": {
+            "x": 5,
+            "y": 7.5
+          },
+          "connects": [
+            "room_2",
+            "room_4"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_2_room_9",
+          "position": {
+            "x": 7.5,
+            "y": 5
+          },
+          "connects": [
+            "room_2",
+            "room_9"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_2_room_11",
+          "position": {
+            "x": 6,
+            "y": 7.5
+          },
+          "connects": [
+            "room_2",
+            "room_11"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_3_room_5",
+          "position": {
+            "x": 11,
+            "y": -6.0
+          },
+          "connects": [
+            "room_3",
+            "room_5"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_3_room_6",
+          "position": {
+            "x": 4,
+            "y": -5.5
+          },
+          "connects": [
+            "room_3",
+            "room_6"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_3_room_10",
+          "position": {
+            "x": 7.5,
+            "y": -4
+          },
+          "connects": [
+            "room_3",
+            "room_10"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_3_room_12",
+          "position": {
+            "x": 10,
+            "y": -5.5
+          },
+          "connects": [
+            "room_3",
+            "room_12"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_3_room_13",
+          "position": {
+            "x": 5,
+            "y": -5.5
+          },
+          "connects": [
+            "room_3",
+            "room_13"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_4_room_11",
+          "position": {
+            "x": 5,
+            "y": 7.5
+          },
+          "connects": [
+            "room_4",
+            "room_11"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_5_room_12",
+          "position": {
+            "x": 11,
+            "y": -5.5
+          },
+          "connects": [
+            "room_5",
+            "room_12"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_5_room_14",
+          "position": {
+            "x": 18,
+            "y": -5.5
+          },
+          "connects": [
+            "room_5",
+            "room_14"
+          ],
+          "inferred": true
+        },
+        {
+          "id": "door_room_6_room_13",
+          "position": {
+            "x": 4,
+            "y": -5.5
+          },
+          "connects": [
+            "room_6",
+            "room_13"
+          ],
+          "inferred": true
+        }
+      ],
+      "doors_inferred": true
+    }
+  ]
+}

@@ -11,7 +11,7 @@ import numpy as np
 from pathlib import Path
 from typing import Dict, List, Any, Optional
 from scipy import stats
-from scipy.stats import spearmanr, pearsonr
+from scipy.stats import spearmanr, pearsonr, shapiro, normaltest, kruskal, f_oneway
 from advanced_analytics import AdvancedAnalytics
 from unified_chart_generator import UnifiedChartGenerator
 
@@ -325,6 +325,259 @@ class StatisticalAnalyzer:
             'clustering_analysis': clustering_analysis
         }
     
+    def test_normality(self, data: np.ndarray, metric_name: str) -> Dict[str, Any]:
+        """Test normality of a metric using multiple tests"""
+        n = len(data)
+        results = {
+            'metric': metric_name,
+            'sample_size': n,
+            'is_normal': False,
+            'tests': {}
+        }
+        
+        # Remove NaN values
+        clean_data = data[~np.isnan(data)]
+        if len(clean_data) < 8:  # Need at least 8 samples for reliable testing
+            results['tests']['insufficient_data'] = True
+            return results
+        
+        # Shapiro-Wilk test (best for small samples, n < 50)
+        if len(clean_data) <= 50:
+            try:
+                sw_stat, sw_p = shapiro(clean_data)
+                results['tests']['shapiro_wilk'] = {
+                    'statistic': float(sw_stat),
+                    'p_value': float(sw_p),
+                    'normal_at_05': bool(sw_p > 0.05)
+                }
+            except Exception as e:
+                results['tests']['shapiro_wilk'] = {'error': str(e)}
+        
+        # D'Agostino and Pearson's normality test (good for larger samples)
+        if len(clean_data) >= 20:
+            try:
+                dp_stat, dp_p = normaltest(clean_data)
+                results['tests']['dagostino_pearson'] = {
+                    'statistic': float(dp_stat),
+                    'p_value': float(dp_p),
+                    'normal_at_05': bool(dp_p > 0.05)
+                }
+            except Exception as e:
+                results['tests']['dagostino_pearson'] = {'error': str(e)}
+        
+        # Kolmogorov-Smirnov test against normal distribution
+        try:
+            # Standardize data
+            standardized = (clean_data - np.mean(clean_data)) / np.std(clean_data)
+            ks_stat, ks_p = stats.kstest(standardized, 'norm')
+            results['tests']['kolmogorov_smirnov'] = {
+                'statistic': float(ks_stat),
+                'p_value': float(ks_p),
+                'normal_at_05': bool(ks_p > 0.05)
+            }
+        except Exception as e:
+            results['tests']['kolmogorov_smirnov'] = {'error': str(e)}
+        
+        # Determine overall normality (conservative approach: need majority of tests to pass)
+        normal_tests = []
+        for test_name, test_result in results['tests'].items():
+            if isinstance(test_result, dict) and 'normal_at_05' in test_result:
+                normal_tests.append(test_result['normal_at_05'])
+        
+        if normal_tests:
+            # Conservative: require at least half of valid tests to indicate normality
+            results['is_normal'] = sum(normal_tests) >= len(normal_tests) / 2
+        
+        return results
+    
+    def perform_group_comparison_tests(self, df: pd.DataFrame) -> Dict[str, Any]:
+        """Perform Kruskal-Wallis or ANOVA tests for each metric based on distribution"""
+        if df.empty:
+            logger.error("Empty dataframe for group comparison tests")
+            return {}
+        
+        # Get numeric columns (metrics)
+        numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
+        if 'overall_score' in numeric_cols:
+            numeric_cols.remove('overall_score')
+        
+        # Test for grouping variable - we'll create groups based on overall score quartiles
+        if 'overall_score' not in df.columns:
+            logger.warning("No overall_score column found for grouping")
+            return {}
+        
+        # Create quartile-based groups
+        df_copy = df.copy()
+        df_copy['score_quartile'] = pd.qcut(df_copy['overall_score'], q=4, labels=['Q1', 'Q2', 'Q3', 'Q4'])
+        
+        results = {
+            'grouping_method': 'overall_score_quartiles',
+            'group_sizes': df_copy['score_quartile'].value_counts().to_dict(),
+            'normality_tests': {},
+            'statistical_tests': {}
+        }
+        
+        logger.info(f"Testing {len(numeric_cols)} metrics across {len(results['group_sizes'])} groups")
+        
+        for metric in numeric_cols:
+            logger.info(f"Analyzing metric: {metric}")
+            
+            # Test normality for this metric
+            metric_data = df_copy[metric].values
+            normality_result = self.test_normality(metric_data, metric)
+            results['normality_tests'][metric] = normality_result
+            
+            # Prepare groups for statistical testing
+            groups = []
+            for quartile in ['Q1', 'Q2', 'Q3', 'Q4']:
+                group_data = df_copy[df_copy['score_quartile'] == quartile][metric].dropna().values
+                if len(group_data) > 0:
+                    groups.append(group_data)
+            
+            if len(groups) < 2:
+                results['statistical_tests'][metric] = {
+                    'error': 'Insufficient groups for comparison'
+                }
+                continue
+            
+            # Choose appropriate test based on normality
+            is_normal = normality_result['is_normal']
+            test_result = {
+                'metric': metric,
+                'is_normal': is_normal,
+                'test_used': None,
+                'groups_compared': len(groups)
+            }
+            
+            try:
+                if is_normal:
+                    # Use one-way ANOVA for normally distributed data
+                    f_stat, p_value = f_oneway(*groups)
+                    test_result.update({
+                        'test_used': 'one_way_anova',
+                        'f_statistic': float(f_stat),
+                        'p_value': float(p_value),
+                        'significant_at_05': bool(p_value < 0.05),
+                        'significant_at_01': bool(p_value < 0.01)
+                    })
+                    
+                    # Post-hoc analysis for ANOVA if significant
+                    if p_value < 0.05:
+                        try:
+                            from scipy.stats import tukey_hsd
+                            # Prepare data for Tukey's HSD
+                            all_data = np.concatenate(groups)
+                            group_labels = []
+                            for i, group in enumerate(groups):
+                                group_labels.extend([f'Q{i+1}'] * len(group))
+                            
+                            tukey_result = tukey_hsd(*groups)
+                            test_result['post_hoc'] = {
+                                'method': 'tukey_hsd',
+                                'pairwise_p_values': tukey_result.pvalue.tolist(),
+                                'significant_pairs': []
+                            }
+                            
+                            # Find significant pairs
+                            for i in range(len(tukey_result.pvalue)):
+                                for j in range(len(tukey_result.pvalue[i])):
+                                    if i < j and tukey_result.pvalue[i][j] < 0.05:
+                                        test_result['post_hoc']['significant_pairs'].append({
+                                            'group1': f'Q{i+1}',
+                                            'group2': f'Q{j+1}',
+                                            'p_value': float(tukey_result.pvalue[i][j])
+                                        })
+                        except ImportError:
+                            # Fallback if tukey_hsd not available
+                            test_result['post_hoc'] = {'note': 'Post-hoc analysis requires newer scipy version'}
+                        except Exception as e:
+                            test_result['post_hoc'] = {'error': str(e)}
+                            
+                else:
+                    # Use Kruskal-Wallis test for non-normally distributed data
+                    h_stat, p_value = kruskal(*groups)
+                    test_result.update({
+                        'test_used': 'kruskal_wallis',
+                        'h_statistic': float(h_stat),
+                        'p_value': float(p_value),
+                        'significant_at_05': bool(p_value < 0.05),
+                        'significant_at_01': bool(p_value < 0.01)
+                    })
+                    
+                    # Post-hoc analysis for Kruskal-Wallis if significant
+                    if p_value < 0.05:
+                        # Pairwise Mann-Whitney U tests with Bonferroni correction
+                        from scipy.stats import mannwhitneyu
+                        pairwise_results = []
+                        n_comparisons = len(groups) * (len(groups) - 1) // 2
+                        
+                        for i in range(len(groups)):
+                            for j in range(i + 1, len(groups)):
+                                try:
+                                    u_stat, u_p = mannwhitneyu(groups[i], groups[j], alternative='two-sided')
+                                    bonferroni_p = u_p * n_comparisons
+                                    pairwise_results.append({
+                                        'group1': f'Q{i+1}',
+                                        'group2': f'Q{j+1}',
+                                        'u_statistic': float(u_stat),
+                                        'raw_p_value': float(u_p),
+                                        'bonferroni_p_value': float(min(bonferroni_p, 1.0)),
+                                        'significant_bonferroni': bool(bonferroni_p < 0.05)
+                                    })
+                                except Exception as e:
+                                    pairwise_results.append({
+                                        'group1': f'Q{i+1}',
+                                        'group2': f'Q{j+1}',
+                                        'error': str(e)
+                                    })
+                        
+                        test_result['post_hoc'] = {
+                            'method': 'mann_whitney_u_bonferroni',
+                            'pairwise_results': pairwise_results,
+                            'significant_pairs': [r for r in pairwise_results 
+                                                if r.get('significant_bonferroni', False)]
+                        }
+                
+                # Add descriptive statistics for each group
+                group_stats = []
+                for i, group in enumerate(groups):
+                    group_stats.append({
+                        'group': f'Q{i+1}',
+                        'n': len(group),
+                        'mean': float(np.mean(group)),
+                        'std': float(np.std(group, ddof=1)),
+                        'median': float(np.median(group)),
+                        'q25': float(np.percentile(group, 25)),
+                        'q75': float(np.percentile(group, 75))
+                    })
+                
+                test_result['group_statistics'] = group_stats
+                
+            except Exception as e:
+                test_result['error'] = str(e)
+                logger.error(f"Statistical test failed for {metric}: {e}")
+            
+            results['statistical_tests'][metric] = test_result
+        
+        # Summary statistics
+        normal_count = sum(1 for r in results['normality_tests'].values() if r.get('is_normal', False))
+        significant_count = sum(1 for r in results['statistical_tests'].values() 
+                              if r.get('significant_at_05', False))
+        
+        results['summary'] = {
+            'total_metrics_tested': len(numeric_cols),
+            'normally_distributed_metrics': normal_count,
+            'non_normally_distributed_metrics': len(numeric_cols) - normal_count,
+            'anova_tests_performed': sum(1 for r in results['statistical_tests'].values() 
+                                       if r.get('test_used') == 'one_way_anova'),
+            'kruskal_wallis_tests_performed': sum(1 for r in results['statistical_tests'].values() 
+                                                if r.get('test_used') == 'kruskal_wallis'),
+            'significant_differences_found': significant_count,
+            'proportion_significant': significant_count / len(numeric_cols) if numeric_cols else 0
+        }
+        
+        return results
+    
     def generate_all_charts(self, correlation_data: Dict[str, Any], 
                           advanced_data: Dict[str, Any], 
                           df: pd.DataFrame, 
@@ -455,7 +708,8 @@ class StatisticalAnalyzer:
     
     def generate_analysis_report(self, correlation_data: Dict[str, Any], 
                                advanced_data: Dict[str, Any], 
-                               df: pd.DataFrame) -> Dict[str, Any]:
+                               df: pd.DataFrame,
+                               group_comparison_data: Dict[str, Any] = None) -> Dict[str, Any]:
         """生成完整的统计分析报告"""
         
         # 基础统计信息
@@ -485,7 +739,7 @@ class StatisticalAnalyzer:
         logger.info("生成统计分析图表...")
         charts_data = self.generate_all_charts(correlation_data, advanced_data, df)
         
-        return {
+        report = {
             'analysis_summary': basic_stats,
             'descriptive_statistics': descriptive_stats,
             'correlation_analysis': correlation_data,
@@ -493,6 +747,25 @@ class StatisticalAnalyzer:
             'charts': charts_data,  # 新增图表数据
             'timestamp': pd.Timestamp.now().isoformat()
         }
+        
+        # 添加组间比较测试结果
+        if group_comparison_data:
+            report['group_comparison_analysis'] = group_comparison_data
+            
+            # 更新基础统计信息
+            if 'summary' in group_comparison_data:
+                summary = group_comparison_data['summary']
+                basic_stats.update({
+                    'normality_tests_performed': summary.get('total_metrics_tested', 0),
+                    'normally_distributed_metrics': summary.get('normally_distributed_metrics', 0),
+                    'non_normally_distributed_metrics': summary.get('non_normally_distributed_metrics', 0),
+                    'anova_tests_performed': summary.get('anova_tests_performed', 0),
+                    'kruskal_wallis_tests_performed': summary.get('kruskal_wallis_tests_performed', 0),
+                    'significant_group_differences': summary.get('significant_differences_found', 0),
+                    'proportion_with_group_differences': summary.get('proportion_significant', 0)
+                })
+        
+        return report
     
     def analyze_batch_results(self, summary_path: str, output_dir: str = "output", save_individual_charts: bool = True) -> bool:
         """分析批量评估结果的主函数"""
@@ -518,9 +791,13 @@ class StatisticalAnalyzer:
             logger.info("Performing advanced statistical analysis...")
             advanced_data = self.perform_advanced_analysis(df)
             
+            # 执行分布检验和组间比较测试
+            logger.info("Performing normality tests and group comparison tests...")
+            group_comparison_data = self.perform_group_comparison_tests(df)
+            
             # 生成完整报告
             logger.info("Generating comprehensive analysis report...")
-            analysis_report = self.generate_analysis_report(correlation_data, advanced_data, df)
+            analysis_report = self.generate_analysis_report(correlation_data, advanced_data, df, group_comparison_data)
             
             # 确保输出目录存在
             output_path = Path(output_dir)
@@ -623,6 +900,33 @@ class StatisticalAnalyzer:
                 print(f"  PC1 explains: {pc1_var:.1%} of variance")
                 print(f"  PC2 explains: {pc2_var:.1%} of variance")
                 print(f"  First 2 PCs explain: {cumulative_2pc:.1%} of total variance")
+        
+        # 组间比较测试结果
+        group_comparison = report.get('group_comparison_analysis', {})
+        if group_comparison and 'summary' in group_comparison:
+            gc_summary = group_comparison['summary']
+            print(f"\nGroup Comparison Analysis (Quartile-based):")
+            print(f"  Normality Tests Performed: {gc_summary.get('total_metrics_tested', 0)}")
+            print(f"  Normal Distributions: {gc_summary.get('normally_distributed_metrics', 0)} (ANOVA used)")
+            print(f"  Non-Normal Distributions: {gc_summary.get('non_normally_distributed_metrics', 0)} (Kruskal-Wallis used)")
+            print(f"  Significant Group Differences: {gc_summary.get('significant_differences_found', 0)}/{gc_summary.get('total_metrics_tested', 0)}")
+            print(f"  Proportion with Significant Differences: {gc_summary.get('proportion_significant', 0):.1%}")
+            
+            # 显示显著差异的指标
+            statistical_tests = group_comparison.get('statistical_tests', {})
+            significant_metrics = []
+            for metric, test_result in statistical_tests.items():
+                if test_result.get('significant_at_05', False):
+                    test_type = test_result.get('test_used', 'unknown')
+                    p_value = test_result.get('p_value', 1.0)
+                    significant_metrics.append(f"{metric} ({test_type}, p={p_value:.3f})")
+            
+            if significant_metrics:
+                print(f"\nMetrics with Significant Group Differences:")
+                for metric in significant_metrics[:5]:  # 显示前5个
+                    print(f"  • {metric}")
+                if len(significant_metrics) > 5:
+                    print(f"  ... and {len(significant_metrics) - 5} more")
         
         print("="*60)
 

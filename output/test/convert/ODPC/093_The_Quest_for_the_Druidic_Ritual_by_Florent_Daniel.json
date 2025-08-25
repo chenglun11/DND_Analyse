@@ -1,0 +1,599 @@
+{
+  "header": {
+    "schemaName": "dnd-dungeon-unified",
+    "schemaVersion": "1.0.0",
+    "name": "The Quest for the Druidic Ritual",
+    "author": "Florent Daniel (converted by System Converter)",
+    "description": "Recover the ancestral druidic artifact to complete the magic circle.",
+    "grid": {
+      "type": "square",
+      "size": 10,
+      "unit": "ft"
+    }
+  },
+  "levels": [
+    {
+      "id": "druidic_ritual_main",
+      "name": "Main Level",
+      "map": {
+        "width": 60,
+        "height": 40
+      },
+      "rooms": [
+        {
+          "id": "room_1",
+          "shape": "rectangle",
+          "position": {
+            "x": 28,
+            "y": 2
+          },
+          "size": {
+            "width": 8,
+            "height": 6
+          },
+          "name": "1. Entrance Hall",
+          "description": "Grand hall with large carpet and pillars; two corridors lead to other parts. Split by impassable chasm. Secret passage visible from cave (#9).",
+          "is_entrance": true,
+          "is_exit": false
+        },
+        {
+          "id": "room_2",
+          "shape": "rectangle",
+          "position": {
+            "x": 36,
+            "y": 2
+          },
+          "size": {
+            "width": 6,
+            "height": 6
+          },
+          "name": "2. Sturdy Iron Door",
+          "description": "Heavy iron door."
+        },
+        {
+          "id": "room_3",
+          "shape": "rectangle",
+          "position": {
+            "x": 42,
+            "y": 2
+          },
+          "size": {
+            "width": 6,
+            "height": 6
+          },
+          "name": "3. Corridor with Three Doors",
+          "description": "Right door securely locked."
+        },
+        {
+          "id": "room_4",
+          "shape": "rectangle",
+          "position": {
+            "x": 48,
+            "y": 2
+          },
+          "size": {
+            "width": 6,
+            "height": 6
+          },
+          "name": "4. Abandoned Library",
+          "description": "Stone gargoyles attack when entering. Switch opens door (#2). Hidden passage behind bookshelves. Books reveal information about artifact."
+        },
+        {
+          "id": "room_5",
+          "shape": "rectangle",
+          "position": {
+            "x": 54,
+            "y": 2
+          },
+          "size": {
+            "width": 6,
+            "height": 6
+          },
+          "name": "5. Storage Room",
+          "description": "Basic loot: food and trinkets."
+        },
+        {
+          "id": "room_6",
+          "shape": "rectangle",
+          "position": {
+            "x": 54,
+            "y": 8
+          },
+          "size": {
+            "width": 6,
+            "height": 6
+          },
+          "name": "6. Dark Magician's Quarters",
+          "description": "Healing potion and combat spell scroll on the table."
+        },
+        {
+          "id": "room_7",
+          "shape": "rectangle",
+          "position": {
+            "x": 48,
+            "y": 8
+          },
+          "size": {
+            "width": 6,
+            "height": 6
+          },
+          "name": "7. Dark Magician's Study Room",
+          "description": "Key for door #1 and prison's door (#12). Hidden magical manuscript required for magical seals (#20)."
+        },
+        {
+          "id": "room_8",
+          "shape": "rectangle",
+          "position": {
+            "x": 28,
+            "y": 8
+          },
+          "size": {
+            "width": 6,
+            "height": 6
+          },
+          "name": "8. Flooded Corridor",
+          "description": "Sewer access; flooded floor with filthy water. Loot and key for magician's quarters door (#1)."
+        },
+        {
+          "id": "room_9",
+          "shape": "rectangle",
+          "position": {
+            "x": 22,
+            "y": 8
+          },
+          "size": {
+            "width": 6,
+            "height": 6
+          },
+          "name": "9. Old Armory",
+          "description": "Old rusty weapons."
+        },
+        {
+          "id": "room_10",
+          "shape": "rectangle",
+          "position": {
+            "x": 16,
+            "y": 8
+          },
+          "size": {
+            "width": 6,
+            "height": 6
+          },
+          "name": "10. Prison",
+          "description": "Aggressive goblin in cell (D). Scrap note hints secret passage near library (#4)."
+        },
+        {
+          "id": "room_11",
+          "shape": "rectangle",
+          "position": {
+            "x": 16,
+            "y": 14
+          },
+          "size": {
+            "width": 6,
+            "height": 6
+          },
+          "name": "11. Crypt",
+          "description": "Statue of knight guards crypt. Slightly open tomb with chest and artifact for final ritual item."
+        },
+        {
+          "id": "room_12",
+          "shape": "rectangle",
+          "position": {
+            "x": 22,
+            "y": 14
+          },
+          "size": {
+            "width": 6,
+            "height": 6
+          },
+          "name": "12. Trapped Corridor",
+          "description": "Floor spikes and poisoned arrows; traps can be disarmed."
+        },
+        {
+          "id": "room_13",
+          "shape": "rectangle",
+          "position": {
+            "x": 28,
+            "y": 14
+          },
+          "size": {
+            "width": 6,
+            "height": 6
+          },
+          "name": "13. Risky Passage",
+          "description": "Narrow path above chasm; fall leads to bottom."
+        },
+        {
+          "id": "room_14",
+          "shape": "rectangle",
+          "position": {
+            "x": 34,
+            "y": 14
+          },
+          "size": {
+            "width": 6,
+            "height": 6
+          },
+          "name": "14. Forbidden Ossuary",
+          "description": "Room slopes to middle; chasm splits it. Skeletons attack with arrows."
+        },
+        {
+          "id": "room_15",
+          "shape": "rectangle",
+          "position": {
+            "x": 40,
+            "y": 14
+          },
+          "size": {
+            "width": 6,
+            "height": 6
+          },
+          "name": "15. Cave Secret Passage",
+          "description": "Access to cave with three ratmen attackers."
+        },
+        {
+          "id": "room_16",
+          "shape": "rectangle",
+          "position": {
+            "x": 46,
+            "y": 14
+          },
+          "size": {
+            "width": 6,
+            "height": 6
+          },
+          "name": "16. Ritual Room",
+          "description": "Carcass in middle; manuscript from #7 reanimates it. Attacks when revived."
+        },
+        {
+          "id": "room_17",
+          "shape": "rectangle",
+          "position": {
+            "x": 52,
+            "y": 14
+          },
+          "size": {
+            "width": 6,
+            "height": 6
+          },
+          "name": "17. Platform Jump",
+          "description": "Access to cave hall; only from cave side (#15)."
+        },
+        {
+          "id": "room_18",
+          "shape": "rectangle",
+          "position": {
+            "x": 28,
+            "y": 20
+          },
+          "size": {
+            "width": 6,
+            "height": 6
+          },
+          "name": "18. Magically Sealed Door",
+          "description": "Opens only if player has manuscript from #7. Final room with artifact guarded by stone golem."
+        },
+        {
+          "id": "room_19",
+          "shape": "rectangle",
+          "position": {
+            "x": 34,
+            "y": 20
+          },
+          "size": {
+            "width": 6,
+            "height": 6
+          },
+          "name": "19. Artifact Chamber",
+          "description": "Contains Druid's artifact; touching it awakens stone golem.",
+          "is_exit": true,
+          "is_entrance": false
+        }
+      ],
+      "connections": [
+        {
+          "id": "dr_01",
+          "from_room": "room_1",
+          "to_room": "room_2",
+          "door_type": "normal"
+        },
+        {
+          "id": "dr_02",
+          "from_room": "room_2",
+          "to_room": "room_3",
+          "door_type": "normal"
+        },
+        {
+          "id": "dr_03",
+          "from_room": "room_3",
+          "to_room": "room_4",
+          "door_type": "normal"
+        },
+        {
+          "id": "dr_04",
+          "from_room": "room_4",
+          "to_room": "room_5",
+          "door_type": "normal"
+        },
+        {
+          "id": "dr_05",
+          "from_room": "room_5",
+          "to_room": "room_6",
+          "door_type": "normal"
+        },
+        {
+          "id": "dr_06",
+          "from_room": "room_6",
+          "to_room": "room_7",
+          "door_type": "locked"
+        },
+        {
+          "id": "dr_07",
+          "from_room": "room_7",
+          "to_room": "room_12",
+          "door_type": "locked"
+        },
+        {
+          "id": "dr_08",
+          "from_room": "room_12",
+          "to_room": "room_13",
+          "door_type": "normal"
+        },
+        {
+          "id": "dr_09",
+          "from_room": "room_13",
+          "to_room": "room_14",
+          "door_type": "normal"
+        },
+        {
+          "id": "dr_10",
+          "from_room": "room_14",
+          "to_room": "room_15",
+          "door_type": "normal"
+        },
+        {
+          "id": "dr_11",
+          "from_room": "room_15",
+          "to_room": "room_16",
+          "door_type": "normal"
+        },
+        {
+          "id": "dr_12",
+          "from_room": "room_16",
+          "to_room": "room_18",
+          "door_type": "magic_lock"
+        },
+        {
+          "id": "dr_13",
+          "from_room": "room_18",
+          "to_room": "room_19",
+          "door_type": "normal"
+        },
+        {
+          "from_room": "room_1",
+          "to_room": "room_8",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_4",
+          "to_room": "room_7",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_6",
+          "to_room": "room_17",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_7",
+          "to_room": "room_16",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_7",
+          "to_room": "room_17",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_8",
+          "to_room": "room_9",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_8",
+          "to_room": "room_13",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_9",
+          "to_room": "room_10",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_9",
+          "to_room": "room_12",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_10",
+          "to_room": "room_11",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_11",
+          "to_room": "room_12",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_13",
+          "to_room": "room_18",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_14",
+          "to_room": "room_19",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_16",
+          "to_room": "room_17",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        }
+      ],
+      "doors": [
+        {
+          "id": "dr_d1",
+          "between": {
+            "from_room": "room_6",
+            "to_room": "room_7"
+          },
+          "type": "lock",
+          "state": "locked",
+          "notes": "Requires key from #7."
+        },
+        {
+          "id": "dr_d2",
+          "between": {
+            "from_room": "room_7",
+            "to_room": "room_12"
+          },
+          "type": "lock",
+          "state": "locked",
+          "notes": "Requires key from #7."
+        },
+        {
+          "id": "dr_d3",
+          "between": {
+            "from_room": "room_16",
+            "to_room": "room_18"
+          },
+          "type": "magic_lock",
+          "state": "sealed",
+          "notes": "Opens only if player has manuscript from #7."
+        }
+      ],
+      "game_elements": [
+        {
+          "type": "trap",
+          "name": "Gargoyle Ambush",
+          "position": {
+            "x": 50,
+            "y": 3
+          },
+          "notes": "Two gargoyles attack when entering #4."
+        },
+        {
+          "type": "secret",
+          "name": "Hidden Passage",
+          "position": {
+            "x": 50,
+            "y": 4
+          },
+          "notes": "Hidden passage behind bookshelves in #4."
+        },
+        {
+          "type": "monster",
+          "name": "Aggressive Goblin",
+          "position": {
+            "x": 17,
+            "y": 9
+          },
+          "notes": "In cell #10."
+        },
+        {
+          "type": "trap",
+          "name": "Spikes & Poison Arrows",
+          "position": {
+            "x": 23,
+            "y": 15
+          },
+          "notes": "Floor spikes and arrow traps in #12."
+        },
+        {
+          "type": "monster",
+          "name": "Ratmen x3",
+          "position": {
+            "x": 41,
+            "y": 15
+          },
+          "notes": "In cave #15."
+        },
+        {
+          "type": "monster",
+          "name": "Carcass Reanimation",
+          "position": {
+            "x": 47,
+            "y": 15
+          },
+          "notes": "Ritual in #16 reanimates carcass to attack."
+        },
+        {
+          "type": "monster",
+          "name": "Stone Golem",
+          "position": {
+            "x": 29,
+            "y": 21
+          },
+          "notes": "Awakens if artifact is touched in #19."
+        },
+        {
+          "type": "treasure",
+          "name": "Healing Potion & Spell Scroll",
+          "position": {
+            "x": 55,
+            "y": 9
+          },
+          "notes": "In #6."
+        },
+        {
+          "type": "treasure",
+          "name": "Key for Door #1 & Prison Door",
+          "position": {
+            "x": 49,
+            "y": 9
+          },
+          "notes": "In #7."
+        },
+        {
+          "type": "treasure",
+          "name": "Magical Manuscript",
+          "position": {
+            "x": 49,
+            "y": 9
+          },
+          "notes": "Required for #18 magic seal."
+        }
+      ],
+      "connections_inferred": true
+    }
+  ]
+}

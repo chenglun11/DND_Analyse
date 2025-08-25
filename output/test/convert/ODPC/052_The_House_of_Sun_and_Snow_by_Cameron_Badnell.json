@@ -1,0 +1,574 @@
+{
+  "header": {
+    "schemaName": "dnd-dungeon-unified",
+    "schemaVersion": "1.0.0",
+    "name": "The House of Sun and Snow",
+    "author": "System Converter",
+    "description": "Converted one-page dungeon by Cameron Badnell. Layout approximated for graph testing.",
+    "grid": {
+      "type": "square",
+      "size": 5,
+      "unit": "ft"
+    }
+  },
+  "levels": [
+    {
+      "id": "level_1",
+      "name": "Main Level",
+      "map": {
+        "width": 50,
+        "height": 40
+      },
+      "rooms": [
+        {
+          "id": "room_1",
+          "shape": "rectangle",
+          "position": {
+            "x": 6,
+            "y": 2
+          },
+          "size": {
+            "width": 6,
+            "height": 5
+          },
+          "name": "1. Atrium",
+          "description": "Small camp with a journal about a magic journey. Crystal Stone in left eye triggers electric bolt if removed. Mold Men lurk on the walls."
+        },
+        {
+          "id": "room_2",
+          "shape": "rectangle",
+          "position": {
+            "x": 14,
+            "y": 4
+          },
+          "size": {
+            "width": 8,
+            "height": 5
+          },
+          "name": "2. Lake Room",
+          "description": "Humid, muddy floor, large lake center. Stone Fish statue spits water. Giant Toad swims. In Winter: lake frozen, Giant Frog sleeping, Icicle sword under ice."
+        },
+        {
+          "id": "room_3",
+          "shape": "rectangle",
+          "position": {
+            "x": 8,
+            "y": 10
+          },
+          "size": {
+            "width": 8,
+            "height": 6
+          },
+          "name": "3. Garden",
+          "description": "Decorated room with bushes. Salnia the dryad helps if shown kindness. In Winter: bleak except NW corner, Frostlily plant blooms.",
+          "is_entrance": true,
+          "is_exit": false
+        },
+        {
+          "id": "room_4",
+          "shape": "rectangle",
+          "position": {
+            "x": 18,
+            "y": 10
+          },
+          "size": {
+            "width": 6,
+            "height": 5
+          },
+          "name": "4. Wheel Room",
+          "description": "Dozens of rocks in dark room, wheel to change seasons. Large wheel with summer/winter sky on axis. Works only with closed door. Sapphire gem adds summer constellation; rocks shift to depict winter sky.",
+          "is_entrance": false,
+          "is_exit": true
+        },
+        {
+          "id": "room_5",
+          "shape": "rectangle",
+          "position": {
+            "x": 28,
+            "y": 6
+          },
+          "size": {
+            "width": 8,
+            "height": 6
+          },
+          "name": "5. Forest",
+          "description": "Tall trees, mold signs. Ants patrol, Giant Bird hunts. Jeweled egg in largest nest. In Winter: cold breeze, trees lose leaves."
+        },
+        {
+          "id": "room_6",
+          "shape": "rectangle",
+          "position": {
+            "x": 28,
+            "y": 14
+          },
+          "size": {
+            "width": 8,
+            "height": 6
+          },
+          "name": "6. Hills",
+          "description": "Large hills surround room. Stone hand from East wall. Plaque reads 'Seed's womb, Man's tomb, Rock's doom'. Birds peck skeleton in Winter; Snow blankets hills, Snow Golems wander."
+        },
+        {
+          "id": "room_7",
+          "shape": "rectangle",
+          "position": {
+            "x": 20,
+            "y": 18
+          },
+          "size": {
+            "width": 6,
+            "height": 5
+          },
+          "name": "7. Tomb",
+          "description": "Large sarcophagus dedicated to Costric the First. Skeleton and Mossy Ring inside. In Summer: black flowers bloom. In Winter: snowfall in room."
+        },
+        {
+          "id": "room_8",
+          "shape": "rectangle",
+          "position": {
+            "x": 34,
+            "y": 22
+          },
+          "size": {
+            "width": 10,
+            "height": 6
+          },
+          "name": "8. Blackwood Tree",
+          "description": "Doors locked, covered in vines. Drzazarek the Hobgoblin poisons Blackwood, casts spells. Summer Horn here. Mold Men guard Drzazarek chanting spell. In Winter: vines weaker."
+        }
+      ],
+      "corridors": [
+        {
+          "id": "corridor_a",
+          "shape": "rectangle",
+          "position": {
+            "x": 12,
+            "y": 4
+          },
+          "size": {
+            "width": 2,
+            "height": 2
+          },
+          "name": "Atrium–Lake Link"
+        },
+        {
+          "id": "corridor_b",
+          "shape": "rectangle",
+          "position": {
+            "x": 16,
+            "y": 8
+          },
+          "size": {
+            "width": 2,
+            "height": 4
+          },
+          "name": "Lake–Garden Link"
+        },
+        {
+          "id": "corridor_c",
+          "shape": "rectangle",
+          "position": {
+            "x": 16,
+            "y": 14
+          },
+          "size": {
+            "width": 2,
+            "height": 2
+          },
+          "name": "Garden–Wheel Link"
+        },
+        {
+          "id": "corridor_d",
+          "shape": "rectangle",
+          "position": {
+            "x": 24,
+            "y": 12
+          },
+          "size": {
+            "width": 4,
+            "height": 2
+          },
+          "name": "Wheel–Forest Link"
+        },
+        {
+          "id": "corridor_e",
+          "shape": "rectangle",
+          "position": {
+            "x": 26,
+            "y": 16
+          },
+          "size": {
+            "width": 2,
+            "height": 2
+          },
+          "name": "Wheel–Hills Link"
+        },
+        {
+          "id": "corridor_f",
+          "shape": "rectangle",
+          "position": {
+            "x": 28,
+            "y": 20
+          },
+          "size": {
+            "width": 2,
+            "height": 2
+          },
+          "name": "Hills–Blackwood Link"
+        },
+        {
+          "id": "corridor_g",
+          "shape": "rectangle",
+          "position": {
+            "x": 26,
+            "y": 18
+          },
+          "size": {
+            "width": 2,
+            "height": 2
+          },
+          "name": "Hills–Tomb Link"
+        }
+      ],
+      "connections": [
+        {
+          "from_room": "room_1",
+          "to_room": "corridor_a",
+          "door_id": "door_01"
+        },
+        {
+          "from_room": "corridor_a",
+          "to_room": "room_2",
+          "door_id": "door_02"
+        },
+        {
+          "from_room": "room_2",
+          "to_room": "corridor_b",
+          "door_id": "door_03"
+        },
+        {
+          "from_room": "corridor_b",
+          "to_room": "room_3",
+          "door_id": "door_04"
+        },
+        {
+          "from_room": "room_3",
+          "to_room": "corridor_c",
+          "door_id": "door_05"
+        },
+        {
+          "from_room": "corridor_c",
+          "to_room": "room_4",
+          "door_id": "door_06"
+        },
+        {
+          "from_room": "room_4",
+          "to_room": "corridor_d",
+          "door_id": "door_07"
+        },
+        {
+          "from_room": "corridor_d",
+          "to_room": "room_5",
+          "door_id": "door_08"
+        },
+        {
+          "from_room": "room_4",
+          "to_room": "corridor_e",
+          "door_id": "door_09"
+        },
+        {
+          "from_room": "corridor_e",
+          "to_room": "room_6",
+          "door_id": "door_10"
+        },
+        {
+          "from_room": "room_6",
+          "to_room": "corridor_f",
+          "door_id": "door_11"
+        },
+        {
+          "from_room": "corridor_f",
+          "to_room": "room_8",
+          "door_id": "door_12"
+        },
+        {
+          "from_room": "room_6",
+          "to_room": "corridor_g",
+          "door_id": "door_13"
+        },
+        {
+          "from_room": "corridor_g",
+          "to_room": "room_7",
+          "door_id": "door_14"
+        },
+        {
+          "from_room": "room_2",
+          "to_room": "room_3",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_2",
+          "to_room": "room_4",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "room_4",
+          "to_room": "corridor_b",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "corridor_e",
+          "to_room": "corridor_g",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        }
+      ],
+      "doors": [
+        {
+          "id": "door_01",
+          "position": {
+            "x": 12,
+            "y": 4,
+            "dir": {
+              "x": 1,
+              "y": 0
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_02",
+          "position": {
+            "x": 14,
+            "y": 4,
+            "dir": {
+              "x": 1,
+              "y": 0
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_03",
+          "position": {
+            "x": 16,
+            "y": 8,
+            "dir": {
+              "x": 0,
+              "y": 1
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_04",
+          "position": {
+            "x": 16,
+            "y": 10,
+            "dir": {
+              "x": 1,
+              "y": 0
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_05",
+          "position": {
+            "x": 16,
+            "y": 14,
+            "dir": {
+              "x": 1,
+              "y": 0
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_06",
+          "position": {
+            "x": 18,
+            "y": 14,
+            "dir": {
+              "x": 1,
+              "y": 0
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_07",
+          "position": {
+            "x": 24,
+            "y": 12,
+            "dir": {
+              "x": 1,
+              "y": 0
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_08",
+          "position": {
+            "x": 28,
+            "y": 12,
+            "dir": {
+              "x": 0,
+              "y": 1
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_09",
+          "position": {
+            "x": 26,
+            "y": 16,
+            "dir": {
+              "x": 1,
+              "y": 0
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_10",
+          "position": {
+            "x": 28,
+            "y": 16,
+            "dir": {
+              "x": 0,
+              "y": 1
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_11",
+          "position": {
+            "x": 28,
+            "y": 20,
+            "dir": {
+              "x": 1,
+              "y": 0
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_12",
+          "position": {
+            "x": 34,
+            "y": 22,
+            "dir": {
+              "x": 1,
+              "y": 0
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_13",
+          "position": {
+            "x": 26,
+            "y": 18,
+            "dir": {
+              "x": 0,
+              "y": 1
+            },
+            "type": 1
+          }
+        },
+        {
+          "id": "door_14",
+          "position": {
+            "x": 20,
+            "y": 18,
+            "dir": {
+              "x": -1,
+              "y": 0
+            },
+            "type": 1
+          }
+        }
+      ],
+      "game_elements": [
+        {
+          "id": "item_icicle",
+          "name": "Icicle",
+          "type": "weapon",
+          "position": {
+            "x": 15,
+            "y": 6
+          },
+          "description": "Shortsword +1, icy blade, can freeze liquid over time.",
+          "ref": "2"
+        },
+        {
+          "id": "item_summer_horn",
+          "name": "Summer Horn",
+          "type": "artifact",
+          "position": {
+            "x": 36,
+            "y": 24
+          },
+          "description": "Wooden horn, summons daylight for 20 ft radius for 10 minutes.",
+          "ref": "8"
+        },
+        {
+          "id": "item_mossy_ring",
+          "name": "Mossy Ring",
+          "type": "artifact",
+          "position": {
+            "x": 21,
+            "y": 20
+          },
+          "description": "Ring causes moss to grow on wearer, respected by druids/rangers/dryads.",
+          "ref": "7"
+        },
+        {
+          "id": "treasure_crystal_stone",
+          "name": "Crystal Stone",
+          "type": "treasure",
+          "position": {
+            "x": 7,
+            "y": 3
+          },
+          "description": "Crystal with electric bolt trap if removed.",
+          "ref": "1"
+        },
+        {
+          "id": "treasure_sapphire",
+          "name": "Sapphire Gem",
+          "type": "treasure",
+          "position": {
+            "x": 19,
+            "y": 12
+          },
+          "description": "Adds constellation to summer sky in Wheel Room.",
+          "ref": "4"
+        },
+        {
+          "id": "treasure_jeweled_egg",
+          "name": "Jeweled Egg",
+          "type": "treasure",
+          "position": {
+            "x": 29,
+            "y": 8
+          },
+          "description": "Hidden in largest nest in Forest.",
+          "ref": "5"
+        }
+      ],
+      "connections_inferred": true
+    }
+  ]
+}

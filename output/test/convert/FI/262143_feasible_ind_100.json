@@ -1,0 +1,607 @@
+{
+  "header": {
+    "schemaName": "dnd-dungeon-unified",
+    "schemaVersion": "1.0.0",
+    "name": "double_star_graph_6",
+    "author": "FI-MAP Elites Generator",
+    "description": "Converted from FI-MAP Elites: double_star_graph_6",
+    "grid": {
+      "type": "square",
+      "size": 1,
+      "unit": "cell"
+    }
+  },
+  "levels": [
+    {
+      "id": "level_1",
+      "name": "Main Level",
+      "map": {
+        "width": 16,
+        "height": 16
+      },
+      "rooms": [
+        {
+          "id": "space_0",
+          "shape": "polygon",
+          "position": {
+            "x": 2.1057515936464783,
+            "y": 12.582241012054611
+          },
+          "size": {
+            "width": 9,
+            "height": 9
+          },
+          "name": "room_0",
+          "description": "Color: {'r': 255, 'g': 0, 'b': 0}",
+          "polygon": [
+            {
+              "x": 2.4163228483485377,
+              "y": 10.952754940799496
+            },
+            {
+              "x": 2.980744885996192,
+              "y": 7.9034869572524515
+            },
+            {
+              "x": 3.831897548744833,
+              "y": 7.739768799329785
+            },
+            {
+              "x": 4.058650418157155,
+              "y": 9.87075680321763
+            },
+            {
+              "x": 3.862871315436812,
+              "y": 12.013956873581577
+            },
+            {
+              "x": 2.5857323682320317,
+              "y": 11.718610034276399
+            }
+          ],
+          "is_entrance": true,
+          "is_exit": false
+        },
+        {
+          "id": "space_1",
+          "shape": "polygon",
+          "position": {
+            "x": 13.830367061230525,
+            "y": 1.1472674464561408
+          },
+          "size": {
+            "width": 6,
+            "height": 6
+          },
+          "name": "room_1",
+          "description": "Color: {'r': 255, 'g': 127, 'b': 0}",
+          "polygon": [
+            {
+              "x": 5.048073788685172,
+              "y": 11.198415790776068
+            },
+            {
+              "x": 6.405208797283304,
+              "y": 12.570591615279385
+            },
+            {
+              "x": 5.101265281257273,
+              "y": 12.777666750536882
+            }
+          ],
+          "is_entrance": false,
+          "is_exit": true
+        },
+        {
+          "id": "space_2",
+          "shape": "polygon",
+          "position": {
+            "x": 3.7411454747156947,
+            "y": 11.759317425898894
+          },
+          "size": {
+            "width": 5,
+            "height": 5
+          },
+          "name": "room_2",
+          "description": "Color: {'r': 255, 'g': 255, 'b': 0}",
+          "polygon": [
+            {
+              "x": 3.486883506786581,
+              "y": 13.389435998464972
+            },
+            {
+              "x": 5.147789246983978,
+              "y": 13.861582556393444
+            },
+            {
+              "x": 4.317757257080621,
+              "y": 14.765021828347905
+            }
+          ]
+        },
+        {
+          "id": "space_3",
+          "shape": "polygon",
+          "position": {
+            "x": 2.24361198872496,
+            "y": 13.397091774920513
+          },
+          "size": {
+            "width": 5,
+            "height": 5
+          },
+          "name": "room_3",
+          "description": "Color: {'r': 0, 'g': 255, 'b': 0}",
+          "polygon": [
+            {
+              "x": 1.2909517641350094,
+              "y": 14.688415155595818
+            },
+            {
+              "x": 2.13992343978063,
+              "y": 12.529190114692014
+            },
+            {
+              "x": 1.9425850687996753,
+              "y": 13.549516733400457
+            }
+          ]
+        },
+        {
+          "id": "space_4",
+          "shape": "polygon",
+          "position": {
+            "x": 13.035533094143279,
+            "y": 14.294200715745895
+          },
+          "size": {
+            "width": 5,
+            "height": 5
+          },
+          "name": "room_4",
+          "description": "Color: {'r': 0, 'g': 255, 'b': 255}",
+          "polygon": [
+            {
+              "x": 3.8168390546774864,
+              "y": 9.174079034939465
+            },
+            {
+              "x": 5.579381981166407,
+              "y": 7.6610740358447815
+            },
+            {
+              "x": 5.028757817148383,
+              "y": 8.667587083015702
+            }
+          ]
+        },
+        {
+          "id": "space_5",
+          "shape": "polygon",
+          "position": {
+            "x": 2.331954389778878,
+            "y": 1.6178284201854076
+          },
+          "size": {
+            "width": 5,
+            "height": 5
+          },
+          "name": "room_5",
+          "description": "Color: {'r': 0, 'g': 0, 'b': 255}",
+          "polygon": [
+            {
+              "x": 1.7367372125073368,
+              "y": 10.385343608188467
+            },
+            {
+              "x": 1.9016210520802879,
+              "y": 7.894694459262775
+            },
+            {
+              "x": 2.8229178655964007,
+              "y": 7.137611439251909
+            }
+          ]
+        },
+        {
+          "id": "space_6",
+          "shape": "polygon",
+          "position": {
+            "x": 5.587523690232788,
+            "y": 4.23473160911106
+          },
+          "size": {
+            "width": 9,
+            "height": 9
+          },
+          "name": "room_6",
+          "description": "Color: {'r': 127, 'g': 0, 'b': 255}",
+          "polygon": [
+            {
+              "x": 7.526264833549343,
+              "y": 8.882167242845393
+            },
+            {
+              "x": 7.5939093923338605,
+              "y": 8.19126970315688
+            },
+            {
+              "x": 7.711372573180002,
+              "y": 7.066938342345726
+            },
+            {
+              "x": 10.20082757877401,
+              "y": 8.850438203682685
+            },
+            {
+              "x": 10.532888130232447,
+              "y": 9.838772703454042
+            },
+            {
+              "x": 7.786053968302369,
+              "y": 10.060937613717567
+            }
+          ]
+        },
+        {
+          "id": "space_7",
+          "shape": "polygon",
+          "position": {
+            "x": 12.172286634972451,
+            "y": 10.63532040204635
+          },
+          "size": {
+            "width": 6,
+            "height": 6
+          },
+          "name": "room_7",
+          "description": "Color: {'r': 255, 'g': 0, 'b': 255}",
+          "polygon": [
+            {
+              "x": 7.1957342012092065,
+              "y": 13.440732601739626
+            },
+            {
+              "x": 8.194092813658784,
+              "y": 11.85551436295733
+            },
+            {
+              "x": 9.018250674370353,
+              "y": 10.579409189482146
+            },
+            {
+              "x": 8.057345608412207,
+              "y": 12.676955149338458
+            }
+          ]
+        },
+        {
+          "id": "space_8",
+          "shape": "polygon",
+          "position": {
+            "x": 4.035014059410903,
+            "y": 9.961979284678574
+          },
+          "size": {
+            "width": 5,
+            "height": 5
+          },
+          "name": "room_8",
+          "description": "Color: {'r': 255, 'g': 127, 'b': 127}",
+          "polygon": [
+            {
+              "x": 7.1004023503298415,
+              "y": 6.005884089148492
+            },
+            {
+              "x": 8.36839625686106,
+              "y": 5.780017232967708
+            },
+            {
+              "x": 8.914745087643077,
+              "y": 6.782706759903674
+            },
+            {
+              "x": 9.106229021071819,
+              "y": 7.545181398556512
+            },
+            {
+              "x": 8.210412429633925,
+              "y": 7.67220929642031
+            }
+          ]
+        },
+        {
+          "id": "space_9",
+          "shape": "polygon",
+          "position": {
+            "x": 6.7530577623998065,
+            "y": 14.109341240538912
+          },
+          "size": {
+            "width": 5,
+            "height": 5
+          },
+          "name": "room_9",
+          "description": "Color: {'r': 255, 'g': 191, 'b': 127}",
+          "polygon": [
+            {
+              "x": 6.205456497903064,
+              "y": 11.428068872703804
+            },
+            {
+              "x": 7.079325415096401,
+              "y": 10.04555957140816
+            },
+            {
+              "x": 7.497462411348522,
+              "y": 11.184434117187248
+            },
+            {
+              "x": 7.144853463178442,
+              "y": 12.254520329333504
+            }
+          ]
+        },
+        {
+          "id": "space_10",
+          "shape": "polygon",
+          "position": {
+            "x": 6.7079275542441374,
+            "y": 4.992927352428868
+          },
+          "size": {
+            "width": 5,
+            "height": 5
+          },
+          "name": "room_10",
+          "description": "Color: {'r': 255, 'g': 255, 'b': 127}",
+          "polygon": [
+            {
+              "x": 9.871766796634036,
+              "y": 7.342886521342348
+            },
+            {
+              "x": 10.763262183753543,
+              "y": 6.351179233181039
+            },
+            {
+              "x": 11.25580629854157,
+              "y": 8.876881408725817
+            }
+          ]
+        },
+        {
+          "id": "space_11",
+          "shape": "polygon",
+          "position": {
+            "x": 13.13185323268727,
+            "y": 0.07236359271797
+          },
+          "size": {
+            "width": 5,
+            "height": 5
+          },
+          "name": "room_11",
+          "description": "Color: {'r': 127, 'g': 255, 'b': 127}",
+          "polygon": [
+            {
+              "x": 4.718621418190834,
+              "y": 10.23163315780349
+            },
+            {
+              "x": 6.229826370800885,
+              "y": 8.778071868289901
+            },
+            {
+              "x": 7.109961432356407,
+              "y": 9.035488313304876
+            },
+            {
+              "x": 6.175833439859854,
+              "y": 10.040205897456062
+            }
+          ]
+        }
+      ],
+      "doors": [
+        {
+          "id": "door_0",
+          "position": {
+            "x": 2.4227947430345336,
+            "y": 9.206055326455076
+          },
+          "connects": [
+            "space_0",
+            "space_5"
+          ]
+        },
+        {
+          "id": "door_1",
+          "position": {
+            "x": 7.960892501406963,
+            "y": 7.369573819383018
+          },
+          "connects": [
+            "space_6",
+            "space_8"
+          ]
+        },
+        {
+          "id": "door_2",
+          "position": {
+            "x": 10.894347214387007,
+            "y": 9.35782705608993
+          },
+          "connects": [
+            "space_6",
+            "space_10"
+          ]
+        },
+        {
+          "id": "door_3",
+          "position": {
+            "x": 7.432689691699385,
+            "y": 10.053248592562863
+          },
+          "connects": [
+            "space_6",
+            "space_9"
+          ]
+        },
+        {
+          "id": "door_4",
+          "position": {
+            "x": 6.911867881567373,
+            "y": 8.484670785723392
+          },
+          "connects": [
+            "space_6",
+            "space_11"
+          ]
+        },
+        {
+          "id": "door_5",
+          "position": {
+            "x": 4.482068298347043,
+            "y": 12.395811812059229
+          },
+          "connects": [
+            "space_0",
+            "space_1"
+          ]
+        },
+        {
+          "id": "door_6",
+          "position": {
+            "x": 3.674877411111696,
+            "y": 12.701696436023274
+          },
+          "connects": [
+            "space_0",
+            "space_2"
+          ]
+        },
+        {
+          "id": "door_7",
+          "position": {
+            "x": 2.362827904006331,
+            "y": 12.123900074484206
+          },
+          "connects": [
+            "space_0",
+            "space_3"
+          ]
+        },
+        {
+          "id": "door_8",
+          "position": {
+            "x": 4.70563976495562,
+            "y": 7.700421417587283
+          },
+          "connects": [
+            "space_0",
+            "space_4"
+          ]
+        },
+        {
+          "id": "door_9",
+          "position": {
+            "x": 6.800471499246255,
+            "y": 13.005662108509505
+          },
+          "connects": [
+            "space_1",
+            "space_7"
+          ]
+        },
+        {
+          "id": "door_10",
+          "position": {
+            "x": 8.402152321336361,
+            "y": 10.320173401599856
+          },
+          "connects": [
+            "space_6",
+            "space_7"
+          ]
+        }
+      ],
+      "corridors": [],
+      "connections": [
+        {
+          "from_room": "space_0",
+          "to_room": "space_6",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5222258754283454
+        },
+        {
+          "from_room": "space_1",
+          "to_room": "space_6",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5306284141173957
+        },
+        {
+          "from_room": "space_3",
+          "to_room": "space_6",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "space_3",
+          "to_room": "space_9",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5420674829213766
+        },
+        {
+          "from_room": "space_5",
+          "to_room": "space_10",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5202796374273827
+        },
+        {
+          "from_room": "space_6",
+          "to_room": "space_9",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "space_6",
+          "to_room": "space_11",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5243863226566366
+        },
+        {
+          "from_room": "space_7",
+          "to_room": "space_9",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5
+        },
+        {
+          "from_room": "space_8",
+          "to_room": "space_9",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5389136550779146
+        },
+        {
+          "from_room": "space_8",
+          "to_room": "space_10",
+          "inferred": true,
+          "connection_type": "spatial_adjacency",
+          "confidence": 0.5014403766164539
+        }
+      ],
+      "connections_inferred": true
+    }
+  ]
+}

@@ -1,0 +1,1457 @@
+{
+  "summary_stats": {
+    "mean_score": 0.6254274127426528,
+    "std_score": 0.05533213426839782,
+    "min_score": 0.5386495766189848,
+    "max_score": 0.6767146806373038,
+    "algorithms_tested": 4
+  },
+  "algorithm_results": {
+    "ODPC VAL": {
+      "overall_score": 0.6161910973514713,
+      "success_rate": 0.8,
+      "details": {
+        "cross_validation": {
+          "validation_type": "cross_validation",
+          "success": true,
+          "score": 0.9520583412728705,
+          "details": {
+            "k_folds": 5,
+            "dataset_size": 15,
+            "fold_results": [
+              {
+                "fold": 0,
+                "test_scores": [
+                  0.47423831013850104,
+                  0.43688514301769454,
+                  0.588507909547554
+                ],
+                "mean_score": 0.49987712090124986,
+                "std_score": 0.06450001186324493
+              },
+              {
+                "fold": 1,
+                "test_scores": [
+                  0.5581571130803021,
+                  0.6321388736231519,
+                  0.6659180551629109
+                ],
+                "mean_score": 0.6187380139554549,
+                "std_score": 0.04500216616644004
+              },
+              {
+                "fold": 2,
+                "test_scores": [
+                  0.6093094347009436,
+                  0.5907911493408525,
+                  0.6151523335860972
+                ],
+                "mean_score": 0.6050843058759644,
+                "std_score": 0.01038446306262202
+              },
+              {
+                "fold": 3,
+                "test_scores": [
+                  0.6484825418737132,
+                  0.6365559285184718,
+                  0.6081031406826346
+                ],
+                "mean_score": 0.6310472036916065,
+                "std_score": 0.016938782857712685
+              },
+              {
+                "fold": 4,
+                "test_scores": [
+                  0.6066586494351291,
+                  0.6506000326183873,
+                  0.5935543971771009
+                ],
+                "mean_score": 0.6169376930768725,
+                "std_score": 0.024396655294892163
+              }
+            ],
+            "mean_cv_score": 0.5943368675002296,
+            "std_cv_score": 0.047941658727129556,
+            "consistency_score": 0.9520583412728705
+          },
+          "recommendations": []
+        },
+        "inter_rater_reliability": {
+          "validation_type": "inter_rater_reliability",
+          "success": true,
+          "score": 0.4946810262883269,
+          "details": {
+            "n_runs": 10,
+            "n_samples": 15,
+            "icc": 0.0,
+            "average_stability": 0.9893620525766538,
+            "sample_stds": [
+              0.006220860760998528,
+              0.006270455406149455,
+              0.01440320657088082,
+              0.010049296495710913,
+              0.0088342661703944,
+              0.012900569126030723,
+              0.008839346033260136,
+              0.01814219168466854,
+              0.008841553438094969,
+              0.012307962490187608,
+              0.007691568915064884,
+              0.013226003298595204,
+              0.010279070831281736,
+              0.009857667575592349,
+              0.011705192553282943
+            ],
+            "run_means": [
+              0.5922918425164098,
+              0.5932580731870163,
+              0.5941703464563425,
+              0.5978752058413371,
+              0.594559409075819,
+              0.5966072405134537,
+              0.5962766031701304,
+              0.5939131419764905,
+              0.5977030558793753,
+              0.5987741215331882
+            ]
+          },
+          "recommendations": [
+            "Low reliability - consider reducing randomness in evaluation",
+            "Low ICC - check for systematic biases"
+          ]
+        },
+        "metric_correlation_validation": {
+          "validation_type": "metric_correlation_validation",
+          "success": true,
+          "score": 1.0,
+          "details": {
+            "correlation_matrix": {
+              "accessibility": {
+                "accessibility": 1.0,
+                "degree_variance": 0.4714285714285714,
+                "door_distribution": 0.19642857142857142,
+                "dead_end_ratio": 0.4378911489382102,
+                "geometric_balance": 0.02857142857142857,
+                "key_path_length": 0.2956913405393131,
+                "loop_ratio": 0.3153281119434456,
+                "path_diversity": 0.5285714285714286,
+                "treasure_monster_distribution": -0.15370872983137174,
+                "overall_score": 0.6642857142857143
+              },
+              "degree_variance": {
+                "accessibility": 0.4714285714285714,
+                "degree_variance": 1.0,
+                "door_distribution": 0.4607142857142857,
+                "dead_end_ratio": 0.702413149113129,
+                "geometric_balance": 0.19642857142857142,
+                "key_path_length": 0.09491326980274248,
+                "loop_ratio": 0.20361186656919633,
+                "path_diversity": 0.175,
+                "treasure_monster_distribution": -0.1340483108994521,
+                "overall_score": 0.5785714285714286
+              },
+              "door_distribution": {
+                "accessibility": 0.19642857142857142,
+                "degree_variance": 0.4607142857142857,
+                "door_distribution": 1.0,
+                "dead_end_ratio": 0.7327974329170048,
+                "geometric_balance": -0.33214285714285713,
+                "key_path_length": -0.2628367471460561,
+                "loop_ratio": 0.5063268540349041,
+                "path_diversity": 0.38571428571428573,
+                "treasure_monster_distribution": 0.4128687975703125,
+                "overall_score": 0.6035714285714285
+              },
+              "dead_end_ratio": {
+                "accessibility": 0.4378911489382102,
+                "degree_variance": 0.702413149113129,
+                "door_distribution": 0.7327974329170048,
+                "dead_end_ratio": 1.0,
+                "geometric_balance": -0.21805191906310875,
+                "key_path_length": -0.3672043003711847,
+                "loop_ratio": 0.5437509988999409,
+                "path_diversity": 0.2949062839787946,
+                "treasure_monster_distribution": 0.18962432915921287,
+                "overall_score": 0.661305000437297
+              },
+              "geometric_balance": {
+                "accessibility": 0.02857142857142857,
+                "degree_variance": 0.19642857142857142,
+                "door_distribution": -0.33214285714285713,
+                "dead_end_ratio": -0.21805191906310875,
+                "geometric_balance": 1.0,
+                "key_path_length": 0.45266328675154105,
+                "loop_ratio": -0.42884623224308605,
+                "path_diversity": -0.23214285714285715,
+                "treasure_monster_distribution": -0.12511175683948864,
+                "overall_score": -0.02142857142857143
+              },
+              "key_path_length": {
+                "accessibility": 0.2956913405393131,
+                "degree_variance": 0.09491326980274248,
+                "door_distribution": -0.2628367471460561,
+                "dead_end_ratio": -0.3672043003711847,
+                "geometric_balance": 0.45266328675154105,
+                "key_path_length": 1.0,
+                "loop_ratio": -0.24679767200905872,
+                "path_diversity": 0.20077807073657064,
+                "treasure_monster_distribution": -0.46402931489691995,
+                "overall_score": 0.040155614147314125
+              },
+              "loop_ratio": {
+                "accessibility": 0.3153281119434456,
+                "degree_variance": 0.20361186656919633,
+                "door_distribution": 0.5063268540349041,
+                "dead_end_ratio": 0.5437509988999409,
+                "geometric_balance": -0.42884623224308605,
+                "key_path_length": -0.24679767200905872,
+                "loop_ratio": 1.0,
+                "path_diversity": 0.7243537200072294,
+                "treasure_monster_distribution": 0.12714575596167774,
+                "overall_score": 0.5784018510505489
+              },
+              "path_diversity": {
+                "accessibility": 0.5285714285714286,
+                "degree_variance": 0.175,
+                "door_distribution": 0.38571428571428573,
+                "dead_end_ratio": 0.2949062839787946,
+                "geometric_balance": -0.23214285714285715,
+                "key_path_length": 0.20077807073657064,
+                "loop_ratio": 0.7243537200072294,
+                "path_diversity": 1.0,
+                "treasure_monster_distribution": -0.007149243247970778,
+                "overall_score": 0.6071428571428571
+              },
+              "treasure_monster_distribution": {
+                "accessibility": -0.15370872983137174,
+                "degree_variance": -0.1340483108994521,
+                "door_distribution": 0.4128687975703125,
+                "dead_end_ratio": 0.18962432915921287,
+                "geometric_balance": -0.12511175683948864,
+                "key_path_length": -0.46402931489691995,
+                "loop_ratio": 0.12714575596167774,
+                "path_diversity": -0.007149243247970778,
+                "treasure_monster_distribution": 1.0,
+                "overall_score": 0.41108148675831974
+              },
+              "overall_score": {
+                "accessibility": 0.6642857142857143,
+                "degree_variance": 0.5785714285714286,
+                "door_distribution": 0.6035714285714285,
+                "dead_end_ratio": 0.661305000437297,
+                "geometric_balance": -0.02142857142857143,
+                "key_path_length": 0.040155614147314125,
+                "loop_ratio": 0.5784018510505489,
+                "path_diversity": 0.6071428571428571,
+                "treasure_monster_distribution": 0.41108148675831974,
+                "overall_score": 1.0
+              }
+            },
+            "logical_consistency_score": 0.8947368421052632,
+            "logical_consistency_count": 17,
+            "expected_correlations_met": 19,
+            "total_expected": 19,
+            "violated_expectations": [],
+            "high_correlations": [],
+            "dataset_size": 15
+          },
+          "recommendations": []
+        },
+        "sensitivity_analysis": {
+          "validation_type": "sensitivity_analysis",
+          "success": true,
+          "score": 0.018025021844687374,
+          "details": {
+            "base_score": 0.5882852882700488,
+            "modifications_tested": 3,
+            "successful_modifications": 3,
+            "direction_accuracy": 0.6666666666666666,
+            "average_sensitivity": 0.013518766383515532,
+            "detailed_results": [
+              {
+                "modification": "remove_connections",
+                "description": "Remove 50% of connections",
+                "expected_change": "decrease",
+                "base_score": 0.5882852882700488,
+                "modified_score": 0.5731194724512985,
+                "score_change": -0.015165815818750317,
+                "direction_correct": true,
+                "sensitivity": 0.015165815818750317
+              },
+              {
+                "modification": "add_dead_ends",
+                "description": "Add dead-end rooms",
+                "expected_change": "decrease",
+                "base_score": 0.5882852882700488,
+                "modified_score": 0.6057330035730286,
+                "score_change": 0.017447715302979838,
+                "direction_correct": false,
+                "sensitivity": 0.017447715302979838
+              },
+              {
+                "modification": "improve_balance",
+                "description": "Improve geometric balance",
+                "expected_change": "increase",
+                "base_score": 0.5882852882700488,
+                "modified_score": 0.5962280562988652,
+                "score_change": 0.007942768028816438,
+                "direction_correct": true,
+                "sensitivity": 0.007942768028816438
+              }
+            ]
+          },
+          "recommendations": [
+            "Low directional accuracy - check rule logic",
+            "Low sensitivity - system may be too conservative"
+          ]
+        },
+        "statistical_validation": {
+          "validation_type": "statistical_validation",
+          "success": false,
+          "score": 0.0,
+          "details": {
+            "error": "Dataset too small for statistical analysis"
+          },
+          "recommendations": [
+            "Use larger dataset (>30 samples)"
+          ]
+        }
+      }
+    },
+    "FI VAL": {
+      "overall_score": 0.5386495766189848,
+      "success_rate": 0.8,
+      "details": {
+        "cross_validation": {
+          "validation_type": "cross_validation",
+          "success": true,
+          "score": 0.9087294103945772,
+          "details": {
+            "k_folds": 5,
+            "dataset_size": 25,
+            "fold_results": [
+              {
+                "fold": 0,
+                "test_scores": [
+                  0.46319334003266516,
+                  0.09360307601881579,
+                  0.4824815810926345,
+                  0.44369004237560344,
+                  0.5372674141067392
+                ],
+                "mean_score": 0.40404709072529166,
+                "std_score": 0.1583318998375222
+              },
+              {
+                "fold": 1,
+                "test_scores": [
+                  0.09360307601881579,
+                  0.5689917984775688,
+                  0.46319334003266516,
+                  0.09360307601881579,
+                  0.09360307601881579
+                ],
+                "mean_score": 0.26259887331333626,
+                "std_score": 0.2096633030259415
+              },
+              {
+                "fold": 2,
+                "test_scores": [
+                  0.56089041995727,
+                  0.09360307601881579,
+                  0.46319334003266516,
+                  0.09360307601881579,
+                  0.5329771490274228
+                ],
+                "mean_score": 0.34885341221099786,
+                "std_score": 0.21082709999425822
+              },
+              {
+                "fold": 3,
+                "test_scores": [
+                  0.4996113503441517,
+                  0.46319334003266516,
+                  0.09360307601881579,
+                  0.09360307601881579,
+                  0.09360307601881579
+                ],
+                "mean_score": 0.24872278368665285,
+                "std_score": 0.19033079810671105
+              },
+              {
+                "fold": 4,
+                "test_scores": [
+                  0.46319334003266516,
+                  0.5631975403203598,
+                  0.46319334003266516,
+                  0.5002303770697022,
+                  0.48212717051404685
+                ],
+                "mean_score": 0.4943883535938879,
+                "std_score": 0.03705516905625333
+              }
+            ],
+            "mean_cv_score": 0.35172210270603327,
+            "std_cv_score": 0.09127058960542275,
+            "consistency_score": 0.9087294103945772
+          },
+          "recommendations": []
+        },
+        "inter_rater_reliability": {
+          "validation_type": "inter_rater_reliability",
+          "success": true,
+          "score": 0.49451916030635323,
+          "details": {
+            "n_runs": 10,
+            "n_samples": 20,
+            "icc": 0.0,
+            "average_stability": 0.9890383206127065,
+            "sample_stds": [
+              0.017807197984749595,
+              0.014814814814814815,
+              0.017479960201506817,
+              0.0,
+              0.009702169757763607,
+              0.0,
+              0.017638273559568138,
+              0.022388861142361667,
+              0.011111111111111108,
+              0.0,
+              0.01320513957987901,
+              0.01111111111111111,
+              0.0,
+              0.008460784891074286,
+              0.023715274953454976,
+              0.01111111111111111,
+              0.0,
+              0.016972502573910517,
+              0.0,
+              0.023715274953454976
+            ],
+            "run_means": [
+              0.38067317313839977,
+              0.3778067305100808,
+              0.38371247347732945,
+              0.380831973161353,
+              0.3769035996552204,
+              0.3751909093401017,
+              0.3817503415892073,
+              0.38118185338514043,
+              0.3807619025031469,
+              0.37503267990106787
+            ]
+          },
+          "recommendations": [
+            "Low reliability - consider reducing randomness in evaluation",
+            "Low ICC - check for systematic biases"
+          ]
+        },
+        "metric_correlation_validation": {
+          "validation_type": "metric_correlation_validation",
+          "success": true,
+          "score": 0.6842105263157895,
+          "details": {
+            "correlation_matrix": {
+              "accessibility": {
+                "accessibility": 1.0,
+                "degree_variance": 0.7220367278797997,
+                "door_distribution": 0.7888146911519198,
+                "dead_end_ratio": 0.7457605869568192,
+                "geometric_balance": 0.38480801335559267,
+                "key_path_length": 0.9522963716472302,
+                "loop_ratio": 0.8912625205859807,
+                "path_diversity": 0.7758245747968775,
+                "treasure_monster_distribution": NaN,
+                "overall_score": 0.9386050488233354
+              },
+              "degree_variance": {
+                "accessibility": 0.7220367278797997,
+                "degree_variance": 1.0,
+                "door_distribution": 0.7520868113522537,
+                "dead_end_ratio": 0.6880023638212114,
+                "geometric_balance": 0.6844741235392321,
+                "key_path_length": 0.6446049447070602,
+                "loop_ratio": 0.6831703902289015,
+                "path_diversity": 0.30858857775586523,
+                "treasure_monster_distribution": NaN,
+                "overall_score": 0.6647415067263409
+              },
+              "door_distribution": {
+                "accessibility": 0.7888146911519198,
+                "degree_variance": 0.7520868113522537,
+                "door_distribution": 1.0,
+                "dead_end_ratio": 0.9661761590699111,
+                "geometric_balance": 0.7712854757929883,
+                "key_path_length": 0.795872238398317,
+                "loop_ratio": 0.8720674393790383,
+                "path_diversity": 0.5388208081818713,
+                "treasure_monster_distribution": NaN,
+                "overall_score": 0.8846622299254425
+              },
+              "dead_end_ratio": {
+                "accessibility": 0.7457605869568192,
+                "degree_variance": 0.6880023638212114,
+                "door_distribution": 0.9661761590699111,
+                "dead_end_ratio": 1.0,
+                "geometric_balance": 0.839617699552182,
+                "key_path_length": 0.7971696793234951,
+                "loop_ratio": 0.8787280968296494,
+                "path_diversity": 0.4823329967789004,
+                "treasure_monster_distribution": NaN,
+                "overall_score": 0.8520658839541329
+              },
+              "geometric_balance": {
+                "accessibility": 0.38480801335559267,
+                "degree_variance": 0.6844741235392321,
+                "door_distribution": 0.7712854757929883,
+                "dead_end_ratio": 0.839617699552182,
+                "geometric_balance": 1.0,
+                "key_path_length": 0.467553453227521,
+                "loop_ratio": 0.6412902130501182,
+                "path_diversity": 0.05030284026114417,
+                "treasure_monster_distribution": NaN,
+                "overall_score": 0.5178510614197712
+              },
+              "key_path_length": {
+                "accessibility": 0.9522963716472302,
+                "degree_variance": 0.6446049447070602,
+                "door_distribution": 0.795872238398317,
+                "dead_end_ratio": 0.7971696793234951,
+                "geometric_balance": 0.467553453227521,
+                "key_path_length": 1.0,
+                "loop_ratio": 0.9028643852518723,
+                "path_diversity": 0.7281078745810033,
+                "treasure_monster_distribution": NaN,
+                "overall_score": 0.930544931826549
+              },
+              "loop_ratio": {
+                "accessibility": 0.8912625205859807,
+                "degree_variance": 0.6831703902289015,
+                "door_distribution": 0.8720674393790383,
+                "dead_end_ratio": 0.8787280968296494,
+                "geometric_balance": 0.6412902130501182,
+                "key_path_length": 0.9028643852518723,
+                "loop_ratio": 1.0,
+                "path_diversity": 0.6456158091815394,
+                "treasure_monster_distribution": NaN,
+                "overall_score": 0.9151595829360799
+              },
+              "path_diversity": {
+                "accessibility": 0.7758245747968775,
+                "degree_variance": 0.30858857775586523,
+                "door_distribution": 0.5388208081818713,
+                "dead_end_ratio": 0.4823329967789004,
+                "geometric_balance": 0.05030284026114417,
+                "key_path_length": 0.7281078745810033,
+                "loop_ratio": 0.6456158091815394,
+                "path_diversity": 1.0,
+                "treasure_monster_distribution": NaN,
+                "overall_score": 0.8405773734221026
+              },
+              "treasure_monster_distribution": {
+                "accessibility": NaN,
+                "degree_variance": NaN,
+                "door_distribution": NaN,
+                "dead_end_ratio": NaN,
+                "geometric_balance": NaN,
+                "key_path_length": NaN,
+                "loop_ratio": NaN,
+                "path_diversity": NaN,
+                "treasure_monster_distribution": NaN,
+                "overall_score": NaN
+              },
+              "overall_score": {
+                "accessibility": 0.9386050488233354,
+                "degree_variance": 0.6647415067263409,
+                "door_distribution": 0.8846622299254425,
+                "dead_end_ratio": 0.8520658839541329,
+                "geometric_balance": 0.5178510614197712,
+                "key_path_length": 0.930544931826549,
+                "loop_ratio": 0.9151595829360799,
+                "path_diversity": 0.8405773734221026,
+                "treasure_monster_distribution": NaN,
+                "overall_score": 1.0
+              }
+            },
+            "logical_consistency_score": 0.8947368421052632,
+            "logical_consistency_count": 17,
+            "expected_correlations_met": 13,
+            "total_expected": 19,
+            "violated_expectations": [
+              {
+                "metrics": [
+                  "loop_ratio",
+                  "overall_score"
+                ],
+                "expected_range": [
+                  0.0,
+                  0.9
+                ],
+                "actual_correlation": 0.9151595829360799,
+                "direction_correct": true
+              },
+              {
+                "metrics": [
+                  "key_path_length",
+                  "overall_score"
+                ],
+                "expected_range": [
+                  -0.1,
+                  0.9
+                ],
+                "actual_correlation": 0.930544931826549,
+                "direction_correct": true
+              },
+              {
+                "metrics": [
+                  "door_distribution",
+                  "overall_score"
+                ],
+                "expected_range": [
+                  -0.4,
+                  0.8
+                ],
+                "actual_correlation": 0.8846622299254425,
+                "direction_correct": true
+              },
+              {
+                "metrics": [
+                  "treasure_monster_distribution",
+                  "overall_score"
+                ],
+                "expected_range": [
+                  0.0,
+                  0.8
+                ],
+                "actual_correlation": NaN,
+                "direction_correct": false
+              },
+              {
+                "metrics": [
+                  "key_path_length",
+                  "accessibility"
+                ],
+                "expected_range": [
+                  -0.1,
+                  0.9
+                ],
+                "actual_correlation": 0.9522963716472302,
+                "direction_correct": true
+              },
+              {
+                "metrics": [
+                  "treasure_monster_distribution",
+                  "accessibility"
+                ],
+                "expected_range": [
+                  -0.6,
+                  0.6
+                ],
+                "actual_correlation": NaN,
+                "direction_correct": false
+              }
+            ],
+            "high_correlations": [
+              [
+                "accessibility",
+                "key_path_length",
+                0.9522963716472302
+              ],
+              [
+                "door_distribution",
+                "dead_end_ratio",
+                0.9661761590699111
+              ],
+              [
+                "key_path_length",
+                "loop_ratio",
+                0.9028643852518723
+              ]
+            ],
+            "dataset_size": 25
+          },
+          "recommendations": [
+            "Some metric correlations don't match expectations",
+            "High correlation between metrics - consider removing redundant ones"
+          ]
+        },
+        "sensitivity_analysis": {
+          "validation_type": "sensitivity_analysis",
+          "success": true,
+          "score": 0.06713920945921954,
+          "details": {
+            "base_score": 0.4819512357210834,
+            "modifications_tested": 3,
+            "successful_modifications": 3,
+            "direction_accuracy": 1.0,
+            "average_sensitivity": 0.03356960472960977,
+            "detailed_results": [
+              {
+                "modification": "remove_connections",
+                "description": "Remove 50% of connections",
+                "expected_change": "decrease",
+                "base_score": 0.4819512357210834,
+                "modified_score": 0.4334195875158274,
+                "score_change": -0.04853164820525602,
+                "direction_correct": true,
+                "sensitivity": 0.04853164820525602
+              },
+              {
+                "modification": "add_dead_ends",
+                "description": "Add dead-end rooms",
+                "expected_change": "decrease",
+                "base_score": 0.4819512357210834,
+                "modified_score": 0.4796998900168579,
+                "score_change": -0.0022513457042254714,
+                "direction_correct": true,
+                "sensitivity": 0.0022513457042254714
+              },
+              {
+                "modification": "improve_balance",
+                "description": "Improve geometric balance",
+                "expected_change": "increase",
+                "base_score": 0.4819512357210834,
+                "modified_score": 0.5318770560004312,
+                "score_change": 0.04992582027934783,
+                "direction_correct": true,
+                "sensitivity": 0.04992582027934783
+              }
+            ]
+          },
+          "recommendations": [
+            "Low sensitivity - system may be too conservative"
+          ]
+        },
+        "statistical_validation": {
+          "validation_type": "statistical_validation",
+          "success": false,
+          "score": 0.0,
+          "details": {
+            "error": "Dataset too small for statistical analysis"
+          },
+          "recommendations": [
+            "Use larger dataset (>30 samples)"
+          ]
+        }
+      }
+    },
+    "WATABOU VAL": {
+      "overall_score": 0.6767146806373038,
+      "success_rate": 1.0,
+      "details": {
+        "cross_validation": {
+          "validation_type": "cross_validation",
+          "success": true,
+          "score": 0.988664185852893,
+          "details": {
+            "k_folds": 5,
+            "dataset_size": 30,
+            "fold_results": [
+              {
+                "fold": 0,
+                "test_scores": [
+                  0.7152298530086146,
+                  0.6468448899691366,
+                  0.5873912480367908,
+                  0.636705480247034,
+                  0.5732183119511638,
+                  0.7502536739192356
+                ],
+                "mean_score": 0.6516072428553291,
+                "std_score": 0.06362941654224896
+              },
+              {
+                "fold": 1,
+                "test_scores": [
+                  0.6406145027213836,
+                  0.576050916224761,
+                  0.6904811035718519,
+                  0.6822955033431197,
+                  0.6731765547573434,
+                  0.5435104631268248
+                ],
+                "mean_score": 0.6343548406242141,
+                "std_score": 0.05574767845011681
+              },
+              {
+                "fold": 2,
+                "test_scores": [
+                  0.6651851829378059,
+                  0.5718951459911827,
+                  0.6429684860839956,
+                  0.7261405221939667,
+                  0.6890085756430169,
+                  0.6193851677472454
+                ],
+                "mean_score": 0.6524305134328688,
+                "std_score": 0.04933097718944175
+              },
+              {
+                "fold": 3,
+                "test_scores": [
+                  0.6936088904109319,
+                  0.5677998320971007,
+                  0.6580940610921746,
+                  0.6837587706628736,
+                  0.7044135503668479,
+                  0.660800436727222
+                ],
+                "mean_score": 0.6614125902261917,
+                "std_score": 0.045018092568004
+              },
+              {
+                "fold": 4,
+                "test_scores": [
+                  0.631833360702465,
+                  0.6671848492458476,
+                  0.6602738757894996,
+                  0.5815496579988536,
+                  0.5291806096050519,
+                  0.7217262585860212
+                ],
+                "mean_score": 0.6319581019879565,
+                "std_score": 0.062189587062030226
+              }
+            ],
+            "mean_cv_score": 0.6463526578253121,
+            "std_cv_score": 0.011335814147107043,
+            "consistency_score": 0.988664185852893
+          },
+          "recommendations": []
+        },
+        "inter_rater_reliability": {
+          "validation_type": "inter_rater_reliability",
+          "success": true,
+          "score": 0.4962935244275294,
+          "details": {
+            "n_runs": 10,
+            "n_samples": 20,
+            "icc": 0.0,
+            "average_stability": 0.9925870488550588,
+            "sample_stds": [
+              0.005408716113121068,
+              0.0036739978723284907,
+              0.004471721175145521,
+              0.007239373608189489,
+              0.005282790935384299,
+              0.01039555797266947,
+              0.007443356313483099,
+              0.006116904760252284,
+              0.009372681643424535,
+              0.0069814952844417105,
+              0.006594383331268806,
+              0.0035072914495920217,
+              0.006971758160950481,
+              0.012193575452808574,
+              0.006182009540900613,
+              0.005428889308434396,
+              0.009084757417382561,
+              0.011271086638946654,
+              0.014007501972147032,
+              0.006631173947954368
+            ],
+            "run_means": [
+              0.6416361351697405,
+              0.640476087391294,
+              0.6392221117186823,
+              0.6402206364243785,
+              0.6391879744193985,
+              0.6435689673085693,
+              0.6405719745037408,
+              0.6408137079472024,
+              0.637976280152167,
+              0.6393801422676215
+            ]
+          },
+          "recommendations": [
+            "Low reliability - consider reducing randomness in evaluation",
+            "Low ICC - check for systematic biases"
+          ]
+        },
+        "metric_correlation_validation": {
+          "validation_type": "metric_correlation_validation",
+          "success": true,
+          "score": 0.9473684210526315,
+          "details": {
+            "correlation_matrix": {
+              "accessibility": {
+                "accessibility": 1.0,
+                "degree_variance": 0.5239154616240267,
+                "door_distribution": -0.4184649610678532,
+                "dead_end_ratio": 0.30555248169547583,
+                "geometric_balance": -0.3646273637374861,
+                "key_path_length": 0.1327389446012104,
+                "loop_ratio": 0.37636326898134415,
+                "path_diversity": 0.023804226918798667,
+                "treasure_monster_distribution": 0.627990428218987,
+                "overall_score": 0.4340378197997775
+              },
+              "degree_variance": {
+                "accessibility": 0.5239154616240267,
+                "degree_variance": 1.0,
+                "door_distribution": -0.6983314794215796,
+                "dead_end_ratio": 0.6970068264167737,
+                "geometric_balance": -0.3299221357063404,
+                "key_path_length": 0.062899904608668,
+                "loop_ratio": 0.2405965072553714,
+                "path_diversity": 0.26629588431590656,
+                "treasure_monster_distribution": 0.669092806031603,
+                "overall_score": 0.43448275862068964
+              },
+              "door_distribution": {
+                "accessibility": -0.4184649610678532,
+                "degree_variance": -0.6983314794215796,
+                "door_distribution": 1.0,
+                "dead_end_ratio": -0.6010904974941589,
+                "geometric_balance": 0.4300333704115684,
+                "key_path_length": -0.033800304611775335,
+                "loop_ratio": -0.2606276688214985,
+                "path_diversity": -0.3521690767519466,
+                "treasure_monster_distribution": -0.5664491630787858,
+                "overall_score": -0.34238042269187985
+              },
+              "dead_end_ratio": {
+                "accessibility": 0.30555248169547583,
+                "degree_variance": 0.6970068264167737,
+                "door_distribution": -0.6010904974941589,
+                "dead_end_ratio": 1.0,
+                "geometric_balance": -0.2597084822568247,
+                "key_path_length": -0.04399984999241486,
+                "loop_ratio": 0.5323388655939385,
+                "path_diversity": 0.3017692390233541,
+                "treasure_monster_distribution": 0.5939366789036497,
+                "overall_score": 0.45398912065460356
+              },
+              "geometric_balance": {
+                "accessibility": -0.3646273637374861,
+                "degree_variance": -0.3299221357063404,
+                "door_distribution": 0.4300333704115684,
+                "dead_end_ratio": -0.2597084822568247,
+                "geometric_balance": 1.0,
+                "key_path_length": -0.026189639997203404,
+                "loop_ratio": -0.08346317319219637,
+                "path_diversity": -0.2053392658509455,
+                "treasure_monster_distribution": -0.20326585748862058,
+                "overall_score": 0.2916573971078977
+              },
+              "key_path_length": {
+                "accessibility": 0.1327389446012104,
+                "degree_variance": 0.062899904608668,
+                "door_distribution": -0.033800304611775335,
+                "dead_end_ratio": -0.04399984999241486,
+                "geometric_balance": -0.026189639997203404,
+                "key_path_length": 1.0,
+                "loop_ratio": 0.2564144371794517,
+                "path_diversity": -0.2578672245878489,
+                "treasure_monster_distribution": 0.08644117461317402,
+                "overall_score": 0.16542003382848988
+              },
+              "loop_ratio": {
+                "accessibility": 0.37636326898134415,
+                "degree_variance": 0.2405965072553714,
+                "door_distribution": -0.2606276688214985,
+                "dead_end_ratio": 0.5323388655939385,
+                "geometric_balance": -0.08346317319219637,
+                "key_path_length": 0.2564144371794517,
+                "loop_ratio": 1.0,
+                "path_diversity": -0.03271756389134098,
+                "treasure_monster_distribution": 0.43772175345295483,
+                "overall_score": 0.46717120141445384
+              },
+              "path_diversity": {
+                "accessibility": 0.023804226918798667,
+                "degree_variance": 0.26629588431590656,
+                "door_distribution": -0.3521690767519466,
+                "dead_end_ratio": 0.3017692390233541,
+                "geometric_balance": -0.2053392658509455,
+                "key_path_length": -0.2578672245878489,
+                "loop_ratio": -0.03271756389134098,
+                "path_diversity": 1.0,
+                "treasure_monster_distribution": 0.15138252811859698,
+                "overall_score": 0.22091212458286985
+              },
+              "treasure_monster_distribution": {
+                "accessibility": 0.627990428218987,
+                "degree_variance": 0.669092806031603,
+                "door_distribution": -0.5664491630787858,
+                "dead_end_ratio": 0.5939366789036497,
+                "geometric_balance": -0.20326585748862058,
+                "key_path_length": 0.08644117461317402,
+                "loop_ratio": 0.43772175345295483,
+                "path_diversity": 0.15138252811859698,
+                "treasure_monster_distribution": 1.0,
+                "overall_score": 0.7627523226865807
+              },
+              "overall_score": {
+                "accessibility": 0.4340378197997775,
+                "degree_variance": 0.43448275862068964,
+                "door_distribution": -0.34238042269187985,
+                "dead_end_ratio": 0.45398912065460356,
+                "geometric_balance": 0.2916573971078977,
+                "key_path_length": 0.16542003382848988,
+                "loop_ratio": 0.46717120141445384,
+                "path_diversity": 0.22091212458286985,
+                "treasure_monster_distribution": 0.7627523226865807,
+                "overall_score": 1.0
+              }
+            },
+            "logical_consistency_score": 0.7368421052631579,
+            "logical_consistency_count": 14,
+            "expected_correlations_met": 18,
+            "total_expected": 19,
+            "violated_expectations": [
+              {
+                "metrics": [
+                  "treasure_monster_distribution",
+                  "accessibility"
+                ],
+                "expected_range": [
+                  -0.6,
+                  0.6
+                ],
+                "actual_correlation": 0.627990428218987,
+                "direction_correct": true
+              }
+            ],
+            "high_correlations": [],
+            "dataset_size": 30
+          },
+          "recommendations": [
+            "Some metric correlations don't match expectations"
+          ]
+        },
+        "sensitivity_analysis": {
+          "validation_type": "sensitivity_analysis",
+          "success": true,
+          "score": 0.1512472718534654,
+          "details": {
+            "base_score": 0.6730087437445328,
+            "modifications_tested": 3,
+            "successful_modifications": 3,
+            "direction_accuracy": 0.6666666666666666,
+            "average_sensitivity": 0.11343545389009906,
+            "detailed_results": [
+              {
+                "modification": "remove_connections",
+                "description": "Remove 50% of connections",
+                "expected_change": "decrease",
+                "base_score": 0.6730087437445328,
+                "modified_score": 0.5443890981513441,
+                "score_change": -0.12861964559318873,
+                "direction_correct": true,
+                "sensitivity": 0.12861964559318873
+              },
+              {
+                "modification": "add_dead_ends",
+                "description": "Add dead-end rooms",
+                "expected_change": "decrease",
+                "base_score": 0.6730087437445328,
+                "modified_score": 0.5312608398552603,
+                "score_change": -0.1417479038892725,
+                "direction_correct": true,
+                "sensitivity": 0.1417479038892725
+              },
+              {
+                "modification": "improve_balance",
+                "description": "Improve geometric balance",
+                "expected_change": "increase",
+                "base_score": 0.6730087437445328,
+                "modified_score": 0.6030699315566969,
+                "score_change": -0.06993881218783593,
+                "direction_correct": false,
+                "sensitivity": 0.06993881218783593
+              }
+            ]
+          },
+          "recommendations": [
+            "Low directional accuracy - check rule logic"
+          ]
+        },
+        "statistical_validation": {
+          "validation_type": "statistical_validation",
+          "success": true,
+          "score": 0.8,
+          "details": {
+            "dataset_size": 30,
+            "overall_scores_stats": {
+              "mean": 0.6449119542929996,
+              "std": 0.05493127949067643,
+              "min": 0.5294824203512449,
+              "max": 0.7474168081229265,
+              "variance": 0.003017445466482809
+            },
+            "validation_tests": {
+              "score_range": true,
+              "normality": true,
+              "variance": false,
+              "mean_reasonable": true,
+              "outliers": true
+            },
+            "passed_tests": 4,
+            "total_tests": 5,
+            "outlier_count": 0,
+            "outlier_ratio": 0.0
+          },
+          "recommendations": [
+            "Very low variance - system may be too conservative"
+          ]
+        }
+      }
+    },
+    "BSP VAL": {
+      "overall_score": 0.6701542963628512,
+      "success_rate": 1.0,
+      "details": {
+        "cross_validation": {
+          "validation_type": "cross_validation",
+          "success": true,
+          "score": 0.9881344290667948,
+          "details": {
+            "k_folds": 5,
+            "dataset_size": 30,
+            "fold_results": [
+              {
+                "fold": 0,
+                "test_scores": [
+                  0.5669104548453082,
+                  0.6523464665529568,
+                  0.6564165969533559,
+                  0.6055054890290018,
+                  0.5990061945219476,
+                  0.6832623879260057
+                ],
+                "mean_score": 0.6272412649714293,
+                "std_score": 0.03985245113619571
+              },
+              {
+                "fold": 1,
+                "test_scores": [
+                  0.5953323866994853,
+                  0.6839453258453267,
+                  0.5438563973668402,
+                  0.6093905179759278,
+                  0.5913847126326328,
+                  0.6102840836429357
+                ],
+                "mean_score": 0.6056989040271914,
+                "std_score": 0.04142062851570857
+              },
+              {
+                "fold": 2,
+                "test_scores": [
+                  0.5879030881605363,
+                  0.5923363389821894,
+                  0.6402367053331017,
+                  0.5918941774961934,
+                  0.6176172748883957,
+                  0.6291052767183776
+                ],
+                "mean_score": 0.6098488102631323,
+                "std_score": 0.02027007201321398
+              },
+              {
+                "fold": 3,
+                "test_scores": [
+                  0.6722736499320742,
+                  0.6610489314580578,
+                  0.6411674022397921,
+                  0.6334885571568073,
+                  0.633313789328797,
+                  0.5763803900277303
+                ],
+                "mean_score": 0.6362787866905432,
+                "std_score": 0.03037949781939093
+              },
+              {
+                "fold": 4,
+                "test_scores": [
+                  0.5917335666515999,
+                  0.7132966411082855,
+                  0.6070898046176257,
+                  0.5975960065297102,
+                  0.6480648513743349,
+                  0.6205099683721097
+                ],
+                "mean_score": 0.629715139775611,
+                "std_score": 0.04162022519120911
+              }
+            ],
+            "mean_cv_score": 0.6217565811455814,
+            "std_cv_score": 0.011865570933205215,
+            "consistency_score": 0.9881344290667948
+          },
+          "recommendations": []
+        },
+        "inter_rater_reliability": {
+          "validation_type": "inter_rater_reliability",
+          "success": true,
+          "score": 0.5142745126176979,
+          "details": {
+            "n_runs": 10,
+            "n_samples": 20,
+            "icc": 0.038989365022100285,
+            "average_stability": 0.9895596602132953,
+            "sample_stds": [
+              0.013052467323205046,
+              0.008233577693761176,
+              0.006715193756509316,
+              0.009006747705863608,
+              0.008678458550312323,
+              0.010800515725227533,
+              0.011927908857277169,
+              0.007450022086874419,
+              0.014773403643206633,
+              0.012187334510921969,
+              0.007055744429917097,
+              0.011418081793041624,
+              0.010538517972278692,
+              0.01017613649942317,
+              0.009011786371299091,
+              0.008344392420597913,
+              0.01759613734462636,
+              0.011110782795678266,
+              0.013336199696825198,
+              0.007393386557245697
+            ],
+            "run_means": [
+              0.6277948469691637,
+              0.6285347710178446,
+              0.6199055981432229,
+              0.6200887452398753,
+              0.624813205734658,
+              0.621512049082098,
+              0.6271984250470253,
+              0.6260111620699571,
+              0.6276681574769711,
+              0.6222159481562141
+            ]
+          },
+          "recommendations": [
+            "Low reliability - consider reducing randomness in evaluation",
+            "Low ICC - check for systematic biases"
+          ]
+        },
+        "metric_correlation_validation": {
+          "validation_type": "metric_correlation_validation",
+          "success": true,
+          "score": 1.0,
+          "details": {
+            "correlation_matrix": {
+              "accessibility": {
+                "accessibility": 1.0,
+                "degree_variance": 0.007059331973163594,
+                "door_distribution": 0.006541956038307068,
+                "dead_end_ratio": -0.06267364307940157,
+                "geometric_balance": -0.1132261622014685,
+                "key_path_length": 0.39745397008306377,
+                "loop_ratio": -0.02133101120107049,
+                "path_diversity": -0.004529046488058739,
+                "treasure_monster_distribution": -0.2425469254982387,
+                "overall_score": 0.14845207933081425
+              },
+              "degree_variance": {
+                "accessibility": 0.007059331973163594,
+                "degree_variance": 1.0,
+                "door_distribution": -0.11279559035431808,
+                "dead_end_ratio": -0.004271190275720413,
+                "geometric_balance": -0.16139131900499265,
+                "key_path_length": 0.14608992101045207,
+                "loop_ratio": -0.25309992212476706,
+                "path_diversity": 0.35332215555651014,
+                "treasure_monster_distribution": 0.06738818526149037,
+                "overall_score": 0.10610810476018855
+              },
+              "door_distribution": {
+                "accessibility": 0.006541956038307068,
+                "degree_variance": -0.11279559035431808,
+                "door_distribution": 1.0,
+                "dead_end_ratio": 0.6683354851256058,
+                "geometric_balance": 0.2671857619577308,
+                "key_path_length": 0.11740091639054627,
+                "loop_ratio": 0.8320963236517135,
+                "path_diversity": -0.022914349276974416,
+                "treasure_monster_distribution": 0.2578778713846716,
+                "overall_score": 0.4767519466073415
+              },
+              "dead_end_ratio": {
+                "accessibility": -0.06267364307940157,
+                "degree_variance": -0.004271190275720413,
+                "door_distribution": 0.6683354851256058,
+                "dead_end_ratio": 1.0,
+                "geometric_balance": 0.43030126232659005,
+                "key_path_length": -0.08488965705763686,
+                "loop_ratio": 0.8687877742270994,
+                "path_diversity": 0.10118137085990205,
+                "treasure_monster_distribution": 0.391544549201849,
+                "overall_score": 0.5774741653955385
+              },
+              "geometric_balance": {
+                "accessibility": -0.1132261622014685,
+                "degree_variance": -0.16139131900499265,
+                "door_distribution": 0.2671857619577308,
+                "dead_end_ratio": 0.43030126232659005,
+                "geometric_balance": 1.0,
+                "key_path_length": -0.1560107779950854,
+                "loop_ratio": 0.4461347531289678,
+                "path_diversity": 0.22091212458286985,
+                "treasure_monster_distribution": 0.30865175279719764,
+                "overall_score": 0.44338153503893213
+              },
+              "key_path_length": {
+                "accessibility": 0.39745397008306377,
+                "degree_variance": 0.14608992101045207,
+                "door_distribution": 0.11740091639054627,
+                "dead_end_ratio": -0.08488965705763686,
+                "geometric_balance": -0.1560107779950854,
+                "key_path_length": 1.0,
+                "loop_ratio": 0.0024920707481403855,
+                "path_diversity": 0.12413519457738449,
+                "treasure_monster_distribution": -0.29289775770176607,
+                "overall_score": 0.5210086557217168
+              },
+              "loop_ratio": {
+                "accessibility": -0.02133101120107049,
+                "degree_variance": -0.25309992212476706,
+                "door_distribution": 0.8320963236517135,
+                "dead_end_ratio": 0.8687877742270994,
+                "geometric_balance": 0.4461347531289678,
+                "key_path_length": 0.0024920707481403855,
+                "loop_ratio": 1.0,
+                "path_diversity": 0.030311118103880548,
+                "treasure_monster_distribution": 0.3453313180521009,
+                "overall_score": 0.5754621903721915
+              },
+              "path_diversity": {
+                "accessibility": -0.004529046488058739,
+                "degree_variance": 0.35332215555651014,
+                "door_distribution": -0.022914349276974416,
+                "dead_end_ratio": 0.10118137085990205,
+                "geometric_balance": 0.22091212458286985,
+                "key_path_length": 0.12413519457738449,
+                "loop_ratio": 0.030311118103880548,
+                "path_diversity": 1.0,
+                "treasure_monster_distribution": 0.260104796008028,
+                "overall_score": 0.4634037819799778
+              },
+              "treasure_monster_distribution": {
+                "accessibility": -0.2425469254982387,
+                "degree_variance": 0.06738818526149037,
+                "door_distribution": 0.2578778713846716,
+                "dead_end_ratio": 0.391544549201849,
+                "geometric_balance": 0.30865175279719764,
+                "key_path_length": -0.29289775770176607,
+                "loop_ratio": 0.3453313180521009,
+                "path_diversity": 0.260104796008028,
+                "treasure_monster_distribution": 1.0,
+                "overall_score": 0.2142301487668861
+              },
+              "overall_score": {
+                "accessibility": 0.14845207933081425,
+                "degree_variance": 0.10610810476018855,
+                "door_distribution": 0.4767519466073415,
+                "dead_end_ratio": 0.5774741653955385,
+                "geometric_balance": 0.44338153503893213,
+                "key_path_length": 0.5210086557217168,
+                "loop_ratio": 0.5754621903721915,
+                "path_diversity": 0.4634037819799778,
+                "treasure_monster_distribution": 0.2142301487668861,
+                "overall_score": 1.0
+              }
+            },
+            "logical_consistency_score": 0.7368421052631579,
+            "logical_consistency_count": 14,
+            "expected_correlations_met": 19,
+            "total_expected": 19,
+            "violated_expectations": [],
+            "high_correlations": [],
+            "dataset_size": 30
+          },
+          "recommendations": []
+        },
+        "sensitivity_analysis": {
+          "validation_type": "sensitivity_analysis",
+          "success": true,
+          "score": 0.04836254012976355,
+          "details": {
+            "base_score": 0.6124620643395848,
+            "modifications_tested": 3,
+            "successful_modifications": 3,
+            "direction_accuracy": 0.6666666666666666,
+            "average_sensitivity": 0.036271905097322664,
+            "detailed_results": [
+              {
+                "modification": "remove_connections",
+                "description": "Remove 50% of connections",
+                "expected_change": "decrease",
+                "base_score": 0.6124620643395848,
+                "modified_score": 0.5634568072492026,
+                "score_change": -0.04900525709038228,
+                "direction_correct": true,
+                "sensitivity": 0.04900525709038228
+              },
+              {
+                "modification": "add_dead_ends",
+                "description": "Add dead-end rooms",
+                "expected_change": "decrease",
+                "base_score": 0.6124620643395848,
+                "modified_score": 0.5782280129040123,
+                "score_change": -0.034234051435572566,
+                "direction_correct": true,
+                "sensitivity": 0.034234051435572566
+              },
+              {
+                "modification": "improve_balance",
+                "description": "Improve geometric balance",
+                "expected_change": "increase",
+                "base_score": 0.6124620643395848,
+                "modified_score": 0.5868856575735717,
+                "score_change": -0.025576406766013138,
+                "direction_correct": false,
+                "sensitivity": 0.025576406766013138
+              }
+            ]
+          },
+          "recommendations": [
+            "Low directional accuracy - check rule logic",
+            "Low sensitivity - system may be too conservative"
+          ]
+        },
+        "statistical_validation": {
+          "validation_type": "statistical_validation",
+          "success": true,
+          "score": 0.8,
+          "details": {
+            "dataset_size": 30,
+            "overall_scores_stats": {
+              "mean": 0.6248929916063642,
+              "std": 0.03290999987845357,
+              "min": 0.5690819407951582,
+              "max": 0.7189661336274193,
+              "variance": 0.0010830680919998138
+            },
+            "validation_tests": {
+              "score_range": true,
+              "normality": true,
+              "variance": false,
+              "mean_reasonable": true,
+              "outliers": true
+            },
+            "passed_tests": 4,
+            "total_tests": 5,
+            "outlier_count": 0,
+            "outlier_ratio": 0.0
+          },
+          "recommendations": [
+            "Very low variance - system may be too conservative"
+          ]
+        }
+      }
+    }
+  },
+  "grade_distribution": {
+    "Good": 3,
+    "Fair": 1
+  },
+  "best_algorithm": "WATABOU VAL",
+  "worst_algorithm": "FI VAL"
+}

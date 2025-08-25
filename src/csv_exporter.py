@@ -401,6 +401,153 @@ class CSVExporter:
             logger.error(f"Failed to export correlation analysis to CSV: {e}")
             return False
     
+    def export_group_comparison_analysis_csv(self, statistical_report_path: str, output_path: str) -> bool:
+        """
+        导出组间比较分析数据到CSV（包括正态性检验和Kruskal-Wallis/ANOVA结果）
+        
+        Args:
+            statistical_report_path: 统计分析报告JSON文件路径
+            output_path: 输出CSV文件路径
+        
+        Returns:
+            bool: 导出是否成功
+        """
+        try:
+            # 加载统计分析报告
+            with open(statistical_report_path, 'r', encoding='utf-8') as f:
+                report = json.load(f)
+            
+            group_comparison = report.get('group_comparison_analysis', {})
+            if not group_comparison:
+                logger.error("No group comparison analysis found in report")
+                return False
+            
+            csv_rows = []
+            
+            # 导出正态性检验结果
+            normality_tests = group_comparison.get('normality_tests', {})
+            statistical_tests = group_comparison.get('statistical_tests', {})
+            
+            for metric_name in normality_tests.keys():
+                norm_data = normality_tests[metric_name]
+                stat_data = statistical_tests.get(metric_name, {})
+                
+                row = {
+                    'metric': metric_name,
+                    'sample_size': norm_data.get('sample_size', 0),
+                    'is_normal': norm_data.get('is_normal', False),
+                    
+                    # 正态性检验结果
+                    'shapiro_wilk_statistic': None,
+                    'shapiro_wilk_p_value': None,
+                    'shapiro_wilk_normal': None,
+                    'dagostino_pearson_statistic': None,
+                    'dagostino_pearson_p_value': None,
+                    'dagostino_pearson_normal': None,
+                    'kolmogorov_smirnov_statistic': None,
+                    'kolmogorov_smirnov_p_value': None,
+                    'kolmogorov_smirnov_normal': None,
+                    
+                    # 组间比较检验结果
+                    'test_used': stat_data.get('test_used', ''),
+                    'groups_compared': stat_data.get('groups_compared', 0),
+                    'test_statistic': None,
+                    'p_value': stat_data.get('p_value', 1.0),
+                    'significant_at_05': stat_data.get('significant_at_05', False),
+                    'significant_at_01': stat_data.get('significant_at_01', False),
+                    
+                    # Post-hoc分析
+                    'post_hoc_method': None,
+                    'significant_pairs_count': 0
+                }
+                
+                # 填充正态性检验详细结果
+                tests = norm_data.get('tests', {})
+                if 'shapiro_wilk' in tests:
+                    sw = tests['shapiro_wilk']
+                    row['shapiro_wilk_statistic'] = sw.get('statistic')
+                    row['shapiro_wilk_p_value'] = sw.get('p_value')
+                    row['shapiro_wilk_normal'] = sw.get('normal_at_05')
+                
+                if 'dagostino_pearson' in tests:
+                    dp = tests['dagostino_pearson']
+                    row['dagostino_pearson_statistic'] = dp.get('statistic')
+                    row['dagostino_pearson_p_value'] = dp.get('p_value')
+                    row['dagostino_pearson_normal'] = dp.get('normal_at_05')
+                
+                if 'kolmogorov_smirnov' in tests:
+                    ks = tests['kolmogorov_smirnov']
+                    row['kolmogorov_smirnov_statistic'] = ks.get('statistic')
+                    row['kolmogorov_smirnov_p_value'] = ks.get('p_value')
+                    row['kolmogorov_smirnov_normal'] = ks.get('normal_at_05')
+                
+                # 填充统计检验结果
+                if stat_data.get('test_used') == 'one_way_anova':
+                    row['test_statistic'] = stat_data.get('f_statistic')
+                elif stat_data.get('test_used') == 'kruskal_wallis':
+                    row['test_statistic'] = stat_data.get('h_statistic')
+                
+                # Post-hoc分析
+                post_hoc = stat_data.get('post_hoc', {})
+                if post_hoc:
+                    row['post_hoc_method'] = post_hoc.get('method', '')
+                    significant_pairs = post_hoc.get('significant_pairs', [])
+                    row['significant_pairs_count'] = len(significant_pairs)
+                
+                csv_rows.append(row)
+            
+            # 添加汇总信息
+            summary = group_comparison.get('summary', {})
+            if summary:
+                summary_row = {
+                    'metric': 'SUMMARY',
+                    'sample_size': 0,
+                    'is_normal': None,
+                    'shapiro_wilk_statistic': None,
+                    'shapiro_wilk_p_value': None,
+                    'shapiro_wilk_normal': None,
+                    'dagostino_pearson_statistic': None,
+                    'dagostino_pearson_p_value': None,
+                    'dagostino_pearson_normal': None,
+                    'kolmogorov_smirnov_statistic': None,
+                    'kolmogorov_smirnov_p_value': None,
+                    'kolmogorov_smirnov_normal': None,
+                    'test_used': 'SUMMARY',
+                    'groups_compared': 4,  # 四分位数分组
+                    'test_statistic': None,
+                    'p_value': None,
+                    'significant_at_05': None,
+                    'significant_at_01': None,
+                    'post_hoc_method': None,
+                    'significant_pairs_count': None,
+                    
+                    # 汇总统计信息
+                    'total_metrics_tested': summary.get('total_metrics_tested', 0),
+                    'normally_distributed_metrics': summary.get('normally_distributed_metrics', 0),
+                    'non_normally_distributed_metrics': summary.get('non_normally_distributed_metrics', 0),
+                    'anova_tests_performed': summary.get('anova_tests_performed', 0),
+                    'kruskal_wallis_tests_performed': summary.get('kruskal_wallis_tests_performed', 0),
+                    'significant_differences_found': summary.get('significant_differences_found', 0),
+                    'proportion_significant': summary.get('proportion_significant', 0.0)
+                }
+                csv_rows.append(summary_row)
+            
+            # 写入CSV
+            if csv_rows:
+                df = pd.DataFrame(csv_rows)
+                # 确保输出目录存在
+                Path(output_path).parent.mkdir(parents=True, exist_ok=True)
+                df.to_csv(output_path, index=False, encoding='utf-8')
+                logger.info(f"Group comparison analysis exported to {output_path} ({len(csv_rows)} rows)")
+                return True
+            else:
+                logger.error("No group comparison data found to export")
+                return False
+                
+        except Exception as e:
+            logger.error(f"Failed to export group comparison analysis to CSV: {e}")
+            return False
+
     def export_batch_quality_scores_csv(self, batch_report_path: str, output_path: str) -> bool:
         """
         导出批量质量评估的所有分数到CSV
@@ -530,6 +677,10 @@ class CSVExporter:
             # 导出相关性分析
             corr_output = output_path / f"correlation_analysis_{file.stem}.csv"
             results[f'correlation_{file.name}'] = self.export_correlation_analysis_csv(str(file), str(corr_output))
+            
+            # 导出组间比较分析
+            group_output = output_path / f"group_comparison_analysis_{file.stem}.csv"
+            results[f'group_comparison_{file.name}'] = self.export_group_comparison_analysis_csv(str(file), str(group_output))
         
         # 查找批量评估报告
         batch_files = list(input_path.glob("**/*batch_report*.json"))
@@ -558,6 +709,9 @@ Examples:
   # Export correlation analysis
   python csv_exporter.py --correlation output/statistical_analysis_report.json --output correlation_data.csv
   
+  # Export group comparison analysis (normality tests + Kruskal-Wallis/ANOVA)
+  python csv_exporter.py --group-comparison output/statistical_analysis_report.json --output group_comparison.csv
+  
   # Export batch quality scores
   python csv_exporter.py --batch output/batch_report.json --output batch_scores.csv
   
@@ -569,6 +723,7 @@ Examples:
     parser.add_argument('--validation', help='Path to validation report JSON file')
     parser.add_argument('--descriptive', help='Path to statistical analysis report JSON file (for descriptive stats)')
     parser.add_argument('--correlation', help='Path to statistical analysis report JSON file (for correlation analysis)')
+    parser.add_argument('--group-comparison', help='Path to statistical analysis report JSON file (for group comparison analysis)')
     parser.add_argument('--batch', help='Path to batch assessment report JSON file')
     parser.add_argument('--auto-dir', help='Auto-export all data from input directory')
     
@@ -611,11 +766,14 @@ Examples:
         elif args.correlation:
             success = exporter.export_correlation_analysis_csv(args.correlation, args.output)
             task_name = "correlation analysis export"
+        elif getattr(args, 'group_comparison', None):
+            success = exporter.export_group_comparison_analysis_csv(args.group_comparison, args.output)
+            task_name = "group comparison analysis export"
         elif args.batch:
             success = exporter.export_batch_quality_scores_csv(args.batch, args.output)
             task_name = "batch quality scores export"
         else:
-            print("Error: Please specify one of --validation, --descriptive, --correlation, --batch, or --auto-dir")
+            print("Error: Please specify one of --validation, --descriptive, --correlation, --group-comparison, --batch, or --auto-dir")
             return 1
         
         if success:

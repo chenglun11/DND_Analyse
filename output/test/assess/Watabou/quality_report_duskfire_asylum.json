@@ -1,0 +1,327 @@
+{
+  "scores": {
+    "accessibility": {
+      "score": 0.5334294221710909,
+      "detail": {
+        "reachability_ratio": 1.0,
+        "avg_path_length": 1.5,
+        "path_variance": 0.39285714285714285,
+        "normalized": [
+          1.0,
+          0.25,
+          0.6071428571428572
+        ],
+        "score": 0.5334294221710909
+      }
+    },
+    "degree_variance": {
+      "score": 0.8510084913940431,
+      "detail": {
+        "raw_variance": 3.408163265306122,
+        "normalized_variance": 0.08066658616109164,
+        "score": 0.8510084913940431,
+        "degrees": [
+          6,
+          7,
+          6,
+          2,
+          2,
+          2,
+          2,
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "max_variance": 42.25,
+        "room_count": 14,
+        "mean_degree": 2.857142857142857
+      }
+    },
+    "door_distribution": {
+      "score": 0.575959868755695,
+      "detail": {
+        "cv": 0.6461423991660042,
+        "avg_distance": 5.313505027048427,
+        "avg_entropy": 0.7184296451219698,
+        "weights": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333
+        ],
+        "normalized": [
+          0.6769288004169979,
+          0.5327133627275455,
+          0.5182374431225418
+        ],
+        "score": 0.575959868755695,
+        "debug": {
+          "count": 20
+        }
+      }
+    },
+    "dead_end_ratio": {
+      "score": 0.9285714285714286,
+      "detail": {
+        "dead_end_ratio": 0.07142857142857142,
+        "dead_end_count": 1,
+        "total_rooms": 14,
+        "dead_end_rooms": [
+          "room_7"
+        ],
+        "score": 0.9285714285714286
+      }
+    },
+    "key_path_length": {
+      "score": 0.1353352832366127,
+      "detail": {
+        "raw_length": 2,
+        "diameter": 2,
+        "normalized_length": 1.0,
+        "score": 0.1353352832366127,
+        "path": [
+          "room_0",
+          "room_1",
+          "room_3"
+        ],
+        "entrance": "room_0",
+        "exit": "room_3"
+      }
+    },
+    "loop_ratio": {
+      "score": 0.6456563062257954,
+      "detail": {
+        "total_rooms": 14,
+        "total_edges": 20,
+        "connected_components": 1,
+        "cyclomatic_number": 7,
+        "loop_ratio": 0.5,
+        "sigmoid_loop_ratio": 0.6456563062257954,
+        "algorithm": "Cyclomatic formula + Sigmoid normalization",
+        "note": "Direct calculation using E - V + C formula, then sigmoid mapping to [0,1]",
+        "score_breakdown": {
+          "raw_loop_ratio": 0.5,
+          "sigmoid_loop_ratio": 0.6456563062257954,
+          "final_score": 0.6456563062257954
+        }
+      }
+    },
+    "path_diversity": {
+      "score": 0.4887511656934013,
+      "detail": {
+        "avg_path_diversity": 0.22538697316672962,
+        "std_path_diversity": 0.133106046051383,
+        "max_path_diversity": 0.4611487173579801,
+        "min_path_diversity": 0.0,
+        "total_pairs_analyzed": 43,
+        "rounds_completed": 2,
+        "detailed_analysis": {
+          "round_0": {
+            "pairs_analyzed": 22,
+            "avg_diversity": 0.2280786438567108
+          },
+          "round_1": {
+            "pairs_analyzed": 21,
+            "avg_diversity": 0.22256712768198744
+          }
+        },
+        "adaptive_params": {
+          "num_walks": 14,
+          "max_walk_length": 4,
+          "graph_diameter": 4,
+          "avg_degree": 2.857142857142857,
+          "total_nodes": 14,
+          "total_edges": 20
+        },
+        "algorithm": "Adaptive_random_walk_sampling",
+        "sampling_strategy": "Multi-round (2 rounds, 25 pairs/round)",
+        "normalization": "Robust_with_predefined_bounds",
+        "fusion_method": "Geometric_mean_of_normalized_metrics",
+        "performance": {
+          "time_taken": 0.0033550262451171875,
+          "timeout": false
+        }
+      }
+    },
+    "treasure_monster_distribution": {
+      "score": 0.600372811478378,
+      "detail": {
+        "cv_treasure": 1.4408763192842222,
+        "uniformity_treasure": 0.600372811478378,
+        "score": 0.600372811478378,
+        "cv_monster": 0.0,
+        "uniformity_monster": 0.0,
+        "avg_t2m_dist": 0.0,
+        "proximity_score": 0.0,
+        "note": "Only treasure distribution evaluated (no monsters found)"
+      }
+    },
+    "geometric_balance": {
+      "score": 0.8365730453964161,
+      "detail": {
+        "symmetry_ratio": 0.9285714285714286,
+        "uniformity_area": 0.6713698180715,
+        "uniformity_spacing": 0.9391489390337577,
+        "score": 0.8365730453964161
+      }
+    }
+  },
+  "category_scores": {
+    "structural": 0.5941017094354383,
+    "gameplay": 0.600372811478378,
+    "aesthetic": 0.8365730453964161
+  },
+  "overall_score": 0.677015855436744,
+  "grade": "B",
+  "details": {
+    "accessibility": {
+      "reachability_ratio": 1.0,
+      "avg_path_length": 1.5,
+      "path_variance": 0.39285714285714285,
+      "normalized": [
+        1.0,
+        0.25,
+        0.6071428571428572
+      ],
+      "score": 0.5334294221710909
+    },
+    "degree_variance": {
+      "raw_variance": 3.408163265306122,
+      "normalized_variance": 0.08066658616109164,
+      "score": 0.8510084913940431,
+      "degrees": [
+        6,
+        7,
+        6,
+        2,
+        2,
+        2,
+        2,
+        1,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "max_variance": 42.25,
+      "room_count": 14,
+      "mean_degree": 2.857142857142857
+    },
+    "door_distribution": {
+      "cv": 0.6461423991660042,
+      "avg_distance": 5.313505027048427,
+      "avg_entropy": 0.7184296451219698,
+      "weights": [
+        0.3333333333333333,
+        0.3333333333333333,
+        0.3333333333333333
+      ],
+      "normalized": [
+        0.6769288004169979,
+        0.5327133627275455,
+        0.5182374431225418
+      ],
+      "score": 0.575959868755695,
+      "debug": {
+        "count": 20
+      }
+    },
+    "dead_end_ratio": {
+      "dead_end_ratio": 0.07142857142857142,
+      "dead_end_count": 1,
+      "total_rooms": 14,
+      "dead_end_rooms": [
+        "room_7"
+      ],
+      "score": 0.9285714285714286
+    },
+    "key_path_length": {
+      "raw_length": 2,
+      "diameter": 2,
+      "normalized_length": 1.0,
+      "score": 0.1353352832366127,
+      "path": [
+        "room_0",
+        "room_1",
+        "room_3"
+      ],
+      "entrance": "room_0",
+      "exit": "room_3"
+    },
+    "loop_ratio": {
+      "total_rooms": 14,
+      "total_edges": 20,
+      "connected_components": 1,
+      "cyclomatic_number": 7,
+      "loop_ratio": 0.5,
+      "sigmoid_loop_ratio": 0.6456563062257954,
+      "algorithm": "Cyclomatic formula + Sigmoid normalization",
+      "note": "Direct calculation using E - V + C formula, then sigmoid mapping to [0,1]",
+      "score_breakdown": {
+        "raw_loop_ratio": 0.5,
+        "sigmoid_loop_ratio": 0.6456563062257954,
+        "final_score": 0.6456563062257954
+      }
+    },
+    "path_diversity": {
+      "avg_path_diversity": 0.22538697316672962,
+      "std_path_diversity": 0.133106046051383,
+      "max_path_diversity": 0.4611487173579801,
+      "min_path_diversity": 0.0,
+      "total_pairs_analyzed": 43,
+      "rounds_completed": 2,
+      "detailed_analysis": {
+        "round_0": {
+          "pairs_analyzed": 22,
+          "avg_diversity": 0.2280786438567108
+        },
+        "round_1": {
+          "pairs_analyzed": 21,
+          "avg_diversity": 0.22256712768198744
+        }
+      },
+      "adaptive_params": {
+        "num_walks": 14,
+        "max_walk_length": 4,
+        "graph_diameter": 4,
+        "avg_degree": 2.857142857142857,
+        "total_nodes": 14,
+        "total_edges": 20
+      },
+      "algorithm": "Adaptive_random_walk_sampling",
+      "sampling_strategy": "Multi-round (2 rounds, 25 pairs/round)",
+      "normalization": "Robust_with_predefined_bounds",
+      "fusion_method": "Geometric_mean_of_normalized_metrics",
+      "performance": {
+        "time_taken": 0.0033550262451171875,
+        "timeout": false
+      }
+    },
+    "treasure_monster_distribution": {
+      "cv_treasure": 1.4408763192842222,
+      "uniformity_treasure": 0.600372811478378,
+      "score": 0.600372811478378,
+      "cv_monster": 0.0,
+      "uniformity_monster": 0.0,
+      "avg_t2m_dist": 0.0,
+      "proximity_score": 0.0,
+      "note": "Only treasure distribution evaluated (no monsters found)"
+    },
+    "geometric_balance": {
+      "symmetry_ratio": 0.9285714285714286,
+      "uniformity_area": 0.6713698180715,
+      "uniformity_spacing": 0.9391489390337577,
+      "score": 0.8365730453964161
+    }
+  },
+  "recommendations": [
+    "路径多样性不足：增加路径选择以提供更多到达目标的方式",
+    "关键路径过短：增加关键路径长度以提供更好的游戏体验"
+  ],
+  "spatial_inference_used": true
+}

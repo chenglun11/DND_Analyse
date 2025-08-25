@@ -1,0 +1,182 @@
+{
+  "header": {
+    "schemaName": "dnd-dungeon-unified",
+    "schemaVersion": "1.0.0",
+    "name": "path_graph_4",
+    "author": "FI-MAP Elites Generator",
+    "description": "Converted from FI-MAP Elites: path_graph_4",
+    "grid": {
+      "type": "square",
+      "size": 1,
+      "unit": "cell"
+    }
+  },
+  "levels": [
+    {
+      "id": "level_1",
+      "name": "Main Level",
+      "map": {
+        "width": 16,
+        "height": 16
+      },
+      "rooms": [
+        {
+          "id": "space_0",
+          "shape": "polygon",
+          "position": {
+            "x": 0.5,
+            "y": 0.5
+          },
+          "size": {
+            "width": 5,
+            "height": 5
+          },
+          "name": "room_0",
+          "description": "Color: {'r': 255, 'g': 0, 'b': 0}",
+          "polygon": [
+            {
+              "x": 3.4999999999999996,
+              "y": 10.5
+            },
+            {
+              "x": 5.5,
+              "y": 10.5
+            },
+            {
+              "x": 5.5,
+              "y": 12.5
+            },
+            {
+              "x": 3.4999999999999996,
+              "y": 13.5
+            }
+          ]
+        },
+        {
+          "id": "space_1",
+          "shape": "polygon",
+          "position": {
+            "x": 0.5,
+            "y": 1.5
+          },
+          "size": {
+            "width": 6,
+            "height": 6
+          },
+          "name": "room_1",
+          "description": "Color: {'r': 255, 'g': 127, 'b': 0}",
+          "polygon": [
+            {
+              "x": 4.5,
+              "y": 11.5
+            },
+            {
+              "x": 6.5,
+              "y": 9.5
+            },
+            {
+              "x": 6.5,
+              "y": 13.5
+            },
+            {
+              "x": 4.5,
+              "y": 13.5
+            }
+          ]
+        },
+        {
+          "id": "space_2",
+          "shape": "polygon",
+          "position": {
+            "x": 0.5,
+            "y": 2.5
+          },
+          "size": {
+            "width": 6,
+            "height": 6
+          },
+          "name": "room_2",
+          "description": "Color: {'r': 255, 'g': 255, 'b': 0}",
+          "polygon": [
+            {
+              "x": 1.5,
+              "y": 9.5
+            },
+            {
+              "x": 5.5,
+              "y": 9.5
+            },
+            {
+              "x": 1.5,
+              "y": 11.5
+            }
+          ]
+        },
+        {
+          "id": "space_3",
+          "shape": "polygon",
+          "position": {
+            "x": 0.5,
+            "y": 3.5
+          },
+          "size": {
+            "width": 5,
+            "height": 5
+          },
+          "name": "room_3",
+          "description": "Color: {'r': 0, 'g': 255, 'b': 0}",
+          "polygon": [
+            {
+              "x": 2.5000000000000004,
+              "y": 10.5
+            },
+            {
+              "x": 5.5,
+              "y": 14.5
+            },
+            {
+              "x": 2.5000000000000004,
+              "y": 14.5
+            }
+          ]
+        }
+      ],
+      "doors": [
+        {
+          "id": "door_0",
+          "position": {
+            "x": 2.5000000000000004,
+            "y": 10.0
+          },
+          "connects": [
+            "space_2",
+            "space_3"
+          ]
+        },
+        {
+          "id": "door_1",
+          "position": {
+            "x": 4.5,
+            "y": 11.0
+          },
+          "connects": [
+            "space_0",
+            "space_1"
+          ]
+        },
+        {
+          "id": "door_2",
+          "position": {
+            "x": 6.0,
+            "y": 9.5
+          },
+          "connects": [
+            "space_1",
+            "space_2"
+          ]
+        }
+      ],
+      "corridors": []
+    }
+  ]
+}

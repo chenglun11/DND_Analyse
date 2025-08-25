@@ -146,6 +146,9 @@ class PathDiversityRule(BaseQualityRule):
         # 5. 鲁棒归一化
         score = self._robust_normalize(avg_diversity, diversities)
         
+        # 6. 强制有界化保护 - 确保绝对不会过界
+        score = self._enforce_bounds(score)
+        
         logger.info(f"路径多样性分析: 平均多样性={avg_diversity:.4f}±{std_diversity:.4f}, 轮数={len(detailed_analysis)}")
         logger.info(f"分析了 {len(all_round_results)} 个房间对，耗时 {time.time() - start_time:.2f}秒")
         
@@ -574,6 +577,7 @@ class PathDiversityRule(BaseQualityRule):
             
             if diversity_factors:
                 fallback_score = np.exp(np.mean(np.log(diversity_factors)))
+                fallback_score = self._enforce_bounds(fallback_score)
             else:
                 fallback_score = 0.0
             
@@ -677,7 +681,9 @@ class PathDiversityRule(BaseQualityRule):
         if mean_distance > 0:
             cv = std_distance / mean_distance
             # 规范化变异系数：cv' = cv / (1 + cv)，确保落在 (0,1)
-            return cv / (1 + cv)
+            normalized_cv = cv / (1 + cv) if cv >= 0 else 0.0
+            # 有界化保护
+            return self._enforce_bounds(normalized_cv)
         else:
             return 0.0
     
@@ -758,13 +764,15 @@ class PathDiversityRule(BaseQualityRule):
         if len(lengths) > 1 and np.mean(lengths) > 0:
             cv = np.sqrt(length_variance) / np.mean(lengths)
             # 规范化 CV：cv' = cv / (1 + cv)，确保落在 (0,1)
-            normalized_variance = cv / (1 + cv)
+            normalized_variance = cv / (1 + cv) if cv >= 0 else 0.0
+            # 有界化保护
+            normalized_variance = self._enforce_bounds(normalized_variance)
         else:
             normalized_variance = 0.0
         
         return {
-            'normalized_entropy': normalized_entropy,
-            'normalized_variance': normalized_variance
+            'normalized_entropy': self._enforce_bounds(normalized_entropy),
+            'normalized_variance': self._enforce_bounds(normalized_variance)
         }
     
     def _fuse_metrics(self, normalized_metrics: Dict[str, float], avg_jaccard_distance: float) -> float:
@@ -782,6 +790,8 @@ class PathDiversityRule(BaseQualityRule):
         
         if diversity_factors:
             overall_diversity = np.exp(np.mean(np.log(diversity_factors)))
+            # 有界化保护几何平均结果
+            overall_diversity = self._enforce_bounds(overall_diversity)
         else:
             # 如果所有指标都为0，返回0（表示没有多样性）
             overall_diversity = 0.0
@@ -790,22 +800,48 @@ class PathDiversityRule(BaseQualityRule):
     
     def _robust_normalize(self, value: float, all_values: List[float]) -> float:
         """
-        纯客观归一化：基于数据分布，不使用任何主观边界
+        直接返回值：无数据依赖归一化
+        
+        由于path_diversity的计算已经确保结果在[0,1]范围内，
+        且有_enforce_bounds()提供最终保障，
+        不再需要基于数据分布的min-max归一化，避免数据依赖性问题。
         """
-        if not all_values:
+        # 直接返回原始值，依赖_enforce_bounds()确保边界
+        return value
+    
+    def _enforce_bounds(self, value: float) -> float:
+        """
+        强制有界化：确保值严格在[0,1]范围内
+        
+        这是最后一道防线，处理所有可能的数值精度问题：
+        1. 浮点运算精度误差
+        2. 极端边界情况
+        3. 数值计算累积误差
+        
+        Args:
+            value: 待约束的数值
+            
+        Returns:
+            严格在[0,1]范围内的数值
+        """
+        if value is None or np.isnan(value) or np.isinf(value):
             return 0.0
         
-        # 纯客观归一化：使用数据的实际分布
-        if len(all_values) > 1:
-            # 使用数据的实际范围进行归一化
-            min_val = min(all_values)
-            max_val = max(all_values)
-            
-            if max_val > min_val:
-                normalized = (value - min_val) / (max_val - min_val)
-                return max(0.0, min(1.0, normalized))
-            else:
+        # 处理数值精度问题 - 对非常接近边界的值进行修正
+        if value < 0.0:
+            if value > -1e-10:  # 微小的负数，可能是精度误差
                 return 0.0
-        else:
-            # 单个值的情况
-            return 1.0 if value > 0 else 0.0 
+            else:
+                # 显著的负数，记录警告但仍修正
+                logger.warning(f"Path diversity value significantly below 0: {value}, clamped to 0.0")
+                return 0.0
+        
+        if value > 1.0:
+            if value < 1.0 + 1e-10:  # 微小超过1，可能是精度误差
+                return 1.0
+            else:
+                # 显著超过1，记录警告但仍修正
+                logger.warning(f"Path diversity value significantly above 1: {value}, clamped to 1.0")
+                return 1.0
+        
+        return float(value) 
