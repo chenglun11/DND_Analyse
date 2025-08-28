@@ -70,7 +70,7 @@ dungeon-adapter/
 └── README.md
 ```
 
-## Quick Start
+## Quick Start - Web
 
 ### 1. Start Flask Backend
 
@@ -82,7 +82,7 @@ python app.py
 
 Backend will start at `http://localhost:5001`
 
-### 2. Start Vue Frontend
+### 2. Start Frontend
 
 ```bash
 cd frontend
@@ -99,6 +99,54 @@ Frontend will start at `http://localhost:5173`
 3. Select analysis options
 4. Click "Start Analysis"
 5. View analysis results
+
+
+## Quick Start - Cli
+### Overview
+```bash
+    cd src/
+```
+```bash
+ # Convert single file (auto-detect format)
+  python cli.py convert samples/onepage_example.json output/
+
+  # Convert single file (specify format)
+  python cli.py convert samples/onepage_example.json output/ --format onepage_dungeon
+
+  # Convert entire directory (including subdirectories)
+  python cli.py convert-dir samples/ output/
+
+  # Detect file format
+  python cli.py detect samples/onepage_example.json
+
+  # List supported formats
+  python cli.py list-formats
+
+  # Generate visualization image for converted JSON file
+  python cli.py visualize output/test_onepage_example.json
+
+  # Assess single file quality
+  python cli.py assess output/test_onepage_example.json
+
+  # Batch assess directory quality (including subdirectories)
+  python cli.py batch-assess output/watabou_test/ output/batch_reports/
+
+  # Statistical analysis of batch results
+  python cli.py statistical-analysis output/watabou_test_batch_report.json
+
+  # Cross-dataset analysis for F_Q dataset
+  python cli.py cross-dataset-analysis --input output/F_Q_Report --output output/F_Q_Report/SA
+
+  # Export validation data to CSV
+  python cli.py export-csv --validation output/validation_report.json --output validation_data.csv
+
+  # Export descriptive statistics to CSV
+  python cli.py export-csv --descriptive output/statistical_analysis_report.json --output descriptive_stats.csv
+
+  # Auto-export all data from directory to CSV
+  python cli.py export-csv --auto-dir output/ --output-dir csv_exports/
+```
+
 
 ## API Endpoints
 
@@ -138,10 +186,9 @@ Content-Type: multipart/form-data
 ## Supported File Formats
 
 - **Watabou**: Watabou Dungeon Generator format
-- **Donjon**: Donjon Dungeon Generator format
-- **DungeonDraft**: DungeonDraft export format
 - **Edgar**: Edgar Dungeon Generator format
-- **JSON**: Generic JSON format
+- **FI-Map-Elites**: EA Dungeon Generator format
+- **DD2VTT**: (Beta) A General Dungeon format
 
 ## Analysis Metrics
 
@@ -157,8 +204,6 @@ Content-Type: multipart/form-data
 ### Playability Metrics
 - **Treasure Monster Distribution**: Analyzes reasonable distribution of treasures and monsters
 
-### Visual Metrics
-- **Aesthetic Balance**: Evaluates room layout aesthetics and balance
 
 ## Technology Stack
 
@@ -194,5 +239,4 @@ python app.py        # Development mode
 Author: MAX LI- Chenglun11
 
 ## License
-
 MIT License 
