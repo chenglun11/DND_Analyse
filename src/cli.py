@@ -300,14 +300,14 @@ def main():
     assess_parser = subparsers.add_parser('assess', help='评估地图质量 / assess dungeon quality')
     assess_parser.add_argument('input', help='输入文件路径 / input file path')
     assess_parser.add_argument('--infer-connections', '-i', action='store_true', 
-                              help='在评估前启用空间推断来补全连接')
+                              help='Enable spatial inference prior to evaluation to complete connections')
     assess_parser.add_argument('--no-spatial-inference', action='store_true', 
-                              help='禁用空间推断功能')
+                              help='Disable spatial inference functionality')
     assess_parser.add_argument('--adjacency-threshold', type=float, default=1.0,
-                              help='邻接判定阈值 (默认: 1.0)')
+                              help='Adjacency determination threshold (default: 1.0)')
 
     # 'batch-assess' command
-    batch_parser = subparsers.add_parser('batch-assess', help='批量评估地图质量（包括子文件夹） / batch assess dungeon quality (including subdirectories)')
+    batch_parser = subparsers.add_parser('batch-assess', help='Batch assessment of map quality (including subfolders) / batch assess dungeon quality (including subdirectories)')
     batch_parser.add_argument('input_dir', help='输入目录路径 / input directory path')
     batch_parser.add_argument('output_dir', help='输出目录路径 / output directory path')
     batch_parser.add_argument('--no-spatial-inference', action='store_true',

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-批量质量评估脚本
-为所有转换后的地牢地图文件生成质量评估报告
+Batch Quality Assessment Script
+Generates quality assessment reports for all converted dungeon map files
 """
 
 import os
@@ -28,7 +28,7 @@ def timeout_handler(signum, frame):
     raise TimeoutError("操作超时")
 
 def assess_all_maps(input_dir: str = "output", output_dir: str = "output/reports", timeout_per_file: int = 30) -> Dict[str, Any]:
-    """评估目录中所有统一格式的地牢地图文件（包括子文件夹）"""
+    """评估目录中所有统一格式的地牢地图文件"""
     
     input_path = Path(input_dir)
     output_path = Path(output_dir)
@@ -40,7 +40,7 @@ def assess_all_maps(input_dir: str = "output", output_dir: str = "output/reports
     # 过滤掉报告文件
     json_files = [f for f in json_files if not f.name.startswith("quality_report") and not f.name.startswith("report")]
     
-    logger.info(f"找到 {len(json_files)} 个地图文件需要评估（包括子文件夹）")
+    logger.info(f"{len(json_files)} map files have been located.")
     
     results = {}
     assessor = DungeonQualityAssessor()
@@ -49,7 +49,7 @@ def assess_all_maps(input_dir: str = "output", output_dir: str = "output/reports
         try:
             # 计算相对路径以保持目录结构
             relative_path = json_file.relative_to(input_path)
-            logger.info(f"评估文件 [{i}/{len(json_files)}]: {relative_path}")
+            logger.info(f"Assessment [{i}/{len(json_files)}]: {relative_path}")
             
             # 设置超时
             signal.signal(signal.SIGALRM, timeout_handler)
@@ -92,16 +92,16 @@ def assess_all_maps(input_dir: str = "output", output_dir: str = "output/reports
                 
             except TimeoutError:
                 signal.alarm(0)
-                logger.error(f"评估 {relative_path} 超时")
+                logger.error(f"Assess {relative_path} timeout")
                 results[str(relative_path)] = {
                     'error': 'timeout',
                     'overall_score': 0.0,
-                    'grade': '超时',
+                    'grade': 'timeout',
                     'status': 'timeout'
                 }
             except Exception as e:
                 signal.alarm(0)
-                logger.error(f"评估 {relative_path} 出错: {e}")
+                logger.error(f"Assess {relative_path} error: {e}")
                 results[str(relative_path)] = {
                     'error': str(e),
                     'overall_score': 0.0,
@@ -110,7 +110,7 @@ def assess_all_maps(input_dir: str = "output", output_dir: str = "output/reports
                 }
                 
         except Exception as e:
-            logger.error(f"处理 {json_file} 时发生意外错误: {e}")
+            logger.error(f"Assess {json_file} unexepcted error: {e}")
             relative_path = json_file.relative_to(input_path)
             results[str(relative_path)] = {
                 'error': f'unexpected error: {str(e)}',
@@ -129,10 +129,10 @@ def assess_all_maps(input_dir: str = "output", output_dir: str = "output/reports
             json.dump(summary_report, f, ensure_ascii=False, indent=2)
         
         # 不打印到控制台，只记录到日志
-        logger.info("批量评估完成，汇总报告已生成")
+        logger.info("Batch assessment completed; summary report generated.")
         
     except Exception as e:
-        logger.error(f"生成汇总报告时出错: {e}")
+        logger.error(f"An error occurred while generating the summary report.: {e}")
         # 即使汇总报告失败，也返回已处理的结果
         results['_summary_error'] = str(e)
     
@@ -239,9 +239,9 @@ def generate_summary_report(results: Dict[str, Any]) -> Dict[str, Any]:
         }
         
     except Exception as e:
-        logger.error(f"生成汇总报告时出错: {e}")
+        logger.error(f"An error occurred while generating the summary report.: {e}")
         return {
-            'summary': f'汇总报告生成失败: {str(e)}',
+            'summary': f'Failure to generate summary report: {str(e)}',
             'total_files': len(results),
             'valid_files': len(valid_results),
             'error_files': len(results) - len(valid_results)
@@ -401,11 +401,11 @@ def generate_statistical_analysis(valid_results: Dict[str, Any]) -> Dict[str, An
 def batch_assess_quality(input_dir: str, output_dir: str, enable_spatial_inference: bool = True, adjacency_threshold: float = 1.0, timeout_per_file: int = 30) -> Dict[str, Any]:
     """批量评估地图质量 - API 调用的接口函数（支持递归搜索子文件夹）"""
     try:
-        logger.info(f"开始批量评估，输入目录: {input_dir}（包括子文件夹）")
-        logger.info(f"输出目录: {output_dir}")
-        logger.info(f"每个文件超时时间: {timeout_per_file}秒")
-        logger.info(f"空间推断: {'启用' if enable_spatial_inference else '禁用'}")
-        logger.info(f"邻接阈值: {adjacency_threshold}")
+        logger.info(f"Commencing batch evaluation, input directory: {input_dir}")
+        logger.info(f"Output directory: {output_dir}")
+        logger.info(f"Timeout period for each file: {timeout_per_file}s")
+        logger.info(f"Spatial Engine: {'Enable' if enable_spatial_inference else 'None'}")
+        logger.info(f"Adjacency threshold: {adjacency_threshold}")
         
         # 确保输出目录存在
         os.makedirs(output_dir, exist_ok=True)
@@ -420,17 +420,17 @@ def batch_assess_quality(input_dir: str, output_dir: str, enable_spatial_inferen
         with open(output_file, 'w', encoding='utf-8') as f:
             json.dump(results, f, ensure_ascii=False, indent=2)
         
-        logger.info(f"批量评估报告已保存到: {output_file}")
+        logger.info(f"The batch assessment report has been saved to: {output_file}")
         return results
         
     except Exception as e:
-        logger.error(f"批量评估失败: {e}")
+        logger.error(f"Batch evaluation failed: {e}")
         raise
 
 def batch_assess_files(file_paths: List[str], output_dir: str, timeout_per_file: int = 30) -> Dict[str, Any]:
     """批量评估指定的文件列表"""
     try:
-        logger.info(f"开始批量评估 {len(file_paths)} 个文件")
+        logger.info(f"Commencing batch assessment {len(file_paths)} files")
         
         # 确保输出目录存在
         os.makedirs(output_dir, exist_ok=True)
@@ -440,7 +440,7 @@ def batch_assess_files(file_paths: List[str], output_dir: str, timeout_per_file:
         
         for i, file_path in enumerate(file_paths, 1):
             try:
-                logger.info(f"评估文件 [{i}/{len(file_paths)}]: {os.path.basename(file_path)}")
+                logger.info(f"Assess file [{i}/{len(file_paths)}]: {os.path.basename(file_path)}")
                 
                 # 设置超时
                 signal.signal(signal.SIGALRM, timeout_handler)
@@ -476,17 +476,17 @@ def batch_assess_files(file_paths: List[str], output_dir: str, timeout_per_file:
                     
                 except TimeoutError:
                     signal.alarm(0)
-                    logger.error(f"评估 {file_name} 超时")
+                    logger.error(f"Assess {file_name} timeout")
                     results[file_name] = {
                         'error': 'timeout',
                         'overall_score': 0.0,
-                        'grade': '超时',
+                        'grade': 'timeout',
                         'status': 'timeout',
                         'file_path': file_path
                     }
                 except Exception as e:
                     signal.alarm(0)
-                    logger.error(f"评估 {file_name} 出错: {e}")
+                    logger.error(f"Assess {file_name} error: {e}")
                     results[file_name] = {
                         'error': str(e),
                         'overall_score': 0.0,
@@ -496,7 +496,7 @@ def batch_assess_files(file_paths: List[str], output_dir: str, timeout_per_file:
                     }
                     
             except Exception as e:
-                logger.error(f"处理 {file_path} 时发生意外错误: {e}")
+                logger.error(f"Assess {file_path} unexpected error: {e}")
                 file_name = os.path.basename(file_path)
                 results[file_name] = {
                     'error': f'unexpected error: {str(e)}',
@@ -519,11 +519,11 @@ def batch_assess_files(file_paths: List[str], output_dir: str, timeout_per_file:
         with open(results_file, 'w', encoding='utf-8') as f:
             json.dump(results, f, ensure_ascii=False, indent=2)
         
-        logger.info(f"批量评估完成，结果已保存到: {output_dir}")
+        logger.info(f"Batch evaluation completed. Results saved to: {output_dir}")
         return results
         
     except Exception as e:
-        logger.error(f"批量评估失败: {e}")
+        logger.error(f"Batch evaluation failed: {e}")
         raise
 
 def analyze_cross_datasets(root_dir: str = "output/F_Q_Report", output_dir: str = None) -> Dict[str, Any]:
@@ -537,7 +537,7 @@ def analyze_cross_datasets(root_dir: str = "output/F_Q_Report", output_dir: str 
         if output_dir is None:
             output_dir = str(root_path / 'SA')
         
-        logger.info(f"开始跨数据集分析，根目录: {root_dir}")
+        logger.info(f"Commencing cross-dataset analysis, root directory: {root_dir}")
         
         # 扫描子目录
         subdirs = [d for d in root_path.iterdir() 
@@ -547,7 +547,7 @@ def analyze_cross_datasets(root_dir: str = "output/F_Q_Report", output_dir: str 
             logger.error("No valid subdirectories found")
             return {'error': 'No valid subdirectories found'}
         
-        logger.info(f"发现数据集目录: {[d.name for d in subdirs]}")
+        logger.info(f"Discover the dataset directory: {[d.name for d in subdirs]}")
         
         # 加载各数据集
         datasets = {}
@@ -599,7 +599,7 @@ def analyze_cross_datasets(root_dir: str = "output/F_Q_Report", output_dir: str 
         # 生成跨数据集分析
         analysis_result = generate_cross_dataset_analysis(datasets, output_dir)
         
-        logger.info(f"跨数据集分析完成，结果保存到: {output_dir}")
+        logger.info(f"Cross-dataset analysis completed, results saved to: {output_dir}")
         return analysis_result
         
     except Exception as e:
@@ -650,7 +650,7 @@ def generate_cross_dataset_analysis(datasets: Dict[str, pd.DataFrame], output_di
         common_metrics = common_metrics.intersection(current_metrics)
     
     common_metrics = list(common_metrics)
-    logger.info(f"共同指标: {len(common_metrics)} 个")
+    logger.info(f"Common indicators: {len(common_metrics)}")
     
     # 跨数据集比较
     cross_comparison = {}
@@ -708,7 +708,6 @@ def generate_cross_dataset_analysis(datasets: Dict[str, pd.DataFrame], output_di
             overall_correlations.sort(key=lambda x: abs(x['spearman_correlation']), reverse=True)
             
             # 所有指标都应该与overall_score正相关
-            # 如果发现负相关，这表明指标设计可能有问题，需要检查
             positive_corrs = [c for c in overall_correlations if c['spearman_correlation'] > 0]
             negative_corrs = [c for c in overall_correlations if c['spearman_correlation'] < 0]
             
@@ -720,7 +719,7 @@ def generate_cross_dataset_analysis(datasets: Dict[str, pd.DataFrame], output_di
             spearman_correlations[dataset_name] = {
                 'overall_score_correlations': overall_correlations,
                 'top_positive_correlation': positive_corrs[0] if positive_corrs else None,
-                'warning_negative_correlations': warning_negative_corrs,  # 改为警告而非正常报告
+                'warning_negative_correlations': warning_negative_corrs, 
                 'top_correlation_by_abs_value': overall_correlations[0] if overall_correlations else None
             }
     
@@ -741,7 +740,6 @@ def generate_cross_dataset_analysis(datasets: Dict[str, pd.DataFrame], output_di
     
     # 保存CSV统计文件
     for name, df in datasets.items():
-        # 基础统计
         basic_stats = df.describe()
         basic_stats.to_csv(output_path / f"{name}_statistics.csv")
         
@@ -841,7 +839,7 @@ def print_cross_dataset_summary(report: Dict[str, Any]):
                 
                 # 如果有负相关，作为警告显示
                 if warning_negs:
-                    print(f"  ⚠️  Unexpected negative correlations detected:")
+                    print(f" Unexpected negative correlations detected:")
                     for neg_corr in warning_negs[:2]:  # 只显示前2个
                         rho = neg_corr['spearman_correlation']
                         p_val = neg_corr['p_value']
@@ -853,16 +851,16 @@ def main():
     """主函数 - 保留用于直接运行脚本"""
     import argparse
     
-    parser = argparse.ArgumentParser(description='批量评估地牢地图质量')
-    parser.add_argument('--input', default='output', help='输入目录路径')
-    parser.add_argument('--output', default='output/reports', help='输出目录路径')
-    parser.add_argument('--timeout', type=int, default=30, help='每个文件的超时时间（秒）')
+    parser = argparse.ArgumentParser(description='Batch assessment of dungeon map quality')
+    parser.add_argument('--input', default='output', help='Enter directory path')
+    parser.add_argument('--output', default='output/reports', help='Output directory path')
+    parser.add_argument('--timeout', type=int, default=30, help='Timeout period for each file (s)')
     
     args = parser.parse_args()
     
-    logger.info("开始批量质量评估...")
+    logger.info("Commencing batch quality assessment...")
     results = assess_all_maps(args.input, args.output, args.timeout)
-    logger.info("批量质量评估完成!")
+    logger.info("Batch quality assessment completed!")
 
 if __name__ == '__main__':
     main() 

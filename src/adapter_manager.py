@@ -13,7 +13,7 @@ from .spatial_inference import auto_infer_connections
 logger = logging.getLogger(__name__)
 
 class AdapterManager:
-    """适配器管理器，负责加载和管理各种格式的适配器"""
+    """Adapter Manager, responsible for loading and managing adapters of various formats"""
     
     def __init__(self):
         self.adapters = {}
@@ -54,7 +54,7 @@ class AdapterManager:
         return list(self.adapters.keys())
     
     def detect_format(self, data: Dict[str, Any]) -> Optional[str]:
-        """自动检测数据格式"""
+        """Automatic detection of data formats"""
         # 首先检查是否已经是统一格式
         if self._is_unified_format(data):
             return "unified"
@@ -70,7 +70,7 @@ class AdapterManager:
         return None
     
     def _is_unified_format(self, data: Dict[str, Any]) -> bool:
-        """检查是否为统一格式"""
+        """Check whether it is in a standardised format"""
         # 统一格式的特征：包含header和levels
         if 'header' in data and 'levels' in data:
             header = data['header']
