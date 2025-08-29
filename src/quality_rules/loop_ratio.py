@@ -30,7 +30,7 @@ class LoopRatioRule(BaseQualityRule):
     
     @property
     def description(self):
-        return "基于cyclomatic formula的客观loop ratio评估（高性能，sigmoid归一化）"
+        return "Objective loop ratio assessment based on cyclomatic formula (high performance, sigmoid normalisation)"
 
     def evaluate(self, dungeon_data):
         levels = dungeon_data.get('levels', [])
