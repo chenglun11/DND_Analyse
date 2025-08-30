@@ -5,20 +5,20 @@ from typing import Dict, Any, List, Tuple
 
 class DeadEndRatioRule(BaseQualityRule):
     """
-    死胡同比例评估：纯客观评分，无任何主观权重
+    Dead end ratio assessment: pure objective scoring, no subjective weights
     
-    子指标:
-      1. dead_end_ratio: 度数为1的房间比例 (0-1)
-      2. avg_dead_end_length: 平均死胡同长度（可选）
+    Sub-indicators:
+      1. dead_end_ratio: Ratio of rooms with degree 1 (0-1)
+      2. avg_dead_end_length: Average dead end length (optional)
 
-    评分: score = 1 - dead_end_ratio，死胡同越少评分越高
+    Scoring: score = 1 - dead_end_ratio, fewer dead ends result in higher scores
     """
     
     def __init__(self, include_length: bool = False):
         """
-        初始化规则
+        Initialize rule
         Args:
-            include_length: 是否包含死胡同长度分析
+            include_length: Whether to include dead end length analysis
         """
         self.include_length = include_length
     
@@ -41,24 +41,24 @@ class DeadEndRatioRule(BaseQualityRule):
         if not rooms or not connections:
             return 0.0, {"reason": "No rooms or connections"}
 
-        # 构建图，并确保所有房间都在图节点中
+        # Build graph and ensure all rooms are included in graph nodes
         graph = defaultdict(list)
         for c in connections:
             u, v = c['from_room'], c['to_room']
             graph[u].append(v)
             graph[v].append(u)
-        # 确保孤立房间也被计入
+        # Ensure isolated rooms are also counted
         room_ids = [r['id'] for r in rooms]
         for rid in room_ids:
             graph.setdefault(rid, [])
 
-        # 1. 死胡同比例：度数为1的房间比例
+        # 1. Dead end ratio: ratio of rooms with degree 1
         total_rooms = len(room_ids)
         dead_ends = [rid for rid, nbrs in graph.items() if len(nbrs) == 1]
         dead_end_count = len(dead_ends)
         dead_end_ratio = dead_end_count / total_rooms if total_rooms > 0 else 0.0
 
-        # 2. 纯客观评分：死胡同越少评分越高
+        # 2. Pure objective scoring: fewer dead ends result in higher scores
         score = 1.0 - dead_end_ratio
 
         result = {
@@ -69,7 +69,7 @@ class DeadEndRatioRule(BaseQualityRule):
             'score': score
         }
 
-        # 3. 可选：平均死胡同长度
+        # 3. Optional: average dead end length
         if self.include_length and dead_ends:
             avg_length = self._calculate_avg_dead_end_length(graph, dead_ends)
             result['avg_dead_end_length'] = avg_length
@@ -78,12 +78,12 @@ class DeadEndRatioRule(BaseQualityRule):
 
     def _calculate_avg_dead_end_length(self, graph: Dict[str, List[str]], dead_ends: List[str]) -> float:
         """
-        计算平均死胡同长度：沿叶节点唯一路径追溯到分岔点的深度
+        Calculate average dead end length: trace unique path from leaf node to branch point depth
         Args:
-            graph: 图结构
-            dead_ends: 死胡同节点列表
+            graph: Graph structure
+            dead_ends: List of dead end nodes
         Returns:
-            平均死胡同长度
+            Average dead end length
         """
         lengths = []
         for dead_end in dead_ends:
@@ -92,19 +92,19 @@ class DeadEndRatioRule(BaseQualityRule):
 
     def _trace_dead_end_path(self, graph: Dict[str, List[str]], dead_end: str) -> int:
         """
-        追溯死胡同路径到分岔点
+        Trace dead end path to branch point
         Args:
-            graph: 图结构
-            dead_end: 死胡同节点
+            graph: Graph structure
+            dead_end: Dead end node
         Returns:
-            路径长度
+            Path length
         """
         visited = {dead_end}
         queue = deque([(dead_end, 0)])  # (node, dist)
         while queue:
             node, dist = queue.popleft()
             nbrs = [n for n in graph[node] if n not in visited]
-            # 若当前节点不是度=1且无未访问邻居，或度>2，则到达分岔或终点
+            # If current node is not degree=1 with no unvisited neighbors, or degree>2, then reached branch or endpoint
             if len(nbrs) != 1:
                 return dist
             visited.add(nbrs[0])

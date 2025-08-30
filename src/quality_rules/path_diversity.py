@@ -11,35 +11,35 @@ logger = logging.getLogger(__name__)
 
 class PathDiversityRule(BaseQualityRule):
     """
-    基于蒙特卡洛随机游走采样的客观路径多样性评估
+    Objective path diversity assessment based on Monte Carlo random walk sampling
     
-    核心改进：
-    1. 使用蒙特卡洛随机游走采样替代昂贵的路径枚举
-    2. 基于图论理论设计客观的多样性指标
-    3. 使用几何平均融合多个子指标，避免主观权重
-    4. 自适应参数设置，基于图的客观属性
-    5. 完全可配置的参数系统，支持不同使用场景
+    Core improvements:
+    1. Use Monte Carlo random walk sampling to replace expensive path enumeration
+    2. Design objective diversity indicators based on graph theory
+    3. Use geometric mean to fuse multiple sub-indicators, avoiding subjective weights
+    4. Adaptive parameter setting based on objective graph properties
+    5. Fully configurable parameter system supporting different usage scenarios
     
-    理论基础：
-    - Jaccard距离：测量路径拓扑多样性
-    - Shannon熵：测量路径长度分布多样性  
-    - 变异系数：测量路径长度变化多样性
-    - 几何平均：客观融合多个子指标
+    Theoretical foundation:
+    - Jaccard distance: measure path topological diversity
+    - Shannon entropy: measure path length distribution diversity
+    - Coefficient of variation: measure path length variation diversity
+    - Geometric mean: objectively fuse multiple sub-indicators
     """
     
     def __init__(self, 
                  random_seed: int = 42,
                  timeout_seconds: int = 30):
         """
-        初始化路径多样性规则
+        Initialize path diversity rule
         
         Args:
-            random_seed: 随机种子，确保可重复性
-            timeout_seconds: 计算超时时间（秒）
+            random_seed: Random seed to ensure reproducibility
+            timeout_seconds: Computation timeout (seconds)
         """
         self.random_seed = random_seed
         self.timeout_seconds = timeout_seconds
-        # 创建独立的随机数生成器，避免影响全局状态
+        # Create independent random number generator to avoid affecting global state
         self.rng = random.Random(random_seed)
     
     @property
@@ -108,7 +108,7 @@ class PathDiversityRule(BaseQualityRule):
         pairs_per_round = max(1, target_samples // num_rounds)
         
         # 添加调试信息
-        logger.info(f"采样参数: 直径={graph_diameter}, 总对数={total_pairs}, 目标采样={target_samples}, 轮数={num_rounds}, 每轮对数={pairs_per_round}")
+        logger.info(f"Sampling parameters: diameter={graph_diameter}, total_pairs={total_pairs}, target_samples={target_samples}, rounds={num_rounds}, pairs_per_round={pairs_per_round}")
         
         for round_idx in range(num_rounds):
             # 检查超时
@@ -149,8 +149,8 @@ class PathDiversityRule(BaseQualityRule):
         # 6. 强制有界化保护 - 确保绝对不会过界
         score = self._enforce_bounds(score)
         
-        logger.info(f"路径多样性分析: 平均多样性={avg_diversity:.4f}±{std_diversity:.4f}, 轮数={len(detailed_analysis)}")
-        logger.info(f"分析了 {len(all_round_results)} 个房间对，耗时 {time.time() - start_time:.2f}秒")
+        logger.info(f"Path diversity analysis: avg_diversity={avg_diversity:.4f}±{std_diversity:.4f}, rounds={len(detailed_analysis)}")
+        logger.info(f"Analyzed {len(all_round_results)} room pairs, took {time.time() - start_time:.2f} seconds")
         
         return score, {
             "avg_path_diversity": avg_diversity,

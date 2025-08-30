@@ -1,81 +1,81 @@
-# 统计学测试模块
+# Statistical Testing Module
 
-此模块包含地牢质量评估系统的所有统计学测试和验证功能。
+This module contains all statistical testing and validation functions for the dungeon quality assessment system.
 
-## 模块结构
+## Module Structure
 
-### 1. 系统验证 (`validation.py`)
-系统有效性验证的核心模块，包含7种验证方法：
+### 1. System Validation (`validation.py`)
+Core module for system validity validation, containing 7 validation methods:
 
-- **交叉验证** - 检验评估结果的一致性
-- **重测信度** - 测试系统稳定性
-- **已知基准验证** - 使用人工标注数据验证
-- **指标相关性验证** - 检查指标间相关性是否合理
-- **敏感性分析** - 测试系统对变化的响应
-- **统计有效性检验** - 检查分数分布和统计特性
-- **综合验证** - 运行所有验证测试
+- **Cross Validation** - Verify consistency of assessment results
+- **Test-Retest Reliability** - Test system stability
+- **Known Benchmark Validation** - Validate using manually annotated data
+- **Metric Correlation Validation** - Check if inter-metric correlations are reasonable
+- **Sensitivity Analysis** - Test system response to changes
+- **Statistical Validity Testing** - Check score distributions and statistical properties
+- **Comprehensive Validation** - Run all validation tests
 
-### 2. 统计分析 (`statistical_analysis.py`)
-基于批量评估结果的统计分析：
+### 2. Statistical Analysis (`statistical_analysis.py`)
+Statistical analysis based on batch evaluation results:
 
-- Spearman相关性分析
-- 高级统计分析集成
-- 图表生成管理
-- 批量结果处理
+- Spearman correlation analysis
+- Advanced statistical analysis integration
+- Chart generation management
+- Batch result processing
 
-### 3. 高级分析 (`advanced_analytics.py`)
-深度数据分析功能：
+### 3. Advanced Analytics (`advanced_analytics.py`)
+Deep data analysis functions:
 
-- **Spearman相关性** - 带FDR校正的等级相关分析
-- **VIF分析** - 方差膨胀因子，检测多重共线性
-- **PCA分析** - 主成分分析，降维和特征提取
-- **聚类分析** - 层次聚类，发现指标分组模式
+- **Spearman Correlation** - Rank correlation analysis with FDR correction
+- **VIF Analysis** - Variance Inflation Factor, detecting multicollinearity
+- **PCA Analysis** - Principal Component Analysis, dimensionality reduction and feature extraction
+- **Clustering Analysis** - Hierarchical clustering, discovering metric grouping patterns
 
-### 4. 图表生成 (`unified_chart_generator.py`)
-统一的可视化生成器：
+### 4. Chart Generation (`unified_chart_generator.py`)
+Unified visualization generator:
 
-- 相关性热力图和散点图
-- 网络关系图
-- P值分析图表
-- VIF、PCA、聚类分析图表
-- 所有图表转base64编码
+- Correlation heatmaps and scatter plots
+- Network relationship diagrams
+- P-value analysis charts
+- VIF, PCA, clustering analysis charts
+- All charts converted to base64 encoding
 
-### 5. F_Q数据分析 (`f_q_data_statistics.py`)
-专门针对F_Q_Report目录数据的统计分析：
+### 5. F_Q Data Analysis (`f_q_data_statistics.py`)
+Statistical analysis specifically for F_Q_Report directory data:
 
-- 描述性统计
-- 跨数据集比较
-- Spearman相关性分析
-- 详细统计报告生成
+- Descriptive statistics
+- Cross-dataset comparison
+- Spearman correlation analysis
+- Detailed statistical report generation
 
-## 使用示例
+## Usage Examples
 
 ```python
 from src.statistical_testing import SystemValidator, StatisticalAnalyzer
 
-# 系统验证
+# System validation
 validator = SystemValidator()
 results = validator.comprehensive_validation("samples/test_data/")
 validator.generate_validation_report(results, "output/validation_report.json")
 
-# 统计分析
+# Statistical analysis
 analyzer = StatisticalAnalyzer()
 analyzer.analyze_batch_results("output/batch_summary.json", "output/analysis/")
 ```
 
-## 主要特性
+## Key Features
 
-1. **全面的验证框架** - 7种不同角度的系统有效性验证
-2. **统计学严谨性** - 使用scipy进行科学计算，支持FDR校正
-3. **可视化丰富** - 生成多种类型的统计图表
-4. **模块化设计** - 各功能独立，易于扩展和维护
-5. **鲁棒性处理** - 完善的错误处理和边界情况处理
+1. **Comprehensive Validation Framework** - 7 different perspectives of system validity validation
+2. **Statistical Rigor** - Using scipy for scientific computing, supporting FDR correction
+3. **Rich Visualization** - Generate multiple types of statistical charts
+4. **Modular Design** - Independent functions, easy to extend and maintain
+5. **Robust Handling** - Comprehensive error handling and edge case processing
 
-## 输出结果
+## Output Results
 
-- JSON格式的详细分析报告
-- CSV格式的统计数据表
-- PNG格式的统计图表
-- 控制台输出的分析摘要
+- Detailed analysis reports in JSON format
+- Statistical data tables in CSV format
+- Statistical charts in PNG format
+- Analysis summaries in console output
 
-所有分析结果保存在`output/`目录下的相应子目录中。
+All analysis results are saved in corresponding subdirectories under the `output/` directory.

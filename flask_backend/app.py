@@ -8,35 +8,35 @@ import logging
 from datetime import datetime, timedelta
 from pathlib import Path
 
-# 导入现有的地下城分析模块（使用本地复制的src）
+# Import existing dungeon analysis modules (using local copy of src)
 from src.adapter_manager import AdapterManager
 from src.quality_assessor import DungeonQualityAssessor
 from src.batch_assess import assess_all_maps
 
-# 定义项目根目录
+# Define project root directory
 project_root = Path(__file__).parent.parent
 
 app = Flask(__name__)
-CORS(app)  # 启用跨域支持
+CORS(app)  # Enable CORS support
 
-# 配置日志
+# Configure logging
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
-# 初始化适配器管理器和质量评估器
+# Initialize adapter manager and quality assessor
 adapter_manager = AdapterManager()
 quality_assessor = DungeonQualityAssessor()
 
-# 内存缓存系统
+# Memory cache system
 file_cache = {}
 
 def cleanup_expired_cache():
-    """清理过期的缓存文件"""
+    """Clean expired cache files"""
     current_time = datetime.now()
     expired_keys = []
     
     for file_id, cache_data in file_cache.items():
-        # 文件过期时间：1小时
+        # File expiration time: 24 hours
         if current_time - cache_data['timestamp'] > timedelta(hours=24):
             expired_keys.append(file_id)
     
@@ -44,12 +44,12 @@ def cleanup_expired_cache():
         del file_cache[key]
     
     if expired_keys:
-        print(f"清理了 {len(expired_keys)} 个过期缓存文件")
+        print(f"Cleaned {len(expired_keys)} expired cache files")
 
 @app.route('/api/health', methods=['GET'])
 def health_check():
-    """健康检查接口"""
-    # 清理过期缓存
+    """Health check endpoint"""
+    # Clean expired cache
     cleanup_expired_cache()
     
     return jsonify({
@@ -63,20 +63,20 @@ def health_check():
 
 @app.route('/api/analyze', methods=['POST'])
 def analyze_dungeon():
-    """分析单个地下城文件"""
+    """Analyze single dungeon file"""
     try:
         if 'file' not in request.files:
-            return jsonify({'error': '没有上传文件'}), 400
+            return jsonify({'error': 'No file uploaded'}), 400
         
         file = request.files['file']
         if file.filename == '':
-            return jsonify({'error': '没有选择文件'}), 400
+            return jsonify({'error': 'No file selected'}), 400
         
-        # 读取文件内容并生成文件ID
+        # Read file content and generate file ID
         file_content = file.read().decode('utf-8')
         file_id = hashlib.md5(file_content.encode()).hexdigest()
         
-        # 存储到缓存
+        # Store to cache
         file_cache[file_id] = {
             'filename': file.filename,
             'content': file_content,
@@ -94,7 +94,7 @@ def analyze_dungeon():
             if unified_data is None:
                 return jsonify({
                     'success': False,
-                    'error': '无法识别或转换文件格式'
+                    'error': 'Unable to recognize or convert file format'
                 }), 400
             
             # 使用质量评估器进行分析
@@ -126,14 +126,14 @@ def analyze_dungeon_by_id():
     try:
         file_id = request.form.get('file_id')
         if not file_id or file_id not in file_cache:
-            return jsonify({'error': '文件ID无效或已过期'}), 404
+            return jsonify({'error': 'Invalid or expired file ID'}), 404
         
         file_data = file_cache[file_id]
         
         # 检查文件是否过期（24小时后）
         if datetime.now() - file_data['timestamp'] > timedelta(hours=24):
             del file_cache[file_id]
-            return jsonify({'error': '文件已过期，请重新上传'}), 410
+            return jsonify({'error': 'File expired, please upload again'}), 410
         
         try:
             # 处理文件
@@ -143,7 +143,7 @@ def analyze_dungeon_by_id():
             if unified_data is None:
                 return jsonify({
                     'success': False,
-                    'error': '无法识别或转换文件格式'
+                    'error': 'Unable to recognize or convert file format'
                 }), 400
             
             # 使用质量评估器进行分析
@@ -175,14 +175,14 @@ def visualize_dungeon_by_id():
     try:
         file_id = request.form.get('file_id')
         if not file_id or file_id not in file_cache:
-            return jsonify({'error': '文件ID无效或已过期'}), 404
+            return jsonify({'error': 'Invalid or expired file ID'}), 404
         
         file_data = file_cache[file_id]
         
         # 检查文件是否过期（24小时后）
         if datetime.now() - file_data['timestamp'] > timedelta(hours=24):
             del file_cache[file_id]
-            return jsonify({'error': '文件已过期，请重新上传'}), 410
+            return jsonify({'error': 'File expired, please upload again'}), 410
         
         # 获取可视化选项
         visualization_options = request.form.get('options', '{}')
@@ -196,7 +196,7 @@ def visualize_dungeon_by_id():
             if unified_data is None:
                 return jsonify({
                     'success': False,
-                    'error': '无法识别或转换文件格式'
+                    'error': 'Unable to recognize or convert file format'
                 }), 400
             
             # 生成可视化图像
@@ -254,14 +254,14 @@ def get_visualization_data_by_id():
     try:
         file_id = request.form.get('file_id')
         if not file_id or file_id not in file_cache:
-            return jsonify({'error': '文件ID无效或已过期'}), 404
+            return jsonify({'error': 'Invalid or expired file ID'}), 404
         
         file_data = file_cache[file_id]
         
         # 检查文件是否过期（1小时后）
         if datetime.now() - file_data['timestamp'] > timedelta(hours=24):
             del file_cache[file_id]
-            return jsonify({'error': '文件已过期，请重新上传'}), 410
+            return jsonify({'error': 'File expired, please upload again'}), 410
         
         try:
             # 处理文件
@@ -271,7 +271,7 @@ def get_visualization_data_by_id():
             if unified_data is None:
                 return jsonify({
                     'success': False,
-                    'error': '无法识别或转换文件格式'
+                    'error': 'Unable to recognize or convert file format'
                 }), 400
             
             # 转换为前端可用的格式
@@ -398,7 +398,7 @@ def analyze_dungeon_by_filename():
             if unified_data is None:
                 return jsonify({
                     'success': False,
-                    'error': '无法识别或转换文件格式'
+                    'error': 'Unable to recognize or convert file format'
                 }), 400
             
             # 使用质量评估器进行分析
@@ -480,7 +480,7 @@ def get_visualization_data_by_filename():
             if unified_data is None:
                 return jsonify({
                     'success': False,
-                    'error': '无法识别或转换文件格式'
+                    'error': 'Unable to recognize or convert file format'
                 }), 400
             
             # 转换为前端可用的格式
@@ -570,7 +570,7 @@ def visualize_dungeon_by_filename():
             if unified_data is None:
                 return jsonify({
                     'success': False,
-                    'error': '无法识别或转换文件格式'
+                    'error': 'Unable to recognize or convert file format'
                 }), 400
             
             # 生成可视化图像
@@ -623,11 +623,11 @@ def analyze_batch():
     """批量分析地下城文件"""
     try:
         if 'files' not in request.files:
-            return jsonify({'error': '没有上传文件'}), 400
+            return jsonify({'error': 'No file uploaded'}), 400
         
         files = request.files.getlist('files')
         if not files or files[0].filename == '':
-            return jsonify({'error': '没有选择文件'}), 400
+            return jsonify({'error': 'No file selected'}), 400
         
         # 获取分析选项
         analysis_options = request.form.get('options', '{}')
@@ -731,7 +731,7 @@ def convert_dungeon():
     """转换地下城格式"""
     try:
         if 'file' not in request.files:
-            return jsonify({'error': '没有上传文件'}), 400
+            return jsonify({'error': 'No file uploaded'}), 400
         
         file = request.files['file']
         target_format = request.form.get('target_format', 'unified')
@@ -776,11 +776,11 @@ def visualize_dungeon():
     """生成地下城可视化图像"""
     try:
         if 'file' not in request.files:
-            return jsonify({'error': '没有上传文件'}), 400
+            return jsonify({'error': 'No file uploaded'}), 400
         
         file = request.files['file']
         if file.filename == '':
-            return jsonify({'error': '没有选择文件'}), 400
+            return jsonify({'error': 'No file selected'}), 400
         
         # 获取可视化选项
         visualization_options = request.form.get('options', '{}')
@@ -806,7 +806,7 @@ def visualize_dungeon():
             if unified_data is None:
                 return jsonify({
                     'success': False,
-                    'error': '无法识别或转换文件格式'
+                    'error': 'Unable to recognize or convert file format'
                 }), 400
             
             # 生成可视化图像
@@ -863,11 +863,11 @@ def get_visualization_data():
     """获取地下城可视化数据（用于前端渲染）"""
     try:
         if 'file' not in request.files:
-            return jsonify({'error': '没有上传文件'}), 400
+            return jsonify({'error': 'No file uploaded'}), 400
         
         file = request.files['file']
         if file.filename == '':
-            return jsonify({'error': '没有选择文件'}), 400
+            return jsonify({'error': 'No file selected'}), 400
         
         # 保存上传的文件
         upload_dir = Path(project_root) / 'temp_uploads'
@@ -889,7 +889,7 @@ def get_visualization_data():
             if unified_data is None:
                 return jsonify({
                     'success': False,
-                    'error': '无法识别或转换文件格式'
+                    'error': 'Unable to recognize or convert file format'
                 }), 400
             
             # 转换为前端可用的格式
@@ -926,11 +926,11 @@ def batch_test():
     """批量测试接口 - 评估多个地下城文件"""
     try:
         if 'files' not in request.files:
-            return jsonify({'error': '没有上传文件'}), 400
+            return jsonify({'error': 'No file uploaded'}), 400
         
         files = request.files.getlist('files')
         if not files:
-            return jsonify({'error': '没有选择文件'}), 400
+            return jsonify({'error': 'No file selected'}), 400
         
         # 获取测试选项
         test_options = request.form.get('options', '{}')
@@ -1073,7 +1073,7 @@ def generate_improvement_suggestions():
         scores_data = request.form.get('scores', '{}')
         
         if not file_id or file_id not in file_cache:
-            return jsonify({'error': '文件ID无效或已过期'}), 404
+            return jsonify({'error': 'Invalid or expired file ID'}), 404
         
         scores = json.loads(scores_data) if scores_data else {}
         

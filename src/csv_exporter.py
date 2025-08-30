@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-CSV导出模块 - 导出validation测试和quality测试的数据为CSV格式
+CSV Export Module - Export validation and quality test data to CSV format
 """
 
 import os
@@ -13,27 +13,27 @@ from pathlib import Path
 from typing import Dict, List, Any, Optional, Union
 from datetime import datetime
 
-# 设置日志
+# Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 class CSVExporter:
-    """CSV导出器"""
+    """CSV Exporter"""
     
 
     def _safe_get_score(self, block):
-        """更宽容地从维度块里提取数值"""
+        """More tolerant extraction of numerical values from dimension blocks"""
         if block is None:
             return None
         if isinstance(block, (int, float)):
             return float(block)
         if isinstance(block, dict):
-            # 常见的分数字段
+
             for k in ["score", "average_score", "avg_score", "mean_score", "performance_score", "value"]:
                 v = block.get(k)
                 if isinstance(v, (int, float)):
                     return float(v)
-            # details 里再找一遍
+
             det = block.get("details")
             if isinstance(det, dict):
                 for k in ["score", "average_score", "avg_score", "mean_score", "performance_score", "value"]:
@@ -47,24 +47,21 @@ class CSVExporter:
     
     def export_validation_data_csv(self, validation_report_path: str, output_path: str) -> bool:
         """
-        导出validation测试数据到CSV
+        Export validation test data to CSV
         
         Args:
-            validation_report_path: validation报告JSON文件路径
-            output_path: 输出CSV文件路径
+            validation_report_path: validation report JSON file path
+            output_path: output CSV file path
         
         Returns:
-            bool: 导出是否成功
+            bool: whether export was successful
         """
         try:
-            # 加载validation报告
+            # Loading validation report
             with open(validation_report_path, 'r', encoding='utf-8') as f:
                 report = json.load(f)
             
-            # 准备CSV数据
             csv_rows = []
-
-            # 定义一个列名映射表，把可能出现的不同命名统一起来
             name_map = {
                 'metric_correlation_validation': 'metric_correlation',
                 'metric_correlation_score': 'metric_correlation',
@@ -74,12 +71,12 @@ class CSVExporter:
                 'statistical_validation_score': 'statistical_validation',
             }
                         
-            # 检查报告格式 - 支持两种格式
+            # Check report format - supports two formats
             if 'detailed_results' in report:
-                # 格式1: 标准validation报告格式
+                # Format 1: Standard validation report format
                 detailed_results = report.get('detailed_results', {})
                 
-                # 为每个验证类型创建一行数据
+                # Create one row of data for each validation type
                 for validation_type, result in detailed_results.items():
                     row = {
                         'validation_type': validation_type,
@@ -88,13 +85,12 @@ class CSVExporter:
                         'timestamp': report.get('validation_summary', {}).get('timestamp', ''),
                     }
                     
-                    # 添加详细信息（扁平化处理）
                     details = result.get('details', {})
                     for key, value in details.items():
                         if isinstance(value, (str, int, float, bool)):
                             row[f'detail_{key}'] = value
                         elif isinstance(value, list):
-                            # 对于列表类型，计算基本统计信息
+
                             if value and all(isinstance(x, (int, float)) for x in value):
                                 row[f'detail_{key}_count'] = len(value)
                                 row[f'detail_{key}_mean'] = np.mean(value)
@@ -103,12 +99,11 @@ class CSVExporter:
                                 row[f'detail_{key}_max'] = np.max(value)
                             else:
                                 row[f'detail_{key}_count'] = len(value)
-                    
-                    # 添加推荐数量
+
                     recommendations = result.get('recommendations', [])
                     row['recommendations_count'] = len(recommendations)
                     if recommendations:
-                        # 将前3个推荐作为单独列
+                        # Include the first 3 recommendations as separate columns
                         for i, rec in enumerate(recommendations[:3]):
                             row[f'recommendation_{i+1}'] = rec
                     
@@ -181,8 +176,8 @@ class CSVExporter:
                     summary_row = {
                         'algorithm': 'OVERALL_SUMMARY',
                         'algorithm_overall_score': summary_stats.get('mean_score', 0.0),
-                        'algorithm_success_rate': 1.0,  # 假设整体成功率为100%
-                        'cross_validation': None,  # 汇总行不显示具体维度分数
+                        'algorithm_success_rate': 1.0,  
+                        'cross_validation': None, 
                         'inter_rater_reliability': None,
                         'metric_correlation': None,
                         'sensitivity_analysis': None,
@@ -244,17 +239,14 @@ class CSVExporter:
             bool: 导出是否成功
         """
         try:
-            # 加载数据
             if isinstance(input_data, str):
                 with open(input_data, 'r', encoding='utf-8') as f:
                     report = json.load(f)
             else:
                 report = input_data
             
-            # 提取描述性统计数据
             descriptive_stats = report.get('descriptive_statistics', {})
             
-            # 如果没有描述性统计，检查是否是新格式的相关性分析报告
             if not descriptive_stats:
                 if 'correlation_analysis' in report and 'summary' in report:
                     logger.info("Detected new format statistical analysis report without descriptive statistics")
@@ -263,8 +255,7 @@ class CSVExporter:
                 else:
                     logger.error("No descriptive statistics found in report")
                     return False
-            
-            # 准备CSV数据
+
             csv_rows = []
             
             for metric_name, stats in descriptive_stats.items():
@@ -279,14 +270,12 @@ class CSVExporter:
                     'q75': stats.get('q75', 0.0)
                 }
                 
-                # 添加其他可能的统计信息
                 for key, value in stats.items():
                     if key not in row and isinstance(value, (int, float)):
                         row[key] = value
                 
                 csv_rows.append(row)
             
-            # 添加分析汇总信息
             analysis_summary = report.get('analysis_summary', {})
             if analysis_summary:
                 summary_row = {
@@ -300,7 +289,6 @@ class CSVExporter:
                     'q75': 0.0
                 }
                 
-                # 添加分析汇总的具体数据
                 for key, value in analysis_summary.items():
                     if isinstance(value, (int, float)):
                         summary_row[key] = value
@@ -335,7 +323,7 @@ class CSVExporter:
             bool: 导出是否成功
         """
         try:
-            # 加载统计分析报告
+            # Loading statistical analysis reports
             with open(statistical_report_path, 'r', encoding='utf-8') as f:
                 report = json.load(f)
             
@@ -344,10 +332,9 @@ class CSVExporter:
                 logger.error("No correlation analysis found in report")
                 return False
             
-            # 准备CSV数据
             csv_rows = []
             
-            # 导出强相关关系
+            # Deriving strong correlations
             strong_correlations = correlation_analysis.get('strong_correlations', [])
             for corr in strong_correlations:
                 row = {
@@ -359,7 +346,7 @@ class CSVExporter:
                 }
                 csv_rows.append(row)
             
-            # 导出中等相关关系
+            # Deriving medium correlations
             moderate_correlations = correlation_analysis.get('moderate_correlations', [])
             for corr in moderate_correlations:
                 row = {

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-DnD地牢地图JSON适配器命令行工具
+DnD Dungeon Map JSON Adapter Command Line Tool
 """
 
 import argparse
@@ -20,12 +20,12 @@ from src.visualizer import visualize_dungeon
 from src.quality_assessor import DungeonQualityAssessor
 from src.csv_exporter import CSVExporter
 
-# 设置日志
+# Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 def load_json_file(file_path: str) -> Optional[Dict[str, Any]]:
-    """加载并读取JSON文件"""
+    """Load and read JSON file"""
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
             return json.load(f)
@@ -40,7 +40,7 @@ def load_json_file(file_path: str) -> Optional[Dict[str, Any]]:
         return None
 
 def save_json_file(data: Dict[str, Any], file_path: str) -> bool:
-    """将数据保存为JSON文件"""
+    """Save data as JSON file"""
     try:
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
         with open(file_path, 'w', encoding='utf-8') as f:
@@ -52,14 +52,14 @@ def save_json_file(data: Dict[str, Any], file_path: str) -> bool:
         return False
 
 def convert_single_file(adapter_manager: AdapterManager, input_path: str, output_path: str, format_name: Optional[str] = None, visualize: bool = False, enable_spatial_inference: bool = True, adjacency_threshold: float = 1.0, enable_entrance_exit_identification: bool = True) -> bool:
-    """转换单个文件"""
+    """Convert single file"""
     source_data = load_json_file(input_path)
     if not source_data: return False
     
     unified_data = adapter_manager.convert(source_data, format_name, enable_spatial_inference, adjacency_threshold)
     if not unified_data: return False
     
-    # 入口出口识别（如果启用）
+    # Entrance/exit identification (if enabled)
     if enable_entrance_exit_identification:
         from src.schema import identify_entrance_exit
         unified_data = identify_entrance_exit(unified_data)
@@ -74,14 +74,14 @@ def convert_single_file(adapter_manager: AdapterManager, input_path: str, output
     return True
 
 def convert_directory(adapter_manager: AdapterManager, input_dir: str, output_dir: str, format_name: Optional[str] = None, visualize: bool = False, enable_spatial_inference: bool = True, adjacency_threshold: float = 1.0, enable_entrance_exit_identification: bool = True) -> int:
-    """转换目录中的所有JSON文件（包括子文件夹）"""
+    """Convert all JSON files in directory (including subdirectories)"""
     input_path = Path(input_dir)
     output_path = Path(output_dir)
     
-    # 确保输出目录存在
+    # Ensure output directory exists
     output_path.mkdir(parents=True, exist_ok=True)
     
-    # 递归查找所有JSON文件
+    # Recursively find all JSON files
     json_files = list(input_path.rglob("*.json"))
     if not json_files:
         print(f"No JSON files found in directory and subdirectories: {input_dir}")
@@ -91,30 +91,30 @@ def convert_directory(adapter_manager: AdapterManager, input_dir: str, output_di
     
     success_count = 0
     for json_file in json_files:
-        # 计算相对路径以保持目录结构
+        # Calculate relative path to maintain directory structure
         relative_path = json_file.relative_to(input_path)
         print(f"Processing: {relative_path}")
         
-        # 加载源文件
+        # Load source file
         source_data = load_json_file(str(json_file))
         if not source_data:
             print(f"✗ Failed to load: {relative_path}")
             continue
         
-        # 转换数据
+        # Convert data
         unified_data = adapter_manager.convert(source_data, format_name, enable_spatial_inference, adjacency_threshold)
         if not unified_data:
             print(f"✗ Failed to convert: {relative_path}")
             continue
         
-        # 入口出口识别（如果启用）
+        # Entrance/exit identification (if enabled)
         if enable_entrance_exit_identification:
             from src.schema import identify_entrance_exit
             unified_data = identify_entrance_exit(unified_data)
         
-        # 保存转换后的文件，保持目录结构
+        # Save converted file, maintaining directory structure
         output_file = output_path / relative_path
-        # 确保输出文件的目录存在
+        # Ensure output file directory exists
         output_file.parent.mkdir(parents=True, exist_ok=True)
         
         if save_json_file(unified_data, str(output_file)):
@@ -122,7 +122,7 @@ def convert_directory(adapter_manager: AdapterManager, input_dir: str, output_di
             print(f"✓ Successfully converted: {relative_path}")
             if visualize:
                 vis_output_path = output_file.with_suffix('.png')
-                # 确保可视化文件的目录存在
+                # Ensure visualization file directory exists
                 vis_output_path.parent.mkdir(parents=True, exist_ok=True)
                 from src.visualizer import visualize_dungeon
                 visualize_dungeon(unified_data, str(vis_output_path), show_room_ids=True, show_grid=True)
@@ -133,16 +133,16 @@ def convert_directory(adapter_manager: AdapterManager, input_dir: str, output_di
     return success_count
 
 def detect_format(adapter_manager: AdapterManager, file_path: str) -> str:
-    """检测文件格式"""
+    """Detect file format"""
     source_data = load_json_file(file_path)
     if not source_data: return "Unknown"
     detected_format = adapter_manager.detect_format(source_data)
     return detected_format if detected_format else "Unknown"
 
-# 合并visualize相关命令和实现，只保留全细节可视化
-# 删除outline等简化模式及相关参数，命令行只保留一个visualize命令
+# Merge visualize related commands and implementations, keep only full detail visualization
+# Remove outline and other simplified modes and related parameters, command line keeps only one visualize command
 def visualize_file(input_path: str, output_path: Optional[str] = None, show_room_ids: bool = True, show_corridor_ids: bool = True, show_grid: bool = True, show_game_elements: bool = True):
-    """为指定的统一格式JSON文件生成可视化图像（默认显示所有细节）"""
+    """Generate visualization image for specified unified format JSON file (shows all details by default)"""
     print(f"Generating visualization for {input_path}...")
     unified_data = load_json_file(input_path)
     if not unified_data:
@@ -152,13 +152,13 @@ def visualize_file(input_path: str, output_path: Optional[str] = None, show_room
     if not output_path:
         output_path = str(Path(input_path).with_suffix('.png'))
     
-    # 默认画所有细节
+    # Draw all details by default
     from src.visualizer import visualize_dungeon
     visualize_dungeon(unified_data, output_path, show_room_ids=show_room_ids, show_grid=show_grid, show_game_elements=show_game_elements)
 
-# 合并/精简assess_quality相关实现，只保留一套评估报告输出逻辑
+# Merge/simplify assess_quality related implementations, keep only one set of evaluation report output logic
 def assess_quality(input_file: str, enable_spatial_inference: bool = True, adjacency_threshold: float = 1.0) -> bool:
-    """评估地图质量，并自动保存详细报告到output/reports"""
+    """Evaluate dungeon quality and automatically save detailed report to output/reports"""
     import os
     import json
     try:

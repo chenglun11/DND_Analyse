@@ -5,14 +5,14 @@ from typing import Dict, Any, Tuple, List
 
 class AccessibilityRule(BaseQualityRule):
     """
-    客观可达性评估：无主观权重，使用几何平均融合子指标
+    Objective accessibility assessment: no subjective weights, using geometric mean to fuse sub-indicators
 
-    子指标:
-      1. reachability_ratio: 最大连通子图节点占比 (0-1)
-      2. normalized_avg_distance: 平均最短路径长度归一化
-      3. normalized_variance: 路径长度方差归一化
+    Sub-indicators:
+      1. reachability_ratio: Maximum connected subgraph node ratio (0-1)
+      2. normalized_avg_distance: Normalized average shortest path length
+      3. normalized_variance: Normalized path length variance
 
-    融合: 几何平均，仅使用非零因子
+    Fusion: Geometric mean, using only non-zero factors
     """
 
     @property
@@ -32,7 +32,7 @@ class AccessibilityRule(BaseQualityRule):
         if not rooms or not connections:
             return 0.0, {"reason": "No rooms or connections"}
 
-        # 构建图
+        # Build graph
         graph = defaultdict(list)
         for c in connections:
             graph[c['from_room']].append(c['to_room'])
@@ -42,7 +42,7 @@ class AccessibilityRule(BaseQualityRule):
         if n == 0:
             return 0.0, {"reason": "Empty graph"}
 
-        # 1. 可达率: 最大连通分量 / 总节点
+        # 1. Reachability ratio: largest connected component / total nodes
         visited = set()
         def bfs_count(start):
             q = deque([start])
@@ -64,25 +64,25 @@ class AccessibilityRule(BaseQualityRule):
                     largest = size
         reachability = largest / n
 
-        # 假设入口为第一个房间
+        # Assume entrance is the first room
         entrance = rooms[0]['id']
-        # 2. 计算从入口到所有可达节点的最短路径长度
+        # 2. Calculate shortest path lengths from entrance to all reachable nodes
         lengths = self._bfs_all_distances(graph, entrance)
         if not lengths:
             return 0.0, {"reason": "Entrance isolated"}
         avg_len = sum(lengths) / len(lengths)
         var_len = sum((d - avg_len)**2 for d in lengths) / len(lengths)
 
-        # 理论最大最短路径 = 图的直径
+        # Theoretical maximum shortest path = graph diameter
         diameter = max(lengths)
-        # 归一化平均距离: (diameter - avg_len) / diameter
+        # Normalized average distance: (diameter - avg_len) / diameter
         norm_avg = (diameter - avg_len) / diameter if diameter > 0 else 0.0
-        # 归一化方差: 使用严格上界 Var ≤ Diam²/4（区分度更好）
+        # Normalized variance: use strict upper bound Var ≤ Diam²/4 (better discrimination)
         strict_upper_bound = (diameter * diameter) / 4 if diameter > 0 else 0.0
         norm_var = 1 - (var_len / strict_upper_bound if strict_upper_bound > 0 else 0.0)
         norm_var = max(0.0, min(1.0, norm_var))
 
-        # 几何平均融合
+        # Geometric mean fusion
         factors = [f for f in [reachability, norm_avg, norm_var] if f > 0]
         if factors:
             score = math.exp(sum(math.log(f) for f in factors) / len(factors))
@@ -98,7 +98,7 @@ class AccessibilityRule(BaseQualityRule):
         }
 
     def _bfs_all_distances(self, graph: Dict[str, List[str]], source: Any) -> List[float]:
-        """BFS 计算从 source 到所有节点的最短路径长度"""
+        """BFS calculate shortest path lengths from source to all nodes"""
         visited = {source}
         q = deque([(source, 0)])
         dists = []

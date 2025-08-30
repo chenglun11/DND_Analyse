@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-地牢地图可视化器
-支持将统一格式的地牢数据转换为可视化图像
-支持polygon格式输出和游戏元素可视化
+Dungeon map visualizer
+Supports converting unified format dungeon data to visualization images
+Supports polygon format output and game element visualization
 """
 
 import matplotlib
@@ -19,14 +19,14 @@ import matplotlib.patheffects as PathEffects
 import xml.etree.ElementTree as ET
 import heapq
 
-# 设置中文字体
+# Set Chinese font
 plt.rcParams['font.sans-serif'] = ['SimHei', 'Arial Unicode MS', 'DejaVu Sans']
 plt.rcParams['axes.unicode_minus'] = False
 
 logger = logging.getLogger(__name__)
 
 class DungeonVisualizer:
-    """地牢可视化器"""
+    """Dungeon visualizer"""
     def __init__(self, figsize: Tuple[int, int] = (12, 8), dpi: int = 100):
         self.figsize = figsize
         self.dpi = dpi
@@ -64,16 +64,16 @@ class DungeonVisualizer:
                          show_connections: bool = True, show_room_ids: bool = True,
                          show_grid: bool = True, show_game_elements: bool = True) -> bool:
         """
-        可视化地牢数据
+        Visualize dungeon data
         """
         try:
-            # 检测是否为edgar格式，如果是则使用edgar专用可视化
+            # Detect if it's Edgar format, if so use Edgar-specific visualization
             if self._is_edgar_format(dungeon_data):
                 return self._visualize_edgar_dungeon(dungeon_data, output_path, 
                                                    show_connections, show_room_ids, 
                                                    show_grid, show_game_elements)
             
-            # 原有的可视化逻辑
+            # Original visualization logic
             fig, ax = plt.subplots(figsize=self.figsize, dpi=self.dpi)
             ax.set_facecolor(self.colors['background'])
             bounds = self._calculate_bounds(dungeon_data)
