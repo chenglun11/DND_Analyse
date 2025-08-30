@@ -1,8 +1,120 @@
-# Dungeon Analyzer
+<br />
 
-[中文版本 (Chinese Version)](./README_CN.md) | [English Version](./README.md)
+<p align="center">
+  <a href="https://github.com/chenglun11/DND_Analyse/">
+    <img src="https://www.york.ac.uk/static/stable/img/logo.svg" alt="Logo" width="80" height="80">
+  </a>
 
-A professional D&D dungeon quality assessment tool featuring a Vue.js frontend interface and Flask backend API.
+<h3 align="center">DND_Analysis </h3>
+  <p align="center">A professional D&D dungeon quality assessment tool. </p>
+  <p align="center">
+    <br />
+    <a href="https://github.com/chenglun11/DND_Analyse/blob/frontend-ui/README.md"><strong>Explore this document »</strong></a>
+    <br />
+    <br />
+    ·
+    <a href="https://github.com/chenglun11/DND_Analyse/blob/frontend-ui/README_cn.md">简体中文[ZH-CN]</a>
+    ·
+    <a href="https://github.com/chenglun11/DND_Analyse/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/chenglun11/DND_Analyse/issues">Commit a Feature</a>
+
+</p>
+
+</p>
+
+## Requirements
+
+```bash
+numpy>=1.21.0
+pandas>=1.3.0
+matplotlib>=3.5.0
+pillow>=8.3.0
+networkx >=3.5
+
+scipy>=1.7.0
+scikit-learn>=1.0.0
+
+tqdm>=4.62.0
+click>=8.0.0
+pathlib2>=2.3.0
+loguru
+
+PyQt5>=5.15.0
+
+pytest>=6.2.0
+black>=21.0.0
+flake8>=3.9.0
+mypy>=0.910
+
+Flask==3.0.0
+Flask-CORS==4.0.0
+Werkzeug==3.0.1
+
+OR use reqirement.txt
+```
+
+## Getting Started
+1. Install requirements
+```bash
+pip install -r requirements.txt
+```
+2. Starting backend service
+```bash
+cd flask_backend & python run.py
+```
+Backend will start at `http://localhost:5001`
+
+3. Starting frontend service
+```bash
+cd frontend & npm install #Install frontend requirement
+npm run dev
+```
+Frontend will start at `http://localhost:5173`
+
+
+---
+1. CLI usage
+```bash
+cd src/
+
+ # Convert single file (auto-detect format)
+  python cli.py convert samples/onepage_example.json output/
+
+  # Convert single file (specify format)
+  python cli.py convert samples/onepage_example.json output/ --format onepage_dungeon
+
+  # Convert entire directory (including subdirectories)
+  python cli.py convert-dir samples/ output/
+
+  # Detect file format
+  python cli.py detect samples/onepage_example.json
+
+  # List supported formats
+  python cli.py list-formats
+
+  # Generate visualization image for converted JSON file
+  python cli.py visualize output/test_onepage_example.json
+
+  # Assess single file quality
+  python cli.py assess output/test_onepage_example.json
+
+  # Batch assess directory quality (including subdirectories)
+  python cli.py batch-assess output/watabou_test/ output/batch_reports/
+
+  # Statistical analysis of batch results
+  python cli.py statistical-analysis output/watabou_test_batch_report.json
+
+  # Export validation data to CSV
+  python cli.py export-csv --validation output/validation_report.json --output validation_data.csv
+
+  # Export descriptive statistics to CSV
+  python cli.py export-csv --descriptive output/statistical_analysis_report.json --output descriptive_stats.csv
+
+  # Auto-export all data from directory to CSV
+  python cli.py export-csv --auto-dir output/ --output-dir csv_exports/
+```
+
 
 ## Project Structure
 
@@ -70,86 +182,27 @@ dungeon-adapter/
 └── README.md
 ```
 
-## Quick Start - Web
+## Supported File Formats
 
-### 1. Start Flask Backend
+- **Watabou**: Watabou Dungeon Generator format
+- **Edgar**: Edgar Dungeon Generator format
+- **FI-Map-Elites**: EA Dungeon Generator format
+- **DD2VTT**: (Beta) A General Dungeon format
 
-```bash
-cd flask_backend
-pip install -r requirements.txt
-python app.py
-```
+## Analysis Metrics
 
-Backend will start at `http://localhost:5001`
-
-### 2. Start Frontend
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-Frontend will start at `http://localhost:5173`
-
-### 3. Using the Application
-
-1. Open browser and visit `http://localhost:5173`
-2. Upload dungeon JSON files
-3. Select analysis options
-4. Click "Start Analysis"
-5. View analysis results
-
-
-## Quick Start - Cli
-### Overview
-```bash
-    cd src/
-```
-```bash
- # Convert single file (auto-detect format)
-  python cli.py convert samples/onepage_example.json output/
-
-  # Convert single file (specify format)
-  python cli.py convert samples/onepage_example.json output/ --format onepage_dungeon
-
-  # Convert entire directory (including subdirectories)
-  python cli.py convert-dir samples/ output/
-
-  # Detect file format
-  python cli.py detect samples/onepage_example.json
-
-  # List supported formats
-  python cli.py list-formats
-
-  # Generate visualization image for converted JSON file
-  python cli.py visualize output/test_onepage_example.json
-
-  # Assess single file quality
-  python cli.py assess output/test_onepage_example.json
-
-  # Batch assess directory quality (including subdirectories)
-  python cli.py batch-assess output/watabou_test/ output/batch_reports/
-
-  # Statistical analysis of batch results
-  python cli.py statistical-analysis output/watabou_test_batch_report.json
-
-  # Cross-dataset analysis for F_Q dataset
-  python cli.py cross-dataset-analysis --input output/F_Q_Report --output output/F_Q_Report/SA
-
-  # Export validation data to CSV
-  python cli.py export-csv --validation output/validation_report.json --output validation_data.csv
-
-  # Export descriptive statistics to CSV
-  python cli.py export-csv --descriptive output/statistical_analysis_report.json --output descriptive_stats.csv
-
-  # Auto-export all data from directory to CSV
-  python cli.py export-csv --auto-dir output/ --output-dir csv_exports/
-```
-
+### Structural Metrics
+- **Accessibility**: Analyzes dungeon accessibility and path design
+- **Degree Variance**: Evaluates room connection degree distribution
+- **Door Distribution**: Analyzes door positioning and distribution
+- **Dead End Ratio**: Evaluates dead-end quantity and distribution
+- **Key Path Length**: Analyzes critical path design
+- **Loop Ratio**: Analyzes loop design to avoid linear experience
+- **Path Diversity**: Evaluates path selection diversity
+- **Treasure Monster Distribution**: Analyzes reasonable distribution of treasures and monsters
+- **Geometric Balance**: Objectively assessing the geometric balance of dungeon layouts
 
 ## API Endpoints
-
 ### Health Check
 ```
 GET /api/health
@@ -183,60 +236,17 @@ POST /api/convert-dungeon
 Content-Type: multipart/form-data
 ```
 
-## Supported File Formats
 
-- **Watabou**: Watabou Dungeon Generator format
-- **Edgar**: Edgar Dungeon Generator format
-- **FI-Map-Elites**: EA Dungeon Generator format
-- **DD2VTT**: (Beta) A General Dungeon format
+## Version Control
 
-## Analysis Metrics
+The project uses Git for version control. You can see the currently available versions in the repository.
 
-### Structural Metrics
-- **Accessibility**: Analyzes dungeon accessibility and path design
-- **Degree Variance**: Evaluates room connection degree distribution
-- **Door Distribution**: Analyzes door positioning and distribution
-- **Dead End Ratio**: Evaluates dead-end quantity and distribution
-- **Key Path Length**: Analyzes critical path design
-- **Loop Ratio**: Analyzes loop design to avoid linear experience
-- **Path Diversity**: Evaluates path selection diversity
+## Author
 
-### Playability Metrics
-- **Treasure Monster Distribution**: Analyzes reasonable distribution of treasures and monsters
-
-
-## Technology Stack
-
-### Frontend
-- Vue 3 + TypeScript
-- Vite
-- Phaser.js (Game engine)
-- Vue Router
-- Pinia (State management)
-
-### Backend
-- Flask
-- Flask-CORS
-- Python 3.x
-
-## Development
-
-### Frontend Development
-```bash
-cd frontend
-npm run dev          # Development mode
-npm run build        # Build production version
-npm run preview      # Preview build results
-```
-
-### Backend Development
-```bash
-cd flask_backend
-python app.py        # Development mode
-```
-
-## Contributing
-Author: MAX LI- Chenglun11
+[chenglun11](https://github.com/chenglun11) is the coder of this repo
 
 ## License
-MIT License 
+
+Copyright (c) 2024 chenglun11 with [MIT License](/LICENSE)
+
+

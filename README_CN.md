@@ -1,8 +1,119 @@
-# 地牢分析器
+<br />
 
-[中文版本 (Chinese Version)](./README_CN.md) | [English Version](./README.md)
+<p align="center">
+  <a href="https://github.com/chenglun11/DND_Analyse/">
+    <img src="https://www.york.ac.uk/static/stable/img/logo.svg" alt="Logo" width="80" height="80">
+  </a>
 
-一个专业的D&D地牢质量评估工具，具有Vue.js前端界面和Flask后端API。
+<h3 align="center">DND_Analysis </h3>
+  <p align="center">A professional D&D dungeon quality assessment tool. </p>
+  <p align="center">
+    <br />
+    <a href="https://github.com/chenglun11/DND_Analyse/blob/frontend-ui/README.md"><strong>Explore this document »</strong></a>
+    <br />
+    <br />
+    <a href="#demo">Demo</a>
+    ·
+    <a href="https://github.com/chenglun11/DND_Analyse/blob/frontend-ui/README_cn.md">简体中文[ZH-CN]</a>
+    ·
+    <a href="https://github.com/chenglun11/DND_Analyse/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/chenglun11/DND_Analyse/issues">Commit a Feature</a>
+
+</p>
+
+</p>
+
+## 项目依赖
+```bash
+numpy>=1.21.0
+pandas>=1.3.0
+matplotlib>=3.5.0
+pillow>=8.3.0
+networkx >=3.5
+
+scipy>=1.7.0
+scikit-learn>=1.0.0
+
+tqdm>=4.62.0
+click>=8.0.0
+pathlib2>=2.3.0
+loguru
+
+PyQt5>=5.15.0
+
+pytest>=6.2.0
+black>=21.0.0
+flake8>=3.9.0
+mypy>=0.910
+
+Flask==3.0.0
+Flask-CORS==4.0.0
+Werkzeug==3.0.1
+
+OR use reqirement.txt
+```
+
+## 快速开始
+1. Install requirements
+```bash
+pip install -r requirements.txt
+```
+2. Starting backend service
+```bash
+cd flask_backend & python run.py
+```
+Backend will start at `http://localhost:5001`
+
+3. Starting frontend service
+```bash
+cd frontend & npm install #Install frontend requirement
+npm run dev
+```
+Frontend will start at `http://localhost:5173`
+
+
+---
+1. CLI usage
+```bash
+cd src/
+
+ # Convert single file (auto-detect format)
+  python cli.py convert samples/onepage_example.json output/
+
+  # Convert single file (specify format)
+  python cli.py convert samples/onepage_example.json output/ --format onepage_dungeon
+
+  # Convert entire directory (including subdirectories)
+  python cli.py convert-dir samples/ output/
+
+  # Detect file format
+  python cli.py detect samples/onepage_example.json
+
+  # List supported formats
+  python cli.py list-formats
+
+  # Generate visualization image for converted JSON file
+  python cli.py visualize output/test_onepage_example.json
+
+  # Assess single file quality
+  python cli.py assess output/test_onepage_example.json
+
+  # Batch assess directory quality (including subdirectories)
+  python cli.py batch-assess output/watabou_test/ output/batch_reports/
+
+  # Statistical analysis of batch results
+  python cli.py statistical-analysis output/watabou_test_batch_report.json
+
+  # Export validation data to CSV
+  python cli.py export-csv --validation output/validation_report.json --output validation_data.csv
+
+  # Export descriptive statistics to CSV
+  python cli.py export-csv --descriptive output/statistical_analysis_report.json --output descriptive_stats.csv
+
+  # Auto-export all data from directory to CSV
+  python cli.py export-csv --auto-dir output/ --output-dir csv_exports/
+```
 
 ## 项目结构
 
@@ -70,35 +181,6 @@ dungeon-adapter/
 └── README.md
 ```
 
-## 快速开始
-
-### 1. 启动Flask后端
-
-```bash
-cd flask_backend
-pip install -r requirements.txt
-python app.py
-```
-
-后端将在 `http://localhost:5001` 启动
-
-### 2. 启动Vue前端
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-前端将在 `http://localhost:5173` 启动
-
-### 3. 使用应用程序
-
-1. 打开浏览器访问 `http://localhost:5173`
-2. 上传地牢JSON文件
-3. 选择分析选项
-4. 点击"开始分析"
-5. 查看分析结果
 
 ## API接口
 
@@ -153,45 +235,19 @@ Content-Type: multipart/form-data
 - **关键路径长度 (Key Path Length)**: 分析关键路径设计
 - **循环比例 (Loop Ratio)**: 分析循环设计以避免线性体验
 - **路径多样性 (Path Diversity)**: 评估路径选择多样性
-
-### 可玩性指标
 - **宝藏怪物分布 (Treasure Monster Distribution)**: 分析宝藏和怪物的合理分布
+- **几何平衡**: 客观评估地下城布局的几何平衡性
 
-### 视觉指标
-- **美学平衡 (Aesthetic Balance)**: 评估房间布局美学和平衡性
+## 版本控制
 
-## 技术栈
+该项目使用 Git 进行版本控制。你可以在版本库中看到当前可用的版本。
 
-### 前端
-- Vue 3 + TypeScript
-- Vite
-- Phaser.js (游戏引擎)
-- Vue Router
-- Pinia (状态管理)
+## Author
 
-### 后端
-- Flask
-- Flask-CORS
-- Python 3.x
+[chenglun11](https://github.com/chenglun11) 是该 repo 的作者
 
-## 开发
 
-### 前端开发
-```bash
-cd frontend
-npm run dev          # 开发模式
-npm run build        # 构建生产版本
-npm run preview      # 预览构建结果
-```
+## License
 
-### 后端开发
-```bash
-cd flask_backend
-python app.py        # 开发模式
-```
+Copyright (c) 2024 chenglun11 with [MIT License](/LICENSE)
 
-## 贡献者
-作者: MAX LI- Chenglun11
-
-## 许可证
-MIT License
